@@ -11,7 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", "APP_SERVER", '"http://www.baidu.com"'
+        buildConfigField "String", "APP_SERVER", '"http://114.116.15.19/"'
         buildConfigField "String", "APP_SECRET", '"http://www.baidu.com"'
 
 
