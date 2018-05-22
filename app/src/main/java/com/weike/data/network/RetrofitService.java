@@ -21,5 +21,5 @@ public interface RetrofitService {
 
 
     @POST
-    public Call<ResponseBody> postData(@Body Map<String,String> data, @Url String url);
+    public Call<ResponseBody> postData(@Body Object data, @Url String url);
 }
