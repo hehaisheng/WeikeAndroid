@@ -24,7 +24,7 @@ public class RetrofitManager {
         return instance;
     }
 
-    public  RetrofitManager url(String url) {
+    public RetrofitManager url(String url) {
 
         return this;
     }
