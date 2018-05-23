@@ -3,6 +3,7 @@ package com.weike.data.network;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,5 +20,5 @@ import retrofit2.http.QueryMap;
 public interface RetrofitService {
 
     @POST("wkzs-restful/userLogin/loginByPassword/")
-    public Call<ResponseBody> postData(@Body Map<String,String> data);
+    public Call<ResponseBody> postData(@Body RequestBody body);
 }

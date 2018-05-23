@@ -8,4 +8,6 @@ import com.weike.data.base.BaseFragment;
  * 消息的Fragment
  */
 public class MsgFragment extends BaseFragment {
+
+
 }
