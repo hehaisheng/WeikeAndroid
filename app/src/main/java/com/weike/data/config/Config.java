@@ -22,7 +22,7 @@ public final class Config {
     /**
      * 获取验证码
      */
-    public static final String GET_SMS_CODE = APP_SERVER + "/wkzs-restful/system/smsCode/";
+    public static final String GET_SMS_CODE = APP_SERVER + "wkzs-restful/system/smsCode/";
     /**
      *验证码登录
      */
@@ -31,5 +31,11 @@ public final class Config {
     /**
      * 账号密码登录
      */
-    public static final String LOGIN_FOR_ACCOUNT =  "wkzs-restful/userLogin/loginByPassword/";
+    public static final String LOGIN_FOR_ACCOUNT = APP_SERVER + "wkzs-restful/userLogin/loginByPassword/";
+
+    /**
+     *
+     */
+
+
 }
