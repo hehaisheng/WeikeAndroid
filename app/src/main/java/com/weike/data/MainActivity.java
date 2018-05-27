@@ -61,11 +61,6 @@ public class MainActivity extends Activity {
         req.phoneNumber = "15766506263";
         req.sign = "62e1f24949dfad11db7d22fa59887c72";
 
-        LoginByPwdResp loginByPwdResp = new LoginByPwdResp();
-
-
-
-
 
 
 

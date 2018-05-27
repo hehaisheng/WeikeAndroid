@@ -39,6 +39,11 @@
         <activity android:name=".business.home.HomeActivity">
 
         </activity>
+
+        <activity android:name=".start.GuideActivity">
+
+
+        </activity>
     </application>
 
 </manifest>
