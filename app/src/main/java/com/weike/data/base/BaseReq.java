@@ -13,4 +13,9 @@ public class BaseReq {
      * 签名字段
      */
     public String sign;
+
+    /**
+     * 平台名字
+     */
+    public String appKey = "android";
 }

@@ -38,24 +38,12 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        vm = new LoginActVM();
+        vm = new LoginActVM(this);
         binding.setLoginVM(vm);
     }
 
-
     public void onClick(View view) {
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://114.116.15.19/").build();
-        RetrofitService service = retrofit.create(RetrofitService.class);
-
-
-        RequestBody.create(MediaType.parse(""),"");
-
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }
