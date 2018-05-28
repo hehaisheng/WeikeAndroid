@@ -40,6 +40,8 @@ public abstract class BaseObserver<T>  implements Observer<T> {
     @Override
     public void onNext(T tBaseEntity) {
 
+
+
         onRequestEnd();
         try {
             onSuccess(tBaseEntity);

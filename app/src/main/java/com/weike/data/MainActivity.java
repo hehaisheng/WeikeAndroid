@@ -65,12 +65,12 @@ public class MainActivity extends Activity {
 
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.LOGIN_FOR_ACCOUNT)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<LoginByPwdResp>(){
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<LoginByPwdResp>>(){
 
-                })).subscribe(new BaseObserver<LoginByPwdResp>() {
+                })).subscribe(new BaseObserver<BaseResp<LoginByPwdResp>>() {
             @Override
-            protected void onSuccess(LoginByPwdResp loginByPwdResp) throws Exception {
-                LogUtil.d("acthome","--->" + JsonUtil.GsonString(loginByPwdResp));
+            protected void onSuccess(BaseResp<LoginByPwdResp> loginByPwdResp) throws Exception {
+                LogUtil.d("acthome","getToken:" + loginByPwdResp.getDatas().token);
             }
 
             @Override

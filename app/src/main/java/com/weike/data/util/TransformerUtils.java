@@ -31,8 +31,9 @@ public class TransformerUtils {
                         try {
                             String responseStr = responseBody.string();
 
+
                             T t = JsonUtil.GsonToBean(responseStr , typeToken.getType());
-                            LogUtil.d("acthome",JsonUtil.GsonString(t));
+                            LogUtil.d("Transformer",JsonUtil.GsonString(t));
                             return Observable.just(t);
                         }catch (Exception e) {
                             return Observable.error(new RuntimeException("错误"));

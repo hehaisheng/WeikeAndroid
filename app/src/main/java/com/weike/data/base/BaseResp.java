@@ -5,9 +5,33 @@ package com.weike.data.base;
  * 响应基类
  */
 public class BaseResp<T> {
-    public int result = 1;
+    private int result;
 
-    public String message = "";
+    private String message = "";
 
-    public T datas;
+    private T datas;
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public T getDatas() {
+        return datas;
+    }
+
+    public void setDatas(T datas) {
+        this.datas = datas;
+    }
 }

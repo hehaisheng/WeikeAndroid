@@ -7,4 +7,14 @@ import com.weike.data.base.BaseResp;
  */
 
 public class LoginByCodeResp extends BaseResp {
+    private String token;
+
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

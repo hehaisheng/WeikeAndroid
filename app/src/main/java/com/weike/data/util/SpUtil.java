@@ -36,4 +36,12 @@ public class SpUtil {
     public void saveIsFirstOpen() {
         preferences.edit().putBoolean(SpConfig.TAG_FIRST_OPEN,false).commit();
     }
+
+    public String getCurrentToken(){
+        return preferences.getString(SpConfig.TAG_TOKEN , "");
+    }
+
+    public void saveCurrentToken(String token){
+        preferences.edit().putString(SpConfig.TAG_TOKEN , token).commit();
+    }
 }

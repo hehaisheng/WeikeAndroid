@@ -2,4 +2,6 @@
     <string name="app_name">WKApp</string>
     
     <string name="login_title_name">维客助手</string>
+    <string name="login_use_pwd">使用密码登录</string>
+    <string name="login_use_code">使用验证码登录</string>
 </resources>

@@ -10,14 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".WKBaseApplication"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         
@@ -35,15 +32,21 @@
         </activity>
         <activity android:name=".business.start.StartActivity">
 
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
         </activity>
         <activity android:name=".business.home.HomeActivity">
 
         </activity>
 
-        <activity android:name=".start.GuideActivity">
+        <activity android:name=".business.start.GuideActivity"></activity>
 
-
-        </activity>
     </application>
 
 </manifest>

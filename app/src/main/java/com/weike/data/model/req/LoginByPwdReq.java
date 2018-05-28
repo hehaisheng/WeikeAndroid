@@ -2,10 +2,7 @@ package com.weike.data.model.req;
 
 import com.weike.data.base.BaseReq;
 
-public class LoginByPwdReq  {
-    public String sign;
-
-    public String appKey;
+public class LoginByPwdReq extends BaseReq {
 
     public String phoneNumber;
 
