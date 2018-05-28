@@ -8,10 +8,16 @@ import android.app.Application;
 
 public class WKBaseApplication extends Application {
 
-
+    private static WKBaseApplication instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
+
+    }
+
+    public static WKBaseApplication getInstance(){
+        return instance;
     }
 }

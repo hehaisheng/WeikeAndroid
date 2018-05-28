@@ -1,5 +1,6 @@
 package com.weike.data.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,9 +31,9 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        context = activity;
     }
 }
 

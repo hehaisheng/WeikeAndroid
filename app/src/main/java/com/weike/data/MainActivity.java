@@ -1,22 +1,38 @@
 package com.weike.data;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.gson.reflect.TypeToken;
+import com.weike.data.base.BaseObserver;
+import com.weike.data.base.BaseResp;
 import com.weike.data.config.Config;
+import com.weike.data.model.req.LoginByPwdReq;
+import com.weike.data.model.resp.LoginByCodeResp;
+import com.weike.data.model.resp.LoginByPwdResp;
+import com.weike.data.network.RetrofitFactory;
 import com.weike.data.network.RetrofitService;
+import com.weike.data.network.callback.HttpCallBack;
+import com.weike.data.util.JsonUtil;
+import com.weike.data.util.LogUtil;
+import com.weike.data.util.TransformerUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+
 
 public class MainActivity extends Activity {
 
@@ -26,30 +42,44 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Config.APP_SERVER).addConverterFactory(GsonConverterFactory.create()).build();
-        RetrofitService service = retrofit.create(RetrofitService.class);
 
-        Map<String,String> map = new HashMap<>();
-        map.put("appKey","android");
-        map.put("sign","62e1f24949dfad11db7d22fa59887c72");
-        map.put("phoneNumber","15766506263");
-        map.put("password","123456");
 
-        service.postData(map,Config.APP_SERVER + "wkzs-restful/userLogin/loginByPassword").enqueue(new Callback<ResponseBody>() {
+        testData();
+
+    }
+
+    public void testUploadFile() {
+
+    }
+
+
+    private void testData() {
+
+        LoginByPwdReq req = new LoginByPwdReq();
+        req.appKey = "android";
+        req.password = "123456";
+        req.phoneNumber = "15766506263";
+        req.sign = "62e1f24949dfad11db7d22fa59887c72";
+
+
+
+
+        RetrofitFactory.getInstance().getService().postAnything(req,Config.LOGIN_FOR_ACCOUNT)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<LoginByPwdResp>(){
+
+                })).subscribe(new BaseObserver<LoginByPwdResp>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.d("acthome",response.raw().toString());
+            protected void onSuccess(LoginByPwdResp loginByPwdResp) throws Exception {
+                LogUtil.d("acthome","--->" + JsonUtil.GsonString(loginByPwdResp));
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("acthome","falied:"+ t.getMessage());
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
             }
         });
 
 
-
     }
-
 
 }
