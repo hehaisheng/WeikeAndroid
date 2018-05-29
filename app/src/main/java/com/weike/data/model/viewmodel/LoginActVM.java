@@ -1,4 +1,4 @@
-package com.weike.data.business.login;
+package com.weike.data.model.viewmodel;
 
 import android.app.Activity;
 import android.databinding.ObservableField;

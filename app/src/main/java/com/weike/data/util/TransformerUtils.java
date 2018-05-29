@@ -33,7 +33,7 @@ public class TransformerUtils {
 
 
                             T t = JsonUtil.GsonToBean(responseStr , typeToken.getType());
-                            LogUtil.d("Transformer",JsonUtil.GsonString(t));
+                            LogUtil.d("Transformer",responseStr);
                             return Observable.just(t);
                         }catch (Exception e) {
                             return Observable.error(new RuntimeException("错误"));

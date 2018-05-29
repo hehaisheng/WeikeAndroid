@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical">
 
+    <include
+        layout="@layout/widget_action_bar"
+        />
 
-
-    <RadioGroup
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
+    <fragment
+        android:id="@+id/framgnet_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"/>
 
-        <RadioButton
-            android:layout_weight="1"
-            android:text="12321"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-        <RadioButton
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <RadioButton
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <RadioButton
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <com.weike.data.view.BottomBarLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/color_333333">
 
-    </RadioGroup>
+
+    </com.weike.data.view.BottomBarLayout>
+
+
 </LinearLayout>

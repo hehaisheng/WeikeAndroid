@@ -3,26 +3,12 @@ package com.weike.data.business.login;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
 import com.weike.data.R;
 import com.weike.data.base.BaseActivity;
-import com.weike.data.config.Config;
 import com.weike.data.databinding.ActivityLoginBinding;
-import com.weike.data.network.RetrofitService;
-import com.weike.data.util.LogUtil;
-
-import java.io.IOException;
-import java.util.HashMap;
-
-import io.reactivex.Observable;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import com.weike.data.model.viewmodel.LoginActVM;
 
 /**
  * Created by LeoLu on 2018/5/21.

@@ -5,7 +5,7 @@
         <import type="android.view.View"></import>
         <variable
             name="loginVM"
-            type="com.weike.data.business.login.LoginActVM"></variable>
+            type="com.weike.data.model.viewmodel.LoginActVM"></variable>
 
     </data>
 

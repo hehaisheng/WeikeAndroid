@@ -19,10 +19,10 @@ import butterknife.OnClick;
 public class BaseActivity extends Activity {
 
 
-    @OnClick(R.id.btn_goto_next)
+ /*   @OnClick(R.id.btn_goto_next)
     public void back(View view) {
         finish();
-    }
+    }*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +39,6 @@ public class BaseActivity extends Activity {
     @Override
     public void setContentView(View view) {
         super.setContentView(view);
-        ButterKnife.bind(view);
+
     }
 }
