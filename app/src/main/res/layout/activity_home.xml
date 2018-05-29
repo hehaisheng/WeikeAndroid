@@ -11,7 +11,7 @@
         layout="@layout/widget_action_bar"
         />
 
-    <fragment
+    <FrameLayout
         android:id="@+id/framgnet_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
