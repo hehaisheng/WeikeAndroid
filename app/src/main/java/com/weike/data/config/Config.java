@@ -34,8 +34,8 @@ public final class Config {
     public static final String LOGIN_FOR_ACCOUNT = APP_SERVER + "wkzs-restful/userLogin/loginByPassword/";
 
     /**
-     *
+     * 获取首页登录信息(轮播图等)
      */
-
+    public static final String MAIN_PAGE_DATA = APP_SERVER +"wkzs-restful/index/loginInfo";
 
 }
