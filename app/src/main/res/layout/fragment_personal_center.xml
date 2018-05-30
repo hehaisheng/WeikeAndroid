@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+        <variable
+            name="personalVM"
+            type="com.weike.data.model.viewmodel.PersonalActVM"></variable>
+
+    </data>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/color_all_bg"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@mipmap/bg_personal_img"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@mipmap/bg_personal_img">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="修改资料"
-            android:drawableTop="@mipmap/ic_modify_data"
-            android:textColor="@color/color_white"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:drawablePadding="3dp"
-            android:layout_marginRight="10dp"
-            />
+            android:drawableTop="@mipmap/ic_modify_data"
+            android:text="修改资料"
+            android:onClick="@{()-> personalVM.modifyPersonalData()}"
+            android:textColor="@color/color_white" />
 
         <ImageView
             android:id="@+id/iv_user_icon"
 
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:layout_width="50dp"
-            android:src="@mipmap/ic_home_nor"
-            android:layout_height="50dp" />
+            android:src="@mipmap/ic_home_nor" />
 
         <TextView
             android:id="@+id/tv_nick_name"
@@ -38,41 +48,45 @@
             android:layout_below="@+id/iv_user_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="小王老哥"
-            android:textColor="@color/color_white"
-            />
+            android:text="@{}"
+            android:textColor="@color/color_white" />
+
         <TextView
+            android:id="@+id/tv_phone_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/tv_nick_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:id="@+id/tv_phone_num"
             android:text="手机号码:15692022243"
-            android:textColor="@color/color_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/color_white" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#FFE991"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/ic_my_vip"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:text="VIP会员"/>
+            android:drawableLeft="@mipmap/ic_my_vip"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="VIP会员" />
 
         <TextView
-            android:text="xxxx到期"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="xxxx到期"
 
             />
 
@@ -81,28 +95,155 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/color_white"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
-
-        <ImageView
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_my_qrcode"
-            android:layout_marginLeft="10dp"
-            />
-
-        <TextView
-            android:text="我的二维码"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:background="@color/color_white">
 
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@mipmap/ic_my_qrcode" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="我的二维码" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:background="@color/color_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@mipmap/ic_my_integral" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="我的积分" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:background="@color/color_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@mipmap/ic_customer_center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="客服中心" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:background="@color/color_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@mipmap/ic_service_setting" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="服务设置" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:background="@color/color_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@mipmap/ic_app_setting" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="应用设置" />
+
+
+        </LinearLayout>
     </LinearLayout>
 
-    
 
 </LinearLayout>
+</layout>
