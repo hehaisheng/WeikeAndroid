@@ -23,6 +23,6 @@ public class MsgFragment extends BaseFragment {
 
     @Override
     protected void loadFinish(View view) {
-        DataBindingUtil.bind(view);
+
     }
 }

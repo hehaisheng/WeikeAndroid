@@ -1,26 +1,17 @@
 package com.weike.data.business.home;
 
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 
-import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseFragment;
-import com.weike.data.base.BaseObserver;
-import com.weike.data.base.BaseResp;
-import com.weike.data.config.Config;
+import com.weike.data.business.client.ClientFragment;
+import com.weike.data.business.msg.MsgFragment;
+import com.weike.data.business.myself.MySelfFragment;
 import com.weike.data.model.TabEntity;
-import com.weike.data.model.req.MainPageDataReq;
-import com.weike.data.model.resp.MainPageDataResp;
-import com.weike.data.model.viewmodel.MainOptionVM;
-import com.weike.data.network.RetrofitFactory;
-import com.weike.data.util.BannerImageLoader;
-import com.weike.data.util.SpUtil;
-import com.weike.data.util.TransformerUtils;
 import com.weike.data.view.BottomBarLayout;
 
 
@@ -40,8 +31,6 @@ public class HomeActivity extends BaseActivity {
     public BottomBarLayout bottomBarLayout;
 
 
-
-    List<MainOptionVM> vms = new ArrayList<>();
 
     private List<TabEntity> tabEntities = new ArrayList<>();
 
@@ -82,10 +71,24 @@ public class HomeActivity extends BaseActivity {
         bottomBarLayout.setOnItemClickListener(new BottomBarLayout.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-
+                replaceFragment(position);
             }
         });
 
+    }
+
+    public void replaceFragment(int position) {
+        BaseFragment fragment;
+        if (position == 0) {
+            fragment = new HomeFragment();
+        } else if(position == 1) {
+            fragment = new ClientFragment();
+        } else if (position == 2) {
+            fragment = new MsgFragment();
+        } else {
+            fragment = new MySelfFragment();
+        }
+        getFragmentManager().beginTransaction().replace(R.id.framgnet_home,fragment).commit();
     }
 
     @Override
@@ -101,6 +104,7 @@ public class HomeActivity extends BaseActivity {
         BaseFragment fragment = new HomeFragment();
 
         getFragmentManager().beginTransaction().replace(R.id.framgnet_home,fragment).commit();
+
 
 
 

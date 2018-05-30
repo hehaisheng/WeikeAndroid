@@ -2,6 +2,7 @@ package com.weike.data.business.client;
 
 import android.view.View;
 
+import com.weike.data.R;
 import com.weike.data.base.BaseFragment;
 
 /**
@@ -13,7 +14,7 @@ public class ClientFragment extends BaseFragment {
 
     @Override
     protected int setUpLayoutId() {
-        return 0;
+        return R.layout.fragment_client_add;
     }
 
     @Override

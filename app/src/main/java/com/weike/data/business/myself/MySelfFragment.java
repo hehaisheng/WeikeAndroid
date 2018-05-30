@@ -2,6 +2,7 @@ package com.weike.data.business.myself;
 
 import android.view.View;
 
+import com.weike.data.R;
 import com.weike.data.base.BaseFragment;
 
 /**
@@ -12,11 +13,13 @@ public class MySelfFragment extends BaseFragment {
 
     @Override
     protected int setUpLayoutId() {
-        return 0;
+        return R.layout.fragment_personal_center;
     }
 
     @Override
     protected void loadFinish(View view) {
+
+
 
     }
 }
