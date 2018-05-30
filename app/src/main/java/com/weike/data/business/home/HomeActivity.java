@@ -3,7 +3,7 @@ package com.weike.data.business.home;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
@@ -21,8 +21,7 @@ import com.weike.data.util.BannerImageLoader;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
 import com.weike.data.view.BottomBarLayout;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +38,7 @@ public class HomeActivity extends BaseActivity {
     @BindView(R.id.bottom_bar)
     public BottomBarLayout bottomBarLayout;
 
-    @BindView(R.id.banner)
-    public Banner banner;
 
-    public RecyclerView optionRy;
 
     List<MainOptionVM> vms = new ArrayList<>();
 
@@ -60,15 +56,9 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
+        BaseFragment fragment = new HomeFragment();
 
-
-    }
-
-    public void replaceFragment(BaseFragment baseFragment){
-
-    }
-
-    private void initBottomView(){
+        getFragmentManager().beginTransaction().replace(R.id.framgnet_home,fragment).commit();
 
     }
 
