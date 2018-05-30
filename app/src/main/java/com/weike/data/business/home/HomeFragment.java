@@ -19,12 +19,14 @@ import com.weike.data.base.BaseFragment;
  */
 public class HomeFragment extends BaseFragment {
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home,null);
 
-        return view;
+    @Override
+    protected int setUpLayoutId() {
+        return R.layout.fragment_home;
+    }
+
+    @Override
+    protected void loadFinish(View view) {
 
     }
 }

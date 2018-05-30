@@ -1,6 +1,7 @@
 package com.weike.data.business.home;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -44,11 +45,48 @@ public class HomeActivity extends BaseActivity {
 
     private List<TabEntity> tabEntities = new ArrayList<>();
 
-    private int[] normalIcon = {
+    private int normalTextColor = Color.parseColor("#333333");
+    private int selectTextColor = Color.parseColor("#009EE5");
 
+    private String[] tabText = {"首页","客户","消息","我的"};
+
+    private int[] normalIcon = {
+        R.mipmap.ic_home_nor,R.mipmap.ic_add_client_nor,
+            R.mipmap.ic_message_nor,R.mipmap.ic_home_me_nor
 
     };
-    private int[] selectorIcon = {};
+    private int[] selectorIcon = {
+            R.mipmap.ic_home_sel,R.mipmap.ic_add_client_sel,
+            R.mipmap.ic_message_sel,R.mipmap.ic_home_me_sel
+
+    };
+
+    private void initBottomLayout(){
+        for (int i=0;i<tabText.length;i++){
+            TabEntity item = new TabEntity();
+            item.setText(tabText[i]);
+            item.setNormalIconId(normalIcon[i]);
+            item.setSelectIconId(selectorIcon[i]);
+
+            if(i==0 || i==1){
+                item.setShowPoint(true);
+            }else {
+               item.setNewsCount(0);
+            }
+            tabEntities.add(item);
+        }
+
+        bottomBarLayout.setNormalTextColor(normalTextColor);
+        bottomBarLayout.setSelectTextColor(selectTextColor);
+        bottomBarLayout.setTabList(tabEntities);
+        bottomBarLayout.setOnItemClickListener(new BottomBarLayout.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+            }
+        });
+
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,9 +94,16 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
+
+
+
+        initBottomLayout();
         BaseFragment fragment = new HomeFragment();
 
         getFragmentManager().beginTransaction().replace(R.id.framgnet_home,fragment).commit();
+
+
+
 
     }
 

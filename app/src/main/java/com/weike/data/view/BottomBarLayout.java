@@ -21,7 +21,7 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
 
     private OnItemClickListener mOnItemClickListener;
 
-    interface OnItemClickListener{
+    public interface OnItemClickListener{
         void onItemClick(int position);
     }
 
@@ -32,9 +32,17 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
 
     private int normalTextColor;
     private int selectTextColor;
+    private int textSize = 12;
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
 
     private LinearLayout mLinearLayout;
     private List<TabEntity> tabList = new ArrayList<>();
+
+
 
     public BottomBarLayout(Context context) {
         super(context);
@@ -46,7 +54,7 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
         init(context);
     }
     private void init(Context context) {
-        mLinearLayout = (LinearLayout) View.inflate(context,R.layout.container_layout,null);
+        mLinearLayout = (LinearLayout) View.inflate(context,R.layout.widget_bottom_layout_container,null);
         addView(mLinearLayout);
     }
 
@@ -64,16 +72,18 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
         }
         this.tabList = tabs;
         for (int i=0;i<tabs.size();i++) {
-            View itemView = View.inflate(getContext(), R.layout.item_tab_layout, null);
+            View itemView = View.inflate(getContext(), R.layout.widget_item_tab_layout, null);
             itemView.setId(i);
             itemView.setOnClickListener(this);
             TextView text = (TextView) itemView.findViewById(R.id.tv_title);
+
             ImageView icon = (ImageView) itemView.findViewById(R.id.iv_icon);
             View redPoint = itemView.findViewById(R.id.red_point);
             TextView number = (TextView) itemView.findViewById(R.id.tv_count);
             TabEntity itemTab = tabList.get(i);
             text.setText(itemTab.getText());
             text.setTextColor(normalTextColor);
+            text.setTextSize(textSize);
             icon.setImageResource(itemTab.getNormalIconId());
             if(itemTab.isShowPoint()){
                 redPoint.setVisibility(View.VISIBLE);

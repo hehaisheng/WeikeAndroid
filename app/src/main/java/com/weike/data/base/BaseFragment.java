@@ -19,11 +19,30 @@ public abstract class BaseFragment extends Fragment {
 
     protected Context context;
 
+    /**
+     * 布局id
+     * @return
+     */
+    protected abstract int setUpLayoutId();
+
+
+    /**
+     * 加载完毕
+     * @param view
+     */
+    protected  abstract void loadFinish(View view);
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(setUpLayoutId(),null);
+
+        loadFinish(view);
+
+        return view;
     }
+
+
 
 
     @Override
