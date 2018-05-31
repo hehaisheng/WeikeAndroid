@@ -31,7 +31,7 @@ public class StartActivity extends BaseActivity {
 
        handler.postDelayed(() -> {
             if (isFirst) {
-                ActivitySkipUtil.skipAnotherAct(this, GuideActivity.class);
+                ActivitySkipUtil.skipAnotherAct(this, GuideActivity.class,true);
             } else {
 
                 //如果本地的token都是空的 那么一次也没登录过 只是滑动过完了引导页
@@ -39,9 +39,9 @@ public class StartActivity extends BaseActivity {
                 LogUtil.d("acthome","token:" + SpUtil.getInstance().getCurrentToken());
 
                 if (TextUtils.isEmpty(SpUtil.getInstance().getCurrentToken())) {
-                    ActivitySkipUtil.skipAnotherAct(this, LoginActivity.class);
+                    ActivitySkipUtil.skipAnotherAct(this, LoginActivity.class,true);
                 } else {
-                    ActivitySkipUtil.skipAnotherAct(this, HomeActivity.class);
+                    ActivitySkipUtil.skipAnotherAct(this, HomeActivity.class,true);
                 }
 
             }

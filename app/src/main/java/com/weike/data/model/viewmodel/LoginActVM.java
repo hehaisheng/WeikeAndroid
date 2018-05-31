@@ -38,7 +38,7 @@ public class LoginActVM extends BaseVM {
     /**
      * 是否用密码登录
      */
-    public ObservableField<Boolean> isPwdLogin = new ObservableField<>(true);
+    public ObservableField<Boolean> isPwdLogin = new ObservableField<>(false);
     /**
      * 手机号码
      */
@@ -51,7 +51,7 @@ public class LoginActVM extends BaseVM {
     /**
      * 登录密码类型
      */
-    public ObservableField<String> typeText = new ObservableField<>("使用验证码登录");
+    public ObservableField<String> typeText = new ObservableField<>("使用密码登录");
 
     /*
      *密码

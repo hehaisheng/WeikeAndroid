@@ -103,6 +103,7 @@ public class HomeActivity extends BaseActivity {
         initBottomLayout();
         BaseFragment fragment = new HomeFragment();
 
+
         getFragmentManager().beginTransaction().replace(R.id.framgnet_home,fragment).commit();
 
 

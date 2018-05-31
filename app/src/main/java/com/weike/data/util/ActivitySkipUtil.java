@@ -11,17 +11,22 @@ import java.util.HashMap;
  */
 public class ActivitySkipUtil {
 
+    public static void skipAnotherAct(Activity act, Class<? extends Activity> target, boolean finish) {
+        skipAnotherAct(act, target);
+        if (finish) {
+            act.finish();
+        }
+    }
 
-    public static void skipAnotherAct(Activity act , Class<? extends Activity> target){
+    public static void skipAnotherAct(Activity act, Class<? extends Activity> target) {
         Intent intent = new Intent(act, target);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         act.startActivity(intent);
-        act.finish();
     }
 
 
-    public static void skipAnotherAct(Activity activity , Class<? extends Activity> target ,
-                                      HashMap<String, ? extends Object> hashMap){
+    public static void skipAnotherAct(Activity activity, Class<? extends Activity> target,
+                                      HashMap<String, ? extends Object> hashMap) {
 
     }
 
