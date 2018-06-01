@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_white"
+    android:layout_height="match_parent">
+
+
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/color_content"
+        android:layout_width="wrap_content"
+        android:text="如果你对维客助手有各种建议或者意见,请告诉我们"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="200dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_main_page_search"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提交"
+        android:layout_gravity="center"
+        />
+
+
+</LinearLayout>

@@ -1,30 +1,24 @@
 package com.weike.data.model.viewmodel;
 
 import android.app.Activity;
-import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableArrayList;
-import android.databinding.ObservableList;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.client.AddClientActivity;
-import com.weike.data.business.home.HomeFragment;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.search.SearchActivity;
 import com.weike.data.business.working.HandleWorkActivity;
 import com.weike.data.config.Config;
-import com.weike.data.model.req.GetVerificationCodeReq;
 import com.weike.data.model.req.MainPageDataReq;
-import com.weike.data.model.resp.GetVerificationCodeResp;
 import com.weike.data.model.resp.MainPageDataResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.BannerImageLoader;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SpUtil;
-import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;

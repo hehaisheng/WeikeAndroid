@@ -1,5 +1,6 @@
 package com.weike.data.business.msg;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class MsgFragment extends BaseFragment {
 
 
         for(int i = 0 ; i < 12 ; i++) {
-            MessageItemVM vm = new MessageItemVM();
+            MessageItemVM vm = new MessageItemVM((Activity) context);
             vm.isReadMsg.set(false);
             vm.content.set("这是内容");
             vm.title.set("这是标题");

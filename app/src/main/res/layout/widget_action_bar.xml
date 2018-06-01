@@ -14,15 +14,26 @@
 
 
         <ImageView
+
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            android:id="@+id/iv_widget_main_page_option_icon"
+            android:id="@+id/iv_widget_actionbar_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_add_client"
+            android:src="@mipmap/icon_arrow_back"
             android:layout_marginLeft="10dp"
             />
+
+        <TextView
+            android:id="@+id/tv_widget_actionbar_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_widget_actionbar_back"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            />
+
         <TextView
 
             android:layout_width="wrap_content"

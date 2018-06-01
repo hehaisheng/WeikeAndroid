@@ -1,9 +1,11 @@
 package com.weike.data.util;
 
+import android.content.Intent;
 import android.databinding.BaseObservable;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseResp;
 import com.weike.data.model.resp.LoginByPwdResp;
 
@@ -30,6 +32,13 @@ public class TransformerUtils {
                     .flatMap(responseBody -> {
                         try {
                             String responseStr = responseBody.string();
+
+                            BaseResp baseResp = JsonUtil.GsonToBean(responseStr,BaseResp.class);
+                            if (baseResp.getResult() == 100040){
+                                WKBaseApplication.getInstance().getApplicationContext()
+                                        .sendBroadcast(new Intent());
+                            }
+
 
 
                             T t = JsonUtil.GsonToBean(responseStr , typeToken.getType());

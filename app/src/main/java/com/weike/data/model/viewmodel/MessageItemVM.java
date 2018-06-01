@@ -1,12 +1,19 @@
 package com.weike.data.model.viewmodel;
 
+import android.app.Activity;
 import android.databinding.ObservableField;
+
+import com.weike.data.base.BaseVM;
+import com.weike.data.util.ActivitySkipUtil;
+
+import java.util.HashMap;
 
 /**
  * Created by LeoLu on 2018/5/31.
  */
 
-public class MessageItemVM {
+public class MessageItemVM extends BaseVM
+{
 
     /**
      * 消息页面的item
@@ -32,8 +39,13 @@ public class MessageItemVM {
     public ObservableField<Boolean> isSel = new ObservableField<>();
 
 
+    public MessageItemVM(Activity activity) {
+        super(activity);
+    }
+
 
     public void jumpMsgDetail() {
+        HashMap<String , String > map  = new HashMap<>();
 
     }
 }

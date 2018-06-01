@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.weike.data">
+    package="com.weike.data"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
@@ -11,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:name=".WKBaseApplication"
+        tools:replace="android:icon"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
 
@@ -46,6 +49,18 @@
         </activity>
 
         <activity android:name=".business.start.GuideActivity"></activity>
+        <activity android:name=".business.myself.DataModifyActivity"></activity>
+        <activity android:name=".business.log.AddLogActivity"></activity>
+        <activity android:name=".business.working.HandleWorkActivity"></activity>
+        <activity android:name=".business.client.AddClientActivity"></activity>
+        <activity android:name=".business.search.SearchActivity"></activity>
+
+        <receiver android:name=".broadcast.TokenFailedBroadcast">
+            <intent-filter>
+                <action
+                    ></action>
+            </intent-filter>
+        </receiver>
 
     </application>
 

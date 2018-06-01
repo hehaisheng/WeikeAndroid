@@ -1,5 +1,6 @@
 package com.weike.data.base;
 
+import android.app.Activity;
 import android.databinding.BaseObservable;
 
 /**
@@ -7,5 +8,10 @@ import android.databinding.BaseObservable;
  */
 
 public class BaseVM  extends BaseObservable {
+    public Activity activity;
 
+
+    public BaseVM(Activity activity){
+        this.activity = activity;
+    }
 }

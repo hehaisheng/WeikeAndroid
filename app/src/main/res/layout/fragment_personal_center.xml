@@ -5,7 +5,7 @@
     <data>
         <variable
             name="personalVM"
-            type="com.weike.data.model.viewmodel.PersonalActVM"></variable>
+            type="com.weike.data.model.viewmodel.PersonalFragmentVM"></variable>
 
     </data>
 
@@ -48,7 +48,7 @@
             android:layout_below="@+id/iv_user_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="@{}"
+            android:text="@{personalVM.nickName}"
             android:textColor="@color/color_white" />
 
         <TextView
@@ -58,7 +58,7 @@
             android:layout_below="@+id/tv_nick_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="手机号码:15692022243"
+            android:text="@{personalVM.nickName}"
             android:textColor="@color/color_white" />
     </RelativeLayout>
 
@@ -86,7 +86,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:text="xxxx到期"
+            android:text="@{personalVM.vipTime}"
 
             />
 
@@ -100,6 +100,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:onClick="@{()->personalVM.jumpToQrCode()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_white">
@@ -130,6 +131,7 @@
             android:background="@color/color_line" />
 
         <LinearLayout
+            android:onClick="@{()-> personalVM.jumpToMyIntegral()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_white">
@@ -160,6 +162,7 @@
             android:background="@color/color_line" />
 
         <LinearLayout
+            android:onClick="@{()->personalVM.jumpToCustomer()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_white">
@@ -190,6 +193,7 @@
             android:background="@color/color_line" />
 
         <LinearLayout
+            android:onClick="@{()->personalVM.jumpServiceSetting()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_white">
@@ -221,6 +225,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:onClick="@{()->personalVM.jumpAppSetting()}"
             android:layout_height="wrap_content"
             android:background="@color/color_white">
 
