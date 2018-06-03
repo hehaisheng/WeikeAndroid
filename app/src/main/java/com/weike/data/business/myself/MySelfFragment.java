@@ -1,5 +1,6 @@
 package com.weike.data.business.myself;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class MySelfFragment extends BaseFragment {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_personal_center,container,false);
 
-        vm = new PersonalFragmentVM();
+        vm = new PersonalFragmentVM((Activity) context);
         binding.setPersonalVM(vm);
 
         return binding.getRoot();

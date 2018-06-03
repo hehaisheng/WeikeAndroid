@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.client.AddClientActivity;
+import com.weike.data.business.client.ClientTagActivity;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.search.SearchActivity;
 import com.weike.data.business.working.HandleWorkActivity;
@@ -95,7 +96,7 @@ public class HomeFragmentVM {
     }
 
     public void goToClientTag(){
-
+        ActivitySkipUtil.skipAnotherAct(context, ClientTagActivity.class);
     }
 
     @BindingAdapter({"bindDingBanner"})

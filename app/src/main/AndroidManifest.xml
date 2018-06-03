@@ -5,6 +5,9 @@
     >
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -30,9 +33,7 @@
 
 
         </activity>
-        <activity android:name=".business.advertisement.AdvActivity">
 
-        </activity>
         <activity android:name=".business.start.StartActivity">
 
 
@@ -54,13 +55,14 @@
         <activity android:name=".business.working.HandleWorkActivity"></activity>
         <activity android:name=".business.client.AddClientActivity"></activity>
         <activity android:name=".business.search.SearchActivity"></activity>
+        <activity android:name=".business.client.ClientTagActivity"></activity>
+        <activity android:name=".business.myself.AppSettingActivity"></activity>
+        <activity android:name=".business.myself.ServiceSettingActivity"></activity>
+        <activity android:name=".business.myself.MyIntegralActivity"></activity>
+        <activity android:name=".business.myself.CustomerCenterActivity"></activity>
+        <activity android:name=".business.myself.MyQRCodeActivity"></activity>
+        <activity android:name=".business.myself.VipOpenUpActivity"></activity>
 
-        <receiver android:name=".broadcast.TokenFailedBroadcast">
-            <intent-filter>
-                <action
-                    ></action>
-            </intent-filter>
-        </receiver>
 
     </application>
 

@@ -67,7 +67,7 @@
                     android:paddingLeft="10dp"
                     android:onClick="@{()->homeFragmentVM.goToSearch()}"
                     android:text="关键字搜索"
-                    android:textColor="@color/color_title" />
+                    android:textColor="@color/color_bebebe" />
 
                 <TextView
                     android:id="@+id/tv_usually_use"
@@ -75,11 +75,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/tv_search"
                     android:layout_below="@+id/tv_search"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="25dp"
                     android:text="常用功能"
                     android:textColor="@color/color_333333"
-                    android:textSize="28sp"
-                    android:layout_marginBottom="10dp"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="15dp"
 
                     />
 

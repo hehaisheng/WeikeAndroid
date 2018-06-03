@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <EditText
+        android:id="@+id/ed_input_search"
         android:hint="关键字搜索"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

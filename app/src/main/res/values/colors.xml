@@ -13,6 +13,8 @@
     <color name="color_content">#333333</color>
     <color name="color_sle_cor">#009EE5</color>
     <color name="color_line">#E5E5E5</color>
+    <color name="color_bebebe">#bebebe</color>
     <color name="color_all_bg">#F0F0F0</color>
+    <color name="color_EC6F4F">#EC6F4F</color>
 
 </resources>

@@ -1,5 +1,7 @@
 package com.weike.data.model.viewmodel;
 
+import android.app.Activity;
+
 import com.weike.data.base.BaseVM;
 
 /**
@@ -8,4 +10,7 @@ import com.weike.data.base.BaseVM;
 
 public class AddLogActVM extends BaseVM {
 
+    public AddLogActVM(Activity activity) {
+        super(activity);
+    }
 }

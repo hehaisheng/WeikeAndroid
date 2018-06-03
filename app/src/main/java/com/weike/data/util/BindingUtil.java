@@ -17,4 +17,9 @@ public class BindingUtil {
 
         Glide.with(imageView.getContext()).load(url).into(imageView);
     }
+
+    @BindingAdapter({"loadImageId"})
+    public static void loadImageId(ImageView imageView , int id) {
+        imageView.setImageResource(id);
+    }
 }

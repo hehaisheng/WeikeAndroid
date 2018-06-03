@@ -3,6 +3,8 @@ package com.weike.data.business.login;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 
 import com.weike.data.R;
@@ -25,6 +27,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         vm = new LoginActVM(this);
+
         binding.setLoginVM(vm);
     }
 

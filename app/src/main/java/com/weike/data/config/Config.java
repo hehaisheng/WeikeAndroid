@@ -38,4 +38,14 @@ public final class Config {
      */
     public static final String MAIN_PAGE_DATA = APP_SERVER +"wkzs-restful/index/loginInfo";
 
+    /**
+     * 搜索接口
+     */
+    public static final String SEARCH_CONTENT = APP_SERVER + "wkzs-restful/index/search";
+
+    /**
+     * 用户信息
+     */
+    public static final String USER_INFO = APP_SERVER + "wkzs-restful/user/userIndex";
+
 }

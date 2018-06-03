@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/color_white"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/widget_action_bar"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="如果你对维客助手有各种建议或者意见，请告诉我们"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/color_content"
+        />
+
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:hint="请输入遇到的问题和建议"
+            android:textSize="12sp"
+            android:gravity="top"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_main_page_search"
+
+            />
+
+    <Button
+        android:layout_width="match_parent"
+        android:background="@drawable/login_button"
+        android:text="提交"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/color_white"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_height="40dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/color_all_bg"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+
+        android:minHeight="50dp"
+
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="官方网站"
+            android:textColor="@color/color_content"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="www.daoyutech.com"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="right"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+
+        android:background="@color/color_all_bg"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+
+        android:minHeight="50dp"
+
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="客服QQ"
+            android:textColor="@color/color_content"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="645958167"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            />
+
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+
+        android:background="@color/color_all_bg"
+        />
+
+</LinearLayout>

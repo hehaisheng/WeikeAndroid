@@ -58,7 +58,7 @@
             android:layout_below="@+id/tv_nick_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="@{personalVM.nickName}"
+            android:text="@{personalVM.phoneNum}"
             android:textColor="@color/color_white" />
     </RelativeLayout>
 
@@ -66,6 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFE991"
+        android:onClick="@{()->personalVM.openUpVip()}"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
@@ -78,6 +79,11 @@
             android:drawableLeft="@mipmap/ic_my_vip"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="@color/color_EC6F4F"
+            android:drawablePadding="5dp"
             android:text="VIP会员" />
 
         <TextView
@@ -85,8 +91,21 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="30dp"
+            android:textColor="@color/color_bebebe"
+
             android:text="@{personalVM.vipTime}"
+
+            />
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:scaleType="fitEnd"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/icon_arrow_2"
+            android:layout_gravity="right|center"
 
             />
 
@@ -103,6 +122,7 @@
             android:onClick="@{()->personalVM.jumpToQrCode()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:background="@color/color_white">
 
 
@@ -120,6 +140,16 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:text="我的二维码" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:scaleType="fitEnd"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/icon_arrow_2"
+                android:layout_gravity="right|center"
+
+                />
 
 
         </LinearLayout>
@@ -152,6 +182,15 @@
                 android:layout_marginLeft="10dp"
                 android:text="我的积分" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:scaleType="fitEnd"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/icon_arrow_2"
+                android:layout_gravity="right|center"
+
+                />
 
         </LinearLayout>
 
@@ -183,6 +222,15 @@
                 android:layout_marginLeft="10dp"
                 android:text="客服中心" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:scaleType="fitEnd"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/icon_arrow_2"
+                android:layout_gravity="right|center"
+
+                />
 
         </LinearLayout>
 
@@ -215,6 +263,16 @@
                 android:text="服务设置" />
 
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:scaleType="fitEnd"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/icon_arrow_2"
+                android:layout_gravity="right|center"
+
+                />
+
         </LinearLayout>
 
         <View
@@ -245,6 +303,15 @@
                 android:layout_marginLeft="10dp"
                 android:text="应用设置" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:scaleType="fitEnd"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/icon_arrow_2"
+                android:layout_gravity="right|center"
+
+                />
 
         </LinearLayout>
     </LinearLayout>

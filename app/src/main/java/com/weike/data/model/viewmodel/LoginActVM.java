@@ -1,8 +1,12 @@
 package com.weike.data.model.viewmodel;
 
 import android.app.Activity;
+import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.widget.EditText;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
@@ -12,8 +16,10 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
 import com.weike.data.business.home.HomeActivity;
 import com.weike.data.config.Config;
+import com.weike.data.model.req.GetVerificationCodeReq;
 import com.weike.data.model.req.LoginByCodeReq;
 import com.weike.data.model.req.LoginByPwdReq;
+import com.weike.data.model.resp.GetVerificationCodeResp;
 import com.weike.data.model.resp.LoginByCodeResp;
 import com.weike.data.model.resp.LoginByPwdResp;
 import com.weike.data.network.RetrofitFactory;
@@ -24,6 +30,8 @@ import com.weike.data.util.LogUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
+
+import java.util.logging.Handler;
 
 /**
  * Created by LeoLu on 2018/5/22.
@@ -43,7 +51,7 @@ public class LoginActVM extends BaseVM {
     /**
      * 是否显示密码
      */
-    public ObservableField<Boolean> isShowPwd = new ObservableField<>();
+    public ObservableField<Boolean> isShowPwd = new ObservableField<>(false);
     /**
      * 登录密码类型
      */
@@ -57,13 +65,27 @@ public class LoginActVM extends BaseVM {
     /**
      * 手机验证码
      */
+
+    public ObservableField<Integer> showPwdIc = new ObservableField<>(R.mipmap.icon_see);
+
     public ObservableField<String> smsCode = new ObservableField<>();
 
     public Activity activity;
 
 
     public LoginActVM(Activity activity){
+        super(activity);
         this.activity = activity;
+    }
+
+    public void showPwd(){
+        if (isShowPwd.get()) {
+            isShowPwd.set(false);
+            showPwdIc.set(R.mipmap.icon_see);
+        } else {
+            showPwdIc.set(R.mipmap.icon_hide);
+            isShowPwd.set(true);
+        }
     }
 
     /**
@@ -104,6 +126,13 @@ public class LoginActVM extends BaseVM {
 
             }
         });
+    }
+
+    /**
+     * 验证码倒计时
+     */
+    private void countGetVCode(){
+
     }
 
     /**
@@ -153,6 +182,19 @@ public class LoginActVM extends BaseVM {
 
             }
         });
+    }
+
+    @BindingAdapter({"updateInputType"})
+    public static void updateInputType(EditText editText , boolean isShowPwd){
+        if (isShowPwd) {// 显示密码
+            editText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            editText.setSelection(editText.getText().toString().length());
+        } else {// 隐藏密码
+
+            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            editText.setSelection(editText.getText().toString().length());
+
+        }
     }
 
     /**
