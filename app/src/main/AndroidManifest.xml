@@ -56,8 +56,8 @@
         <activity android:name=".business.client.AddClientActivity"></activity>
         <activity android:name=".business.search.SearchActivity"></activity>
         <activity android:name=".business.client.ClientTagActivity"></activity>
-        <activity android:name=".business.myself.AppSettingActivity"></activity>
-        <activity android:name=".business.myself.ServiceSettingActivity"></activity>
+        <activity android:name=".business.setting.AppSettingActivity"></activity>
+        <activity android:name=".business.setting.ServiceSettingActivity"></activity>
         <activity android:name=".business.myself.MyIntegralActivity"></activity>
         <activity android:name=".business.myself.CustomerCenterActivity"></activity>
         <activity android:name=".business.myself.MyQRCodeActivity"></activity>

@@ -32,9 +32,8 @@
             android:onClick="@{()-> personalVM.modifyPersonalData()}"
             android:textColor="@color/color_white" />
 
-        <ImageView
+        <com.weike.data.view.CircleImageView
             android:id="@+id/iv_user_icon"
-
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"

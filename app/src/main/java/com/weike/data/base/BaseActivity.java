@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.weike.data.R;
@@ -30,7 +32,9 @@ public class BaseActivity extends Activity implements View.OnClickListener {
 
     protected TextView rightBtn;
 
-    protected ImageView back;
+    protected View allLayout;
+
+    protected View back;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,15 +45,21 @@ public class BaseActivity extends Activity implements View.OnClickListener {
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        ImageView back = findViewById(R.id.iv_widget_actionbar_back);
         leftText = findViewById(R.id.tv_widget_actionbar_left);
         center =  findViewById(R.id.tv_widget_actionbar_center);
         rightBtn = findViewById(R.id.tv_actionbar_right);
         back = findViewById(R.id.iv_widget_actionbar_back);
+        allLayout = findViewById(R.id.include_acionbar);
+
         if (back !=null) {
             back.setOnClickListener(this);
             rightBtn.setOnClickListener(this);
         }
+    }
+
+    public void hideAll(boolean isShow){
+        if (allLayout != null)
+            allLayout.setVisibility(isShow ?View.VISIBLE : View.GONE);
     }
 
     public void setRightText(String right) {
@@ -65,7 +75,7 @@ public class BaseActivity extends Activity implements View.OnClickListener {
     }
 
     public void isShowBack(boolean isShow){
-
+        back.setVisibility( isShow ? View.VISIBLE :View.GONE );
     }
 
     @Override
@@ -82,6 +92,8 @@ public class BaseActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         if (view.getId() == R.id.tv_actionbar_right) {
             onRightClick();
+        } else if (view.getId() == R.id.iv_widget_actionbar_back ) {
+            finish();
         }
     }
 }

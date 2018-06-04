@@ -10,6 +10,9 @@ import android.databinding.BaseObservable;
 public class BaseVM  extends BaseObservable {
     public Activity activity;
 
+    public BaseVM(){
+
+    }
 
     public BaseVM(Activity activity){
         this.activity = activity;

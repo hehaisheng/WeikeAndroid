@@ -5,6 +5,23 @@ package com.weike.data.model.viewmodel;
  */
 
 public class MyQRCodeActVM {
+
+    /**
+     * 图片的Url
+     */
+    public String iconUrl;
+
+    /**
+     * 用户名字
+     */
+    public String userName;
+
+    /**
+     * 分享Url
+     */
+    public String shredUrl;
+
+
     public void sharedToWeChat(){
 
     }

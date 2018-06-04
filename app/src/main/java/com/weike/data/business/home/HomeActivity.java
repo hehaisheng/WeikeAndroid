@@ -77,17 +77,39 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public void replaceFragment(int position) {
         BaseFragment fragment;
         if (position == 0) {
             fragment = new HomeFragment();
+            setCenterText("首页");
         } else if(position == 1) {
             fragment = new ClientFragment();
+            setCenterText("客户");
         } else if (position == 2) {
             fragment = new MsgFragment();
+            setCenterText("消息");
         } else {
+            setCenterText("个人中心");
             fragment = new MySelfFragment();
         }
+
+        if (position == 2) {
+            setRightText("编辑");
+        } else {
+            setRightText("");
+        }
+
+        if (position == 3) {
+            hideAll(false);
+        } else {
+            hideAll(true);
+        }
+
         getFragmentManager().beginTransaction().replace(R.id.framgnet_home,fragment).commit();
     }
 
@@ -102,8 +124,8 @@ public class HomeActivity extends BaseActivity {
 
         initBottomLayout();
         BaseFragment fragment = new HomeFragment();
-
-
+        isShowBack(false);
+        setRightText("");
         getFragmentManager().beginTransaction().replace(R.id.framgnet_home,fragment).commit();
 
 

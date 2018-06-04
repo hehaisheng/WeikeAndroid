@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_all_bg"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:background="@color/color_white"
+        android:layout_height="wrap_content">
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_integral"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="积分:"
+            />
+
+        <TextView
+            android:id="@+id/tv_integral"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:text="积分明细"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:background="@color/color_white"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+
+        android:layout_height="wrap_content"
+        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ry_integral_list"
+        android:layout_width="match_parent"
+        android:background="@color/color_white"
+        android:layout_height="match_parent">
+
+
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

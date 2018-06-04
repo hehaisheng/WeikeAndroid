@@ -1,4 +1,4 @@
-package com.weike.data.business.client;
+package com.weike.data.business.setting;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,12 +6,13 @@ import android.support.annotation.Nullable;
 import com.weike.data.base.BaseActivity;
 
 /**
- * Created by LeoLu on 2018/5/31.
- * 添加客户和修改客户信息都是这个Activity
+ * Created by LeoLu on 2018/6/4.
  */
-public class AddClientActivity extends BaseActivity {
+
+public class ClientTagSetting extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
     }
 }

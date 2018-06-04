@@ -1,4 +1,4 @@
-package com.weike.data.business.myself;
+package com.weike.data.business.setting;
 
 import com.weike.data.base.BaseActivity;
 

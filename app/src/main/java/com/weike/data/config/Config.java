@@ -48,4 +48,16 @@ public final class Config {
      */
     public static final String USER_INFO = APP_SERVER + "wkzs-restful/user/userIndex";
 
+    /**
+     * 用户反馈
+     */
+    public static final String USER_FEEDBACK = APP_SERVER + "wkzs-restful/index/addUserFeedBack";
+
+    /**
+     * 积分详情
+     */
+    public static final String INTEGRAL_INFO = APP_SERVER + "wkzs-restful/user/integralInfo";
+
+    public static final  String ICON_URL = "http://f12.baidu.com/it/u=4021724095,1277693203&fm=72";
+
 }

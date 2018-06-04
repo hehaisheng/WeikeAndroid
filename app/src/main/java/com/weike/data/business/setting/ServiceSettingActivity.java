@@ -1,4 +1,4 @@
-package com.weike.data.business.myself;
+package com.weike.data.business.setting;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,5 +23,7 @@ public class ServiceSettingActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_setting);
         ButterKnife.bind(this);
+
+
     }
 }
