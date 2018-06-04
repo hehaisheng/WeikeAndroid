@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="resetPwdVM"
+            type="com.weike.data.model.viewmodel.ResetPwdActVM"></variable>
+
+    </data>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/widget_action_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:minWidth="80dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:text="验证码"
+            android:layout_gravity="center"
+            android:textColor="@color/color_content" />
+
+
+        <EditText
+            android:layout_weight="1"
+            android:background="@color/color_touming"
+            android:layout_gravity="center"
+            android:id="@+id/ed_reset_activity_vcode"
+            android:layout_width="wrap_content"
+            android:hint="请输入验证码"
+            android:textSize="15sp"
+
+            android:text="@={resetPwdVM.vCode}"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="获取验证码"
+            />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_line"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="80dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:text="密码"
+            android:layout_gravity="center"
+            android:textColor="@color/color_content" />
+
+
+        <EditText
+            android:layout_weight="1"
+            android:background="@color/color_touming"
+            android:layout_width="wrap_content"
+            android:hint="请输入密码"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:text="@={resetPwdVM.pwd}"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/icon_see"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_line"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="80dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:text="重复密码"
+            android:layout_gravity="center"
+            android:textColor="@color/color_content" />
+
+
+        <EditText
+            android:layout_weight="1"
+            android:background="@color/color_touming"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:hint="请再次输入密码"
+            android:layout_width="wrap_content"
+            android:text="@={resetPwdVM.pwd2}"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/icon_see"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_line"
+        />
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:background="@drawable/login_button"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="80dp"
+        android:textColor="@color/color_white"
+        android:text="确定"
+        android:layout_marginRight="30dp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+</layout>

@@ -62,6 +62,8 @@
         <activity android:name=".business.myself.CustomerCenterActivity"></activity>
         <activity android:name=".business.myself.MyQRCodeActivity"></activity>
         <activity android:name=".business.myself.VipOpenUpActivity"></activity>
+        <activity android:name=".business.setting.ClientTagSettingActivity"></activity>
+        <activity android:name=".business.setting.AttrManagerActivity"></activity>
 
 
     </application>

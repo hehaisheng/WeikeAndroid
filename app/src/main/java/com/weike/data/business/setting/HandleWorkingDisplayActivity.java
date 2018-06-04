@@ -3,16 +3,17 @@ package com.weike.data.business.setting;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.weike.data.R;
 import com.weike.data.base.BaseActivity;
 
 /**
- * Created by LeoLu on 2018/6/4.
+ * 待办事显示页面
  */
+public class HandleWorkingDisplayActivity extends BaseActivity {
 
-public class ClientTagSetting extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        setContentView(R.layout.activity_handle_working_display);
     }
 }
