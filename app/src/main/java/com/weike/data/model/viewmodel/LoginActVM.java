@@ -27,6 +27,7 @@ import com.weike.data.util.AccountValidatorUtil;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.MD5Util;
 import com.weike.data.util.ReflexObjectUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -111,8 +112,8 @@ public class LoginActVM extends BaseVM {
         GetVerificationCodeReq req = new GetVerificationCodeReq();
         req.phoneNumber = phoneNum.get();
 
-        SignUtil.signData(req);
-
+        req.sign = MD5Util.MD5(SignUtil.signData(req));
+        LogUtil.d("acthome","sign:" + req.sign);
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.GET_SMS_CODE)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetVerificationCodeResp>>(){

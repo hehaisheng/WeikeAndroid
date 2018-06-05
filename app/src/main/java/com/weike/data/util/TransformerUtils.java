@@ -33,6 +33,7 @@ public class TransformerUtils {
                         try {
                             String responseStr = responseBody.string();
 
+
                             BaseResp baseResp = JsonUtil.GsonToBean(responseStr,BaseResp.class);
                             if (baseResp.getResult() == 100040){
                                 WKBaseApplication.getInstance().getApplicationContext()

@@ -16,32 +16,48 @@ public class SignUtil {
 
 
     public static String signData(Object j) {
+        StringBuilder builder = new StringBuilder();
 
         TreeMap<String , Object> map = new TreeMap<>();
-        compassAllData(j,map);
 
+       if (j.getClass().getSuperclass() != null) {
+           compassAllData(j.getClass().getSuperclass(),j , map);
+       }
 
-        return "";
+        compassAllData(j.getClass(),j,map);
+
+        for (String key : map.keySet()) {
+            builder.append(key + "=" + map.get(key));
+        }
+        builder.append("app_secret" + "=" + Config.APP_SECRET);
+
+        LogUtil.d("acthome","final:" + builder.toString());
+
+        return builder.toString();
     }
 
 
-    public static Map<String, Object> compassAllData(Object clz , TreeMap<String, Object> map) {
+    public static Map<String, Object> compassAllData(Class clz,Object obj, TreeMap<String, Object> map) {
         // 得到类对象
 
+        LogUtil.d("acthome","-->" +clz + "," +clz.getDeclaredFields().length);
+
         /* 得到类中的所有属性集合 */
-        Field[] fs = clz.getClass().getDeclaredFields();
+        Field[] fs = clz.getDeclaredFields();
         for (int i = 0; i < fs.length; i++) {
             Field f = fs[i];
             f.setAccessible(true); // 设置些属性是可以访问的
             Object val = new Object();
+            if (f.getName().equals("sign")||f.getName().contains("$")) continue;
             try {
-                val = f.get(clz);
+                val = f.get(obj);
                 // 得到此属性的值
+
                 map.put(f.getName(), val);// 设置键值
-                LogUtil.d("acthome",f.getName() + "," + val);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+
+                LogUtil.d("acthome","key:"+ f.getName() + "," +val);
+            } catch (Exception e) {
+                LogUtil.d("acthome",e.getMessage());
                 e.printStackTrace();
             }
 
