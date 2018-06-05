@@ -64,7 +64,12 @@ public class PersonalFragmentVM extends BaseVM {
                 if (getUserInfoRespBaseResp.getResult() == 0) {
                     nickName.set(getUserInfoRespBaseResp.getDatas().userNames);
                     phoneNum.set("电话号码：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
-                    vipTime.set(getUserInfoRespBaseResp.getDatas().timeoutDate + "   到期");
+
+                    if(getUserInfoRespBaseResp.getDatas().memberLevel == 1) {
+                        vipTime.set("开通");
+                    } else {
+                        vipTime.set(getUserInfoRespBaseResp.getDatas().timeoutDate + "   到期");
+                    }
 
                 }
             }

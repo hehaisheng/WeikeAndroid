@@ -37,7 +37,7 @@ public class ServiceSettingActivity extends BaseActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_app_setting);
+        setContentView(R.layout.activity_service_setting);
         ButterKnife.bind(this);
         setLeftText("服务设置");
         setCenterText("");

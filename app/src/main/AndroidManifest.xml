@@ -64,6 +64,7 @@
         <activity android:name=".business.myself.VipOpenUpActivity"></activity>
         <activity android:name=".business.setting.ClientTagSettingActivity"></activity>
         <activity android:name=".business.setting.AttrManagerActivity"></activity>
+        <activity android:name=".business.setting.HandleWorkingDisplayActivity"></activity>
 
 
     </application>

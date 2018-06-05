@@ -11,7 +11,7 @@ import com.weike.data.base.BaseFragment;
 import com.weike.data.business.client.ClientFragment;
 import com.weike.data.business.msg.MsgFragment;
 import com.weike.data.business.myself.MySelfFragment;
-import com.weike.data.model.TabEntity;
+import com.weike.data.model.business.TabEntity;
 import com.weike.data.view.BottomBarLayout;
 
 

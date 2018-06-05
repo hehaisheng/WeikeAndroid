@@ -23,6 +23,8 @@ public class GetUserInfoResp extends BaseResp {
      * 当前积分
      */
     public String currentIntegral;
-
-
+    /**
+     * 会员等级
+     */
+    public int memberLevel;
 }

@@ -1,4 +1,4 @@
-package com.weike.data.model;
+package com.weike.data.model.business;
 
 /**
  * Created by LeoLu on 2018/6/4.

@@ -1,4 +1,4 @@
-package com.weike.data.model;
+package com.weike.data.model.business;
 
 /**
  * Created by LeoLu on 2018/6/4.
@@ -12,7 +12,7 @@ public class User {
     public String phoneNumber;
 
     /**
-     * 图片url
+     * 头像Url
      */
     public String iconUrl;
 
@@ -20,6 +20,12 @@ public class User {
      * 用户名字
      */
     public String userName;
+
+    /**
+     * 当前用户的Vip时间
+     */
+    public  String vipTime;
+
 
 
 }

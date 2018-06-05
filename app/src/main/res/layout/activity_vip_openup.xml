@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+        <variable
+            name="openUpActVM"
+            type="com.weike.data.model.viewmodel.OpenUpVipActVM"/>
+
+    </data>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -8,176 +19,266 @@
         layout="@layout/widget_action_bar"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="用户昵称"
-        android:layout_gravity="center"
-        android:textColor="@color/color_content"
-        android:layout_marginTop="20dp"
-
-        />
-
-    <TextView
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="vipTime"
-        android:layout_marginBottom="20dp"
-        />
-
-    <android.support.v7.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:minHeight="200dp"
         android:layout_height="wrap_content">
-
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="时长（年）"
-
-                    android:textColor="@color/color_content"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:background="@mipmap/ic_add_red"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_content"
-                    android:text="1"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:background="@mipmap/ic_modify_data_reduce"
-                    />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="合计"
-                    android:textColor="@color/color_content"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_bebebe"
-                    android:text="199"
-                    />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_zfb"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="支付宝支付"
-                    android:layout_weight="5"
-                    />
-
-                <RadioButton
-
-                    android:layout_width="wrap_content"
-                    android:gravity="right"
-                    android:layout_gravity="right"
-                    android:layout_height="wrap_content"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_wechat"
-
-                    />
-
-                <TextView
-                    android:layout_weight="5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="微信支付"
-                    />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    />
-
-            </LinearLayout>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:textColor="@color/color_white"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/login_button"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:text="付款"
+                android:textColor="@color/color_content"
+                android:layout_marginTop="20dp"
+                android:text="@{openUpActVM.userName}"
+
                 />
 
+            <TextView
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{openUpActVM.vipTime}"
+                android:layout_marginBottom="20dp"
+                />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:minHeight="200dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="17dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="时长（年）"
+                            android:layout_alignParentLeft="true"
+                            android:textColor="@color/color_content"
+                            />
+
+                        <ImageView
+                            android:id="@+id/iv_add"
+                            android:layout_toLeftOf="@+id/tv_all_price"
+                            android:layout_marginRight="17dp"
+                            android:layout_width="wrap_content"
+
+                            android:background="@mipmap/ic_add_red"
+                            android:onClick="@{()->openUpActVM.add()}"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/tv_all_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_content"
+                            android:text="@{openUpActVM.allYear,default=1}"
+                            android:layout_toLeftOf="@+id/iv_reduce"
+                            android:layout_marginRight="17dp"
+                            />
+                        <ImageView
+                            android:id="@+id/iv_reduce"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{()->openUpActVM.reduce()}"
+                            android:background="@mipmap/ic_modify_data_reduce"
+                            />
+
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="18dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="合计"
+                            android:textColor="@color/color_content"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:gravity="right"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_bebebe"
+                            android:text="@{openUpActVM.allMoney}"
+                            />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="32dp"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_zfb"
+                            />
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="支付宝支付"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="5"
+                            android:textSize="12sp"
+
+
+                            />
+
+                        <CheckBox
+                            android:checked="@{openUpActVM.isAliPay}"
+                            android:button="@drawable/selector_checkbox"
+                            android:layout_width="wrap_content"
+                            android:gravity="right"
+                            android:onClick="@{()->openUpActVM.aliPay()}"
+                            android:layout_gravity="right"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_line"
+                        android:layout_marginTop="10dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_wechat"
+                            android:layout_gravity="center"
+                            />
+
+                        <TextView
+                            android:layout_weight="5"
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_gravity="center"
+                            android:layout_height="wrap_content"
+                            android:text="微信支付"
+
+
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:button="@drawable/selector_checkbox"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:checked="@{openUpActVM.wechatPay}"
+                            android:onClick="@{()->openUpActVM.wechatPay()}"
+                            />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:textColor="@color/color_white"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/login_button"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="30dp"
+                        android:text="付款"
+                        android:layout_marginBottom="30dp"
+                        />
+
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="会员利益"
+                        android:layout_marginLeft="15dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:textColor="@color/color_content"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_line"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/vip_description"
+                        android:layout_marginLeft="15dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:textColor="@color/color_content"
+                        />
+
+
+                </LinearLayout>
+
+
+
+
+            </android.support.v7.widget.CardView>
+
+
 
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    </ScrollView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-
-        </LinearLayout>
-
-
-    </android.support.v7.widget.CardView>
 
 </LinearLayout>
+</layout>

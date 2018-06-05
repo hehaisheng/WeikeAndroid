@@ -27,10 +27,14 @@ import com.weike.data.util.AccountValidatorUtil;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.ReflexObjectUtil;
+import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.logging.Handler;
 
 /**
@@ -106,6 +110,9 @@ public class LoginActVM extends BaseVM {
 
         GetVerificationCodeReq req = new GetVerificationCodeReq();
         req.phoneNumber = phoneNum.get();
+
+        SignUtil.signData(req);
+
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.GET_SMS_CODE)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetVerificationCodeResp>>(){

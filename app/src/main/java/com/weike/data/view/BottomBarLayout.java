@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.weike.data.R;
-import com.weike.data.model.TabEntity;
+import com.weike.data.model.business.TabEntity;
 
 import java.util.ArrayList;
 import java.util.List;
