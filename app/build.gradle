@@ -12,7 +12,7 @@ android {
         versionName "1.0"
 
         buildConfigField "String", "APP_SERVER", '"http://114.116.15.19/"'
-        buildConfigField "String", "APP_SECRET", '"23e81aca9074781b7b031f03f2202631"'
+        buildConfigField "String", "APP_SECRET", '"62e1f24949dfad11db7d22fa59887c72"'
         multiDexEnabled true
 
     }
@@ -34,6 +34,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/pinyin4j-2.5.0.jar')
     //noinspection GradleCompatible
     compile project(':library')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
