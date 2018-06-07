@@ -58,6 +58,20 @@ public final class Config {
      */
     public static final String INTEGRAL_INFO = APP_SERVER + "wkzs-restful/user/integralInfo";
 
+    /**
+     * 获取首页的消息列表
+     */
+    public static final String GET_MSG_LIST = APP_SERVER + "wkzs-restful/message/newsList";
+    /**
+     * 获取客户列表
+     */
+    public static final String GET_CLIENT_LIST = APP_SERVER + "wkzs-restful/client/selectClientList";
+
+    /**
+     * 获取属性列表
+     */
+    public static final String GET_ATTR_LIST = APP_SERVER + "wkzs-restful/client/selectAttributes";
+
     public static final  String ICON_URL = "http://f12.baidu.com/it/u=4021724095,1277693203&fm=72";
 
 }

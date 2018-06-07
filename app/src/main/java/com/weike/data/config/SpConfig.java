@@ -20,4 +20,8 @@ public final class SpConfig {
     public static final String TAG_TOKEN = TAG_SP + "TAG_TOKEN";
 
 
+    /***
+     * 当前的User对象
+     */
+    public static final String TAG_USER = TAG_SP + "TAG_USER";
 }

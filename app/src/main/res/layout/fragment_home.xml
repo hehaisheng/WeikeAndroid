@@ -40,6 +40,7 @@
                     app:cardCornerRadius="5dp"
                     app:cardElevation="10dp">
 
+
                     <com.youth.banner.Banner
                         android:id="@+id/banner"
                         app:bindDingBanner="@{homeFragmentVM.banenrData}"

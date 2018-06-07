@@ -19,6 +19,7 @@ import com.weike.data.model.req.GetIntegralInfoReq;
 import com.weike.data.model.resp.GetIntegralInfoResp;
 import com.weike.data.model.viewmodel.IntegralItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
 
@@ -60,6 +61,7 @@ public class MyIntegralActivity extends BaseActivity {
         req.token = SpUtil.getInstance().getCurrentToken();
         req.page = 1;
 
+        req.sign = SignUtil.signData(req);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

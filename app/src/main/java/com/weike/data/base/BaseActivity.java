@@ -3,6 +3,7 @@ package com.weike.data.base;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -23,7 +24,7 @@ import butterknife.OnClick;
  * Created by LeoLu on 2018/5/21.
  */
 
-public class BaseActivity extends Activity implements View.OnClickListener {
+public class BaseActivity extends FragmentActivity implements View.OnClickListener {
 
 
     protected TextView leftText;

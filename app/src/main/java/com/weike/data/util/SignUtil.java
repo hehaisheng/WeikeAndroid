@@ -29,15 +29,15 @@ public class SignUtil {
         for (String key : map.keySet()) {
             builder.append(key + "=" + map.get(key));
         }
-        builder.append("app_secret" + "=" + Config.APP_SECRET);
+        builder.append(Config.APP_SECRET);
 
-        LogUtil.d("acthome","final:" + builder.toString());
+        String md5 = MD5Util.MD5(builder.toString());
 
-        return builder.toString();
+        return md5;
     }
 
 
-    public static Map<String, Object> compassAllData(Class clz,Object obj, TreeMap<String, Object> map) {
+    private static Map<String, Object> compassAllData(Class clz,Object obj, TreeMap<String, Object> map) {
         // 得到类对象
 
         LogUtil.d("acthome","-->" +clz + "," +clz.getDeclaredFields().length);

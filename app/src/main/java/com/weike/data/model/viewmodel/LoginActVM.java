@@ -112,8 +112,8 @@ public class LoginActVM extends BaseVM {
         GetVerificationCodeReq req = new GetVerificationCodeReq();
         req.phoneNumber = phoneNum.get();
 
-        req.sign = MD5Util.MD5(SignUtil.signData(req));
-        LogUtil.d("acthome","sign:" + req.sign);
+        req.sign = SignUtil.signData(req);
+
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.GET_SMS_CODE)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetVerificationCodeResp>>(){
@@ -172,6 +172,8 @@ public class LoginActVM extends BaseVM {
         req.phoneNumber = phoneNum.get();
         req.code = smsCode.get();
 
+        req.sign = SignUtil.signData(req);
+
         RetrofitFactory.getInstance().getService().postAnything(req, Config.LOGIN_FOR_CODE)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<LoginByCodeResp>>() {
 
@@ -212,13 +214,8 @@ public class LoginActVM extends BaseVM {
         LoginByPwdReq req = new LoginByPwdReq();
         req.phoneNumber = phoneNum.get();
         req.password = pwd.get();
-        req.sign = "62e1f24949dfad11db7d22fa59887c72";
+        req.sign = SignUtil.signData(req);
 
-       /* LoginByPwdReq req = new LoginByPwdReq();
-        req.appKey = "android";
-        req.password = "123456";
-        req.phoneNumber = "15766506263";
-        req.sign = "62e1f24949dfad11db7d22fa59887c72";*/
 
         LogUtil.d("acthome","loginPwd:" + JsonUtil.GsonString(req));
 

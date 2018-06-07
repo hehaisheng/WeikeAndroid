@@ -11,10 +11,14 @@ import com.weike.data.base.BaseActivity;
  * 新建日志页面
  */
 public class AddLogActivity extends BaseActivity {
+
+    public static String keyOfLog = "AddLogActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_log);
-
+        setCenterText("");
+        setRightText("");
     }
 }

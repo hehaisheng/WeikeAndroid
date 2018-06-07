@@ -8,4 +8,14 @@ public class LoginByPwdReq extends BaseReq {
 
     public String password;
 
+    /**
+     * 平台名字
+     */
+    public String appKey = "android";
+
+    /**
+     * 签名字段
+     */
+    public String sign;
+
 }

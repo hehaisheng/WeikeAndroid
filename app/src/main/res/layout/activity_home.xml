@@ -23,21 +23,45 @@
     <View
         android:id="@+id/bottom_bar_line"
         android:layout_width="match_parent"
-        android:layout_above="@+id/bottom_bar"
+        android:layout_above="@+id/bottom_view"
         android:layout_height="1dp"
         android:background="@color/color_line"
         />
 
-    <com.weike.data.view.BottomBarLayout
-        android:id="@+id/bottom_bar"
+    <FrameLayout
+        android:id="@+id/bottom_view"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
+
         >
 
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_41BCF6"
+            android:text="删除"
+            android:visibility="gone"
+            android:textColor="@color/color_white"
+            />
 
-    </com.weike.data.view.BottomBarLayout>
+        <com.weike.data.view.BottomBarLayout
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+
+            >
+
+
+        </com.weike.data.view.BottomBarLayout>
+
+
+
+    </FrameLayout>
+
 
 
 </RelativeLayout>

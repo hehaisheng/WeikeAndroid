@@ -69,5 +69,8 @@ public class CustomerCenterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_center);
         ButterKnife.bind(this);
+        setLeftText("客服中心");
+        setRightText("");
+        setCenterText("");
     }
 }

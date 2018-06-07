@@ -1,6 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/color_all_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:cardBackgroundColor="@color/color_white"
+        android:minHeight="40dp"
+        app:cardCornerRadius="10dp"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_email_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="收入"
+                android:minWidth="80dp"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/color_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="15dp"
+                />
+
+            <EditText
+                android:id="@+id/ed_email_content"
+                android:background="@color/color_touming"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/tv_email_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:id="@+id/view_line_1"
+                android:layout_width="match_parent"
+                android:background="@color/color_line"
+                android:layout_below="@+id/tv_email_title"
+                android:layout_height="1dp"/>
+
+
+            <TextView
+                android:id="@+id/tv_company"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="wrap_content"
+                android:text="开支"
+                android:layout_below="@+id/view_line_1"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/color_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="15dp"
+                />
+
+            <EditText
+                android:id="@+id/ed_company"
+                android:background="@color/color_touming"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/tv_company"
+                android:layout_alignBottom="@+id/tv_company"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:id="@+id/view_line_2"
+                android:layout_width="match_parent"
+                android:background="@color/color_line"
+                android:layout_below="@+id/tv_company"
+                android:layout_height="1dp"/>
+
+
+            <TextView
+                android:id="@+id/tv_job"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="wrap_content"
+                android:text="金融资产"
+                android:layout_marginLeft="15dp"
+                android:layout_below="@+id/view_line_2"
+                android:textColor="@color/color_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="15dp"
+                />
+
+            <EditText
+                android:id="@+id/ed_job"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/color_touming"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/tv_job"
+                android:layout_alignBottom="@+id/tv_job"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:id="@+id/view_line_3"
+
+                android:layout_width="match_parent"
+                android:background="@color/color_line"
+                android:layout_below="@+id/tv_job"
+                android:layout_height="1dp"/>
+
+            <TextView
+                android:id="@+id/tv_company_location"
+                android:layout_width="wrap_content"
+                android:minWidth="80dp"
+                android:layout_height="wrap_content"
+                android:text="公司地址"
+                android:layout_marginLeft="15dp"
+                android:layout_below="@+id/view_line_3"
+                android:textColor="@color/color_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="15dp"
+                />
+
+            <EditText
+                android:id="@+id/ed_company_location"
+                android:background="@color/color_touming"
+                android:layout_marginTop="15dp"
+                android:layout_alignBottom="@+id/tv_company_location"
+                android:layout_toRightOf="@+id/tv_company_location"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="12321"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:id="@+id/view_line_4"
+
+                android:layout_width="match_parent"
+                android:background="@color/color_line"
+                android:layout_below="@+id/tv_company_location"
+                android:layout_height="1dp"/>
+
+            <TextView
+                android:id="@+id/tv_home_location"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/view_line_4"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:text="家庭地址"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/color_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="15dp"
+                />
+
+            <EditText
+                android:id="@+id/ed_home_location"
+                android:background="@color/color_touming"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignBottom="@+id/tv_home_location"
+                android:layout_toRightOf="@+id/tv_email_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

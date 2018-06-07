@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+
+            name="attrManagerItemVM"
+            type="com.weike.data.model.viewmodel.AttrItemVM"/>
+
+    </data>
+
+<android.support.v7.widget.CardView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:minWidth="128dp"
+    android:layout_height="40dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="@{attrManagerItemVM.name}"
+        android:layout_toLeftOf="@+id/btn_reduce"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <ImageButton
+        android:id="@+id/btn_reduce"
+        android:background="@color/color_touming"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:visibility="@{attrManagerItemVM.isDisplayReduce ? View.VISIBLE:View.GONE}"
+        android:layout_marginRight="10dp"
+        android:layout_height="match_parent"
+        android:src="@mipmap/ic_redue"
+        />
+
+</RelativeLayout>
+</android.support.v7.widget.CardView>
+</layout>

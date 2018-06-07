@@ -34,6 +34,11 @@ public class MessageItemVM extends BaseVM
     public ObservableField<Boolean> isReadMsg = new ObservableField<>(false);
 
     /**
+     * 每一条的ClientId
+     */
+    public String clientId;
+
+    /**
      * 是否选中
      */
     public ObservableField<Boolean> isSel = new ObservableField<>();

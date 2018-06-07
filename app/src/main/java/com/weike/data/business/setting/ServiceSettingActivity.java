@@ -21,7 +21,7 @@ public class ServiceSettingActivity extends BaseActivity{
 
     @OnClick(R.id.ll_attribute_manager)
     public void attrManager(View view){
-
+        ActivitySkipUtil.skipAnotherAct(this,AttrManagerActivity.class);
     }
 
     @OnClick(R.id.ll_handle_working_display)

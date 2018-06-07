@@ -7,4 +7,29 @@
     <string name="vip_description">11231223321321321321321321321321321321
     \n\n撒打算大所大所大所大所多撒
     </string>
+
+
+
+    <string-array name="provinces">
+        <item>姓名</item>
+        <item>客户标签</item>
+        <item>手机</item>
+        <item>公司电话</item>
+        <item>家庭电话</item>
+        <item>电子邮箱</item>
+        <item>公司</item>
+        <item>职位</item>
+        <item>地址</item>
+        <item>家庭地址</item>
+        <item>性别</item>
+        <item>出生日期</item>
+        <item>身份证号码</item>
+        <item>婚姻</item>
+        <item>生育</item>
+        <item>身高</item>
+        <item>体重</item>
+        <item>纪念日</item>
+    </string-array>
+
+
 </resources>

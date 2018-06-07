@@ -5,6 +5,11 @@
     android:background="@color/color_all_bg"
     android:layout_height="match_parent">
 
+
+    <include
+        layout="@layout/widget_action_bar"
+        />
+
     <LinearLayout
         android:paddingTop="10dp"
         android:layout_width="match_parent"

@@ -20,6 +20,7 @@ import com.weike.data.model.resp.GetUserInfoResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
 
@@ -55,6 +56,8 @@ public class PersonalFragmentVM extends BaseVM {
     private void init(){
         GetUserInfoReq req = new GetUserInfoReq();
         req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+
         RetrofitFactory.getInstance().getService().postAnything(req, Config.USER_INFO)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetUserInfoResp>>(){
 

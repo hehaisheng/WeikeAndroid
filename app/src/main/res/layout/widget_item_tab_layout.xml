@@ -6,7 +6,7 @@
     android:gravity="center_horizontal">
 
     <FrameLayout
-        android:layout_width="40dp"
+        android:layout_width="45dp"
         android:layout_height="wrap_content">
 
         <ImageView
@@ -14,6 +14,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
+            android:src="@mipmap/ic_home_me_nor"
             android:layout_marginTop="6dp"
             />
 
@@ -22,7 +23,9 @@
             android:layout_width="5dp"
             android:layout_height="5dp"
             android:layout_marginTop="5dp"
+            android:background="@drawable/circle_point"
             android:layout_marginRight="6dp"
+            android:visibility="visible"
             android:layout_gravity="right"/>
 
         <TextView
@@ -30,8 +33,11 @@
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginTop="5dp"
+            android:text="12"
             android:layout_gravity="right"
-            android:textSize="12sp"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/circle_point"
+            android:textSize="9sp"
             android:gravity="center"
             android:textColor="#FFFFFF"/>
 

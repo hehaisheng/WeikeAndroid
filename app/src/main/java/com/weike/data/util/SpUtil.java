@@ -5,6 +5,7 @@ import android.preference.PreferenceManager;
 
 import com.weike.data.WKBaseApplication;
 import com.weike.data.config.SpConfig;
+import com.weike.data.model.business.User;
 
 /**
  * Created by LeoLu on 2018/5/26.
@@ -43,5 +44,18 @@ public class SpUtil {
 
     public void saveCurrentToken(String token){
         preferences.edit().putString(SpConfig.TAG_TOKEN , token).commit();
+    }
+
+    public User getUser(){
+        String userJson = preferences.getString(SpConfig.TAG_USER , null);
+        if (userJson == null) {
+            return new User();
+        }
+        return JsonUtil.GsonToBean(userJson,User.class);
+    }
+
+    public void saveNewsUser(User  user) {
+        if (user == null) return;
+        preferences.edit().putString(SpConfig.TAG_USER,JsonUtil.GsonString(user)).commit();
     }
 }

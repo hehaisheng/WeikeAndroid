@@ -24,5 +24,6 @@ public class ClientBaseMsgFragment extends BaseFragment {
     @Override
     protected void loadFinish(View view) {
 
+
     }
 }

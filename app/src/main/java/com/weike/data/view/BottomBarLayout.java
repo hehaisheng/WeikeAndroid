@@ -30,6 +30,8 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
     }
 
 
+
+
     private int normalTextColor;
     private int selectTextColor;
     private int textSize = 12;
@@ -42,7 +44,7 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
     private LinearLayout mLinearLayout;
     private List<TabEntity> tabList = new ArrayList<>();
 
-
+    private List<View> current = new ArrayList<>();
 
     public BottomBarLayout(Context context) {
         super(context);
@@ -85,11 +87,8 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
             text.setTextColor(normalTextColor);
             text.setTextSize(textSize);
             icon.setImageResource(itemTab.getNormalIconId());
-            if(itemTab.isShowPoint()){
-                redPoint.setVisibility(View.VISIBLE);
-            }else{
-                redPoint.setVisibility(View.GONE);
-            }
+            redPoint.setVisibility(View.GONE);
+
             if(itemTab.getNewsCount() == 0){
                 number.setVisibility(View.GONE);
             }else if(itemTab.getNewsCount()>99){
@@ -100,12 +99,13 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
                 number.setText(String.format("%d",itemTab.getNewsCount()));
             }
             mLinearLayout.addView(itemView);
+            current.add(itemView);
+
             if(i==0){
                 showTab(0,itemView);
             }
         }
     }
-
 
 
     @Override
@@ -147,6 +147,9 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
             View itemView = mLinearLayout.getChildAt(i);
             ImageView icon = (ImageView) itemView.findViewById(R.id.iv_icon);
             TextView text = (TextView) itemView.findViewById(R.id.tv_title);
+            TextView number = itemView.findViewById(R.id.tv_count);
+            number.setVisibility(View.VISIBLE);
+            number.setText("99");
             text.setTextColor(normalTextColor);
             icon.setImageResource(tabList.get(i).getNormalIconId());
         }

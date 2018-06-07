@@ -19,6 +19,7 @@ import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.BannerImageLoader;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
 import com.youth.banner.Banner;
@@ -46,6 +47,8 @@ public class HomeFragmentVM {
 
         MainPageDataReq req = new MainPageDataReq();
         req.token = SpUtil.getInstance().getCurrentToken();
+
+        req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.MAIN_PAGE_DATA)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<MainPageDataResp>>(){
