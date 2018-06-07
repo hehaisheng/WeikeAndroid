@@ -12,7 +12,7 @@
         android:layout_marginBottom="4dp"
         android:gravity="left|center"
         android:text="A"
-        android:background="@color/color_f5f5f5"
+        android:background="#f5f5f5"
         android:paddingLeft="10dp"
         android:textColor="@color/color_bebebe"
         android:textSize="18sp" />

@@ -23,6 +23,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:gravity="center"
+        android:onClick="@{()->appSettingVM.setPwd()}"
         android:layout_height="wrap_content">
 
         <TextView
@@ -107,7 +108,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_gravity="center"
-            android:text="30M"
+            android:text="@{appSettingVM.cacheSize}"
             android:gravity="right"
             android:textColor="@color/color_content"
             android:layout_marginRight="10dp"
@@ -126,6 +127,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:gravity="center"
+        android:onClick="@{()->check}"
         android:layout_height="wrap_content">
 
         <TextView
@@ -160,7 +162,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-
+        android:onClick="@{()->appSettingVM.outOfLogin()}"
         android:layout_height="wrap_content">
 
         <TextView
