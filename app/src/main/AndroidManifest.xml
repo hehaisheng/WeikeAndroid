@@ -19,7 +19,16 @@
         android:supportsRtl="true"
         android:name=".WKBaseApplication"
         tools:replace="android:icon"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+
+        <meta-data
+            android:name="circle_dialog_design_width"
+            android:value="1080" />
+        <meta-data
+            android:name="circle_dialog_design_height"
+            android:value="1920" />
+
+
         <activity android:name=".MainActivity">
 
 
@@ -67,6 +76,7 @@
         <activity android:name=".business.setting.ClientTagSettingActivity"></activity>
         <activity android:name=".business.setting.AttrManagerActivity"></activity>
         <activity android:name=".business.setting.HandleWorkingDisplayActivity"></activity>
+        <activity android:name=".business.setting.ResetPwdActivity"></activity>
 
 
     </application>

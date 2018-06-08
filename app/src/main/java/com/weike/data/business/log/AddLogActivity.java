@@ -20,5 +20,6 @@ public class AddLogActivity extends BaseActivity {
         setContentView(R.layout.activity_add_log);
         setCenterText("");
         setRightText("");
+        setLeftText("编辑日志");
     }
 }

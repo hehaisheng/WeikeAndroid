@@ -1,9 +1,12 @@
 package com.weike.data.business.client;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.widget.Button;
 
 import com.flyco.tablayout.SlidingTabLayout;
@@ -11,6 +14,7 @@ import com.weike.data.R;
 import com.weike.data.adapter.FragmentBaseAdapter;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseFragment;
+import com.weike.data.util.ToastUtil;
 import com.weike.data.view.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -36,8 +40,13 @@ public class AddClientActivity extends BaseActivity {
 
     boolean isModify = false;
 
-    public static void startActivity(String clientId){
+    public static final String TAG_CLIENT_ID = "com.weike.data.TAG_CLIENT_ID";
 
+    public static void startActivity(Activity activity,String clientId){
+        Intent intent = new Intent(activity,AddClientActivity.class);
+        intent.putExtra(TAG_CLIENT_ID,clientId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        activity.startActivity(intent);
     }
 
     @Override
@@ -49,6 +58,20 @@ public class AddClientActivity extends BaseActivity {
         setCenterText("");
         setLeftText("编辑客户");
         setRightText("编辑");
+
+        getClientDetail();
+
+    }
+
+    private void getClientDetail(){
+        String id = getIntent().getStringExtra(TAG_CLIENT_ID); //如果为空 那么就是坑爹的空项
+        ToastUtil.showToast("myId:" + id);
+        if (TextUtils.isEmpty(id))return;
+
+
+    }
+
+    private void addFragment() {
 
         ClientBaseMsgFragment clientBaseMsgFragment = new ClientBaseMsgFragment();
         ClientServiceMsgFragment serviceMsgFragment = new ClientServiceMsgFragment();

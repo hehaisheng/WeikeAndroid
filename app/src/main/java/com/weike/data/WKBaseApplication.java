@@ -15,6 +15,7 @@ public class WKBaseApplication extends Application {
         super.onCreate();
         instance = this;
 
+
     }
 
     public static WKBaseApplication getInstance(){

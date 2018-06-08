@@ -3,6 +3,7 @@ package com.weike.data.business.client;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
@@ -56,6 +57,12 @@ public class ClientFragment extends BaseFragment {
 
         adapter = new SortAdapter(context,datas);
         clientList.setAdapter(adapter);
+        clientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                AddClientActivity.startActivity(getActivity(),datas.get(i).getClientId());
+            }
+        });
 
 
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
@@ -109,6 +116,7 @@ public class ClientFragment extends BaseFragment {
         for (int i = 0; i < date.size(); i++) {
             ClientSortModel sortModel = new ClientSortModel();
             sortModel.setName(date.get(i).userName);
+            sortModel.setClientId(date.get(i).id);
             String pinyin = PinyinUtils.getPingYin(date.get(i).userName);
             LogUtil.d("ClientFragment","---->" + date.get(i).userName);
             String sortString = pinyin.substring(0, 1).toUpperCase();
@@ -122,10 +130,6 @@ public class ClientFragment extends BaseFragment {
             mSortList.add(sortModel);
         }
 
-        LogUtil.d("ClientFragment","size:" + indexString.size());
-
-        Collections.sort(indexString);
-        sideBar.setIndexText(indexString);
 
 
         return mSortList;

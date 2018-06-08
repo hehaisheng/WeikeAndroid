@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
-public class CountDownUtil  {
+public class CountDownUtil {
 
     private int ALL_TIME = 60 * 1000;
 
@@ -18,28 +18,30 @@ public class CountDownUtil  {
 
     private int TIME_INTERVAL = 1000;
 
-   public  CountDownUtil(){
-       timer = new MyCountDownTimer(ALL_TIME,TIME_INTERVAL);
-   }
 
-   public CountDownUtil reset(){
+    public CountDownUtil() {
+        timer = new MyCountDownTimer(ALL_TIME, TIME_INTERVAL);
+    }
+
+    public CountDownUtil reset() {
         timer.cancel();
         timer.start();
         return this;
-   }
+    }
 
-   public CountDownUtil setOnTakeListener(){
-    return this;
-   }
+    public CountDownUtil setOnTakeListener() {
+        return this;
+    }
 
-   public void start(){
+    public void start() {
         timer.start();
-   }
+    }
 
-   public void cancel(){
-       timer.cancel();
-   }
-    private class MyCountDownTimer extends CountDownTimer{
+    public void cancel() {
+        timer.cancel();
+    }
+
+    private class MyCountDownTimer extends CountDownTimer {
 
 
         public MyCountDownTimer(long millisInFuture, long countDownInterval) {
@@ -48,12 +50,24 @@ public class CountDownUtil  {
 
         @Override
         public void onTick(long millisUntilFinished) {
-
+            listener.onTick(millisUntilFinished);
         }
 
         @Override
         public void onFinish() {
-
+            listener.onFinish();
         }
+    }
+
+    private OnTimeTickListener listener;
+
+    public void setListener(OnTimeTickListener listener){
+        this.listener = listener;
+    }
+
+    public interface OnTimeTickListener{
+       void onTick(long min);
+
+       void onFinish();
     }
 }

@@ -13,6 +13,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@color/color_white"
     android:layout_height="match_parent">
 
     <include
@@ -93,6 +94,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
+        android:onClick="@{()->appSettingVM.clearCash()}"
         android:layout_height="wrap_content">
 
         <TextView
@@ -127,7 +129,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:gravity="center"
-        android:onClick="@{()->check}"
+        android:onClick="@{()->appSettingVM.checkVersion()}"
         android:layout_height="wrap_content">
 
         <TextView

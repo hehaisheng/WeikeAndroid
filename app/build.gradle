@@ -3,7 +3,8 @@ apply plugin: "com.mob.sdk"
 
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
+
     defaultConfig {
         applicationId "com.weike.data"
         minSdkVersion 19

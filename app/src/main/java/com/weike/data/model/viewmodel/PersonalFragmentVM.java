@@ -2,6 +2,7 @@ package com.weike.data.model.viewmodel;
 
 import android.app.Activity;
 import android.databinding.ObservableField;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.base.BaseObserver;
@@ -47,7 +48,7 @@ public class PersonalFragmentVM extends BaseVM {
         ActivitySkipUtil.skipAnotherAct(activity, VipOpenUpActivity.class);
     }
 
-    public PersonalFragmentVM(Activity activity) {
+    public PersonalFragmentVM(FragmentActivity activity) {
         super(activity);
         LogUtil.d("acthome","init");
         init();

@@ -3,6 +3,7 @@ package com.weike.data.model.viewmodel;
 import android.app.Activity;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -25,6 +26,7 @@ import com.weike.data.model.resp.LoginByPwdResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.AccountValidatorUtil;
 import com.weike.data.util.ActivitySkipUtil;
+import com.weike.data.util.CountDownUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.MD5Util;
@@ -68,11 +70,22 @@ public class LoginActVM extends BaseVM {
     public ObservableField<String> pwd = new ObservableField<>();
 
     /**
+     *
+     */
+    public ObservableField<String> getVCode = new ObservableField<>("获取验证码");
+    /**
+     *
+     */
+    public ObservableField<Boolean> isGetVCode = new ObservableField<>(true);
+
+    /**
      * 手机验证码
      */
 
     public ObservableField<Integer> showPwdIc = new ObservableField<>(R.mipmap.icon_see);
-
+    /**
+     * 验证码EditText
+     */
     public ObservableField<String> smsCode = new ObservableField<>();
 
     public Activity activity;
@@ -123,6 +136,7 @@ public class LoginActVM extends BaseVM {
             protected void onSuccess(BaseResp<GetVerificationCodeResp> getVerificationCodeRespBaseResp) throws Exception {
                     if (getVerificationCodeRespBaseResp.getResult() == 1) {
                         ToastUtil.showToast("验证码获成功,请查看短信");
+                        countGetVCode();
                         return;
                     } else {
                         ToastUtil.showToast("获取验证码失败");
@@ -140,7 +154,23 @@ public class LoginActVM extends BaseVM {
      * 验证码倒计时
      */
     private void countGetVCode(){
+        isGetVCode.set(false);
+        CountDownUtil util = new CountDownUtil();
+        util.setListener(new CountDownUtil.OnTimeTickListener() {
+            @Override
+            public void onTick(long min) {
+                String notice = (min / 1000) +"秒后重新获取";
+                getVCode.set(notice);
+            }
 
+            @Override
+            public void onFinish() {
+                isGetVCode.set(true);
+                getVCode.set("获取验证码");
+
+            }
+        });
+        util.start();
     }
 
     /**

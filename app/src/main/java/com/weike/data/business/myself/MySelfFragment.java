@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class MySelfFragment extends BaseFragment {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_personal_center,container,false);
 
-        vm = new PersonalFragmentVM((Activity) context);
+        vm = new PersonalFragmentVM((FragmentActivity) context);
         binding.setPersonalVM(vm);
 
         return binding.getRoot();

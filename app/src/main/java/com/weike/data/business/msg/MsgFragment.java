@@ -2,6 +2,7 @@ package com.weike.data.business.msg;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -71,7 +72,7 @@ public class MsgFragment extends BaseFragment {
             protected void onSuccess(BaseResp<GetMsgListResp> getMsgListRespBaseResp) throws Exception {
                 if (getMsgListRespBaseResp.getResult() == 0) {
                     for(int i = 0 ; i < getMsgListRespBaseResp.getDatas().messageGroupVmList.size() ;i++){
-                        MessageItemVM vm = new MessageItemVM((Activity) context);
+                        MessageItemVM vm = new MessageItemVM((FragmentActivity) context);
                         vm.title.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientName);
                         vm.content.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).messageContent);
 
@@ -88,7 +89,7 @@ public class MsgFragment extends BaseFragment {
         });
 
         for(int i = 0 ; i < 12 ; i++) {
-            MessageItemVM vm = new MessageItemVM((Activity) context);
+            MessageItemVM vm = new MessageItemVM((FragmentActivity) context);
             vm.isReadMsg.set(false);
             vm.content.set("这是内容");
             vm.title.set("这是标题");
