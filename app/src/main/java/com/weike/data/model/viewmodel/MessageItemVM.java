@@ -3,9 +3,11 @@ package com.weike.data.model.viewmodel;
 import android.app.Activity;
 import android.databinding.ObservableField;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import com.weike.data.base.BaseVM;
 import com.weike.data.util.ActivitySkipUtil;
+import com.weike.data.util.ToastUtil;
 
 import java.util.HashMap;
 
@@ -40,18 +42,30 @@ public class MessageItemVM extends BaseVM
     public String clientId;
 
     /**
-     * 是否选中
+     * 是否显示编辑
      */
-    public ObservableField<Boolean> isSel = new ObservableField<>();
+    public ObservableField<Boolean> isSel = new ObservableField<>(false);
 
+    /*
+     *是否点击
+     */
+    public ObservableField<Boolean> isCheck = new ObservableField<>(false);
 
     public MessageItemVM(Activity activity) {
         super(activity);
     }
 
-
-    public void jumpMsgDetail() {
-        HashMap<String , String > map  = new HashMap<>();
-
+    /**
+     * 这里是方便跳转如果是 选择 那么就是 编辑 否则就是 进入详情
+     *
+     */
+    public void itemClick(){
+        if (isSel.get())
+            isCheck.set(isCheck.get() == true ? false : true);
+        else {
+            ToastUtil.showToast("666");
+        }
     }
+
+
 }

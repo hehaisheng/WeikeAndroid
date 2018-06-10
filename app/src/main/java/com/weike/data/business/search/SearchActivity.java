@@ -15,6 +15,7 @@ import com.weike.data.config.Config;
 import com.weike.data.model.req.SearchReq;
 import com.weike.data.model.resp.SearchResp;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
 
@@ -41,6 +42,7 @@ public class SearchActivity extends BaseActivity {
         SearchReq req = new SearchReq();
         req.content = s.toString();
         req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.SEARCH_CONTENT)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<SearchResp>>(){

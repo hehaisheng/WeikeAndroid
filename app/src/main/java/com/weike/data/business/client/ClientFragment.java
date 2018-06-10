@@ -21,6 +21,7 @@ import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
+import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 import com.weike.data.view.citypicker.PinyinComparator;
 import com.weike.data.view.citypicker.PinyinUtils;
@@ -60,7 +61,7 @@ public class ClientFragment extends BaseFragment {
         clientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                AddClientActivity.startActivity(getActivity(),datas.get(i).getClientId());
+                AddClientActivity.startActivity(getActivity(),datas.get(i-1).getClientId());
             }
         });
 

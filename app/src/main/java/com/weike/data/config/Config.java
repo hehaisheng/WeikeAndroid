@@ -72,6 +72,13 @@ public final class Config {
      */
     public static final String GET_ATTR_LIST = APP_SERVER + "wkzs-restful/client/selectAttributes";
 
+    /**
+     * 添加客户
+     */
+    public static final String ADD_CLIENT = APP_SERVER +"wkzs-restful/client/addClient";
+
+
+
     public static final  String ICON_URL = "http://f12.baidu.com/it/u=4021724095,1277693203&fm=72";
 
 }

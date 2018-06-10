@@ -27,7 +27,6 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         vm = new LoginActVM(this);
-
         binding.setLoginVM(vm);
     }
 

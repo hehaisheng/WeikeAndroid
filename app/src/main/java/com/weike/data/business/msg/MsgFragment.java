@@ -20,10 +20,15 @@ import com.weike.data.model.req.GetMsgListReq;
 import com.weike.data.model.resp.GetMsgListResp;
 import com.weike.data.model.viewmodel.MessageItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.SignUtil;
+import com.weike.data.util.SpUtil;
+import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 import butterknife.ButterKnife;
 
@@ -57,6 +62,19 @@ public class MsgFragment extends BaseFragment {
 
     }
 
+    private boolean isSle = false;
+
+    @Override
+    public void onRightClick() {
+        super.onRightClick();
+
+        isSle = isSle == true ? false : true;
+
+        for(int i = 0 ; i < vms.size() ; i++ ){
+            vms.get(i).isSel.set(isSle);
+        }
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void loadFinish(View view) {
@@ -64,6 +82,8 @@ public class MsgFragment extends BaseFragment {
         initView(view);
 
         req.page = 1;
+        req.token  = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
         RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_MSG_LIST)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetMsgListResp>>(){
 
@@ -75,7 +95,7 @@ public class MsgFragment extends BaseFragment {
                         MessageItemVM vm = new MessageItemVM((FragmentActivity) context);
                         vm.title.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientName);
                         vm.content.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).messageContent);
-
+                        vms.add(vm);
                     }
                 } else {
                     //TODO error

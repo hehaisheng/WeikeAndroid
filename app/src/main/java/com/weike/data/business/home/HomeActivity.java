@@ -49,6 +49,11 @@ public class HomeActivity extends BaseActivity {
     @BindView(R.id.btn_delete)
     public Button btn_deleteMsg;
 
+    public BaseFragment fragment;
+
+    private int currentPosition;
+
+    private boolean isSle = false;
 
     private List<TabEntity> tabEntities = new ArrayList<>();
 
@@ -96,6 +101,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onItemClick(int position) {
                 replaceFragment(position);
+                currentPosition = position;
             }
         });
 
@@ -107,7 +113,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void replaceFragment(int position) {
-        BaseFragment fragment;
         if (position == 0) {
             fragment = new HomeFragment();
             setCenterText("首页");
@@ -134,6 +139,7 @@ public class HomeActivity extends BaseActivity {
             hideAll(true);
         }
 
+
         getSupportFragmentManager().beginTransaction().replace(R.id.framgnet_home, fragment).commit();
     }
 
@@ -141,6 +147,15 @@ public class HomeActivity extends BaseActivity {
     public void onRightClick() {
         super.onRightClick();
 
+        fragment.onRightClick();
+
+        if (currentPosition == 2) { //如果是消息页面
+            isSle = isSle == true ? false:true;
+            setRightText(isSle ? "保存":"编辑");
+        } else {
+            setRightText("");
+            isSle = false;
+        }
     }
 
     @Override
@@ -166,7 +181,6 @@ public class HomeActivity extends BaseActivity {
     public void getClientList(){
         GetClientListReq req = new GetClientListReq();
         req.token = SpUtil.getInstance().getCurrentToken();
-
         req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.GET_CLIENT_LIST)
@@ -193,7 +207,6 @@ public class HomeActivity extends BaseActivity {
 
         MainPageDataReq req = new MainPageDataReq();
         req.token = SpUtil.getInstance().getCurrentToken();
-
         req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.MAIN_PAGE_DATA)

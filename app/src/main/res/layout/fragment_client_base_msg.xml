@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="clientBaseVM"
+            type="com.weike.data.model.viewmodel.ClientBaseMsgVM"/>
+
+    </data>
+
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -76,8 +86,10 @@
             app:cardElevation="5dp">
 
             <LinearLayout
-
+                android:id="@+id/ll_fragment_client_add_phone"
                 android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="3dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -86,6 +98,7 @@
                     android:minHeight="50dp">
 
                     <ImageView
+                        android:id="@+id/ic_fragment_client_base_addphone"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -101,6 +114,7 @@
                         android:text="添加电话"
                         android:textSize="15sp" />
                 </LinearLayout>
+
 
             </LinearLayout>
 
@@ -127,6 +141,8 @@
                   android:layout_marginLeft="15dp"
                   android:textColor="@color/color_content"
                   android:layout_marginTop="18dp"
+
+                  android:minWidth="70dp"
                   android:layout_marginBottom="15dp"
                   />
 
@@ -135,7 +151,11 @@
                   android:background="@color/color_touming"
                   android:layout_marginLeft="20dp"
                   android:layout_marginRight="20dp"
+                  android:hint="请输入你的邮箱"
+                  android:textSize="15sp"
+                  android:layout_alignBottom="@+id/tv_email_title"
                   android:layout_marginTop="15dp"
+                  android:text="@={clientBaseVM.email}"
                   android:layout_toRightOf="@+id/tv_email_title"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content" />
@@ -153,6 +173,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="公司"
+                  android:minWidth="70dp"
                   android:layout_below="@+id/view_line_1"
                   android:layout_marginLeft="15dp"
                   android:textColor="@color/color_content"
@@ -166,7 +187,10 @@
                   android:layout_marginTop="15dp"
                   android:layout_toRightOf="@+id/tv_company"
                   android:layout_alignBottom="@+id/tv_company"
+                  android:text="@{clientBaseVM.companyName}"
                   android:layout_width="match_parent"
+                  android:textSize="15sp"
+                  android:hint="请输入你的公司名字"
                   android:layout_marginLeft="20dp"
                   android:layout_marginRight="20dp"
                   android:layout_height="wrap_content" />
@@ -184,6 +208,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="职位"
+                  android:minWidth="70dp"
                   android:layout_marginLeft="15dp"
                   android:layout_below="@+id/view_line_2"
                   android:textColor="@color/color_content"
@@ -199,6 +224,9 @@
                   android:layout_marginTop="15dp"
                   android:layout_toRightOf="@+id/tv_job"
                   android:layout_alignBottom="@+id/tv_job"
+                  android:hint="请输入职位"
+                  android:textSize="15sp"
+                  android:text="@={clientBaseVM.job}"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content" />
 
@@ -215,6 +243,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="公司地址"
+                  android:minWidth="70dp"
                   android:layout_marginLeft="15dp"
                   android:layout_below="@+id/view_line_3"
                   android:textColor="@color/color_content"
@@ -230,6 +259,9 @@
                   android:layout_toRightOf="@+id/tv_email_title"
                   android:layout_width="match_parent"
                   android:layout_marginLeft="20dp"
+                  android:textSize="15sp"
+                  android:hint="请输入地址"
+                  android:text="@{clientBaseVM.companyLocation}"
                   android:layout_marginRight="20dp"
                   android:layout_height="wrap_content" />
 
@@ -247,6 +279,8 @@
                   android:layout_below="@+id/view_line_4"
                   android:layout_height="wrap_content"
                   android:text="家庭地址"
+                  android:minWidth="70dp"
+
                   android:layout_marginLeft="15dp"
                   android:textColor="@color/color_content"
                   android:layout_marginTop="18dp"
@@ -257,6 +291,9 @@
                   android:id="@+id/ed_home_location"
                   android:background="@color/color_touming"
                   android:layout_marginTop="15dp"
+                  android:hint="请输入地址"
+                  android:text="@{clientBaseVM.houseLocation}"
+                  android:textSize="15sp"
                   android:layout_marginLeft="20dp"
                   android:layout_marginRight="20dp"
                   android:layout_alignBottom="@+id/tv_home_location"
@@ -287,6 +324,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="性别"
+                    android:minWidth="70dp"
                     android:layout_marginLeft="15dp"
                     android:textColor="@color/color_content"
                     android:layout_marginTop="18dp"
@@ -302,6 +340,9 @@
                     android:layout_alignBottom="@+id/tv_sex"
                     android:layout_toRightOf="@+id/tv_sex"
                     android:layout_width="match_parent"
+                    android:hint="请选择"
+                    android:text="@={clientBaseVM.sex}"
+                    android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
                 <View
@@ -316,6 +357,7 @@
                     android:id="@+id/tv_birthday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="70dp"
                     android:text="出生日期"
                     android:layout_below="@+id/view_br2_line_1"
                     android:layout_marginLeft="15dp"
@@ -332,6 +374,10 @@
                     android:layout_alignBottom="@+id/tv_birthday"
                     android:layout_width="wrap_content"
                     android:layout_toLeftOf="@+id/iv_birthday_remind"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="15sp"
+                    android:hint="请选择"
+                    android:text="@={clientBaseVM.birthday}"
                     android:layout_height="wrap_content" />
 
                 <ImageView
@@ -362,6 +408,7 @@
                     android:layout_below="@+id/view_br2_line_2"
                     android:id="@+id/tv_id_card_num"
                     android:layout_width="wrap_content"
+                    android:minWidth="70dp"
                     android:layout_height="wrap_content"
                     android:text="性别"
                     android:layout_marginLeft="15dp"
@@ -378,6 +425,9 @@
                     android:layout_marginTop="15dp"
                     android:layout_alignBottom="@+id/tv_id_card_num"
                     android:layout_toRightOf="@+id/tv_sex"
+                    android:textSize="15sp"
+                    android:hint="请选择"
+                    android:text="@={clientBaseVM.idCard}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -400,6 +450,7 @@
                     android:layout_height="wrap_content"
                     android:text="婚姻"
                     android:layout_marginLeft="15dp"
+                    android:minWidth="70dp"
                     android:textColor="@color/color_content"
                     android:layout_marginTop="18dp"
                     android:layout_marginBottom="15dp"
@@ -412,6 +463,8 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="15dp"
                     android:layout_alignBottom="@+id/tv_marry"
+                    android:hint="请选择"
+                    android:textSize="15sp"
                     android:layout_toRightOf="@+id/tv_marry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -435,6 +488,7 @@
                     android:layout_height="wrap_content"
                     android:text="生育"
                     android:layout_marginLeft="15dp"
+                    android:minWidth="70dp"
                     android:textColor="@color/color_content"
                     android:layout_marginTop="18dp"
                     android:layout_marginBottom="15dp"
@@ -443,13 +497,15 @@
                 <EditText
                     android:id="@+id/ed_birth_son"
                     android:background="@color/color_touming"
-                    android:layout_marginLeft="20dp"
-                    android:hint="请输入数字"
+                    android:hint="请输入"
                     android:minWidth="50dp"
                     android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="15dp"
                     android:layout_alignBottom="@+id/tv_birth"
                     android:textSize="15sp"
+                    android:maxLength="3"
+                    android:text="@={clientBaseVM.son}"
                     android:layout_toRightOf="@+id/tv_birth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -469,12 +525,14 @@
                     android:id="@+id/ed_birth_girl"
                     android:background="@color/color_touming"
                     android:layout_marginLeft="20dp"
-                    android:hint="请输入数字"
+                    android:hint="请输入"
                     android:minWidth="50dp"
+                    android:maxLength="3"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="15dp"
                     android:layout_alignBottom="@+id/tv_birth"
                     android:textSize="15sp"
+                    android:text="@={clientBaseVM.gril}"
                     android:layout_toRightOf="@+id/tv_son_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -495,3 +553,4 @@
     </LinearLayout>
 
 </ScrollView>
+</layout>

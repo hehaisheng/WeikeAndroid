@@ -44,6 +44,20 @@ public abstract class BaseFragment extends android.support.v4.app.Fragment {
 
 
 
+    /*public OnRightClickCallback clickCallback;
+
+    public void setClickCallback(OnRightClickCallback clickCallback) {
+        this.clickCallback = clickCallback;
+    }
+
+    public interface OnRightClickCallback{
+        void onRightClick();
+    }*/
+
+
+    public void onRightClick(){
+
+    }
 
     @Override
     public void onDestroyView() {

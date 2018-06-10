@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="messageItemVM"
             type="com.weike.data.model.viewmodel.MessageItemVM"></variable>
@@ -11,7 +12,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    android:onClick="@{()->messageItemVM.itemClick()}"
     android:background="@color/color_white"
     android:layout_height="wrap_content">
 
@@ -21,9 +22,21 @@
         android:background="@color/color_line"
         />
 
+    <CheckBox
+        android:layout_marginLeft="10dp"
+        android:id="@+id/cb_widget_message"
+        android:layout_width="wrap_content"
+        android:visibility="@{messageItemVM.isSel ? View.VISIBLE:View.GONE}"
+        android:layout_height="wrap_content"
+        android:button="@drawable/selector_checkbox"
+        android:checked="@={messageItemVM.isCheck}"
+        android:layout_centerVertical="true"
+        />
+
     <android.support.v7.widget.CardView
         android:id="@+id/cardview_message_icon"
         android:layout_width="50dp"
+        android:layout_toRightOf="@+id/cb_widget_message"
         app:cardCornerRadius="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"

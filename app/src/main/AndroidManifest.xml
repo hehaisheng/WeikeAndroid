@@ -60,11 +60,32 @@
 
         </activity>
 
-        <activity android:name=".business.start.GuideActivity"></activity>
-        <activity android:name=".business.myself.DataModifyActivity"></activity>
-        <activity android:name=".business.log.AddLogActivity"></activity>
-        <activity android:name=".business.working.HandleWorkActivity"></activity>
-        <activity android:name=".business.client.AddClientActivity"></activity>
+        <activity android:name=".business.start.GuideActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
+
+
+        </activity>
+        <activity android:name=".business.myself.DataModifyActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
+
+
+        </activity>
+        <activity android:name=".business.log.AddLogActivity"
+            android:windowSoftInputMode="adjustPan"
+            ></activity>
+        <activity android:name=".business.working.HandleWorkActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
+
+
+        </activity>
+        <activity android:name=".business.client.AddClientActivity"
+            android:windowSoftInputMode="adjustPan">
+
+
+        </activity>
         <activity android:name=".business.search.SearchActivity"></activity>
         <activity android:name=".business.client.ClientTagActivity"></activity>
         <activity android:name=".business.setting.AppSettingActivity"></activity>

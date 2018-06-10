@@ -56,10 +56,9 @@
         android:background="@color/color_line"
         />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:gravity="center"
         android:layout_height="wrap_content">
 
         <TextView
@@ -68,22 +67,20 @@
             android:layout_marginLeft="10dp"
             android:textColor="@color/color_content"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
             android:text="消息通知"
             />
 
-        <ImageView
-            android:layout_centerVertical="true"
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:scaleType="fitEnd"
+       <CheckBox
+           android:layout_alignParentRight="true"
+           android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/icon_arrow_2"
-            android:layout_gravity="right|center"
+           android:layout_width="wrap_content"
+           android:button="@drawable/selector_notice_switch"
+           android:layout_height="wrap_content" />
 
-            />
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
