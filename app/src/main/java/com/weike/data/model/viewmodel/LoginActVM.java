@@ -247,8 +247,6 @@ public class LoginActVM extends BaseVM {
         req.sign = SignUtil.signData(req);
 
 
-        LogUtil.d("acthome","loginPwd:" + JsonUtil.GsonString(req));
-
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.LOGIN_FOR_ACCOUNT)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<LoginByPwdResp>>() {

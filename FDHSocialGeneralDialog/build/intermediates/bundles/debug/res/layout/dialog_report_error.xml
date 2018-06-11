@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    >
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minWidth="300dp"
+        android:orientation="vertical"
+        android:background="@drawable/shape_dlg_bg"
+        android:scrollbars="vertical" >
+
+
+        <TextView
+            android:id="@+id/tv_dialog_apply_create_company_confirm_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="店铺报错"
+            android:textColor="#323232"
+            android:textSize="17sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:button="@drawable/checkbox_report_bg"
+                android:layout_marginTop="10dp"
+                android:id="@+id/cb_location_error"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_toRightOf="@+id/cb_location_error"
+                android:layout_alignTop="@+id/cb_location_error"
+                android:layout_alignBottom="@+id/cb_location_error"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="地理位置错误"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textColor="#7f7f7f"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:layout_marginTop="10dp"
+                android:id="@+id/cb_shop_phone_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cb_location_error"
+                android:layout_alignLeft="@+id/cb_location_error"
+                android:button="@drawable/checkbox_report_bg"
+                />
+
+            <TextView
+                android:layout_toRightOf="@+id/cb_shop_phone_error"
+                android:layout_width="wrap_content"
+                android:layout_alignTop="@+id/cb_shop_phone_error"
+                android:layout_alignBottom="@+id/cb_shop_phone_error"
+                android:layout_marginLeft="5dp"
+                android:text="店铺电话错误"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textColor="#7f7f7f"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:id="@+id/cb_shop_not_exisi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:button="@drawable/checkbox_report_bg"
+                android:layout_alignTop="@+id/cb_location_error"
+                />
+            <TextView
+                android:layout_toRightOf="@+id/cb_shop_not_exisi"
+                android:layout_alignTop="@+id/cb_shop_not_exisi"
+                android:layout_alignBottom="@+id/cb_shop_not_exisi"
+                android:layout_marginLeft="5dp"
+                android:text="店铺已经关闭"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textColor="#7f7f7f"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dip"
+            android:minHeight="30dp"
+            android:orientation="vertical" >
+
+           <EditText
+               android:id="@+id/ed_reoprt_error"
+               android:layout_width="match_parent"
+               android:layout_height="50dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginLeft="10dp"
+               android:layout_marginRight="10dp"
+               android:layout_marginBottom="10dp"
+               android:hint="请输入你的报错内容"
+               android:gravity="top"
+               android:paddingTop="3dp"
+               android:textSize="12sp"
+               android:paddingLeft="3dp"
+               android:background="@drawable/shape_gray"
+               android:textColorHint="#CCCCCC"
+               />
+
+
+        </LinearLayout>
+
+        <View
+
+            android:id="@+id/view_dialog_apply_create_company_confirm_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#e5e5e5"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_dlg_bg"
+
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/btn_dialog_apply_create_company_confirm_leftbutton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/left_btn"
+                android:text="取消"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#4d4d4d"
+                android:textSize="15sp"
+                />
+
+            <View
+                android:id="@+id/view_dialog_apply_create_company_confirm_line_2"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#e5e5e5" />
+
+            <TextView
+                android:id="@+id/btn_dialog_apply_create_company_confirm_rightbutton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/left_btn"
+                android:text="确认"
+                android:gravity="center"
+                android:textColor="#4d4d4d"
+                android:textSize="15sp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

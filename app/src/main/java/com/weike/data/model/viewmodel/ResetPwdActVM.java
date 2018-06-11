@@ -1,5 +1,6 @@
 package com.weike.data.model.viewmodel;
 
+import android.app.Activity;
 import android.databinding.ObservableField;
 import android.text.TextUtils;
 
@@ -10,8 +11,10 @@ import com.weike.data.base.BaseReq;
 import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
 import com.weike.data.config.Config;
+import com.weike.data.model.req.GetVCodeAfterLoginReq;
 import com.weike.data.model.req.GetVerificationCodeReq;
 import com.weike.data.model.req.ResetPwdReq;
+import com.weike.data.model.resp.GetVCodeAfterLoginResp;
 import com.weike.data.model.resp.GetVerificationCodeResp;
 import com.weike.data.model.resp.ResetPwdResp;
 import com.weike.data.network.RetrofitFactory;
@@ -35,7 +38,7 @@ public class ResetPwdActVM extends BaseVM {
 
     public ObservableField<Boolean> isGetVCode = new ObservableField<>(true);
 
-    public ObservableField<String> vCodeText = new ObservableField<>();
+    public ObservableField<String> vCodeText = new ObservableField<>("获取验证码");
 
     /**
      * 眼睛标记
@@ -46,23 +49,28 @@ public class ResetPwdActVM extends BaseVM {
      */
     public ObservableField<Boolean> reset2 = new ObservableField<>(false);
 
+    public ResetPwdActVM(Activity activity) {
+        this.activity =activity;
+    }
+
     public void getVerificationCode() {
         //TODO  get 验证码 叼你老母
 
 
 
-        GetVerificationCodeReq req = new GetVerificationCodeReq();
+        GetVCodeAfterLoginReq req = new GetVCodeAfterLoginReq();
         req.phoneNumber = SpUtil.getInstance().getUser().phoneNumber;
         req.type = 2;
+        req.token = SpUtil.getInstance().getCurrentToken();
         req.sign = SignUtil.signData(req);
 
 
-        RetrofitFactory.getInstance().getService().postAnything(req,Config.GET_SMS_CODE)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetVerificationCodeResp>>(){
+        RetrofitFactory.getInstance().getService().postAnything(req,Config.GET_CODE_AFTER_LOGIN)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetVCodeAfterLoginResp>>(){
 
-                })).subscribe(new BaseObserver<BaseResp<GetVerificationCodeResp>>() {
+                })).subscribe(new BaseObserver<BaseResp<GetVCodeAfterLoginResp>>() {
             @Override
-            protected void onSuccess(BaseResp<GetVerificationCodeResp> getVerificationCodeRespBaseResp) throws Exception {
+            protected void onSuccess(BaseResp<GetVCodeAfterLoginResp> getVerificationCodeRespBaseResp) throws Exception {
                 if (getVerificationCodeRespBaseResp.getResult() == 1) {
                     ToastUtil.showToast("验证码获成功,请查看短信");
                     countGetVCode();
@@ -120,14 +128,14 @@ public class ResetPwdActVM extends BaseVM {
         RetrofitFactory.getInstance().getService().postAnything(req, Config.RESET_PWD)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<ResetPwdResp>>(){
 
-                })).subscribe(new BaseObserver<ResetPwdResp>() {
+                })).subscribe(new BaseObserver<BaseResp<ResetPwdResp>>() {
             @Override
-            protected void onSuccess(ResetPwdResp resetPwdResp) throws Exception {
-                if (resetPwdResp.getResult() ==0) {
-                    ToastUtil.showToast("设置成功");
+            protected void onSuccess(BaseResp<ResetPwdResp> resetPwdRespBaseResp) throws Exception {
+                if (resetPwdRespBaseResp.getResult() == 6){
+                    ToastUtil.showToast("修改成功");
                     activity.finish();
                 } else {
-                    ToastUtil.showToast("设置失败:" + resetPwdResp.getMessage());
+                    ToastUtil.showToast("修改失败:" + resetPwdRespBaseResp.getMessage());
                 }
             }
 

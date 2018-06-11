@@ -2,9 +2,10 @@ package com.weike.data.model.req;
 
 import com.weike.data.base.BaseReq;
 
-public class LoginByPwdReq extends BaseReq {
+public class LoginByPwdReq {
 
     public String phoneNumber;
+
 
     public String password;
 

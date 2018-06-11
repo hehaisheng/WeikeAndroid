@@ -24,7 +24,7 @@ public class ResetPwdActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_reset_pwd);
-        vm = new ResetPwdActVM();
+        vm = new ResetPwdActVM(this);
         binding.setResetPwdVM(vm);
 
         setCenterText("");

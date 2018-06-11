@@ -87,6 +87,20 @@ public final class Config {
      */
     public static final String RESET_PWD = APP_SERVER + "wkzs-restful/user/password";
 
+    /**
+     * 登录之后获取验证码
+     */
+    public static final String GET_CODE_AFTER_LOGIN = APP_SERVER + "wkzs-restful/system/loginAfterSmsCode";
+
+    /**
+     *  添加属性
+     */
+    public static final String ADD_ATTR = "wkzs-restful/client/addAttributes";
+    /**
+     * 删除属性
+     */
+    public static final String DEL_ATTR = "wkzs-restful/client/upAttributes";
+
     public static final  String ICON_URL = "http://f12.baidu.com/it/u=4021724095,1277693203&fm=72";
 
 }
