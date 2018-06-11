@@ -16,6 +16,7 @@ import com.weike.data.business.myself.MyQRCodeActivity;
 import com.weike.data.business.setting.ServiceSettingActivity;
 import com.weike.data.business.myself.VipOpenUpActivity;
 import com.weike.data.config.Config;
+import com.weike.data.model.business.User;
 import com.weike.data.model.req.GetUserInfoReq;
 import com.weike.data.model.resp.GetUserInfoResp;
 import com.weike.data.network.RetrofitFactory;
@@ -74,6 +75,12 @@ public class PersonalFragmentVM extends BaseVM {
                     } else {
                         vipTime.set(getUserInfoRespBaseResp.getDatas().timeoutDate + "   到期");
                     }
+
+                    User user = SpUtil.getInstance().getUser();
+                    user.phoneNumber = getUserInfoRespBaseResp.getDatas().phoneNumber;
+                    user.iconUrl = getUserInfoRespBaseResp.getDatas().photoUrl;
+                    user.userName = getUserInfoRespBaseResp.getDatas().userNames;
+                    SpUtil.getInstance().saveNewsUser(user);
 
                 }
             }

@@ -11,6 +11,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include layout="@layout/widget_action_bar" />
@@ -38,10 +40,11 @@
             android:background="@color/color_touming"
             android:layout_gravity="center"
             android:id="@+id/ed_reset_activity_vcode"
+            android:inputType="number"
             android:layout_width="wrap_content"
             android:hint="请输入验证码"
             android:textSize="15sp"
-
+            android:maxLines="1"
             android:text="@={resetPwdVM.vCode}"
             android:layout_height="wrap_content" />
 
@@ -51,7 +54,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="获取验证码"
+            android:text="@{resetPwdVM.vCodeText}"
+            android:clickable="@{resetPwdVM.isGetVCode}"
             />
 
     </LinearLayout>
@@ -81,20 +85,26 @@
 
         <EditText
             android:layout_weight="1"
+
             android:background="@color/color_touming"
             android:layout_width="wrap_content"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
             android:hint="请输入密码"
             android:textSize="15sp"
+            android:ellipsize="end"
             android:layout_gravity="center"
             android:text="@={resetPwdVM.pwd}"
+            updateInputType="@{resetPwdVM.reset1}"
+            android:maxLines="1"
             android:layout_height="wrap_content" />
 
         <ImageView
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/icon_see"
+            android:onClick="@{()->resetPwdVM.pwd1Click()}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            loadImageId="@{resetPwdVM.pwdImageId}"
+            android:layout_height="match_parent" />
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -124,7 +134,11 @@
             android:layout_weight="1"
             android:background="@color/color_touming"
             android:textSize="15sp"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:layout_gravity="center"
+            updateInputType="@{resetPwdVM.reset2}"
             android:hint="请再次输入密码"
             android:layout_width="wrap_content"
             android:text="@={resetPwdVM.pwd2}"
@@ -133,9 +147,10 @@
         <ImageView
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/icon_see"
+            loadImageId="@{resetPwdVM.pwd2ImageId}"
+            android:onClick="@{()->resetPwdVM.pwd2Click()}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
     <View
@@ -152,6 +167,7 @@
         android:layout_marginTop="80dp"
         android:textColor="@color/color_white"
         android:text="确定"
+        android:onClick="@{()->resetPwdVM.submit()}"
         android:layout_marginRight="30dp"
         android:layout_height="wrap_content" />
 

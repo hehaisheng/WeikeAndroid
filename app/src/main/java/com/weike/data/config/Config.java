@@ -77,7 +77,15 @@ public final class Config {
      */
     public static final String ADD_CLIENT = APP_SERVER +"wkzs-restful/client/addClient";
 
+    /**
+     * 获取客户标签列表
+     */
+    public static final String GET_CLIENT_TAG_LIST = APP_SERVER + "wkzs-restful/client/selectClientLabel";
 
+    /**
+     * 重置密码
+     */
+    public static final String RESET_PWD = APP_SERVER + "wkzs-restful/user/password";
 
     public static final  String ICON_URL = "http://f12.baidu.com/it/u=4021724095,1277693203&fm=72";
 

@@ -1,6 +1,7 @@
 package com.weike.data.model.viewmodel;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.databinding.ObservableField;
 import android.graphics.Color;
 import android.os.Environment;
@@ -20,7 +21,9 @@ import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
+import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseVM;
+import com.weike.data.business.login.LoginActivity;
 import com.weike.data.business.setting.ResetPwdActivity;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.FileCacheUtils;
@@ -62,6 +65,7 @@ public class AppSettingActVM extends BaseVM {
      */
     public void setPwd() {
         ActivitySkipUtil.skipAnotherAct(activity, ResetPwdActivity.class);
+        
     }
 
     /**
@@ -119,6 +123,51 @@ public class AppSettingActVM extends BaseVM {
      */
     public void outOfLogin() {
         //TODO show Dialog
+
+        new CircleDialog.Builder()
+                .setCanceledOnTouchOutside(false)
+                .setCancelable(false)
+                .configDialog(new ConfigDialog() {
+                    @Override
+                    public void onConfig(DialogParams params) {
+                        params.backgroundColor = Color.WHITE;
+                        params.backgroundColorPress = Color.BLUE;
+                    }
+                })
+                .setTitle("提示").configTitle(new ConfigTitle() {
+            @Override
+            public void onConfig(TitleParams params) {
+                params.textColor = activity.getResources().getColor(R.color.color_content);
+            }
+        })
+                .setText("是否确定退出登录")
+                .configText(new ConfigText() {
+                    @Override
+                    public void onConfig(TextParams params) {
+                        params.padding = new int[]{100, 0, 100, 50};
+                    }
+                })
+                .setNegative("取消", null).configNegative(new ConfigButton() {
+            @Override
+            public void onConfig(ButtonParams params) {
+                params.backgroundColorPress = Color.WHITE;
+            }
+        })
+                .setPositive("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        activity.sendBroadcast(new Intent(BaseActivity.ACTION_OUT_OF_LOGIN));
+                        ActivitySkipUtil.skipAnotherAct(activity, LoginActivity.class);
+                    }
+                })
+                .configPositive(new ConfigButton() {
+                    @Override
+                    public void onConfig(ButtonParams params) {
+                        params.backgroundColorPress = Color.WHITE;
+                    }
+                })
+                .show(((AppCompatActivity) activity).getSupportFragmentManager());
+
     }
 
     /**

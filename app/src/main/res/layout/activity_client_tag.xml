@@ -21,17 +21,27 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="match_parent"
 
         android:layout_weight="2">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_client_option"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:background="@color/color_all_bg"
             android:layout_height="match_parent">
 
         </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="管理标签 >"
+            />
 
     </LinearLayout>
 
