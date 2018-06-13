@@ -1,5 +1,6 @@
 package com.weike.data.model.viewmodel;
 
+import android.content.Intent;
 import android.databinding.ObservableField;
 
 import com.weike.data.base.BaseVM;
@@ -81,4 +82,13 @@ public class ClientBaseMsgVM extends BaseVM {
      * 是否是编辑状态
      */
     public ObservableField<Boolean> isModify = new ObservableField<>();
+
+
+    public void goToBirthDayRemind(){
+        Intent intent = new Intent();
+    }
+
+    public void goToManagerAttr(){
+
+    }
 }

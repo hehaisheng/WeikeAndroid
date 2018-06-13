@@ -77,6 +77,49 @@ public final class Config {
      */
     public static final String ADD_CLIENT = APP_SERVER +"wkzs-restful/client/addClient";
 
+    /**
+     * 获取客户标签列表
+     */
+    public static final String GET_CLIENT_TAG_LIST = APP_SERVER + "wkzs-restful/client/selectClientLabel";
+
+    /**
+     * 重置密码
+     */
+    public static final String RESET_PWD = APP_SERVER + "wkzs-restful/user/password";
+
+    /**
+     * 登录之后获取验证码
+     */
+    public static final String GET_CODE_AFTER_LOGIN = APP_SERVER + "wkzs-restful/system/loginAfterSmsCode";
+
+    /**
+     *  添加属性
+     */
+    public static final String ADD_ATTR = "wkzs-restful/client/addAttributes";
+    /**
+     * 删除属性
+     */
+    public static final String DEL_ATTR = "wkzs-restful/client/upAttributes";
+
+    /**
+     * 根据客户ID查询
+     */
+    public static final String GET_CLIENT_BY_LABEL = "wkzs-restful/client/getClientByLabelAndUser";
+
+    /**
+     * 添加标签
+     */
+    public static final String ADD_LABEL = "wkzs-restful/user/addOrEditLabel";
+
+    /**
+     * 上传文件
+     */
+    public static final String UPLOAD_FILE = "wkzs-restful/system/uploadFile";
+
+    /**
+     * 修改用户
+     */
+    public static final String MODIFY_USER = "wkzs-restful/user/editUser";
 
 
     public static final  String ICON_URL = "http://f12.baidu.com/it/u=4021724095,1277693203&fm=72";

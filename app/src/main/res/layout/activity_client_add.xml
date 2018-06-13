@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="addClientVM"
+            type="com.weike.data.model.viewmodel.AddClientActVM"/>
+
+    </data>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:background="@color/color_all_bg"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tl="http://schemas.android.com/apk/res-auto">
 
     <include
@@ -19,15 +28,18 @@
 
         <com.weike.data.view.CircleImageView
             android:id="@+id/iv_add_client_usericon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
+            android:scaleType="centerCrop"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:onClick="@{()->addClientVM.photoClick()}"
             android:layout_marginRight="10dp"
             android:src="@mipmap/ic_login_logo"
+            loadImage="@{addClientVM.photoUrl}"
             />
 
 
@@ -64,7 +76,7 @@
                     android:drawablePadding="5dp"
                     android:textColor="@color/color_content"
                     android:layout_marginRight="10dp"
-
+                    android:onClick="@{()->addClientVM.labelClick()}"
                     android:drawableLeft="@mipmap/ic_add_smail_label"
 
                     />
@@ -132,3 +144,4 @@
     </com.weike.data.view.NoScrollViewPager>
 
 </LinearLayout>
+</layout>

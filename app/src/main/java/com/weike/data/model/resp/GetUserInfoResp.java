@@ -6,7 +6,7 @@ public class GetUserInfoResp extends BaseResp {
     /**
      * 用户名
      */
-    public String userNames;
+    public String userName;
     /*
      * 手机号码
      */
@@ -27,4 +27,19 @@ public class GetUserInfoResp extends BaseResp {
      * 会员等级
      */
     public int memberLevel;
+
+    /**
+     * 职业
+     */
+    public String occupation;
+
+    /**
+     * 邮箱
+     */
+    public String email;
+
+    /**
+     * 地址
+     */
+    public String detailAddress;
 }

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="addLogVM"
+            type="com.weike.data.model.viewmodel.AddLogActVM"></variable>
+
+    </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -17,6 +25,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:layout_weight="1"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:layout_width="wrap_content"
@@ -27,11 +36,12 @@
             />
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
             android:src="@mipmap/ic_add_green"
             android:layout_gravity="center"
-            android:scaleType="fitEnd"
+
             android:paddingRight="10dp"
             />
                 
@@ -71,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="30dp"
+            android:text="@{addLogVM.time}"
             />
 
         <ImageView
@@ -109,7 +120,7 @@
         <EditText
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="12321"
+            android:text="@={addLogVM.content}"
             android:gravity="top"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
@@ -135,6 +146,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:background="@color/color_white"
+        android:onClick="@{()->addLogVM.goToRemindSetting()}"
         android:layout_height="wrap_content">
 
         <TextView
@@ -166,3 +178,4 @@
 
 </LinearLayout>
 
+</layout>

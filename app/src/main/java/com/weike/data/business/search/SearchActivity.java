@@ -65,6 +65,8 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
-
+        setCenterText("");
+        setRightText("");
+        setLeftText("搜索");
     }
 }

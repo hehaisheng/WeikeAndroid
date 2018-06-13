@@ -6,6 +6,29 @@
     android:layout_height="match_parent">
 
 
+    <include
+        layout="@layout/widget_action_bar"
+        />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle_list"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <Button
+
+        android:id="@+id/btn_add_client_tag"
+        android:layout_width="match_parent"
+        android:text="+  添加客户标签"
+        android:textColor="@color/color_white"
+        android:background="@drawable/shape_button_radius_10"
+        android:layout_margin="30dp"
+
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

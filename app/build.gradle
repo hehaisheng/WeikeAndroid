@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: "com.mob.sdk"
-
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 27
@@ -37,7 +36,9 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/pinyin4j-2.5.0.jar')
     //noinspection GradleCompatible
+
     compile project(':library')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    implementation project(':FDHSocialGeneralDialog')
 }

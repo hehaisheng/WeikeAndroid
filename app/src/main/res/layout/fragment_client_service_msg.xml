@@ -50,8 +50,11 @@
                 android:text="@{clientServiceVM.moneyIn}"
                 android:hint="请输入数字"
                 android:layout_toRightOf="@+id/tv_money_in"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
                 android:layout_width="match_parent"
+                android:ellipsize="end"
                 android:inputType="number"
+                android:maxLines="1"
                 android:layout_height="wrap_content" />
 
             <View
@@ -87,7 +90,10 @@
                 android:text="@{clientServiceVM.moneyOut}"
                 android:hint="请输入数字"
                 android:layout_marginLeft="20dp"
+
+                android:ellipsize="end"
                 android:layout_marginRight="20dp"
+                android:maxLines="1"
                 android:layout_height="wrap_content" />
 
             <View
@@ -121,8 +127,10 @@
                 android:layout_marginTop="15dp"
                 android:clickable="@{clientServiceVM.clickable}"
                 android:layout_toRightOf="@+id/tv_financial_assets"
+                android:maxLines="1"
                 android:layout_alignBottom="@+id/tv_financial_assets"
                 android:layout_width="match_parent"
+                android:ellipsize="end"
                 android:text="@{clientServiceVM.financialAssets}"
                 android:layout_height="wrap_content" />
 
@@ -151,8 +159,10 @@
                 android:id="@+id/ed_fixed_assets"
                 android:background="@color/color_touming"
                 android:layout_marginTop="15dp"
+                android:maxLines="1"
                 android:layout_alignBottom="@+id/tv_fixed_assets"
                 android:layout_toRightOf="@+id/tv_fixed_assets"
+                android:ellipsize="end"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
@@ -189,7 +199,9 @@
                 android:layout_marginLeft="20dp"
                 android:clickable="@{clientServiceVM.clickable}"
                 android:text="@{clientServiceVM.carType}"
+                android:maxLines="1"
                 android:layout_marginRight="20dp"
+                android:ellipsize="end"
                 android:layout_alignBottom="@+id/tv_car_type"
                 android:layout_toRightOf="@+id/tv_car_type"
                 android:hint="请输入您的车类型"
@@ -226,6 +238,8 @@
                 android:hint="请输入数字"
                 android:text="@{clientServiceVM.liabilities}"
                 android:layout_marginRight="20dp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:inputType="number"
                 android:layout_alignBottom="@+id/tv_liabilities"
                 android:layout_toRightOf="@+id/tv_liabilities"
@@ -254,13 +268,6 @@
             android:layout_height="match_parent">
 
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_line"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -285,6 +292,15 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_line"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
 
         </LinearLayout>
         

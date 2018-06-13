@@ -16,6 +16,7 @@ import com.weike.data.business.myself.MyQRCodeActivity;
 import com.weike.data.business.setting.ServiceSettingActivity;
 import com.weike.data.business.myself.VipOpenUpActivity;
 import com.weike.data.config.Config;
+import com.weike.data.model.business.User;
 import com.weike.data.model.req.GetUserInfoReq;
 import com.weike.data.model.resp.GetUserInfoResp;
 import com.weike.data.network.RetrofitFactory;
@@ -42,7 +43,9 @@ public class PersonalFragmentVM extends BaseVM {
 
     public ObservableField<String> phoneNum = new ObservableField<>();
 
-    public ObservableField<String> nickName = new ObservableField<>();
+    public ObservableField<String> photoUrl = new ObservableField<>();
+
+    public ObservableField<String> nickName = new ObservableField<>("未知用户");
 
     public void openUpVip(){
         ActivitySkipUtil.skipAnotherAct(activity, VipOpenUpActivity.class);
@@ -66,14 +69,25 @@ public class PersonalFragmentVM extends BaseVM {
             @Override
             protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
                 if (getUserInfoRespBaseResp.getResult() == 0) {
-                    nickName.set(getUserInfoRespBaseResp.getDatas().userNames);
+                    nickName.set(getUserInfoRespBaseResp.getDatas().userName);
                     phoneNum.set("电话号码：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
+                    photoUrl.set(getUserInfoRespBaseResp.getDatas().photoUrl);
 
                     if(getUserInfoRespBaseResp.getDatas().memberLevel == 1) {
                         vipTime.set("开通");
                     } else {
                         vipTime.set(getUserInfoRespBaseResp.getDatas().timeoutDate + "   到期");
                     }
+
+                    User user = SpUtil.getInstance().getUser();
+                    user.phoneNumber = getUserInfoRespBaseResp.getDatas().phoneNumber;
+                    user.iconUrl = getUserInfoRespBaseResp.getDatas().photoUrl;
+                    user.userName = getUserInfoRespBaseResp.getDatas().userName;
+                    user.email = getUserInfoRespBaseResp.getDatas().email;
+                    user.job = getUserInfoRespBaseResp.getDatas().occupation;
+                    user.address  = getUserInfoRespBaseResp.getDatas().detailAddress;
+
+                    SpUtil.getInstance().saveNewsUser(user);
 
                 }
             }

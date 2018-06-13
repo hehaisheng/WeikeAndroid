@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="modifyDataVM"
+            type="com.weike.data.model.viewmodel.DataModifyActVM"/>
+
+    </data>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -26,11 +35,16 @@
             />
 
 
-        <ImageView
+        <com.weike.data.view.CircleImageView
             android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:src="@mipmap/ic_login_logo"
-            android:layout_height="wrap_content" />
+            android:layout_width="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/icon_normal_2"
+            android:onClick="@{()->modifyDataVM.photoClick()}"
+            loadImage="@{modifyDataVM.photoUrl}"
+            android:layout_height="50dp" />
 
     </RelativeLayout>
 
@@ -55,12 +69,25 @@
 
         <TextView
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-
+            android:layout_marginRight="10dp"
+            android:textColor="@color/color_bebebe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15692022243"
+            android:text="@{modifyDataVM.phoneNum}"
+            android:layout_toLeftOf="@+id/iv_arrow"
             />
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_height="15dp"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/icon_arrow_2"
+            />
+
+
 
     </RelativeLayout>
 
@@ -84,11 +111,16 @@
             android:textColor="@color/color_title"
             />
 
-        <TextView
+        <EditText
             android:layout_centerVertical="true"
+            android:background="@color/color_touming"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
+            android:textSize="13sp"
+            android:hint="请输入你的名字"
+            android:gravity="right"
+            android:text="@={modifyDataVM.userName}"
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
@@ -111,13 +143,19 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_title"
             android:text="职业"
+
             />
 
-        <TextView
+        <EditText
             android:layout_centerVertical="true"
+            android:background="@color/color_touming"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
+            android:textSize="13sp"
+            android:gravity="right"
+            android:hint="请输入你的职业"
+            android:text="@={modifyDataVM.job}"
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
@@ -143,11 +181,16 @@
             android:text="联系地址"
             />
 
-        <TextView
+        <EditText
             android:layout_centerVertical="true"
+            android:background="@color/color_touming"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
+            android:textSize="13sp"
+            android:gravity="right"
+            android:hint="请输入你的地址"
+            android:text="@={modifyDataVM.location}"
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
@@ -174,10 +217,13 @@
             />
 
         <EditText
+            android:textSize="13sp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:minWidth="100dp"
+            android:gravity="right"
+
+            android:text="@={modifyDataVM.email}"
             android:background="@color/color_touming"
             android:hint="请输入您的邮箱号码"
             android:layout_width="wrap_content"
@@ -186,3 +232,4 @@
     </RelativeLayout>
 
 </LinearLayout>
+</layout>

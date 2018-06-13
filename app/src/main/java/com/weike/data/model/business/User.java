@@ -36,5 +36,23 @@ public class User {
     public List<GetClientListResp.ClientListSub> clietList;
 
 
+    /**
+     * 职业
+     */
+    public String job;
+    /**
+     * 邮箱
+     */
+    public String email;
 
+    /**
+     * 地址
+     */
+    public String address;
+
+    /**
+     * 待办事项时间
+     * 如果是自定义 那么 就是  天数
+     */
+    public int handleWorkingType;
 }

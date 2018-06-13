@@ -19,7 +19,7 @@ public class ClientLogFragment extends BaseFragment {
 
     @Override
     protected int setUpLayoutId() {
-        return 0;
+        return R.layout.fragment_client_log;
     }
 
     @Override

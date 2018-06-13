@@ -55,6 +55,10 @@ public abstract class BaseFragment extends android.support.v4.app.Fragment {
     }*/
 
 
+    public void onRightClick(boolean status){
+
+    }
+
     public void onRightClick(){
 
     }

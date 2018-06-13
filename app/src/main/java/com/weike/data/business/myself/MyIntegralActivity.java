@@ -49,7 +49,9 @@ public class MyIntegralActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_integral);
         ButterKnife.bind(this);
-
+        setCenterText("");
+        setRightText("");
+        setLeftText("我的积分");
 
 
 

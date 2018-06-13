@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/color_all_bg"
     android:orientation="vertical"
     android:layout_height="match_parent"
     >
@@ -21,17 +22,30 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="match_parent"
 
         android:layout_weight="2">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_client_option"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:background="@color/color_all_bg"
             android:layout_height="match_parent">
 
         </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv_manager_label"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_height="wrap_content"
+            android:text="管理标签 >"
+            />
 
     </LinearLayout>
 
@@ -50,6 +64,7 @@
         </android.support.v7.widget.RecyclerView>
 
         <RelativeLayout
+            android:id="@+id/ll_nothing_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -68,7 +83,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:text="行动从这里开始"
-                android:textColor="@color/color_content"
+                android:background="@drawable/shape_button_none_bg"
+                android:textColor="@color/color_41BCF6"
+                android:padding="5dp"
                 android:layout_height="wrap_content" />
 
         </RelativeLayout>

@@ -32,3 +32,8 @@
 -dontwarn com.sina.**
 -dontwarn com.mob.**
 -dontwarn **.R$*
+
+-keepattributes InnerClasses,Signature
+-keepattributes *Annotation*
+
+-keep class cn.addapp.pickers.entity.** { *;}

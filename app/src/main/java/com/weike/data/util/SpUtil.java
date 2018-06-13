@@ -46,6 +46,7 @@ public class SpUtil {
         preferences.edit().putString(SpConfig.TAG_TOKEN , token).commit();
     }
 
+
     public User getUser(){
         String userJson = preferences.getString(SpConfig.TAG_USER , null);
         if (userJson == null) {

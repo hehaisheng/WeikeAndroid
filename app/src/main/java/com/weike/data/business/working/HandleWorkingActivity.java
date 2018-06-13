@@ -6,14 +6,10 @@ import android.support.annotation.Nullable;
 import com.weike.data.R;
 import com.weike.data.base.BaseActivity;
 
-/**
- * Created by LeoLu on 2018/5/31.
- */
-
-public class HandleWorkActivity extends BaseActivity {
+public class HandleWorkingActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_handle_working_display);
+        setContentView(R.layout.activity_handle_working);
     }
 }

@@ -1,6 +1,10 @@
 package com.weike.data.base;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.weike.data.R;
+import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 
 import butterknife.BindView;
@@ -39,13 +44,29 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     protected View back;
 
+    public static final String ACTION_OUT_OF_LOGIN = "com.outofLogin.ACTION_OUT_OF_LOGIN";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//remove title bar  即隐藏标题栏
         getSupportActionBar().hide();// 隐藏ActionBar
-
+        registerReceiver(outOfLoginBr,new IntentFilter(ACTION_OUT_OF_LOGIN));
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(outOfLoginBr);
+    }
+
+    private BroadcastReceiver outOfLoginBr = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SpUtil.getInstance().saveCurrentToken("");
+            finish();
+        }
+    };
 
     @Override
     public void setContentView(int layoutResID) {
@@ -88,6 +109,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         super.setContentView(view);
 
     }
+
 
     public void onRightClick(){
 

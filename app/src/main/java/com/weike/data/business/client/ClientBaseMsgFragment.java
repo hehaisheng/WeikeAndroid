@@ -30,12 +30,19 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     public FragmentClientBaseMsgBinding binding;
 
-    HashMap<String , View> viewMap = new HashMap<>();
+    HashMap<String , View> phoneNumMap = new HashMap<>();
+
 
     @Override
-    public void onRightClick() {
-        super.onRightClick();
+    public void onRightClick(boolean status) {
+        super.onRightClick(status);
+        clientBaseMsgVM.isModify.set(status);
+        if (status) {//编辑
 
+
+        } else { //完成
+
+        }
     }
 
     @Override
@@ -66,7 +73,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     }
 
 
-    private int count = 0;
+    private int phoneNumCount = 0;
+
 
     @Override
     public void onClick(View v) {
@@ -76,19 +84,19 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.widget_layout_add_phone,null);
             ImageView iv = view.findViewById(R.id.ic_widget_add_phone);
-            iv.setTag("" + count);
+            iv.setTag("" + phoneNumCount);
             iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    View view = viewMap.get(v.getTag());
+                    View view = phoneNumMap.get(v.getTag());
 
                     binding.llFragmentClientAddPhone.removeView(view);
                 }
             });
 
-            viewMap.put(iv.getTag().toString() , view);
+            phoneNumMap.put(iv.getTag().toString() , view);
             binding.llFragmentClientAddPhone.addView(view);
-            count ++;
+            phoneNumCount++;
         }
     }
 }

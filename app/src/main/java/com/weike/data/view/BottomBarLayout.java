@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.weike.data.R;
 import com.weike.data.model.business.TabEntity;
+import com.weike.data.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
     private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener{
-        void onItemClick(int position);
+        void onItemClick(int position,boolean isFresh);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
@@ -102,7 +103,7 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
             current.add(itemView);
 
             if(i==0){
-                showTab(0,itemView);
+                showTab(0,itemView,true);
             }
         }
     }
@@ -115,26 +116,26 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
         }
         switch(view.getId()){
             case 0:
-                mOnItemClickListener.onItemClick(0);
-                showTab(0,view);
+                mOnItemClickListener.onItemClick(0,true);
+                showTab(0,view,true);
                 break;
             case 1:
-                mOnItemClickListener.onItemClick(1);
-                showTab(1,view);
+                mOnItemClickListener.onItemClick(1,true);
+                showTab(1,view,true);
                 break;
             case 2:
-                mOnItemClickListener.onItemClick(2);
-                showTab(2,view);
+                mOnItemClickListener.onItemClick(2,true);
+                showTab(2,view,true);
                 break;
             case 3:
-                mOnItemClickListener.onItemClick(3);
-                showTab(3,view);
+                mOnItemClickListener.onItemClick(3,true);
+                showTab(3,view,true);
                 break;
         }
     }
 
-    public void showTab(int position,View view){
-        clearStatus();
+    public void showTab(int position,View view,boolean isAddNum){
+        clearStatus(0,-1);
         TextView text = (TextView) view.findViewById(R.id.tv_title);
         text.setTextColor(selectTextColor);
         ImageView icon = (ImageView) view.findViewById(R.id.iv_icon);
@@ -142,16 +143,30 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
 
     }
 
-    private void clearStatus() {
+
+
+
+    public void clearStatus(int count , int position) {
         for (int i=0;i<mLinearLayout.getChildCount();i++){
             View itemView = mLinearLayout.getChildAt(i);
             ImageView icon = (ImageView) itemView.findViewById(R.id.iv_icon);
             TextView text = (TextView) itemView.findViewById(R.id.tv_title);
             TextView number = itemView.findViewById(R.id.tv_count);
-            number.setVisibility(View.VISIBLE);
-            number.setText("99");
             text.setTextColor(normalTextColor);
             icon.setImageResource(tabList.get(i).getNormalIconId());
+
+            if (i == 2)
+                number.setVisibility(View.VISIBLE);
+            else
+                number.setVisibility(View.GONE);
+
+            if (position == -1) continue;
+            if (i == 2 && count >= 99) {
+                number.setText("99+");
+            } else if (i == 2 && count <= 99) {
+                number.setText(count + "");
+            }
+
         }
     }
 }

@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_white"
     android:layout_height="match_parent">
+
+    <include
+        layout="@layout/widget_action_bar"
+        />
+
+    <com.flyco.tablayout.SlidingTabLayout
+        android:id="@+id/sliding_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        tl:tl_textSelectColor="@color/color_41BCF6"
+        tl:tl_textUnselectColor="@color/color_content"
+        tl:tl_underline_height="1dp"
+        tl:tl_underline_color="@color/color_white"
+        tl:tl_indicator_height="1dp"
+        tl:tl_tab_space_equal="true"
+        tl:tl_indicator_width_equal_title="true"
+        tl:tl_indicator_color="@color/color_41BCF6"
+        android:background="@color/color_white"
+        android:layout_centerHorizontal="true"
+        />
+
+    <com.weike.data.view.NoScrollViewPager
+        android:id="@+id/viewpager_activity_handle_working"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </com.weike.data.view.NoScrollViewPager>
+
 
 </LinearLayout>

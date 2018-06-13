@@ -1,7 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:background="@color/color_white"
     android:layout_height="match_parent">
+
+    <include
+        layout="@layout/widget_action_bar"
+        />
+
+    <RadioGroup
+        android:id="@+id/radiobutton_selector"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radiobutton_recent_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selector_checkbox"
+            android:layout_marginLeft="16dp"
+            android:text="最近一周"
+            android:padding="16dp"
+            android:textColor="@color/color_content"
+            />
+        <View
+        android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_line" />
+
+
+        <RadioButton
+            android:id="@+id/radiobutton_recent_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:button="@drawable/selector_checkbox"
+            android:text="最近一个月"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/color_content"
+            android:paddingLeft="16dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_line" />
+
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginLeft="16dp"
+            android:button="@drawable/selector_checkbox"
+            android:text="最近一个季度"
+            android:id="@+id/radiobutton_recent_quarter"
+            android:textColor="@color/color_content"
+            android:paddingLeft="16dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_line" />
+
+
+        <RadioButton
+            android:id="@+id/radiobutton_recent_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:button="@drawable/selector_checkbox"
+            android:layout_marginLeft="16dp"
+            android:text="最近一年"
+            android:textColor="@color/color_content"
+            android:paddingLeft="16dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_line" />
+
+
+        <RadioButton
+            android:id="@+id/radiobutton_custom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginLeft="16dp"
+            android:button="@drawable/selector_checkbox"
+            android:text="自定义"
+            android:textColor="@color/color_content"
+            android:paddingLeft="16dp" />
+
+
+
+    </RadioGroup>
 
 </LinearLayout>

@@ -26,7 +26,7 @@ public class ServiceSettingActivity extends BaseActivity{
 
     @OnClick(R.id.ll_handle_working_display)
     public void handleWorking(View view){
-
+        ActivitySkipUtil.skipAnotherAct(this,HandleWorkingDisplayActivity.class);
     }
 
     @OnClick(R.id.ll_client_tag_setting)

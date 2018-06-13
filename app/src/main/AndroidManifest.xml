@@ -7,8 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
 
     <application
@@ -75,7 +74,7 @@
         <activity android:name=".business.log.AddLogActivity"
             android:windowSoftInputMode="adjustPan"
             ></activity>
-        <activity android:name=".business.working.HandleWorkActivity"
+        <activity android:name=".business.working.HandleWorkDisplaySettingActivity"
             android:windowSoftInputMode="adjustPan"
             >
 
@@ -86,6 +85,13 @@
 
 
         </activity>
+        <activity android:name=".business.log.RemindSettingActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
+
+
+        </activity>
+
         <activity android:name=".business.search.SearchActivity"></activity>
         <activity android:name=".business.client.ClientTagActivity"></activity>
         <activity android:name=".business.setting.AppSettingActivity"></activity>

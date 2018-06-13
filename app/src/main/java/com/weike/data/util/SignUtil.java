@@ -40,7 +40,6 @@ public class SignUtil {
     private static Map<String, Object> compassAllData(Class clz,Object obj, TreeMap<String, Object> map) {
         // 得到类对象
 
-        LogUtil.d("acthome","-->" +clz + "," +clz.getDeclaredFields().length);
 
         /* 得到类中的所有属性集合 */
         Field[] fs = clz.getDeclaredFields();
@@ -55,9 +54,7 @@ public class SignUtil {
 
                 map.put(f.getName(), val);// 设置键值
 
-                LogUtil.d("acthome","key:"+ f.getName() + "," +val);
             } catch (Exception e) {
-                LogUtil.d("acthome",e.getMessage());
                 e.printStackTrace();
             }
 

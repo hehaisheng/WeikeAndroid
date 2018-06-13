@@ -18,12 +18,14 @@ import com.weike.data.business.msg.MsgFragment;
 import com.weike.data.business.myself.MySelfFragment;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.TabEntity;
+import com.weike.data.model.business.User;
 import com.weike.data.model.req.GetClientListReq;
 import com.weike.data.model.req.MainPageDataReq;
 import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.model.resp.MainPageDataResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.JsonUtil;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
@@ -80,17 +82,8 @@ public class HomeActivity extends BaseActivity {
             item.setNormalIconId(normalIcon[i]);
             item.setSelectIconId(selectorIcon[i]);
 
-
-            if(i==2 || i==3){
-                item.setShowPoint(true);
-            }else{
-                item.setShowPoint(false);
-            }
-            if(i==0 || i==1){
-                item.setNewsCount(i+1);
-            }else {
-                item.setNewsCount(0);
-            }
+            item.setNewsCount(0);
+            item.setShowPoint(true);
             tabEntities.add(item);
         }
 
@@ -99,7 +92,7 @@ public class HomeActivity extends BaseActivity {
         bottomBarLayout.setTabList(tabEntities);
         bottomBarLayout.setOnItemClickListener(new BottomBarLayout.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(int position,boolean isAdd) {
                 replaceFragment(position);
                 currentPosition = position;
             }
@@ -115,7 +108,7 @@ public class HomeActivity extends BaseActivity {
     public void replaceFragment(int position) {
         if (position == 0) {
             fragment = new HomeFragment();
-            setCenterText("首页");
+            setCenterText("维客助手");
         } else if (position == 1) {
             fragment = new ClientFragment();
             setCenterText("客户");
@@ -173,6 +166,13 @@ public class HomeActivity extends BaseActivity {
 
         getClientList();
 
+        new Handler().postAtTime(new Runnable() {
+            @Override
+            public void run() {
+                getUnreadMsg();
+            }
+        },3000);
+
     }
 
     /**
@@ -192,7 +192,9 @@ public class HomeActivity extends BaseActivity {
                     @Override
                     protected void onSuccess(BaseResp<GetClientListResp> getClientListRespBaseResp) throws Exception {
                         List<GetClientListResp.ClientListSub> clientListSubs = getClientListRespBaseResp.getDatas().allClientList;
-
+                        User user = SpUtil.getInstance().getUser();
+                        user.clietList = clientListSubs;
+                        SpUtil.getInstance().saveNewsUser(user);
                     }
 
                     @Override
@@ -216,6 +218,8 @@ public class HomeActivity extends BaseActivity {
 
             @Override
             protected void onSuccess(BaseResp<MainPageDataResp> mainPageData) throws Exception {
+
+                bottomBarLayout.clearStatus(mainPageData.getDatas().count,2);
 
             }
 

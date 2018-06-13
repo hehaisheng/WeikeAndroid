@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -35,5 +36,5 @@ public interface RetrofitService<T> {
 
     @Multipart
     @POST
-    public Observable<ResponseBody> postFile(@Part("description") ResponseBody des,@Part("file") RequestBody file);
+    Observable<ResponseBody> uploadAvatar(@Part MultipartBody.Part imgs,@Url String url);
 }

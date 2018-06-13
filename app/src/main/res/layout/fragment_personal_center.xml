@@ -41,7 +41,9 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:src="@mipmap/ic_home_nor" />
+            loadImage="@{personalVM.photoUrl}"
+            android:src="@mipmap/icon_normal_2"
+             />
 
         <TextView
             android:id="@+id/tv_nick_name"
@@ -50,7 +52,7 @@
             android:layout_below="@+id/iv_user_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="@{personalVM.nickName}"
+            android:text="@{personalVM.nickName,default=未知用户}"
             android:textColor="@color/color_white" />
 
         <TextView

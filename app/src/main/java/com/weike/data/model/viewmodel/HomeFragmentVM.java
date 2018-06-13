@@ -11,7 +11,7 @@ import com.weike.data.business.client.AddClientActivity;
 import com.weike.data.business.client.ClientTagActivity;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.search.SearchActivity;
-import com.weike.data.business.working.HandleWorkActivity;
+import com.weike.data.business.working.HandleWorkDisplaySettingActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.req.MainPageDataReq;
 import com.weike.data.model.resp.MainPageDataResp;
@@ -63,7 +63,7 @@ public class HomeFragmentVM {
                     data.add(bannerUrls.get(i).imgUrl);
                 }
                 banenrData.addAll(data);
-
+                LogUtil.d("HomeFragment","fragment call back");
             }
 
             @Override
@@ -95,7 +95,7 @@ public class HomeFragmentVM {
      * 待办事处
      */
     public void goToWorking(){
-        ActivitySkipUtil.skipAnotherAct(context, HandleWorkActivity.class);
+        ActivitySkipUtil.skipAnotherAct(context, HandleWorkDisplaySettingActivity.class);
     }
 
     public void goToClientTag(){
