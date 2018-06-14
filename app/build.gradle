@@ -2,8 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
+    signingConfigs {
+        weike {
+            keyAlias 'weike'
+            keyPassword '123456789'
+            storeFile file('E:/WKApp/app/keystore/weike.jks')
+            storePassword '123456789'
+        }
+    }
     compileSdkVersion 27
-
     defaultConfig {
         applicationId "com.weike.data"
         minSdkVersion 19
@@ -20,12 +27,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.weike
         }
     }
     dataBinding {
         enabled = true;
     }
-
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
@@ -36,7 +43,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/pinyin4j-2.5.0.jar')
     //noinspection GradleCompatible
-
     compile project(':library')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
