@@ -39,6 +39,7 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.business.setting.ClientTagSettingActivity;
 import com.weike.data.config.Config;
 import com.weike.data.databinding.ActivityClientAddBinding;
+import com.weike.data.model.business.Client;
 import com.weike.data.model.req.AddClientReq;
 import com.weike.data.model.resp.AddClientResp;
 import com.weike.data.model.viewmodel.AddClientActVM;
@@ -54,6 +55,8 @@ import com.weike.data.view.NoScrollViewPager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,6 +79,7 @@ public class AddClientActivity extends BaseActivity {
     public ActivityClientAddBinding binding;
 
     public AddClientActVM vm;
+
 
 
     @PermissionSuccess(requestCode = LQRPhotoSelectUtils.REQ_TAKE_PHOTO)
@@ -128,7 +132,7 @@ public class AddClientActivity extends BaseActivity {
         binding.setAddClientVM(vm);
 
         setCenterText("");
-        setLeftText("编辑客户");
+        setLeftText("添加客户");
         setRightText("编辑");
         addFragment();
         initPhotoSel();
@@ -146,19 +150,19 @@ public class AddClientActivity extends BaseActivity {
             }
         }, true);
         vm.setmLqrPhotoSelectUtils(mLqrPhotoSelectUtils);
+       // testAdd();
     }
 
 
 
 
-    private void testAdd(){
+    private void testAdd(String photoUrl){
         AddClientReq req = new AddClientReq();
         req.OnePhoneNumber = "15692022243";
-        req.userName = "王尼玛111";
+        req.userName = "test11111";
         req.token = SpUtil.getInstance().getCurrentToken();
-        req.clientLabelId = "6";
         req.sign = SignUtil.signData(req);
-
+        req.photoUrl = photoUrl;
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_CLIENT)
         .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddClientResp>>(){
@@ -217,7 +221,37 @@ public class AddClientActivity extends BaseActivity {
         super.onRightClick();
 
         isModify = isModify ? false : true;
+
+        if(isModify == true) {
+
+        }
+
         setRightText(isModify ? "完成":"编辑");
         fragments.get(position).onRightClick(isModify);
+    }
+
+    private void addClient(Client client){
+        AddClientReq req = new AddClientReq();
+        req.OnePhoneNumber = "15692022243";
+        req.userName = "test11111";
+        req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_CLIENT)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddClientResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<AddClientResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                LogUtil.d("acthome",e.getMessage());
+            }
+        });
+
     }
 }

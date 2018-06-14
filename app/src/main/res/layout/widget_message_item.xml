@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_my_qrcode"
+            android:src="@mipmap/icon_normal_1"
 
             app:loadImage="@{messageItemVM.iconUrl}"
             />

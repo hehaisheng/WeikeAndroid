@@ -8,7 +8,7 @@ public class ClientSortModel {
     private String sortLetters;//显示数据拼音的首字母
 
     private String clientId; //客户ID
-    private String photoUrl = Config.ICON_URL; //用户头像
+    private String photoUrl ; //用户头像
 
     public String getClientId() {
         return clientId;

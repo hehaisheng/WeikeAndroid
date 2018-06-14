@@ -24,12 +24,12 @@ public class GetClientListResp extends BaseResp{
         /**
          * 用户名
          */
-        public String userName;
+        public String userName = "";
 
         /**
          * 是否有未读
          */
-        public String hasOr;
+        public String hasOr ;
 
         /**
          * 公司名

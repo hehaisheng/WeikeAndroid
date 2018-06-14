@@ -2,6 +2,7 @@ package com.weike.data.business.setting;
 
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,14 +11,23 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.fdh.generaldialog.EditInputDialog;
 import com.google.gson.reflect.TypeToken;
 import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigButton;
+import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.callback.ConfigInput;
+import com.mylhyl.circledialog.callback.ConfigText;
+import com.mylhyl.circledialog.callback.ConfigTitle;
+import com.mylhyl.circledialog.params.ButtonParams;
+import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.InputParams;
+import com.mylhyl.circledialog.params.TextParams;
+import com.mylhyl.circledialog.params.TitleParams;
 import com.mylhyl.circledialog.view.listener.OnInputClickListener;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
@@ -27,12 +37,16 @@ import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.config.Config;
 import com.weike.data.model.req.AddAttrReq;
+import com.weike.data.model.req.DeleteAttrReq;
+import com.weike.data.model.req.DeleteLabelReq;
 import com.weike.data.model.req.GetAttrListReq;
+import com.weike.data.model.resp.AddAttrResp;
 import com.weike.data.model.resp.GetAttrListResp;
 import com.weike.data.model.viewmodel.AttrItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
+import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +58,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AttrManagerActivity extends BaseActivity {
+public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnReduceListener {
 
     @BindView(R.id.recycleview_attr_manager)
     public RecyclerView recyclerView;
@@ -54,6 +68,9 @@ public class AttrManagerActivity extends BaseActivity {
     private BaseDataBindingAdapter adapter;
 
     android.support.v4.app.DialogFragment dialogFragment;
+
+    @BindView(R.id.btn_add_attr)
+    public Button submit;
 
     @OnClick(R.id.btn_add_attr)
     public void addNewOne(View view){
@@ -92,16 +109,17 @@ public class AttrManagerActivity extends BaseActivity {
         req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.ADD_ATTR)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>(){
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddAttrResp>>(){
 
-                })).subscribe(new BaseObserver<BaseResp>() {
+                })).subscribe(new BaseObserver<BaseResp<AddAttrResp>>() {
             @Override
-            protected void onSuccess(BaseResp baseResp) throws Exception {
+            protected void onSuccess(BaseResp<AddAttrResp> baseResp) throws Exception {
                 AttrItemVM vm = new AttrItemVM();
                 vm.isDisplayReduce.set(false);
                 vm.name.set(content);
+                vm.id.set(baseResp.getDatas().attributesId);
                 vms.add(vm);
-
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -112,9 +130,23 @@ public class AttrManagerActivity extends BaseActivity {
     }
 
     @Override
-    public void onRightClick() {
-        super.onRightClick();
+    public void onRightClick(boolean isModify) {
+        super.onRightClick(isModify);
+        if(isModify) {
+            submit.setVisibility(View.GONE);
 
+            for(int i = 18 ; i < vms.size() ; i++ ){
+                vms.get(i).isDisplayReduce.set(true);
+            }
+            setRightText("保存");
+        } else {
+
+            for(int i = vms.size() - 18 ; i < vms.size() ; i++ ){
+                vms.get(i).isDisplayReduce.set(false);
+            }
+            setLeftText("编辑");
+            submit.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -124,7 +156,7 @@ public class AttrManagerActivity extends BaseActivity {
         ButterKnife.bind(this);
         setCenterText("");
         setLeftText("属性管理");
-        setRightText("");
+        setRightText("编辑");
 
         initDefault();
 
@@ -140,7 +172,15 @@ public class AttrManagerActivity extends BaseActivity {
                 })).subscribe(new BaseObserver<BaseResp<GetAttrListResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetAttrListResp> getAttrListRespBaseResp) throws Exception {
-
+                    for(int i = 0 ; i < getAttrListRespBaseResp.getDatas().attributesValueList.size();i++) {
+                        AttrItemVM vm = new AttrItemVM();
+                        vm.id.set(getAttrListRespBaseResp.getDatas().attributesValueList.get(i).id);
+                        vm.name.set(getAttrListRespBaseResp.getDatas().attributesValueList.get(i).attributesName);
+                        vm.isDisplayReduce.set(false);
+                        vm.setListener(AttrManagerActivity.this);
+                        vms.add(vm);
+                    }
+                    adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -148,6 +188,29 @@ public class AttrManagerActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void deleteAttr(AttrItemVM vm) {
+        DeleteAttrReq req = new DeleteAttrReq();
+        req.attributesId = vm.id.get();
+        req.sign = SignUtil.signData(req);
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.DEL_ATTR)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>(){
+
+                })).subscribe(new BaseObserver<BaseResp>() {
+            @Override
+            protected void onSuccess(BaseResp  getAttrListRespBaseResp) throws Exception {
+                vms.remove(vm);
+                adapter.notifyDataSetChanged();
+                ToastUtil.showToast("删除成功");
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+
     }
 
     private void initDefault(){
@@ -162,8 +225,55 @@ public class AttrManagerActivity extends BaseActivity {
             AttrItemVM vm = new AttrItemVM();
             vm.name.set(defaultAttr[i]);
             vm.isDisplayReduce.set(false);
+            vm.setListener(AttrManagerActivity.this);
             vms.add(vm);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onReduce(AttrItemVM vm) {
+        new CircleDialog.Builder()
+                .setCanceledOnTouchOutside(false)
+                .setCancelable(false)
+                .configDialog(new ConfigDialog() {
+                    @Override
+                    public void onConfig(DialogParams params) {
+                        params.backgroundColor = Color.WHITE;
+                        params.backgroundColorPress = Color.BLUE;
+                    }
+                })
+                .setTitle("提示").configTitle(new ConfigTitle() {
+            @Override
+            public void onConfig(TitleParams params) {
+                params.textColor = getResources().getColor(R.color.color_content);
+            }
+        })
+                .setText("是否删除属性")
+                .configText(new ConfigText() {
+                    @Override
+                    public void onConfig(TextParams params) {
+                        params.padding = new int[]{100, 0, 100, 50};
+                    }
+                })
+                .setNegative("取消", null).configNegative(new ConfigButton() {
+            @Override
+            public void onConfig(ButtonParams params) {
+                params.backgroundColorPress = Color.WHITE;
+            }
+        })
+                .setPositive("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                            deleteAttr(vm);
+                    }
+                })
+                .configPositive(new ConfigButton() {
+                    @Override
+                    public void onConfig(ButtonParams params) {
+                        params.backgroundColorPress = Color.WHITE;
+                    }
+                })
+                .show(getSupportFragmentManager());
     }
 }

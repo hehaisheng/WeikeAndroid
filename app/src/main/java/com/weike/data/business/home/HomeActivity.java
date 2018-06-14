@@ -4,11 +4,23 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 
 
 import com.google.gson.reflect.TypeToken;
+import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigButton;
+import com.mylhyl.circledialog.callback.ConfigDialog;
+import com.mylhyl.circledialog.callback.ConfigText;
+import com.mylhyl.circledialog.callback.ConfigTitle;
+import com.mylhyl.circledialog.params.ButtonParams;
+import com.mylhyl.circledialog.params.DialogParams;
+import com.mylhyl.circledialog.params.TextParams;
+import com.mylhyl.circledialog.params.TitleParams;
 import com.weike.data.R;
+import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
@@ -24,6 +36,7 @@ import com.weike.data.model.req.MainPageDataReq;
 import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.model.resp.MainPageDataResp;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -38,6 +51,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by LeoLu on 2018/5/21.
@@ -51,12 +65,32 @@ public class HomeActivity extends BaseActivity {
     @BindView(R.id.btn_delete)
     public Button btn_deleteMsg;
 
+    /**
+     * 删除
+     * @param view
+     */
+    @OnClick(R.id.btn_delete)
+    public void deleteMsgClick(View view){
+        ((MsgFragment)fragment).onBottomClick(); //响应Fragment的点击
+    }
+
+
+
+
     public BaseFragment fragment;
 
+    /**
+     * 当前的Fragment位置
+     */
     private int currentPosition;
-
+    /**
+     * 是否是选择
+     */
     private boolean isSle = false;
 
+    /**
+     * 底部栏的tag
+     */
     private List<TabEntity> tabEntities = new ArrayList<>();
 
     private int normalTextColor = Color.parseColor("#333333");
@@ -145,6 +179,11 @@ public class HomeActivity extends BaseActivity {
         if (currentPosition == 2) { //如果是消息页面
             isSle = isSle == true ? false:true;
             setRightText(isSle ? "保存":"编辑");
+            if (isSle) {
+                btn_deleteMsg.setVisibility(View.VISIBLE);
+            } else {
+                btn_deleteMsg.setVisibility(View.GONE);
+            }
         } else {
             setRightText("");
             isSle = false;
@@ -157,7 +196,7 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
-
+        setCenterText("维客助手");
         initBottomLayout();
         BaseFragment fragment = new HomeFragment();
         isShowBack(false);

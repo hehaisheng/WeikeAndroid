@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import com.weike.data.R;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.databinding.FragmentClientBaseMsgBinding;
+import com.weike.data.model.business.Client;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.util.ToastUtil;
 
@@ -26,11 +27,12 @@ import java.util.HashMap;
 public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickListener {
 
     private LinearLayout phoneLinearLayout;
-    private ClientBaseMsgVM clientBaseMsgVM;
+    public ClientBaseMsgVM clientBaseMsgVM;
 
     public FragmentClientBaseMsgBinding binding;
 
     HashMap<String , View> phoneNumMap = new HashMap<>();
+
 
 
     @Override

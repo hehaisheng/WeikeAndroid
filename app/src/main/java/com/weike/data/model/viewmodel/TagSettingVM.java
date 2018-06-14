@@ -22,6 +22,8 @@ public class TagSettingVM extends BaseVM {
           this.listener = listener;
      }
 
+
+
      public interface OnReduceListener{
           void onReduce(TagSettingVM vm);
      }

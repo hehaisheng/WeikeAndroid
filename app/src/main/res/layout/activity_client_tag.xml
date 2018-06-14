@@ -78,16 +78,32 @@
                 />
 
             <TextView
+                android:id="@+id/nothing_text"
                 android:layout_width="wrap_content"
                 android:layout_below="@+id/iv_nothging_label"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:text="行动从这里开始"
-                android:background="@drawable/shape_button_none_bg"
-                android:textColor="@color/color_41BCF6"
+                android:textColor="@color/color_content"
                 android:padding="5dp"
                 android:layout_height="wrap_content" />
 
+
+            <TextView
+                android:id="@+id/tv_add_newClient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nothing_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="55dp"
+                android:background="@drawable/shape_button_none_bg"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/color_41BCF6"
+                android:paddingBottom="5dp"
+                android:text="新增客户"
+                />
         </RelativeLayout>
 
     </FrameLayout>

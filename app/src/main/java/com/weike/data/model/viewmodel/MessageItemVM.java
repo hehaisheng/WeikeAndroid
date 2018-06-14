@@ -42,6 +42,11 @@ public class MessageItemVM extends BaseVM
     public String clientId;
 
     /**
+     * 消息iD
+     */
+    public String msgId;
+
+    /**
      * 是否显示编辑
      */
     public ObservableField<Boolean> isSel = new ObservableField<>(false);

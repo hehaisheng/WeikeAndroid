@@ -100,7 +100,7 @@ public class DataModifyActivity extends BaseActivity {
             return;
         }
         dialogFragment = new CircleDialog.Builder()
-                .setProgressText("登录中...")
+                .setProgressText("正在保存")
                 .setProgressStyle(ProgressParams.STYLE_SPINNER)
                 .show(getSupportFragmentManager());
 

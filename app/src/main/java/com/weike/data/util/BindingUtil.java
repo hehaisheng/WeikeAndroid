@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.weike.data.R;
 
 /**
  * Created by LeoLu on 2018/5/31.
@@ -16,7 +17,9 @@ public class BindingUtil {
     @BindingAdapter({"loadImage"})
     public static void loadImage(ImageView imageView ,String url){
 
-        if (TextUtils.isEmpty(url)) return;
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         Glide.with(imageView.getContext()).load(url)
                 .into(imageView);
     }

@@ -47,6 +47,8 @@ public class PersonalFragmentVM extends BaseVM {
 
     public ObservableField<String> nickName = new ObservableField<>("未知用户");
 
+    public ObservableField<String> integral = new ObservableField<>("0.00");
+
     public void openUpVip(){
         ActivitySkipUtil.skipAnotherAct(activity, VipOpenUpActivity.class);
     }
@@ -57,7 +59,7 @@ public class PersonalFragmentVM extends BaseVM {
         init();
     }
 
-    private void init(){
+    public void init(){
         GetUserInfoReq req = new GetUserInfoReq();
         req.token = SpUtil.getInstance().getCurrentToken();
         req.sign = SignUtil.signData(req);
@@ -72,7 +74,7 @@ public class PersonalFragmentVM extends BaseVM {
                     nickName.set(getUserInfoRespBaseResp.getDatas().userName);
                     phoneNum.set("电话号码：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
                     photoUrl.set(getUserInfoRespBaseResp.getDatas().photoUrl);
-
+                    integral.set(getUserInfoRespBaseResp.getDatas().currentIntegral);
                     if(getUserInfoRespBaseResp.getDatas().memberLevel == 1) {
                         vipTime.set("开通");
                     } else {

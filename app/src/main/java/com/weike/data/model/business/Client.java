@@ -14,5 +14,15 @@ public class Client {
 
     public String kg;
 
+    public String email;
+
+    public String firstPhoneNum;
+
+    public String secPhoneNum;
+
+    public String thirdPhoneNum;
+
+
+
 
 }

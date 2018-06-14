@@ -38,5 +38,15 @@ public class GetMsgListResp extends BaseResp {
          * 最新时间
          */
         public String newestDate;
+
+         /**
+          * photoUrl
+          */
+         public String photoUrl;
+
+         /**
+          * msg Id
+          */
+         public String id;
     }
 }

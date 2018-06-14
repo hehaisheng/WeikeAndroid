@@ -30,6 +30,7 @@ public class RetrofitFactory {
 
     public RetrofitFactory(){
 
+
         Retrofit mRetrofit=new Retrofit.Builder()
                 .baseUrl(Config.APP_SERVER)
                 .addConverterFactory(GsonConverterFactory.create())//添加gson转换器

@@ -8,6 +8,6 @@ public class ClientTagComparator implements Comparator<GetClientTagListResp.TagS
     @Override
     public int compare(GetClientTagListResp.TagSub o1, GetClientTagListResp.TagSub o2) {
 
-        return Integer.parseInt(o1.id) - Integer.parseInt(o2.id);
+        return Integer.parseInt(o2.id) - Integer.parseInt(o1.id);
     }
 }

@@ -19,7 +19,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="200dp"
         android:background="@mipmap/bg_personal_img">
 
         <TextView
@@ -145,6 +144,15 @@
                 android:layout_marginLeft="10dp"
                 android:text="我的二维码" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="邀请好友,即可获得10积分"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/color_bebebe"
+                />
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
@@ -186,8 +194,21 @@
                 android:layout_marginLeft="10dp"
                 android:text="我的积分" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:gravity="right"
+                android:paddingRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/color_bebebe"
+                android:text="@{personalVM.integral,default=60}" />
+
+
+
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:scaleType="fitEnd"
                 android:layout_marginRight="10dp"

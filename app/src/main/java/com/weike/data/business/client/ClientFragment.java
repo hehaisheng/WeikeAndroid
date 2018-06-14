@@ -118,14 +118,13 @@ public class ClientFragment extends BaseFragment {
             ClientSortModel sortModel = new ClientSortModel();
             sortModel.setName(date.get(i).userName);
             sortModel.setClientId(date.get(i).id);
+            sortModel.setPhotoUrl(date.get(i).photoUrl);
             String pinyin = PinyinUtils.getPingYin(date.get(i).userName);
-            LogUtil.d("ClientFragment","---->" + date.get(i).userName);
             String sortString = pinyin.substring(0, 1).toUpperCase();
             if (sortString.matches("[A-Z]")) {
                 sortModel.setSortLetters(sortString.toUpperCase());
                 if (!indexString.contains(sortString)) {
                     indexString.add(sortString);
-                    LogUtil.d("ClientFragment","add");
                 }
             }
             mSortList.add(sortModel);

@@ -263,7 +263,7 @@
                   android:layout_marginLeft="20dp"
                   android:textSize="15sp"
                   android:hint="请输入地址"
-                  android:text="@{clientBaseVM.companyLocation}"
+                  android:text="@={clientBaseVM.companyLocation}"
                   android:layout_marginRight="20dp"
                   android:layout_height="wrap_content" />
 
@@ -294,7 +294,7 @@
                   android:background="@color/color_touming"
                   android:layout_marginTop="15dp"
                   android:hint="请输入地址"
-                  android:text="@{clientBaseVM.houseLocation}"
+                  android:text="@={clientBaseVM.houseLocation}"
                   android:textSize="15sp"
                   android:layout_marginLeft="20dp"
                   android:layout_marginRight="20dp"

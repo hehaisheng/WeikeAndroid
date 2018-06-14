@@ -121,6 +121,23 @@ public final class Config {
      */
     public static final String MODIFY_USER = "wkzs-restful/user/editUser";
 
+    /**
+     * 删除标签
+     */
+    public static final String DELETE_LABEL = "wkzs-restful/user/dateleClientLabel";
+
+    /**
+     * 查询列表集合
+     */
+    public static final String CHECK_LABEL_TAG_NUM = "wkzs-restful/user/selectLabelSort";
+
+    /**
+     * 标记和删除消息 (用于首页)
+     */
+    public static final String EDIT_AND_DEL_MSG = "wkzs-restful/message/newsEditStatus";
+
+
+
 
     public static final  String ICON_URL = "http://f12.baidu.com/it/u=4021724095,1277693203&fm=72";
 

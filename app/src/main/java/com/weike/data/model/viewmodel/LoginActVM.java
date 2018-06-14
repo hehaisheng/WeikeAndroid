@@ -214,7 +214,7 @@ public class LoginActVM extends BaseVM {
                 LogUtil.d("acthome","---->" + loginByPwdResp.getDatas().getToken());
                 String token = loginByPwdResp.getDatas().getToken();
                 SpUtil.getInstance().saveCurrentToken(token); //登录保存令牌
-                ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class);
+                ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class,true);
             }
 
             @Override
@@ -256,7 +256,7 @@ public class LoginActVM extends BaseVM {
             protected void onSuccess(BaseResp<LoginByPwdResp> loginByPwdResp) throws Exception {
                 String token = loginByPwdResp.getDatas().token;
                 SpUtil.getInstance().saveCurrentToken(token); //登录保存令牌
-                ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class);
+                ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class,true);
             }
 
             @Override

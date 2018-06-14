@@ -46,7 +46,7 @@ public class GuideActivity extends BaseActivity {
 
     @OnClick(R.id.btn_goto_next)
     public void onClick(View view) {
-        ActivitySkipUtil.skipAnotherAct(this,LoginActivity.class);
+        ActivitySkipUtil.skipAnotherAct(this,LoginActivity.class,true);
         SpUtil.getInstance().saveIsFirstOpen();
 
     }

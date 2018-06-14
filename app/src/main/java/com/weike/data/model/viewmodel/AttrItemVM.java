@@ -15,7 +15,15 @@ public class AttrItemVM {
 
     public ObservableField<Boolean> isDisplayReduce = new ObservableField<>(false);
 
+    public OnReduceListener listener;
 
+    public void setListener(OnReduceListener listener) {
+        this.listener = listener;
+    }
+
+    public void onReduce(){
+        listener.onReduce(this);
+    }
 
     public interface OnReduceListener{
         void onReduce(AttrItemVM vm);
