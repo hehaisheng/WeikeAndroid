@@ -6,5 +6,5 @@ import com.weike.data.base.BaseResp;
  * Created by LeoLu on 2018/6/14.
  */
 
-public class EditAndDelMsgResp extends BaseResp {
+public class DeleteHomeMsgResp extends BaseResp {
 }

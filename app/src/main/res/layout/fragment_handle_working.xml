@@ -1,11 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/color_white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_all_bg ">
+
+
+    <LinearLayout
+        android:id="@+id/ll_handle_working_sort"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/checkbox_sort_of_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_handle_working_selector_left"
+            android:textColor="@drawable/selector_handle_working_text_selector"
+            android:button="@null"
+            android:text="日期排序"
+            android:checked="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            />
+
+        <CheckBox
+            android:id="@+id/checkbox_sort_of_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_handle_working_selector_right"
+            android:textColor="@drawable/selector_handle_working_text_selector"
+            android:button="@null"
+
+            android:text="等级排序"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            />
+
+    </LinearLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/loadingView"
+            android:visibility="gone"
+            layout="@layout/widget_layout_loadding"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/reycle_handler_working"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </android.support.v7.widget.RecyclerView>
+
+        <ExpandableListView
+            android:id="@+id/lv_handler_working"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </ExpandableListView>
+
+    </FrameLayout>
 
 </LinearLayout>

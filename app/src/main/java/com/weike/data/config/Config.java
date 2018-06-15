@@ -134,11 +134,13 @@ public final class Config {
     /**
      * 标记和删除消息 (用于首页)
      */
-    public static final String EDIT_AND_DEL_MSG = "wkzs-restful/message/newsEditStatus";
+    public static final String DELETE_HOME_MSG = "wkzs-restful/message/deleteRemindByClient";
+
+    /**
+     * 获取待办事列表
+     */
+    public static final String GET_TO_DO_LIST = "wkzs-restful/log/selectToDoList";
 
 
-
-
-    public static final  String ICON_URL = "http://f12.baidu.com/it/u=4021724095,1277693203&fm=72";
 
 }

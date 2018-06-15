@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="handleWorkItemVM"
+            type="com.weike.data.model.viewmodel.HandleWorkItemVM"></variable>
+
+    </data>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/color_all_bg"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btn_click_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/color_touming"
+                android:layout_alignParentLeft="true"
+                android:src="@mipmap/ic_right_blue"
+                />
+
+            <ImageButton
+                android:id="@+id/btn_click_delete"
+                android:layout_marginLeft="10dp"
+                android:layout_alignBottom="@+id/btn_click_right"
+                android:layout_toRightOf="@+id/btn_click_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/color_touming"
+                android:src="@mipmap/ic_edit_gray_2"
+                />
+
+            <ImageButton
+                android:id="@+id/btn_click_modify"
+                android:layout_toRightOf="@+id/btn_click_delete"
+                android:background="@color/color_touming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_del"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{handleWorkItemVM.userName}"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_bebebe"
+
+                android:text="@{handleWorkItemVM.time,default=1231}"
+                />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_white"
+            android:text="2312"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
+</layout>

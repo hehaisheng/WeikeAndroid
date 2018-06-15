@@ -29,6 +29,7 @@ import com.mylhyl.circledialog.params.InputParams;
 import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
 import com.mylhyl.circledialog.view.listener.OnInputClickListener;
+import com.orhanobut.logger.AndroidLogAdapter;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
 import com.weike.data.adapter.BaseDataBindingAdapter;
@@ -53,6 +54,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,6 +109,8 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
         req.token = SpUtil.getInstance().getCurrentToken();
         req.attributesName = content;
         req.sign = SignUtil.signData(req);
+
+
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.ADD_ATTR)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddAttrResp>>(){

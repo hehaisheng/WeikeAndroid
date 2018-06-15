@@ -74,12 +74,6 @@
         <activity android:name=".business.log.AddLogActivity"
             android:windowSoftInputMode="adjustPan"
             ></activity>
-        <activity android:name=".business.working.HandleWorkDisplaySettingActivity"
-            android:windowSoftInputMode="adjustPan"
-            >
-
-
-        </activity>
         <activity android:name=".business.client.AddClientActivity"
             android:windowSoftInputMode="adjustPan">
 
@@ -104,7 +98,7 @@
         <activity android:name=".business.setting.AttrManagerActivity"></activity>
         <activity android:name=".business.setting.HandleWorkingDisplayActivity"></activity>
         <activity android:name=".business.setting.ResetPwdActivity"></activity>
-
+        <activity android:name=".business.working.HandleWorkingActivity"></activity>
 
     </application>
 

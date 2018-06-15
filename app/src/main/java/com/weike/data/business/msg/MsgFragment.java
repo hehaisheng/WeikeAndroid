@@ -1,7 +1,5 @@
 package com.weike.data.business.msg;
 
-import android.app.Activity;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -27,26 +25,20 @@ import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.config.Config;
-import com.weike.data.model.req.EditAndDelMsgReq;
+import com.weike.data.model.req.DeleteHomeMsgReq;
 import com.weike.data.model.req.GetMsgListReq;
 import com.weike.data.model.resp.GetMsgListResp;
 import com.weike.data.model.viewmodel.MessageItemVM;
 import com.weike.data.network.RetrofitFactory;
-import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
-import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.net.ssl.SSLPeerUnverifiedException;
-
-import butterknife.ButterKnife;
 
 /**
  * Created by LeoLu on 2018/5/21.
@@ -121,6 +113,7 @@ public class MsgFragment extends BaseFragment {
 
                 for (int i = 0; i < getMsgListRespBaseResp.getDatas().messageGroupVmList.size(); i++) {
                     MessageItemVM vm = new MessageItemVM((FragmentActivity) context);
+                    vm.clientId = getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientId;
                     vm.title.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientName);
                     vm.content.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).messageContent);
                     vm.iconUrl.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).photoUrl);
@@ -147,19 +140,17 @@ public class MsgFragment extends BaseFragment {
 
         for (int i = 0; i < vms.size(); i++) {
             if (vms.get(i).isCheck.get()) {
-                LogUtil.d("MsgFragment", "delete:" + vms.get(i).msgId);
-                ids.add(vms.get(i).msgId);
+                ids.add(vms.get(i).clientId);
             }
         }
 
 
-        EditAndDelMsgReq req = new EditAndDelMsgReq();
-        req.status = state;
-        req.id = JsonUtil.GsonString(ids);
+        DeleteHomeMsgReq req = new DeleteHomeMsgReq();
+        req.clientId = JsonUtil.GsonString(ids).replace("\"","").replace("[","").replace("]","");
         req.sign = SignUtil.signData(req);
 
 
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.EDIT_AND_DEL_MSG)
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.DELETE_HOME_MSG)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
 
                 })).subscribe(new BaseObserver<BaseResp>() {

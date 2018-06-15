@@ -9,6 +9,8 @@ import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseResp;
 import com.weike.data.model.resp.LoginByPwdResp;
 
+import java.util.logging.Logger;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
@@ -43,7 +45,7 @@ public class TransformerUtils {
 
 
                             T t = JsonUtil.GsonToBean(responseStr , typeToken.getType());
-                            LogUtil.d("Transformer",responseStr);
+                            com.orhanobut.logger.Logger.json(responseStr);
                             return Observable.just(t);
                         }catch (Exception e) {
                             return Observable.error(new RuntimeException("错误"));
