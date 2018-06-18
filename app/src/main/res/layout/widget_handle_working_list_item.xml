@@ -11,10 +11,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/color_all_bg"
-    android:layout_height="match_parent">
+
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -25,56 +27,89 @@
             android:layout_height="wrap_content">
 
             <ImageButton
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
                 android:id="@+id/btn_click_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/color_touming"
                 android:layout_alignParentLeft="true"
                 android:src="@mipmap/ic_right_blue"
+                loadImageId="@{handleWorkItemVM.readClickBg}"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
+                android:onClick="@{()->handleWorkItemVM.readMsg()}"
                 />
 
             <ImageButton
                 android:id="@+id/btn_click_delete"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="19dp"
                 android:layout_alignBottom="@+id/btn_click_right"
                 android:layout_toRightOf="@+id/btn_click_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/color_touming"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
+                android:onClick="@{()->handleWorkItemVM.deleteMsg()}"
                 android:src="@mipmap/ic_edit_gray_2"
                 />
 
             <ImageButton
                 android:id="@+id/btn_click_modify"
+                android:layout_alignBottom="@+id/btn_click_right"
+                android:layout_marginLeft="19dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
                 android:layout_toRightOf="@+id/btn_click_delete"
                 android:background="@color/color_touming"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_del"
+                android:onClick="@{()->handleWorkItemVM.modifyMsg()}"
                 />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{handleWorkItemVM.userName}"
-                />
+                android:id="@+id/tv_handle_working_time"
 
-            <TextView
+                android:layout_alignBottom="@+id/btn_click_right"
                 android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_bebebe"
+                android:text="@{handleWorkItemVM.userName,default=12321312}"
+                android:layout_marginRight="10dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_handle_working_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/tv_handle_working_time"
+                android:layout_alignBottom="@+id/tv_handle_working_time"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/color_41BCF6"
 
                 android:text="@{handleWorkItemVM.time,default=1231}"
                 />
 
         </RelativeLayout>
 
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_white"
-            android:text="2312"
+            android:text="@{handleWorkItemVM.content}"
             android:layout_marginLeft="10dp"
+            android:layout_marginBottom="13dp"
             android:layout_marginRight="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

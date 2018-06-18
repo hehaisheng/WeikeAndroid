@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="relateClientItemVM"
+            type="com.weike.data.model.viewmodel.RelateCLientItemVM"/>
+
+    </data>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_margin="10dp"
+    android:layout_height="wrap_content">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:minWidth="80dp"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_widget_add_log_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{relateClientItemVM.name}"
+        android:textSize="12sp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:paddingTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:paddingBottom="5dp"
+
+        />
+    <ImageView
+        android:id="@+id/iv_reduce"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="right|center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:src="@mipmap/ic_redue"
+        android:onClick="@{()->relateClientItemVM.onReduce()}"
+        android:layout_marginLeft="10dp"
+        />
+    </android.support.v7.widget.CardView>
+</LinearLayout>
+</layout>

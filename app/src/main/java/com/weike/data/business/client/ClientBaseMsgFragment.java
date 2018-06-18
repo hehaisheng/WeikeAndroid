@@ -19,6 +19,8 @@ import com.weike.data.util.ToastUtil;
 
 import java.util.HashMap;
 
+import okhttp3.internal.http.RetryAndFollowUpInterceptor;
+
 /**
  * Created by LeoLu on 2018/6/4.
  * 客户基本信息Fragment
@@ -27,12 +29,14 @@ import java.util.HashMap;
 public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickListener {
 
     private LinearLayout phoneLinearLayout;
+    private LinearLayout relateClient;
+
+
     public ClientBaseMsgVM clientBaseMsgVM;
 
     public FragmentClientBaseMsgBinding binding;
 
     HashMap<String , View> phoneNumMap = new HashMap<>();
-
 
 
     @Override
@@ -58,17 +62,20 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     }
 
+    private void initClientMsg(){
+
+    }
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_client_base_msg,container,false);
-        clientBaseMsgVM = new ClientBaseMsgVM();
+        clientBaseMsgVM = new ClientBaseMsgVM(getActivity());
         binding.setClientBaseVM(clientBaseMsgVM);
 
 
-        binding.icFragmentClientBaseAddphone.setOnClickListener(this);
+
 
 
         return binding.getRoot();
@@ -80,25 +87,6 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (binding.llFragmentClientAddPhone.getChildCount() >= 6) {
-            ToastUtil.showToast("最多添加5个手机号码");
-            return;
-        } else {
-            View view = LayoutInflater.from(context).inflate(R.layout.widget_layout_add_phone,null);
-            ImageView iv = view.findViewById(R.id.ic_widget_add_phone);
-            iv.setTag("" + phoneNumCount);
-            iv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    View view = phoneNumMap.get(v.getTag());
 
-                    binding.llFragmentClientAddPhone.removeView(view);
-                }
-            });
-
-            phoneNumMap.put(iv.getTag().toString() , view);
-            binding.llFragmentClientAddPhone.addView(view);
-            phoneNumCount++;
-        }
     }
 }

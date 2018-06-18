@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/color_all_bg ">
+    android:background="@color/color_all_bg">
 
 
     <LinearLayout
@@ -67,12 +67,18 @@
         </android.support.v7.widget.RecyclerView>
 
         <ExpandableListView
+            android:visibility="gone"
             android:id="@+id/lv_handler_working"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
 
         </ExpandableListView>
+
+        <include
+            android:id="@+id/loaddingview"
+            layout="@layout/widget_layout_loadding"
+            />
 
     </FrameLayout>
 

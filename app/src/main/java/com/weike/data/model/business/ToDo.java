@@ -10,37 +10,61 @@ import java.io.Serializable;
  */
 
 public class ToDo implements Parcelable{
-    /**
-     * 时间
-     */
-    public String time;
 
+    /**
+     * 待办事时间
+     */
+    public String toDoDate = null ;
     /**
      * 内容
      */
-    public String content;
+    public String content = null;
 
     /**
-     * 优先级
+     * 优先级 1 == 高 2 == 中 3== 低
      */
-    public int priority;
+    public int priority = 1;
 
     /*
      * 是否重复
      */
-    public boolean IsRepeat;
+    public int isRepeat = 1; // 重复 2 重复
+
 
     /**
-     * 提醒时间
+     * 是否提醒
      */
-    public int remindInvTime;
+    public int isRemind = 1; // 1提醒 2不提醒
+
+    /**
+     * 重复提醒日期类型
+     */
+    public int dateType = 1;
+
+    /**
+     * 重复提醒数量
+     */
+    public int repeatIntervalHour = 1;
+
+    /**
+     * 提前提醒几天
+     */
+    public int beforeRemindDay = 1;
+
+    public ToDo(){
+
+    }
+
 
     protected ToDo(Parcel in) {
-        time = in.readString();
+        toDoDate = in.readString();
         content = in.readString();
         priority = in.readInt();
-        IsRepeat = in.readByte() != 0;
-        remindInvTime = in.readInt();
+        isRepeat = in.readInt();
+        isRemind = in.readInt();
+        dateType = in.readInt();
+        repeatIntervalHour = in.readInt();
+        beforeRemindDay = in.readInt();
     }
 
     public static final Creator<ToDo> CREATOR = new Creator<ToDo>() {
@@ -62,10 +86,13 @@ public class ToDo implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(time);
+        dest.writeString(toDoDate);
         dest.writeString(content);
         dest.writeInt(priority);
-        dest.writeByte((byte) (IsRepeat ? 1 : 0));
-        dest.writeInt(remindInvTime);
+        dest.writeInt(isRepeat);
+        dest.writeInt(isRemind);
+        dest.writeInt(dateType);
+        dest.writeInt(repeatIntervalHour);
+        dest.writeInt(beforeRemindDay);
     }
 }

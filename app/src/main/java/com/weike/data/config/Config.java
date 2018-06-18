@@ -141,6 +141,19 @@ public final class Config {
      */
     public static final String GET_TO_DO_LIST = "wkzs-restful/log/selectToDoList";
 
+    /**
+     * 编辑 和 删除 一个待办事项
+     */
+    public static final String EDIT_AND_DEL_TODO_STATUS = "wkzs-restful/log/editToDoType";
 
+    /**
+     * 添加日志
+     */
+    public static final String ADD_LOG = "wkzs-restful/log/addLog";
+
+    /**
+     * 获取客户详情
+     */
+    public static final String GET_CLIENT_DETAIL = "wkzs-restful/client/selectClient";
 
 }

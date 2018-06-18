@@ -33,7 +33,7 @@ public class GuideActivity extends BaseActivity {
     private List<View>  viewData = new ArrayList<>();
 
     private static final int[] ids = {
-            R.mipmap.bg_opening_1,R.mipmap.bg_opening_2,R.mipmap.bg_opening_3
+            R.mipmap.bg_opening_1,R.mipmap.bg_opening_2,R.mipmap.bg_opening_3,R.mipmap.bg_opening_4
     };
 
     private ViewPagerGuideAdapter guideAdapter;

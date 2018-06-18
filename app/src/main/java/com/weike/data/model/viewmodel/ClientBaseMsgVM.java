@@ -1,11 +1,18 @@
 package com.weike.data.model.viewmodel;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.ObservableField;
 
 import com.weike.data.base.BaseVM;
+import com.weike.data.util.PickerUtil;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import cn.addapp.pickers.listeners.OnItemPickListener;
+import cn.addapp.pickers.picker.DateTimePicker;
+import cn.addapp.pickers.picker.SinglePicker;
 
 /**
  * Created by LeoLu on 2018/6/7.
@@ -73,9 +80,21 @@ public class ClientBaseMsgVM extends BaseVM {
     public ObservableField<String> idCard = new ObservableField<>();
 
     /**
+     * 用户身高
+     */
+    public ObservableField<String> clientHeight = new ObservableField<>();
+
+    /**
+     * 用户体重
+     */
+    public ObservableField<String> clientWidght = new ObservableField<>();
+
+    /**
      * 是否能点击
      */
     public ObservableField<Boolean> canClickable = new ObservableField<>(false);
+
+
 
 
     /**
@@ -83,6 +102,41 @@ public class ClientBaseMsgVM extends BaseVM {
      */
     public ObservableField<Boolean> isModify = new ObservableField<>();
 
+
+    public ClientBaseMsgVM(Activity activity) {
+        this.activity = activity;
+    }
+
+    public void birthDayClick(){
+        PickerUtil.onYearMonthDayTimePicker(null, new DateTimePicker.OnYearMonthDayTimePickListener() {
+            @Override
+            public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
+                birthday.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
+            }
+        },activity);
+    }
+
+    public void sexClick(){
+        SinglePicker<String> picker = new SinglePicker<String>(activity,new String[]{"男","女","保密"});
+
+        PickerUtil.onConstellationPicker(null, picker, new OnItemPickListener<String>() {
+            @Override
+            public void onItemPicked(int i, String s) {
+                sex.set(s);
+            }
+        });
+    }
+
+    public void marryClick(){
+        SinglePicker<String> picker = new SinglePicker<String>(activity,new String[]{"已婚","未婚","保密"});
+
+        PickerUtil.onConstellationPicker(null, picker, new OnItemPickListener<String>() {
+            @Override
+            public void onItemPicked(int i, String s) {
+                marry.set(s);
+            }
+        });
+    }
 
     public void goToBirthDayRemind(){
         Intent intent = new Intent();

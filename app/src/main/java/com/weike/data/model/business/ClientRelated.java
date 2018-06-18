@@ -5,5 +5,7 @@ package com.weike.data.model.business;
  */
 public class ClientRelated {
 
-    public String  relatedClientId;
+    public String  clientId;
+
+
 }

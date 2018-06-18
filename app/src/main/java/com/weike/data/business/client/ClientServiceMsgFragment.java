@@ -10,8 +10,12 @@ import android.view.ViewGroup;
 
 import com.weike.data.R;
 import com.weike.data.base.BaseFragment;
+import com.weike.data.base.BaseReq;
 import com.weike.data.databinding.FragmentClientServiceMsgBinding;
+import com.weike.data.model.business.ToDo;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
+
+import java.util.HashMap;
 
 /**
  * Created by LeoLu on 2018/6/4.
@@ -20,7 +24,10 @@ import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 public class ClientServiceMsgFragment extends BaseFragment {
 
     FragmentClientServiceMsgBinding binding;
-    ClientServiceMsgVM vm;
+
+    public ClientServiceMsgVM vm;
+
+    HashMap<String , ToDo> producetHashMap = new HashMap<>();
 
     @Override
     protected int setUpLayoutId() {
@@ -32,18 +39,14 @@ public class ClientServiceMsgFragment extends BaseFragment {
 
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_client_service_msg,container,false);
         vm = new ClientServiceMsgVM();
-
-        vm.carType.set("奥迪");
-        vm.financialAssets.set("1000");
-        vm.clickable.set(true);
-        vm.moneyIn.set("100");
-        vm.liabilities.set("100");
         binding.setClientServiceVM(vm);
 
         return binding.getRoot();

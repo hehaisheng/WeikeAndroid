@@ -6,6 +6,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.weike.data.R;
+import com.zhy.view.flowlayout.TagFlowLayout;
+
+import java.util.List;
 
 /**
  * Created by LeoLu on 2018/5/31.
@@ -28,4 +31,6 @@ public class BindingUtil {
     public static void loadImageId(ImageView imageView , int id) {
         imageView.setImageResource(id);
     }
+
+
 }

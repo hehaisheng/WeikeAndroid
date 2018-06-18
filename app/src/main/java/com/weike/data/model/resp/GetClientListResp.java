@@ -14,7 +14,7 @@ public class GetClientListResp extends BaseResp{
 
 
 
-    public class ClientListSub{
+    public static class ClientListSub{
 
         /**
          * ID

@@ -6,7 +6,7 @@ android {
         weike {
             keyAlias 'weike'
             keyPassword '123456789'
-            storeFile file('E:/WKApp/app/keystore/weike.jks')
+            storeFile file('./keystore/weike.jks')
             storePassword '123456789'
         }
     }

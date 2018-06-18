@@ -22,105 +22,24 @@
         android:orientation="vertical">
 
 
-        <android.support.v7.widget.CardView
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            >
+            android:id="@+id/add_relate_client"
+            android:minHeight="50dp"
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="50dp">
+        </android.support.v7.widget.RecyclerView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:text="关联客户"
-                    android:textColor="@color/color_content"
-
-                    />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_main_page_search"
-                    android:gravity="center|left"
-                    android:hint="请选择"
-                    android:paddingLeft="10dp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/ic_add_green"
-
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/ic_redue"
-
-                    />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-
-        <android.support.v7.widget.CardView
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="5dp">
+            android:id="@+id/add_phone_num"
+            android:minHeight="50dp"
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/ll_fragment_client_add_phone"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:paddingBottom="3dp"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="50dp">
-
-                    <ImageView
-                        android:id="@+id/ic_fragment_client_base_addphone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="15dp"
-                        android:minWidth="20dp"
-                        android:src="@mipmap/ic_add_green" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:text="添加电话"
-                        android:textSize="15sp" />
-                </LinearLayout>
+        </android.support.v7.widget.RecyclerView>
 
 
-            </LinearLayout>
 
-        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -333,7 +252,7 @@
                     android:layout_marginBottom="15dp"
                     />
 
-                <EditText
+                <TextView
                     android:id="@+id/ed_sex"
                     android:background="@color/color_touming"
                     android:layout_marginLeft="20dp"
@@ -345,6 +264,7 @@
                     android:hint="请选择"
                     android:text="@={clientBaseVM.sex}"
                     android:textSize="15sp"
+                    android:onClick="@{()->clientBaseVM.sexClick()}"
                     android:layout_height="wrap_content" />
 
                 <View
@@ -368,10 +288,10 @@
                     android:layout_marginBottom="15dp"
                     />
 
-                <EditText
+                <TextView
                     android:id="@+id/ed_birthday"
                     android:background="@color/color_touming"
-                    android:layout_marginTop="15dp"
+                    android:paddingTop="15dp"
                     android:layout_toRightOf="@+id/tv_birthday"
                     android:layout_alignBottom="@+id/tv_birthday"
                     android:layout_width="wrap_content"
@@ -379,6 +299,7 @@
                     android:layout_marginLeft="20dp"
                     android:textSize="15sp"
                     android:hint="请选择"
+                    android:onClick="@{()->clientBaseVM.birthDayClick()}"
                     android:text="@={clientBaseVM.birthday}"
                     android:layout_height="wrap_content" />
 
@@ -412,7 +333,7 @@
                     android:layout_width="wrap_content"
                     android:minWidth="70dp"
                     android:layout_height="wrap_content"
-                    android:text="性别"
+                    android:text="身份证号"
                     android:layout_marginLeft="15dp"
                     android:textColor="@color/color_content"
                     android:layout_marginTop="18dp"
@@ -424,11 +345,12 @@
                     android:background="@color/color_touming"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="15dp"
+                    android:paddingTop="15dp"
                     android:layout_alignBottom="@+id/tv_id_card_num"
                     android:layout_toRightOf="@+id/tv_sex"
                     android:textSize="15sp"
                     android:hint="请选择"
+
                     android:text="@={clientBaseVM.idCard}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -458,15 +380,17 @@
                     android:layout_marginBottom="15dp"
                     />
 
-                <EditText
+                <TextView
                     android:id="@+id/ed_marry"
                     android:background="@color/color_touming"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="15dp"
+                    android:paddingTop="15dp"
                     android:layout_alignBottom="@+id/tv_marry"
                     android:hint="请选择"
                     android:textSize="15sp"
+                    android:text="@={clientBaseVM.marry}"
+                    android:onClick="@{()->clientBaseVM.marryClick()}"
                     android:layout_toRightOf="@+id/tv_marry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -547,9 +471,122 @@
                     android:layout_alignBottom="@+id/ed_birth_girl"
                     android:layout_toRightOf="@+id/ed_birth_girl"
                     />
+
+
+                <View
+                    android:id="@+id/view_br2_line_5"
+                    android:layout_width="match_parent"
+                    android:background="@color/color_line"
+
+                    android:layout_below="@+id/tv_birth"
+                    android:layout_height="1dp"/>
+
+
+
+                <TextView
+                    android:layout_below="@+id/view_br2_line_5"
+                    android:id="@+id/tv_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="身高"
+                    android:layout_marginLeft="15dp"
+                    android:minWidth="70dp"
+                    android:textColor="@color/color_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="15dp"
+                    />
+
+                <EditText
+                    android:id="@+id/ed_height"
+                    android:background="@color/color_touming"
+                    android:hint="请输入"
+                    android:minWidth="50dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_alignBottom="@+id/tv_height"
+                    android:textSize="15sp"
+                    android:maxLength="3"
+                    android:text="@={clientBaseVM.clientHeight}"
+                    android:layout_toRightOf="@+id/tv_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CM"
+                    android:textColor="@color/color_content"
+                    android:layout_alignBottom="@+id/tv_height"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
+                    android:paddingRight="20dp"
+                    android:layout_toRightOf="@+id/ed_birth_son"
+                    />
+
+
+                <View
+                    android:id="@+id/view_br2_line_6"
+                    android:layout_width="match_parent"
+                    android:background="@color/color_line"
+
+                    android:layout_below="@+id/tv_height"
+                    android:layout_height="1dp"/>
+
+
+
+                <TextView
+                    android:layout_below="@+id/view_br2_line_6"
+                    android:id="@+id/tv_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="体重"
+                    android:layout_marginLeft="15dp"
+                    android:minWidth="70dp"
+                    android:textColor="@color/color_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="15dp"
+                    />
+
+                <EditText
+                    android:id="@+id/ed_weight"
+                    android:background="@color/color_touming"
+                    android:hint="请输入"
+                    android:minWidth="50dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_alignBottom="@+id/tv_weight"
+                    android:textSize="15sp"
+                    android:maxLength="3"
+                    android:text="@={clientBaseVM.clientWidght}"
+                    android:layout_toRightOf="@+id/tv_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="KG"
+                    android:textColor="@color/color_content"
+                    android:layout_alignBottom="@+id/ed_weight"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
+                    android:paddingRight="20dp"
+                    android:layout_toRightOf="@+id/ed_birth_son"
+                    />
+
+
+
+
+
+
+
             </RelativeLayout>
 
         </android.support.v7.widget.CardView>
+
+
 
 
         <android.support.v7.widget.CardView

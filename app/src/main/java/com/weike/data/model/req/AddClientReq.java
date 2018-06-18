@@ -68,16 +68,16 @@ public class AddClientReq extends BaseReq{
     /**
      * 生日json
      */
-    public BirthDayBean birthdayJson;
+    public String birthdayJson; //BirthDayBean
 
     /**
      * 客户关联ID
      */
-    public List<ClientRelated> relatedClientId;
+    public String relatedClientId;
     /**
      * 额外的标签集合
      */
-    public List<AnotherAttributes> attributesValue;
+    public String attributesValue;
 
 
     // 服务信息
@@ -97,5 +97,5 @@ public class AddClientReq extends BaseReq{
     /**
      * 产品字符串 集合
      */
-    public List<Product> product; //
+    public String  product; //
 }

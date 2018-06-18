@@ -43,6 +43,8 @@ import com.weike.data.model.business.Client;
 import com.weike.data.model.req.AddClientReq;
 import com.weike.data.model.resp.AddClientResp;
 import com.weike.data.model.viewmodel.AddClientActVM;
+import com.weike.data.model.viewmodel.ClientBaseMsgVM;
+import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.LQRPhotoSelectUtils;
 import com.weike.data.util.LogUtil;
@@ -80,6 +82,7 @@ public class AddClientActivity extends BaseActivity {
 
     public AddClientActVM vm;
 
+    private AddClientReq addClientReq = new AddClientReq();
 
 
     @PermissionSuccess(requestCode = LQRPhotoSelectUtils.REQ_TAKE_PHOTO)
@@ -105,8 +108,19 @@ public class AddClientActivity extends BaseActivity {
 
     }
 
+    /**
+     * 如果有客户ID 那么就是修改
+     */
+    public String clientId;
+
+    /**
+     * 当前的position
+     */
     private int position = 0;
 
+    /**
+     * tabLayout标题
+     */
     public String[] titles = {"基本信息","服务信息","跟踪日志"};
 
     private ArrayList<BaseFragment> fragments = new ArrayList<>();
@@ -121,6 +135,7 @@ public class AddClientActivity extends BaseActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intent);
     }
+
 
 
 
@@ -145,7 +160,6 @@ public class AddClientActivity extends BaseActivity {
             @Override
             public void onFinish(File outputFile, Uri outputUri) {
                 // 4、当拍照或从图库选取图片成功后回调
-
                 vm.photoUrl.set(outputUri.getPath());
             }
         }, true);
@@ -185,6 +199,7 @@ public class AddClientActivity extends BaseActivity {
 
 
 
+
     private void addFragment() {
         binding.viewpagerActivityClientAdd.setNoScroll(true);
         ClientBaseMsgFragment clientBaseMsgFragment = new ClientBaseMsgFragment();
@@ -215,6 +230,9 @@ public class AddClientActivity extends BaseActivity {
     }
 
 
+    private void initMsg(){
+
+    }
 
     @Override
     public void onRightClick() {
@@ -222,15 +240,33 @@ public class AddClientActivity extends BaseActivity {
 
         isModify = isModify ? false : true;
 
-        if(isModify == true) {
 
+
+        if (clientId == null) {
+
+
+        } else {
+            modifyClient(null,null);
         }
 
-        setRightText(isModify ? "完成":"编辑");
+
+
         fragments.get(position).onRightClick(isModify);
     }
 
-    private void addClient(Client client){
+    /**
+     * 修改客户
+     */
+    private void modifyClient(ClientBaseMsgVM baseMsgVM, ClientServiceMsgVM serviceMsgVM){
+
+    }
+
+    /**
+     * 服务信息 和 客户信息
+     * @param vm
+     * @param serviceMsgVM
+     */
+    private void addClient(ClientBaseMsgVM vm , ClientServiceMsgVM serviceMsgVM){
         AddClientReq req = new AddClientReq();
         req.OnePhoneNumber = "15692022243";
         req.userName = "test11111";

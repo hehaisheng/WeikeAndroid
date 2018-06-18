@@ -6,6 +6,17 @@ package com.weike.data.model.business;
  * 用于响应作用的toDo类
  */
 public class ToDoResp {
+
+    public int priority;
+
+    /**
+     * 重复提醒时间类型 1 天 2周 3月 4年
+     */
+    public int dateType;
+
+    /**
+     * 事项时间
+     */
     public String toDoDate;
 
     /**
@@ -22,5 +33,11 @@ public class ToDoResp {
      * 事项内容
      */
     public String clientName;
+
+    /**
+     * 提前提醒时间
+     */
+    public int beforeRemindDay;
+
 
 }
