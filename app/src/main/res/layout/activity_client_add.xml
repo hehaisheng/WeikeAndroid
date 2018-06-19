@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
+        <import type="android.view.View"></import>
         <variable
             name="addClientVM"
             type="com.weike.data.model.viewmodel.AddClientActVM"/>
@@ -64,13 +65,14 @@
                     android:textColor="@color/color_content"
                     android:textSize="12sp"
                     android:paddingLeft="10dp"
+                    updateEditInput="@{addClientVM.isModify}"
                     android:text="@={addClientVM.userName}"
                     android:background="@color/color_touming"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/tv_label_add"
-                    android:text="添加标签"
+                    android:text="@{addClientVM.label}"
                     android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -89,6 +91,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:visibility="@{addClientVM.isModify ? View.VISIBLE:View.GONE}"
                 android:background="@color/color_line"
                 />
 
@@ -98,6 +101,7 @@
                 android:minHeight="40dp"
                 android:hint="添加备注"
                 android:singleLine="true"
+                updateEditInput="@{addClientVM.isModify}"
                 android:textSize="12sp"
                 android:text="@={addClientVM.remarks}"
                 android:textColor="@color/color_content"
@@ -107,6 +111,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:visibility="@{addClientVM.isModify ? View.VISIBLE:View.GONE}"
                 android:background="@color/color_line"
                 android:layout_marginBottom="10dp"
                 />

@@ -16,5 +16,7 @@ public class MainPageDataResp extends BaseResp {
 
     public class BannerUrl{
         public String imgUrl;
+
+        public String linkUrl;
     }
 }

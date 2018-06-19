@@ -1,626 +1,632 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout>
+
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
+
         <variable
             name="clientBaseVM"
-            type="com.weike.data.model.viewmodel.ClientBaseMsgVM"/>
+            type="com.weike.data.model.viewmodel.ClientBaseMsgVM" />
 
     </data>
 
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-
-        <android.support.v7.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:id="@+id/add_relate_client"
-            android:minHeight="50dp"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        </android.support.v7.widget.RecyclerView>
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:id="@+id/add_phone_num"
-            android:minHeight="50dp"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.RecyclerView>
-
-
-
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="5dp">
-
-          <RelativeLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-
-              <TextView
-                  android:id="@+id/tv_email_title"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="电子邮箱"
-                  android:layout_marginLeft="15dp"
-                  android:textColor="@color/color_content"
-                  android:layout_marginTop="18dp"
-
-                  android:minWidth="70dp"
-                  android:layout_marginBottom="15dp"
-                  />
-
-              <EditText
-                  android:id="@+id/ed_email_content"
-                  android:background="@color/color_touming"
-                  android:layout_marginLeft="20dp"
-                  android:layout_marginRight="20dp"
-                  android:hint="请输入你的邮箱"
-                  android:textSize="15sp"
-                  android:layout_alignBottom="@+id/tv_email_title"
-                  android:layout_marginTop="15dp"
-                  android:text="@={clientBaseVM.email}"
-                  android:layout_toRightOf="@+id/tv_email_title"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content" />
-
-              <View
-                  android:id="@+id/view_line_1"
-                  android:layout_width="match_parent"
-                  android:background="@color/color_line"
-                  android:layout_below="@+id/tv_email_title"
-                  android:layout_height="1dp"/>
-
-
-              <TextView
-                  android:id="@+id/tv_company"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="公司"
-                  android:minWidth="70dp"
-                  android:layout_below="@+id/view_line_1"
-                  android:layout_marginLeft="15dp"
-                  android:textColor="@color/color_content"
-                  android:layout_marginTop="18dp"
-                  android:layout_marginBottom="15dp"
-                  />
-
-              <EditText
-                  android:id="@+id/ed_company"
-                  android:background="@color/color_touming"
-                  android:layout_marginTop="15dp"
-                  android:layout_toRightOf="@+id/tv_company"
-                  android:layout_alignBottom="@+id/tv_company"
-                  android:text="@{clientBaseVM.companyName}"
-                  android:layout_width="match_parent"
-                  android:textSize="15sp"
-                  android:hint="请输入你的公司名字"
-                  android:layout_marginLeft="20dp"
-                  android:layout_marginRight="20dp"
-                  android:layout_height="wrap_content" />
-
-              <View
-                  android:id="@+id/view_line_2"
-                  android:layout_width="match_parent"
-                  android:background="@color/color_line"
-                  android:layout_below="@+id/tv_company"
-                  android:layout_height="1dp"/>
-
-
-              <TextView
-                  android:id="@+id/tv_job"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="职位"
-                  android:minWidth="70dp"
-                  android:layout_marginLeft="15dp"
-                  android:layout_below="@+id/view_line_2"
-                  android:textColor="@color/color_content"
-                  android:layout_marginTop="18dp"
-                  android:layout_marginBottom="15dp"
-                  />
-
-              <EditText
-                  android:id="@+id/ed_job"
-                  android:layout_marginLeft="20dp"
-                  android:layout_marginRight="20dp"
-                  android:background="@color/color_touming"
-                  android:layout_marginTop="15dp"
-                  android:layout_toRightOf="@+id/tv_job"
-                  android:layout_alignBottom="@+id/tv_job"
-                  android:hint="请输入职位"
-                  android:textSize="15sp"
-                  android:text="@={clientBaseVM.job}"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content" />
-
-              <View
-                  android:id="@+id/view_line_3"
-
-                  android:layout_width="match_parent"
-                  android:background="@color/color_line"
-                  android:layout_below="@+id/tv_job"
-                  android:layout_height="1dp"/>
-
-              <TextView
-                  android:id="@+id/tv_company_location"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="公司地址"
-                  android:minWidth="70dp"
-                  android:layout_marginLeft="15dp"
-                  android:layout_below="@+id/view_line_3"
-                  android:textColor="@color/color_content"
-                  android:layout_marginTop="18dp"
-                  android:layout_marginBottom="15dp"
-                  />
-
-              <EditText
-                  android:id="@+id/ed_company_location"
-                  android:background="@color/color_touming"
-                  android:layout_marginTop="15dp"
-                  android:layout_alignBottom="@+id/tv_company_location"
-                  android:layout_toRightOf="@+id/tv_email_title"
-                  android:layout_width="match_parent"
-                  android:layout_marginLeft="20dp"
-                  android:textSize="15sp"
-                  android:hint="请输入地址"
-                  android:text="@={clientBaseVM.companyLocation}"
-                  android:layout_marginRight="20dp"
-                  android:layout_height="wrap_content" />
-
-              <View
-                  android:id="@+id/view_line_4"
-
-                  android:layout_width="match_parent"
-                  android:background="@color/color_line"
-                  android:layout_below="@+id/tv_company_location"
-                  android:layout_height="1dp"/>
-
-              <TextView
-                  android:id="@+id/tv_home_location"
-                  android:layout_width="wrap_content"
-                  android:layout_below="@+id/view_line_4"
-                  android:layout_height="wrap_content"
-                  android:text="家庭地址"
-                  android:minWidth="70dp"
-
-                  android:layout_marginLeft="15dp"
-                  android:textColor="@color/color_content"
-                  android:layout_marginTop="18dp"
-                  android:layout_marginBottom="15dp"
-                  />
-
-              <EditText
-                  android:id="@+id/ed_home_location"
-                  android:background="@color/color_touming"
-                  android:layout_marginTop="15dp"
-                  android:hint="请输入地址"
-                  android:text="@={clientBaseVM.houseLocation}"
-                  android:textSize="15sp"
-                  android:layout_marginLeft="20dp"
-                  android:layout_marginRight="20dp"
-                  android:layout_alignBottom="@+id/tv_home_location"
-                  android:layout_toRightOf="@+id/tv_email_title"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content" />
-
-
-          </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="5dp">
-
-            <RelativeLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
 
-                <TextView
-                    android:id="@+id/tv_sex"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="性别"
-                    android:minWidth="70dp"
-                    android:layout_marginLeft="15dp"
-                    android:textColor="@color/color_content"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="15dp"
-                    />
-
-                <TextView
-                    android:id="@+id/ed_sex"
-                    android:background="@color/color_touming"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_alignBottom="@+id/tv_sex"
-                    android:layout_toRightOf="@+id/tv_sex"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/add_relate_client"
                     android:layout_width="match_parent"
-                    android:hint="请选择"
-                    android:text="@={clientBaseVM.sex}"
-                    android:textSize="15sp"
-                    android:onClick="@{()->clientBaseVM.sexClick()}"
-                    android:layout_height="wrap_content" />
-
-                <View
-                    android:id="@+id/view_br2_line_1"
-                    android:layout_width="match_parent"
-                    android:background="@color/color_line"
-                    android:layout_below="@+id/tv_sex"
-                    android:layout_height="1dp"/>
-
-
-                <TextView
-                    android:id="@+id/tv_birthday"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="70dp"
-                    android:text="出生日期"
-                    android:layout_below="@+id/view_br2_line_1"
-                    android:layout_marginLeft="15dp"
-                    android:textColor="@color/color_content"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="15dp"
-                    />
+                    android:minHeight="50dp">
 
-                <TextView
-                    android:id="@+id/ed_birthday"
-                    android:background="@color/color_touming"
-                    android:paddingTop="15dp"
-                    android:layout_toRightOf="@+id/tv_birthday"
-                    android:layout_alignBottom="@+id/tv_birthday"
-                    android:layout_width="wrap_content"
-                    android:layout_toLeftOf="@+id/iv_birthday_remind"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="15sp"
-                    android:hint="请选择"
-                    android:onClick="@{()->clientBaseVM.birthDayClick()}"
-                    android:text="@={clientBaseVM.birthday}"
-                    android:layout_height="wrap_content" />
+                </android.support.v7.widget.RecyclerView>
 
-                <ImageView
-                    android:id="@+id/iv_birthday_remind"
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_alignTop="@+id/ed_birthday"
-                    android:layout_alignBottom="@+id/ed_birthday"
-                    android:src="@mipmap/ic_remind"
-                    android:layout_alignParentRight="true"
-                    android:layout_height="wrap_content" />
+            </android.support.v7.widget.CardView>
 
-
-
-                <View
-                    android:id="@+id/view_br2_line_2"
-                    android:layout_width="match_parent"
-                    android:background="@color/color_line"
-
-                    android:layout_below="@+id/tv_birthday"
-                    android:layout_height="1dp"/>
-
-
-
-                <TextView
-                    android:layout_below="@+id/view_br2_line_2"
-                    android:id="@+id/tv_id_card_num"
-                    android:layout_width="wrap_content"
-                    android:minWidth="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="身份证号"
-                    android:layout_marginLeft="15dp"
-                    android:textColor="@color/color_content"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="15dp"
-                    />
-
-                <EditText
-                    android:id="@+id/ed_id_card_num"
-                    android:background="@color/color_touming"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:paddingTop="15dp"
-                    android:layout_alignBottom="@+id/tv_id_card_num"
-                    android:layout_toRightOf="@+id/tv_sex"
-                    android:textSize="15sp"
-                    android:hint="请选择"
-
-                    android:text="@={clientBaseVM.idCard}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-
-
-                <View
-                    android:id="@+id/view_br2_line_3"
-                    android:layout_width="match_parent"
-                    android:background="@color/color_line"
-
-                    android:layout_below="@+id/tv_id_card_num"
-                    android:layout_height="1dp"/>
-
-
-
-                <TextView
-                    android:layout_below="@+id/view_br2_line_3"
-                    android:id="@+id/tv_marry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="婚姻"
-                    android:layout_marginLeft="15dp"
-                    android:minWidth="70dp"
-                    android:textColor="@color/color_content"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="15dp"
-                    />
-
-                <TextView
-                    android:id="@+id/ed_marry"
-                    android:background="@color/color_touming"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:paddingTop="15dp"
-                    android:layout_alignBottom="@+id/tv_marry"
-                    android:hint="请选择"
-                    android:textSize="15sp"
-                    android:text="@={clientBaseVM.marry}"
-                    android:onClick="@{()->clientBaseVM.marryClick()}"
-                    android:layout_toRightOf="@+id/tv_marry"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-
-
-                <View
-                    android:id="@+id/view_br2_line_4"
-                    android:layout_width="match_parent"
-                    android:background="@color/color_line"
-
-                    android:layout_below="@+id/tv_marry"
-                    android:layout_height="1dp"/>
-
-
-
-                <TextView
-                    android:layout_below="@+id/view_br2_line_4"
-                    android:id="@+id/tv_birth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="生育"
-                    android:layout_marginLeft="15dp"
-                    android:minWidth="70dp"
-                    android:textColor="@color/color_content"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="15dp"
-                    />
-
-                <EditText
-                    android:id="@+id/ed_birth_son"
-                    android:background="@color/color_touming"
-                    android:hint="请输入"
-                    android:minWidth="50dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_alignBottom="@+id/tv_birth"
-                    android:textSize="15sp"
-                    android:maxLength="3"
-                    android:text="@={clientBaseVM.son}"
-                    android:layout_toRightOf="@+id/tv_birth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="子"
-                    android:textColor="@color/color_content"
-                    android:layout_alignBottom="@+id/tv_birth"
-                    android:id="@+id/tv_son_title"
-                    android:layout_toRightOf="@+id/ed_birth_son"
-                    />
-
-
-                <EditText
-                    android:id="@+id/ed_birth_girl"
-                    android:background="@color/color_touming"
-                    android:layout_marginLeft="20dp"
-                    android:hint="请输入"
-                    android:minWidth="50dp"
-                    android:maxLength="3"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_alignBottom="@+id/tv_birth"
-                    android:textSize="15sp"
-                    android:text="@={clientBaseVM.gril}"
-                    android:layout_toRightOf="@+id/tv_son_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="女"
-                    android:textColor="@color/color_content"
-                    android:layout_alignBottom="@+id/ed_birth_girl"
-                    android:layout_toRightOf="@+id/ed_birth_girl"
-                    />
-
-
-                <View
-                    android:id="@+id/view_br2_line_5"
-                    android:layout_width="match_parent"
-                    android:background="@color/color_line"
-
-                    android:layout_below="@+id/tv_birth"
-                    android:layout_height="1dp"/>
-
-
-
-                <TextView
-                    android:layout_below="@+id/view_br2_line_5"
-                    android:id="@+id/tv_height"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="身高"
-                    android:layout_marginLeft="15dp"
-                    android:minWidth="70dp"
-                    android:textColor="@color/color_content"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="15dp"
-                    />
-
-                <EditText
-                    android:id="@+id/ed_height"
-                    android:background="@color/color_touming"
-                    android:hint="请输入"
-                    android:minWidth="50dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_alignBottom="@+id/tv_height"
-                    android:textSize="15sp"
-                    android:maxLength="3"
-                    android:text="@={clientBaseVM.clientHeight}"
-                    android:layout_toRightOf="@+id/tv_height"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CM"
-                    android:textColor="@color/color_content"
-                    android:layout_alignBottom="@+id/tv_height"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
-                    android:paddingRight="20dp"
-                    android:layout_toRightOf="@+id/ed_birth_son"
-                    />
-
-
-                <View
-                    android:id="@+id/view_br2_line_6"
-                    android:layout_width="match_parent"
-                    android:background="@color/color_line"
-
-                    android:layout_below="@+id/tv_height"
-                    android:layout_height="1dp"/>
-
-
-
-                <TextView
-                    android:layout_below="@+id/view_br2_line_6"
-                    android:id="@+id/tv_weight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="体重"
-                    android:layout_marginLeft="15dp"
-                    android:minWidth="70dp"
-                    android:textColor="@color/color_content"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="15dp"
-                    />
-
-                <EditText
-                    android:id="@+id/ed_weight"
-                    android:background="@color/color_touming"
-                    android:hint="请输入"
-                    android:minWidth="50dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_alignBottom="@+id/tv_weight"
-                    android:textSize="15sp"
-                    android:maxLength="3"
-                    android:text="@={clientBaseVM.clientWidght}"
-                    android:layout_toRightOf="@+id/tv_weight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="KG"
-                    android:textColor="@color/color_content"
-                    android:layout_alignBottom="@+id/ed_weight"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
-                    android:paddingRight="20dp"
-                    android:layout_toRightOf="@+id/ed_birth_son"
-                    />
-
-
-
-
-
-
-
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-
-
-
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="5dp">
-
-            <LinearLayout
-                android:visibility="@{clientBaseVM.isModify ?View.VISIBLE:View.GONE}"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/add_phone_num"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="管理我的属性"
-                    android:minWidth="70dp"
-                    android:layout_marginLeft="15dp"
-                    android:textColor="@color/color_content"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="15dp"
+                    android:minHeight="50dp">
 
-                    />
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
+                </android.support.v7.widget.RecyclerView>
+            </android.support.v7.widget.CardView>
 
 
-    </LinearLayout>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
 
-</ScrollView>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_email_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+
+                        android:text="电子邮箱"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_email_content"
+                        updateEditInput="@{clientBaseVM.isModify}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_email_title"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_email_title"
+                        android:background="@color/color_touming"
+                        android:hint="请输入你的邮箱"
+                        android:text="@={clientBaseVM.email}"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:id="@+id/view_line_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_email_title"
+                        android:background="@color/color_line" />
+
+
+                    <TextView
+                        android:id="@+id/tv_company"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line_1"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="公司"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_company"
+                        updateEditInput="@{clientBaseVM.isModify}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_company"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_company"
+                        android:background="@color/color_touming"
+                        android:hint="请输入你的公司名字"
+                        android:text="@{clientBaseVM.companyName}"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:id="@+id/view_line_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_company"
+                        android:background="@color/color_line" />
+
+
+                    <TextView
+                        android:id="@+id/tv_job"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line_2"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="职位"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_job"
+                        updateEditInput="@{clientBaseVM.isModify}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_job"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_job"
+                        android:background="@color/color_touming"
+                        android:hint="请输入职位"
+                        android:text="@={clientBaseVM.job}"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:id="@+id/view_line_3"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_job"
+                        android:background="@color/color_line" />
+
+                    <TextView
+                        android:id="@+id/tv_company_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line_3"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="公司地址"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_company_location"
+                        updateEditInput="@{clientBaseVM.isModify}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_company_location"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_email_title"
+                        android:background="@color/color_touming"
+                        android:hint="请输入地址"
+                        android:text="@={clientBaseVM.companyLocation}"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:id="@+id/view_line_4"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_company_location"
+                        android:background="@color/color_line" />
+
+                    <TextView
+                        android:id="@+id/tv_home_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line_4"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="家庭地址"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_home_location"
+                        updateEditInput="@{clientBaseVM.isModify}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_home_location"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_email_title"
+                        android:background="@color/color_touming"
+                        android:hint="请输入地址"
+                        android:text="@={clientBaseVM.houseLocation}"
+                        android:textSize="15sp" />
+
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_sex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="性别"
+                        android:textColor="@color/color_content" />
+
+                    <TextView
+                        android:id="@+id/ed_sex"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_sex"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_sex"
+                        android:background="@color/color_touming"
+                        android:clickable="@{clientBaseVM.isModify}"
+                        android:hint="请选择"
+                        android:onClick="@{()->clientBaseVM.sexClick()}"
+                        android:text="@={clientBaseVM.sex}"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:id="@+id/view_br2_line_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_sex"
+                        android:background="@color/color_line" />
+
+
+                    <TextView
+                        android:id="@+id/tv_birthday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_br2_line_1"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="出生日期"
+                        android:textColor="@color/color_content" />
+
+                    <TextView
+                        android:id="@+id/ed_birthday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_birthday"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_birthday_remind"
+                        android:layout_toRightOf="@+id/tv_birthday"
+                        android:background="@color/color_touming"
+                        android:clickable="@{clientBaseVM.isModify}"
+                        android:hint="请选择"
+                        android:onClick="@{()->clientBaseVM.birthdayTimeClick()}"
+                        android:paddingTop="15dp"
+                        android:text="@={clientBaseVM.birthday}"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_birthday_remind"
+                        loadImageId="@{clientBaseVM.birthdayRemindIcon}"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignBottom="@+id/tv_birthday"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/tv_birthday"
+                        android:onClick="@{()->clientBaseVM.goToBirthDayRemind()}"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp"
+                        android:src="@mipmap/ic_remind" />
+
+
+                    <View
+                        android:id="@+id/view_br2_line_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+
+                        android:layout_below="@+id/tv_birthday"
+                        android:background="@color/color_line" />
+
+
+                    <TextView
+                        android:id="@+id/tv_id_card_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_br2_line_2"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="身份证号"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_id_card_num"
+                        updateEditInput="@{clientBaseVM.isModify}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_id_card_num"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_toRightOf="@+id/tv_sex"
+                        android:background="@color/color_touming"
+                        android:hint="请选择"
+                        android:paddingTop="15dp"
+                        android:text="@={clientBaseVM.idCard}"
+                        android:textSize="15sp" />
+
+
+                    <View
+                        android:id="@+id/view_br2_line_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+
+                        android:layout_below="@+id/tv_id_card_num"
+                        android:background="@color/color_line" />
+
+
+                    <TextView
+                        android:id="@+id/tv_marry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_br2_line_3"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="婚姻"
+                        android:textColor="@color/color_content" />
+
+                    <TextView
+                        android:id="@+id/ed_marry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_marry"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_toRightOf="@+id/tv_marry"
+                        android:background="@color/color_touming"
+                        android:clickable="@{clientBaseVM.isModify}"
+                        android:hint="请选择"
+                        android:onClick="@{()->clientBaseVM.marryClick()}"
+                        android:paddingTop="15dp"
+                        android:text="@={clientBaseVM.marry}"
+                        android:textSize="15sp" />
+
+
+                    <View
+                        android:id="@+id/view_br2_line_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+
+                        android:layout_below="@+id/tv_marry"
+                        android:background="@color/color_line" />
+
+
+                    <TextView
+                        android:id="@+id/tv_birth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_br2_line_4"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="生育"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_birth_son"
+                        updateEditInput="@{clientBaseVM.isModify}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_birth"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_birth"
+                        android:background="@color/color_touming"
+                        android:hint="请输入"
+                        android:maxLength="3"
+                        android:minWidth="50dp"
+                        android:text="@={clientBaseVM.son}"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_son_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_birth"
+                        android:layout_toRightOf="@+id/ed_birth_son"
+                        android:text="子"
+                        android:textColor="@color/color_content" />
+
+
+                    <EditText
+                        android:id="@+id/ed_birth_girl"
+                        updateEditInput="@{clientBaseVM.isModify}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_birth"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_son_title"
+                        android:background="@color/color_touming"
+                        android:hint="请输入"
+                        android:maxLength="3"
+                        android:minWidth="50dp"
+                        android:text="@={clientBaseVM.gril}"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/ed_birth_girl"
+                        android:layout_toRightOf="@+id/ed_birth_girl"
+                        android:text="女"
+                        android:textColor="@color/color_content" />
+
+
+                    <View
+                        android:id="@+id/view_br2_line_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+
+                        android:layout_below="@+id/tv_birth"
+                        android:background="@color/color_line" />
+
+
+                    <TextView
+                        android:id="@+id/tv_height"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_br2_line_5"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="身高"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_height"
+                        updateEditInput="@{clientBaseVM.isModify}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_height"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_height"
+                        android:background="@color/color_touming"
+                        android:hint="请输入"
+                        android:maxLength="3"
+                        android:minWidth="50dp"
+                        android:text="@={clientBaseVM.clientHeight}"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_height"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/ed_birth_son"
+                        android:gravity="right"
+                        android:paddingRight="20dp"
+                        android:text="CM"
+                        android:textColor="@color/color_content" />
+
+
+                    <View
+                        android:id="@+id/view_br2_line_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+
+                        android:layout_below="@+id/tv_height"
+                        android:background="@color/color_line" />
+
+
+                    <TextView
+                        android:id="@+id/tv_weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_br2_line_6"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="体重"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_weight"
+                        updateEditInput="@{clientBaseVM.isModify}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_weight"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_weight"
+                        android:background="@color/color_touming"
+                        android:hint="请输入"
+                        android:maxLength="3"
+                        android:minWidth="50dp"
+                        android:text="@={clientBaseVM.clientWidght}"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/ed_weight"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/ed_birth_son"
+                        android:gravity="right"
+                        android:paddingRight="20dp"
+                        android:text="KG"
+                        android:textColor="@color/color_content" />
+
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{clientBaseVM.isModify ?View.VISIBLE:View.GONE}">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="70dp"
+                        android:text="管理我的属性"
+                        android:textColor="@color/color_content"
+
+                        />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+    </ScrollView>
 </layout>

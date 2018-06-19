@@ -39,7 +39,9 @@ public class AddClientActVM extends BaseVM {
 
     public ObservableField<String> label = new ObservableField<>("添加标签");
 
-    public ObservableField<Boolean> isModify = new ObservableField<>();
+    public String labelId;
+
+    public ObservableField<Boolean> isModify = new ObservableField<>(false);
 
     public void setmLqrPhotoSelectUtils(LQRPhotoSelectUtils mLqrPhotoSelectUtils) {
         this.mLqrPhotoSelectUtils = mLqrPhotoSelectUtils;

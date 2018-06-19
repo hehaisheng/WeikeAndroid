@@ -50,7 +50,7 @@ public class PickerUtil {
 
 
         picker.setCanLoop(false);//不禁用循环
-        picker.setTopBackgroundColor(0xFFEEEEEE);
+        picker.setTopBackgroundColor(Color.WHITE);
         picker.setTopHeight(50);
         picker.setTopLineColor(0xFF33B5E5);
         picker.setTopLineHeight(1);

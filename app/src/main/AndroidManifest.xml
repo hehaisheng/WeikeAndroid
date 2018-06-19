@@ -99,6 +99,7 @@
         <activity android:name=".business.setting.HandleWorkingDisplayActivity"></activity>
         <activity android:name=".business.setting.ResetPwdActivity"></activity>
         <activity android:name=".business.working.HandleWorkingActivity"></activity>
+        <activity android:name=".business.web.WebActivity"></activity>
 
     </application>
 

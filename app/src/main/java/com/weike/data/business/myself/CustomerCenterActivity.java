@@ -12,6 +12,7 @@ import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseReq;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.web.WebActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.req.UserFeedBackReq;
 import com.weike.data.model.resp.UserFeedBackResp;
@@ -34,6 +35,10 @@ public class CustomerCenterActivity extends BaseActivity {
     @BindView(R.id.ed_activity_customer_center)
     public EditText inputText;
 
+    @OnClick(R.id.ll_goto_web)
+    public void goToWeb(View view){
+        WebActivity.startActivity(this,"www.daoyutech.com");
+    }
 
     @OnClick(R.id.btn_submit)
     public void submit(View view){

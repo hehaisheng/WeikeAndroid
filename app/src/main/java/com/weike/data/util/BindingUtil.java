@@ -2,6 +2,7 @@ package com.weike.data.util;
 
 import android.databinding.BindingAdapter;
 import android.text.TextUtils;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -33,4 +34,17 @@ public class BindingUtil {
     }
 
 
+    @BindingAdapter({"updateEditInput"})
+    public static void updateEditInput(EditText editText , boolean isModify) {
+        if (isModify == false) {
+            editText.setFocusable(false);
+            editText.setFocusableInTouchMode(false);
+        } else {
+            editText.setFocusableInTouchMode(true);
+
+            editText.setFocusable(true);
+
+            editText.requestFocus();
+        }
+    }
 }

@@ -10,6 +10,8 @@ import com.weike.data.base.BaseVM;
  */
 
 public class HandleWorkItemVM extends BaseVM {
+    public int position;
+
     public ObservableField<String> content = new ObservableField<>();
 
     public ObservableField<String> time = new ObservableField<>();

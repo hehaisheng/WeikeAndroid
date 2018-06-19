@@ -27,6 +27,7 @@ import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.EditAndDeleteTodoReq;
@@ -47,6 +48,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * 待办事
  */
@@ -58,6 +61,8 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     public CheckBox cb_sort_level;
 
     private View loadingView;
+
+    private HandleWorkItemVM lastModifyVM;
 
     public List<HandleWorkItemVM> vms = new ArrayList<>();
 
@@ -80,7 +85,12 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if(requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
+            ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
+            lastModifyVM.time.set(toDo.toDoDate);
+            lastModifyVM.userName.set(toDo.content);
+            recycleAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -103,6 +113,8 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         loadDataOfList(1, 1, true);
         initRecycleView();
     }
+
+
 
     private void initRecycleView() {
 
@@ -232,7 +244,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                     .setTitle("提示").configTitle(new ConfigTitle() {
                 @Override
                 public void onConfig(TitleParams params) {
-                        delete(handleWorkItemVM);
+
                 }
             })
                     .setText("是否确定删除该事项")
@@ -271,7 +283,8 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         toDo.toDoDate  = vm.time.get();
         toDo.content = vm.content.get();
 
-
+        RemindSettingActivity.startActivity(this,toDo);
+        lastModifyVM = vm;
     }
 
     private void read(HandleWorkItemVM vm) {
@@ -309,6 +322,6 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     }
 
     private void delete(HandleWorkItemVM vm) {
-
+      //  updateStatus(4,vm);
     }
 }

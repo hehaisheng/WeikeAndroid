@@ -4,7 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.ObservableField;
 
+import com.weike.data.R;
+import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseVM;
+import com.weike.data.business.log.RemindSettingActivity;
+import com.weike.data.config.DataConfig;
+import com.weike.data.model.business.ToDo;
 import com.weike.data.util.PickerUtil;
 
 import java.util.ArrayList;
@@ -94,30 +99,58 @@ public class ClientBaseMsgVM extends BaseVM {
      */
     public ObservableField<Boolean> canClickable = new ObservableField<>(false);
 
+    public ToDo birthDayTodo = new ToDo();
 
 
+    public ObservableField<Integer> birthdayRemindIcon = new ObservableField<>(R.mipmap.ic_remind_dis);
 
     /**
      * 是否是编辑状态
      */
-    public ObservableField<Boolean> isModify = new ObservableField<>();
+    public ObservableField<Boolean> isModify = new ObservableField<>(false);
 
+    public BaseFragment baseFragment;
+
+    public ClientBaseMsgVM(BaseFragment baseFragment) {
+        this.baseFragment = baseFragment;
+    }
 
     public ClientBaseMsgVM(Activity activity) {
         this.activity = activity;
     }
 
-    public void birthDayClick(){
+    /**
+     * 生日提醒回调
+     * @param toDo
+     */
+    public void onBirthdayRemindResult(ToDo toDo){
+
+        birthDayTodo = toDo;
+        if (toDo.isRemind == DataConfig.RemindType.TYPE_REMIND) {
+            birthdayRemindIcon.set(R.mipmap.ic_remind);
+        } else {
+            birthdayRemindIcon.set(R.mipmap.ic_remind_dis);
+        }
+    }
+
+
+    /**
+     * 生日时间点击
+     */
+    public void birthdayTimeClick(){
         PickerUtil.onYearMonthDayTimePicker(null, new DateTimePicker.OnYearMonthDayTimePickListener() {
             @Override
             public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
                 birthday.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
             }
-        },activity);
+        },baseFragment.getActivity());
     }
 
+    /*
+     *性别选择
+     */
     public void sexClick(){
-        SinglePicker<String> picker = new SinglePicker<String>(activity,new String[]{"男","女","保密"});
+        SinglePicker<String> picker = new SinglePicker<String>(baseFragment.getActivity(),new String[]{"男","女"});
 
         PickerUtil.onConstellationPicker(null, picker, new OnItemPickListener<String>() {
             @Override
@@ -127,8 +160,11 @@ public class ClientBaseMsgVM extends BaseVM {
         });
     }
 
+    /**
+     * 婚姻选择
+     */
     public void marryClick(){
-        SinglePicker<String> picker = new SinglePicker<String>(activity,new String[]{"已婚","未婚","保密"});
+        SinglePicker<String> picker = new SinglePicker<String>(baseFragment.getActivity(),new String[]{"已婚","未婚"});
 
         PickerUtil.onConstellationPicker(null, picker, new OnItemPickListener<String>() {
             @Override
@@ -138,8 +174,11 @@ public class ClientBaseMsgVM extends BaseVM {
         });
     }
 
+    /**
+     * 生日提醒跳转
+     */
     public void goToBirthDayRemind(){
-        Intent intent = new Intent();
+        RemindSettingActivity.startActivity(baseFragment,birthDayTodo);
     }
 
     public void goToManagerAttr(){

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.weike.data.R;
 import com.weike.data.base.BaseActivity;
+import com.weike.data.base.BaseFragment;
 import com.weike.data.config.DataConfig;
 import com.weike.data.databinding.ActivityRemindSettingBinding;
 import com.weike.data.model.business.ToDo;
@@ -29,7 +30,10 @@ public class RemindSettingActivity extends BaseActivity {
     RemingSetActVM vm;
 
     public static final String KEY_OF_TODO = "com.RemindSettingActivity.KEY_OF_TODO";
+    public static final String KEY_OF_ID = "com.RemindSettingActivity.KEY_OF_ID";
+
     public static final int CODE_OF_REQUEST = 500;
+
 
     private ToDo toDo;
 
@@ -38,6 +42,25 @@ public class RemindSettingActivity extends BaseActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(KEY_OF_TODO , toDo);
         activity.startActivityForResult(intent,CODE_OF_REQUEST);
+    }
+
+    /**
+     * 用户Fragment
+     * @param fragment
+     * @param toDo
+     */
+    public static void startActivity(BaseFragment fragment, ToDo toDo){
+        Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(KEY_OF_TODO , toDo);
+        fragment.startActivityForResult(intent,CODE_OF_REQUEST);
+    }
+
+    public static void startActivity(BaseFragment fragment, String id){
+        Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(KEY_OF_TODO , id);
+        fragment.startActivityForResult(intent,CODE_OF_REQUEST);
     }
 
 
@@ -60,6 +83,11 @@ public class RemindSettingActivity extends BaseActivity {
 
 
     }
+
+    private void initCurrentTodoByNet(){
+
+    }
+
     private void initCurrentTodo(){
         vm.isRemind.set(toDo.isRemind == 1  ? true : false);
         vm.isUnRemind.set(toDo.isRemind == 2  ? true : false);

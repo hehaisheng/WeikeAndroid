@@ -192,6 +192,10 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
             @Override
             public void onItemClick(int position, View view) {
                 Intent intent = new Intent();
+                intent.putExtra("labelName",vms.get(position).content.get());
+                intent.putExtra("labelId",vms.get(position).tagId.get());
+                setResult(RESULT_OK,intent);
+                finish();
             }
         });
         LinearLayoutManager manager = new LinearLayoutManager(this);

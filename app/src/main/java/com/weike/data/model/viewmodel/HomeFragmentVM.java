@@ -24,6 +24,7 @@ import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,8 @@ public class HomeFragmentVM {
     public Activity context;
 
     public ObservableArrayList<String> banenrData = new ObservableArrayList<>();
+
+    private List<String> links = new ArrayList<>();
 
     public HomeFragmentVM(Activity context) {
         this.context = context;
@@ -61,8 +64,10 @@ public class HomeFragmentVM {
                 List<String> data = new ArrayList<>();
                 for(int i = 0 ; i < bannerUrls.size();i++){
                     data.add(bannerUrls.get(i).imgUrl);
+                    links.add(bannerUrls.get(i).linkUrl);
                 }
                 banenrData.addAll(data);
+
                 LogUtil.d("HomeFragment","fragment call back");
             }
 
@@ -111,6 +116,12 @@ public class HomeFragmentVM {
         banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
         banner.setDelayTime(2000);
         banner.start();
+       /* banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                links.get(position).
+            }
+        });*/
     }
 
 }

@@ -52,7 +52,7 @@ public class HandleWorkingActivity extends BaseActivity {
         fragments.add(alreadyHandledFragment);
         fragments.add(expireWorkingFragment);
 
-
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(new FragmentBaseAdapter(getSupportFragmentManager(),fragments,tagTitle));
         slidingTabLayout.setViewPager(viewPager);
     }

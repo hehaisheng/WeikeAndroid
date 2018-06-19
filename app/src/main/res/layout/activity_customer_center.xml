@@ -52,6 +52,7 @@
         />
 
     <LinearLayout
+        android:id="@+id/ll_goto_web"
         android:layout_width="match_parent"
 
         android:minHeight="50dp"

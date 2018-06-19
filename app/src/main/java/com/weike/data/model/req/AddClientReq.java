@@ -29,6 +29,10 @@ public class AddClientReq extends BaseReq{
 
     public String photoUrl ; //用户的头像
 
+    public String office; //职位
+
+    public String idCard; //身份证
+
     public String remark ; //备注
 
     public String email; //邮箱
@@ -57,13 +61,13 @@ public class AddClientReq extends BaseReq{
 
     public int marriage ; //1 未婚 ;已婚
 
-    public int somNum ; //儿子数量
+    public String somNum ; //儿子数量
 
-    public int daughterNum ; //女儿数量
+    public String daughterNum ; //女儿数量
 
-    public int height;//身高
+    public String height;//身高
 
-    public int weight; //体重
+    public String weight; //体重
 
     /**
      * 生日json
@@ -82,17 +86,17 @@ public class AddClientReq extends BaseReq{
 
     // 服务信息
 
-    public double income; //收入
+    public String income; //收入
 
-    public double expenditure ; //支出
+    public String expenditure ; //支出
 
-    public double monetaryAssets ; //金融资产
+    public String monetaryAssets ; //金融资产
 
-    public double fixedAssets ; //固定资产
+    public String fixedAssets ; //固定资产
 
     public String car ; //车型
 
-    public double liabilities; //负债
+    public String liabilities; //负债
 
     /**
      * 产品字符串 集合
