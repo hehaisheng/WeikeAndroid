@@ -156,8 +156,8 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
 
 
         AddLogReq addLogReq = new AddLogReq();
-        addLogReq.logDate =  "2018-6-17 22:33";
-        addLogReq.content = "日志内容";
+        addLogReq.logDate =  logActVM.time.get();
+        addLogReq.content = logActVM.content.get();
         addLogReq.clientArr = "" + JsonUtil.GsonString(subs) + "";
         addLogReq.toDo = JsonUtil.GsonString(toDo);
         addLogReq.sign = SignUtil.signData(addLogReq);

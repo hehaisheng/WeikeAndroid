@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 
 import com.google.gson.reflect.TypeToken;
 import com.mylhyl.circledialog.CircleDialog;
@@ -36,6 +37,7 @@ import com.weike.data.model.resp.EditAndDeleteTodoResp;
 import com.weike.data.model.resp.GetHandleWorkListResp;
 import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.DialogUtil;
 import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -74,11 +76,7 @@ public class ExpireWorkingFragment extends BaseFragment implements
 
     public RecyclerView recycleHandleWorking;
 
-    /**
-     * 用于有两级的
-     */
-
-    public ExpandableListView expandableListView;
+    public LinearLayout ll_handle_working_sort;
 
     private ToDo toDo;
 
@@ -89,6 +87,7 @@ public class ExpireWorkingFragment extends BaseFragment implements
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
             lastModifyVM.time.set(toDo.toDoDate);
             lastModifyVM.userName.set(toDo.content);
+            updateStatus(1,lastModifyVM);
             recycleAdapter.notifyDataSetChanged();
         }
     }
@@ -103,13 +102,14 @@ public class ExpireWorkingFragment extends BaseFragment implements
         cb_sort_date = view.findViewById(R.id.checkbox_sort_of_date);
         cb_sort_level = view.findViewById(R.id.checkbox_sort_of_level);
         recycleHandleWorking = view.findViewById(R.id.reycle_handler_working);
-        expandableListView = view.findViewById(R.id.lv_handler_working);
+        ll_handle_working_sort = view.findViewById(R.id.ll_handle_working_sort);
+        ll_handle_working_sort.setVisibility(View.GONE);
         loadingView = view.findViewById(R.id.loaddingview);
 
 
 
 
-        loadDataOfList(2, 1, true);
+        loadDataOfList(3, 1, true);
         initRecycleView();
     }
 
@@ -149,8 +149,11 @@ public class ExpireWorkingFragment extends BaseFragment implements
                     vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
                     vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
                     vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
+                    vm.readVisibility.set(false);
                     vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
                     vm.setListener(ExpireWorkingFragment.this);
+
+
                     vms.add(vm);
                 }
                 recycleAdapter.notifyDataSetChanged();
@@ -167,99 +170,34 @@ public class ExpireWorkingFragment extends BaseFragment implements
 
     @Override
     public void onClick(int type, HandleWorkItemVM handleWorkItemVM) {
-        if (type == TYPE_OF_CHECK) {
-            new CircleDialog.Builder()
-                    .setCanceledOnTouchOutside(false)
-                    .setCancelable(false)
-                    .configDialog(new ConfigDialog() {
-                        @Override
-                        public void onConfig(DialogParams params) {
-                            params.backgroundColor = Color.WHITE;
-                            params.backgroundColorPress = Color.BLUE;
-                        }
-                    })
-                    .setTitle("提示").configTitle(new ConfigTitle() {
+        if (type == TYPE_OF_MODIFY) {
+
+            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否修改该事项?", new View.OnClickListener() {
                 @Override
-                public void onConfig(TitleParams params) {
+                public void onClick(View v) {
 
                 }
-            })
-                    .setText("是否把该事项标记为已处理")
-                    .configText(new ConfigText() {
-                        @Override
-                        public void onConfig(TextParams params) {
-                            params.padding = new int[]{100, 0, 100, 50};
-                        }
-                    })
-                    .setNegative("取消", null).configNegative(new ConfigButton() {
+            }, new View.OnClickListener() {
                 @Override
-                public void onConfig(ButtonParams params) {
-                    params.backgroundColorPress = Color.WHITE;
+                public void onClick(View v) {
+                    modify(handleWorkItemVM);
                 }
-            })
-                    .setPositive("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            read(handleWorkItemVM);
-                        }
-                    })
-                    .configPositive(new ConfigButton() {
-                        @Override
-                        public void onConfig(ButtonParams params) {
-                            params.backgroundColorPress = Color.WHITE;
-                        }
-                    })
-                    .show(getActivity().getSupportFragmentManager());
+            });
 
 
-
-        } else if (type == TYPE_OF_MODIFY) {
-
-            modify(handleWorkItemVM);
         } else if (type == TYPE_OF_DELETE) {
 
-            new CircleDialog.Builder()
-                    .setCanceledOnTouchOutside(false)
-                    .setCancelable(false)
-                    .configDialog(new ConfigDialog() {
-                        @Override
-                        public void onConfig(DialogParams params) {
-                            params.backgroundColor = Color.WHITE;
-                            params.backgroundColorPress = Color.BLUE;
-                        }
-                    })
-                    .setTitle("提示").configTitle(new ConfigTitle() {
+            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否确定删除该事项?", new View.OnClickListener() {
                 @Override
-                public void onConfig(TitleParams params) {
+                public void onClick(View v) {
 
                 }
-            })
-                    .setText("是否确定删除该事项")
-                    .configText(new ConfigText() {
-                        @Override
-                        public void onConfig(TextParams params) {
-                            params.padding = new int[]{100, 0, 100, 50};
-                        }
-                    })
-                    .setNegative("取消", null).configNegative(new ConfigButton() {
+            }, new View.OnClickListener() {
                 @Override
-                public void onConfig(ButtonParams params) {
-                    params.backgroundColorPress = Color.WHITE;
+                public void onClick(View v) {
+                    modify(handleWorkItemVM);
                 }
-            })
-                    .setPositive("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            delete(handleWorkItemVM);
-                        }
-                    })
-                    .configPositive(new ConfigButton() {
-                        @Override
-                        public void onConfig(ButtonParams params) {
-                            params.backgroundColorPress = Color.WHITE;
-                        }
-                    })
-                    .show(getActivity().getSupportFragmentManager());
+            });
 
 
         }
@@ -273,14 +211,16 @@ public class ExpireWorkingFragment extends BaseFragment implements
     }
 
     private void read(HandleWorkItemVM vm) {
-        updateStatus(1,vm);
+        updateStatus(2,vm);
     }
 
     private void updateStatus(int type , HandleWorkItemVM vm){
+        LogUtil.d("acthome","type:"  + type);
         EditAndDeleteTodoReq req = new EditAndDeleteTodoReq();
         req.toDoId = vm.id.get();
-        req.toDoType = type + "";
+        req.toDoType = type;
         req.sign = SignUtil.signData(req);
+
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.EDIT_AND_DEL_TODO_STATUS)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<EditAndDeleteTodoResp>>(){
@@ -290,8 +230,7 @@ public class ExpireWorkingFragment extends BaseFragment implements
             protected void onSuccess(BaseResp<EditAndDeleteTodoResp> editAndDeleteTodoRespBaseResp) throws Exception {
 
                 if(type == 1){
-                    vm.readClickBg.set(R.mipmap.ic_right_blue);
-                    recycleAdapter.notifyDataSetChanged();
+                    ToastUtil.showToast("修改事项成功");
                 } else {
                     vms.remove(vm);
                 }

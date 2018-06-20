@@ -18,6 +18,8 @@ public class HandleWorkItemVM extends BaseVM {
 
     public ObservableField<String> userName = new ObservableField<>();
 
+    public ObservableField<Boolean> readVisibility = new ObservableField<>(true);
+
     public ObservableField<Integer> readClickBg = new ObservableField<>(R.mipmap.ic_right_yellow);
 
     /**
@@ -30,11 +32,12 @@ public class HandleWorkItemVM extends BaseVM {
     }
 
     public void deleteMsg(){
-        listener.onClick(OnHandleWorkClickListener.TYPE_OF_MODIFY,this);
+
+        listener.onClick(OnHandleWorkClickListener.TYPE_OF_DELETE,this);
     }
 
     public void modifyMsg(){
-        listener.onClick(OnHandleWorkClickListener.TYPE_OF_DELETE,this);
+        listener.onClick(OnHandleWorkClickListener.TYPE_OF_MODIFY,this);
     }
 
     public OnHandleWorkClickListener listener;

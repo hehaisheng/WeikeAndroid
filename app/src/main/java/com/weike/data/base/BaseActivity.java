@@ -33,7 +33,7 @@ import butterknife.OnClick;
 
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    boolean isModify = false;
+    public boolean isModify = false;
 
     protected TextView leftText;
 

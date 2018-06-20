@@ -135,7 +135,7 @@
                         android:layout_toRightOf="@+id/tv_company"
                         android:background="@color/color_touming"
                         android:hint="请输入你的公司名字"
-                        android:text="@{clientBaseVM.companyName}"
+                        android:text="@={clientBaseVM.companyName}"
                         android:textSize="15sp" />
 
                     <View

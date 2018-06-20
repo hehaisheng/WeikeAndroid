@@ -52,6 +52,7 @@ public class PickerUtil {
         picker.setCanLoop(false);//不禁用循环
         picker.setTopBackgroundColor(Color.WHITE);
         picker.setTopHeight(50);
+        picker.setBackgroundColor(Color.WHITE);
         picker.setTopLineColor(0xFF33B5E5);
         picker.setTopLineHeight(1);
         picker.setTitleText("请选择");

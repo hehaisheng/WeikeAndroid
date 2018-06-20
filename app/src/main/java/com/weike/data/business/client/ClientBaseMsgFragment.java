@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.weike.data.model.business.ToDo;
 import com.weike.data.model.viewmodel.AddPhoneVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.model.viewmodel.AddClientRelateItemVM;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -34,12 +36,38 @@ import static android.app.Activity.RESULT_OK;
 
 public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickListener,AddPhoneVM.OnPhoneClickListener,AddClientRelateItemVM.AddClientRelateItemListener {
 
+
+
     public List<AddPhoneVM> addPhoneVMS = new ArrayList<>();
     BaseDataBindingAdapter addPhoneAdapter;
 
     public List<AddClientRelateItemVM> clientRelateItemVMS = new ArrayList<>();
     BaseDataBindingAdapter clientRelateAdapter;
 
+    public void setPhoneNum(String[] phoneNum) {
+        addPhoneVMS.clear();
+
+        for(int i = 0 ; i < phoneNum.length ; i++) {
+
+            LogUtil.d("phoneNum","i:" + i + "," + phoneNum[i]);
+            if (TextUtils.isEmpty(phoneNum[i])) {
+                continue;
+            }
+
+            AddPhoneVM addPhoneVM  = new AddPhoneVM(getActivity());
+            addPhoneVM.isFirst.set(false);
+            addPhoneVM.isShowModify.set(true);
+            addPhoneVM.phoneNumber.set(phoneNum[i]);
+            addPhoneVM.isModify.set(false);
+            addPhoneVM.setListener(this);
+            addPhoneVMS.add(addPhoneVM);
+
+        }
+
+
+        binding.addPhoneNum.setVisibility(View.VISIBLE);
+        addPhoneAdapter.notifyDataSetChanged();
+    }
 
 
     public ClientBaseMsgVM clientBaseMsgVM;
@@ -88,6 +116,14 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     }
 
+    private void addHeadPhone(){
+        AddPhoneVM addPhoneVM = new AddPhoneVM(getActivity());
+        addPhoneVM.isFirst.set(true);
+        addPhoneVM.isModify.set(false);
+        addPhoneVM.isShowModify.set(false);
+        addPhoneVM.setListener(this);
+        addPhoneVMS.add(0,addPhoneVM);
+    }
 
     /**
      * 初始化电话号码
@@ -95,14 +131,9 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     private void initPhoneRecycle(){
 
 
-
+        addHeadPhone();
         //加载添加号码那个框 把后面两个显示去掉
-        AddPhoneVM addPhoneVM = new AddPhoneVM(getActivity());
-        addPhoneVM.isFirst.set(true);
-        addPhoneVM.isModify.set(false);
-        addPhoneVM.isShowModify.set(false);
-        addPhoneVM.setListener(this);
-        addPhoneVMS.add(addPhoneVM);
+
         addPhoneAdapter = new BaseDataBindingAdapter(getActivity(),R.layout.widget_layout_add_phone,addPhoneVMS, BR.addPhoneVM);
         binding.addPhoneNum.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.addPhoneNum.setAdapter(addPhoneAdapter);
@@ -115,14 +146,12 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
      */
     private void updateModify(boolean isModify) {
         if (isModify == false) {
-            if(addPhoneVMS.size() == 1) { //只有一条的时候
-                addPhoneVMS.get(0).isFirst.set(false); //隐藏添加号码
-                addPhoneVMS.get(0).isModify.set(false); //隐藏编辑
-                addPhoneVMS.get(0).isShowModify.set(false);
+            addPhoneVMS.remove(0);
+
+            if(addPhoneVMS.size() == 0){
                 binding.addPhoneNum.setVisibility(View.GONE);
                 return;
             }
-            binding.addPhoneNum.setVisibility(View.VISIBLE);
 
             for(int i = 0 ; i < addPhoneVMS.size() ; i++) {
                 addPhoneVMS.get(i).isFirst.set(false); //隐藏添加号码
@@ -132,16 +161,11 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         } else {
             binding.addPhoneNum.setVisibility(View.VISIBLE);
             for(int i = 0 ; i < addPhoneVMS.size() ; i++) {
-                if (i == 0) {
-                    addPhoneVMS.get(i).isFirst.set(true); //显示添加号码
-                    addPhoneVMS.get(i).isShowModify.set(false);
-                    addPhoneVMS.get(i).isModify.set(false);
-                } else {
-                    addPhoneVMS.get(i).isFirst.set(false); //显示添加号码
-                    addPhoneVMS.get(i).isModify.set(true);
-                    addPhoneVMS.get(i).isShowModify.set(false);
-                }
+                addPhoneVMS.get(i).isFirst.set(false); //显示添加号码
+                addPhoneVMS.get(i).isModify.set(true);
+                addPhoneVMS.get(i).isShowModify.set(false);
             }
+            addHeadPhone();
         }
         addPhoneAdapter.notifyDataSetChanged();
     }

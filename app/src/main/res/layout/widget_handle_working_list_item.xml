@@ -2,6 +2,7 @@
 
 <layout>
     <data>
+        <import type="android.view.View"></import>
         <variable
             name="handleWorkItemVM"
             type="com.weike.data.model.viewmodel.HandleWorkItemVM"></variable>
@@ -16,7 +17,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -27,8 +28,8 @@
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
+               android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:id="@+id/btn_click_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,49 +37,44 @@
                 android:layout_alignParentLeft="true"
                 android:src="@mipmap/ic_right_blue"
                 loadImageId="@{handleWorkItemVM.readClickBg}"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="10dp"
+                android:minWidth="50dp"
+
+                android:visibility="@{handleWorkItemVM.readVisibility ? View.VISIBLE : View.GONE}"
+
                 android:onClick="@{()->handleWorkItemVM.readMsg()}"
                 />
 
             <ImageButton
-                android:id="@+id/btn_click_delete"
-                android:layout_marginLeft="19dp"
-                android:layout_alignBottom="@+id/btn_click_right"
-                android:layout_toRightOf="@+id/btn_click_right"
+                android:id="@+id/btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/color_touming"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="10dp"
+                android:layout_centerVertical="true"
+                android:minWidth="50dp"
+
+                android:layout_toEndOf="@+id/btn_click_right"
                 android:onClick="@{()->handleWorkItemVM.deleteMsg()}"
-                android:src="@mipmap/ic_edit_gray_2"
-                />
+                android:background="@null"
+                android:src="@mipmap/ic_del" />
 
             <ImageButton
-                android:id="@+id/btn_click_modify"
-                android:layout_alignBottom="@+id/btn_click_right"
-                android:layout_marginLeft="19dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="10dp"
-                android:layout_toRightOf="@+id/btn_click_delete"
-                android:background="@color/color_touming"
+                android:id="@+id/btn_modify"
+                android:layout_toRightOf="@+id/btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_del"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
                 android:onClick="@{()->handleWorkItemVM.modifyMsg()}"
-                />
+                android:layout_toEndOf="@+id/btn_delete"
+
+                android:background="@null"
+                android:src="@mipmap/ic_modify_data" />
+
+
 
             <TextView
                 android:id="@+id/tv_handle_working_time"
 
-                android:layout_alignBottom="@+id/btn_click_right"
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_height="wrap_content"
@@ -109,6 +105,7 @@
             android:background="@drawable/shape_white"
             android:text="@{handleWorkItemVM.content}"
             android:layout_marginLeft="10dp"
+            android:singleLine="true"
             android:layout_marginBottom="13dp"
             android:layout_marginRight="10dp"
             android:paddingTop="10dp"

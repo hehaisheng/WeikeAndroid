@@ -156,4 +156,24 @@ public final class Config {
      */
     public static final String GET_CLIENT_DETAIL = "wkzs-restful/client/selectClient";
 
+    /**
+     * 用户查看单个待办事项
+     */
+    public static final String GET_ONE_TODO_STATUS = "wkzs-restful/log/selectToDo";
+
+    /**
+     * 修改单个事项
+     */
+    public static final String MODIFY_ONE_TODO_STATUS = "wkzs-restful/log/editToDo";
+
+    /**
+     * 修改客户
+     */
+    public static final String MODIFY_CLIENT  = "wkzs-restful/client/saveClient";
+
+    /**
+     * 批量移
+     */
+    public static final String MOVE_CLIENT_TO_LABEL = "wkzs-restful/client/ClientMobileLabel";
+
 }

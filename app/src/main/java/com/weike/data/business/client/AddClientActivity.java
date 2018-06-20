@@ -1,46 +1,25 @@
 package com.weike.data.business.client;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.gson.reflect.TypeToken;
-import com.mylhyl.circledialog.CircleDialog;
-import com.mylhyl.circledialog.callback.ConfigDialog;
-import com.mylhyl.circledialog.callback.ConfigSubTitle;
-import com.mylhyl.circledialog.callback.ConfigTitle;
-import com.mylhyl.circledialog.params.DialogParams;
-import com.mylhyl.circledialog.params.SubTitleParams;
-import com.mylhyl.circledialog.params.TitleParams;
-import com.tencent.mm.opensdk.modelbase.BaseReq;
-import com.weike.data.MainActivity;
 import com.weike.data.R;
 import com.weike.data.adapter.FragmentBaseAdapter;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
-import com.weike.data.business.setting.ClientTagSettingActivity;
 import com.weike.data.config.Config;
 import com.weike.data.databinding.ActivityClientAddBinding;
-import com.weike.data.model.business.BirthDayBean;
-import com.weike.data.model.business.Client;
+import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.AddClientReq;
 import com.weike.data.model.req.GetClientDetailMsgReq;
 import com.weike.data.model.resp.AddClientResp;
@@ -50,25 +29,17 @@ import com.weike.data.model.viewmodel.AddClientActVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.network.RetrofitFactory;
-import com.weike.data.util.JsonUtil;
+import com.weike.data.util.DialogUtil;
 import com.weike.data.util.LQRPhotoSelectUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
-import com.weike.data.view.CircleImageView;
-import com.weike.data.view.NoScrollViewPager;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import kr.co.namee.permissiongen.PermissionGen;
 import kr.co.namee.permissiongen.PermissionSuccess;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -91,6 +62,7 @@ public class AddClientActivity extends BaseActivity {
     public AddClientActVM vm;
 
     private AddClientReq addClientReq = new AddClientReq();
+
 
 
     @PermissionSuccess(requestCode = LQRPhotoSelectUtils.REQ_TAKE_PHOTO)
@@ -122,6 +94,10 @@ public class AddClientActivity extends BaseActivity {
         mLqrPhotoSelectUtils.attachToActivityForResult(requestCode, resultCode, data);
 
     }
+
+    private String currentPath;
+
+    private boolean isUpdatePic = false;
 
     /**
      * 如果有客户ID 那么就是修改
@@ -163,12 +139,32 @@ public class AddClientActivity extends BaseActivity {
         binding.setAddClientVM(vm);
 
         setCenterText("");
-        setLeftText("添加客户");
-        setRightText("编辑");
         addFragment();
+        setLeftText("添加客户");
         initPhotoSel();
-
         initMsg();
+
+
+        initClickStatus();
+    }
+
+    private void initClickStatus() {
+        boolean status = false;
+        if (clientId != null) {
+            setRightText("编辑");
+            status = true;
+        } else {
+            status = false;
+            setRightText("完成");
+        }
+        isModify = status;
+        vm.isModify.set(status);
+        ClientBaseMsgFragment fragment = (ClientBaseMsgFragment) fragments.get(0);
+        fragment.isModify = status;
+        ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
+        serviceMsgFragment.isModify = status;
+
+
     }
 
     private void initPhotoSel(){
@@ -177,7 +173,7 @@ public class AddClientActivity extends BaseActivity {
             public void onFinish(File outputFile, Uri outputUri) {
                 // 4、当拍照或从图库选取图片成功后回调
                 vm.photoUrl.set(outputUri.getPath());
-
+                isUpdatePic = true;
 
             }
         }, true);
@@ -214,7 +210,7 @@ public class AddClientActivity extends BaseActivity {
             }
 
             @Override
-            public void onTabReselect(int position) {
+            public void onTabReselect(int position) {`
 
             }
         });
@@ -224,12 +220,14 @@ public class AddClientActivity extends BaseActivity {
     }
 
 
+
+
     private void initMsg(){
         if (TextUtils.isEmpty(getIntent().getStringExtra(TAG_CLIENT_ID))){
             return;
         }
 
-
+        clientId = getIntent().getStringExtra(TAG_CLIENT_ID);
         GetClientDetailMsgReq req = new GetClientDetailMsgReq();
         req.clientId = getIntent().getStringExtra(TAG_CLIENT_ID);
         req.sign = SignUtil.signData(req);
@@ -241,6 +239,61 @@ public class AddClientActivity extends BaseActivity {
                 })).subscribe(new BaseObserver<BaseResp<GetClientDetailMsgResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp) throws Exception {
+                   GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
+
+                    vm.photoUrl.set(data.getPhotoUrl());
+                    vm.userName.set(data.getUserName());
+                    vm.remarks.set(data.getRemark());
+                    vm.label.set(data.getClientLabelName());
+
+                    //基本信息
+                    ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
+                    ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
+                    ClientBaseMsgVM clientBaseMsgVM = clientBaseMsgFragment.clientBaseMsgVM;
+                    ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.vm;
+
+                    String[] phone = new String[5];
+                    phone[0] = data.getOnePhoneNumber();
+                    phone[1] = data.getTwoPhoneNumber();
+                    phone[2] = data.getThreePhoneNumber();
+                    phone[3] = data.getFourPhoneNumber();
+                    phone[4] = data.getFivePhoneNumber();
+                    clientBaseMsgFragment.setPhoneNum(phone); //电话号码
+
+                    clientBaseMsgVM.email.set(data.getEmail());
+                    clientBaseMsgVM.companyName.set(data.getCompany());
+                    clientBaseMsgVM.companyLocation.set(data.getCompanyDetailAddress());
+                    clientBaseMsgVM.sex.set( Integer.parseInt(data.getSex()) == 1 ? "男" : "女");
+                    clientBaseMsgVM.birthday.set(data.getBirthday());
+                    clientBaseMsgVM.marry.set(Integer.parseInt(data.getMarriage()) == 1 ? "已婚": "未婚");
+                    clientBaseMsgVM.idCard.set(data.getIdCard());
+                    clientBaseMsgVM.son.set(data.getSonNum());
+                    clientBaseMsgVM.job.set(data.getOffice());
+                    clientBaseMsgVM.houseLocation.set(data.getHomeDetailAddress());
+                    clientBaseMsgVM.gril.set(data.getDaughterNum());
+                    clientBaseMsgVM.clientHeight.set(data.getHeight());
+                    clientBaseMsgVM.clientWidght.set(data.getWeight());
+                    ToDo toDo = new ToDo();
+                    toDo.dateType = data.getBirthdayjson().getDateType();
+                    toDo.priority = data.getBirthdayjson().getPriority();
+                    toDo.toDoDate = data.getBirthdayjson().getRemindDate();
+                    toDo.beforeRemindDay = data.getBirthdayjson().getBeforeRemindDay();
+                    toDo.isRepeat = data.getBirthdayjson().getIsRepeat();
+                    toDo.isRemind = data.getBirthdayjson().getIsRemind();
+                    toDo.repeatIntervalHour = data.getBirthdayjson().getRepeatIntervalHour();
+                    clientBaseMsgVM.birthDayTodo = toDo;
+
+                    clientServiceMsgVM.liabilities.set(data.getLiabilities());
+                    clientServiceMsgVM.moneyIn.set(data.getIncome());
+                    clientServiceMsgVM.financialAssets.set(data.getFixedAssets());
+                    clientServiceMsgVM.carType.set(data.getCar());
+                    clientServiceMsgVM.moneyOut.set(data.getExpenditure());
+                    clientServiceMsgVM.fixedAssets.set(data.getFixedAssets());
+
+                    //服务信息
+
+
+
 
             }
 
@@ -254,31 +307,36 @@ public class AddClientActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        //DialogUtil.showButtonDialog(getSupportFragmentManager(),"提示","是否保存信息")
 
+    }
 
+    private void modifyData(){
 
     }
 
     @Override
-    public void onRightClick() {
-        super.onRightClick();
-
-        isModify = isModify ? false : true;
+    public void onRightClick(boolean isModify) {
+        super.onRightClick(isModify);
         vm.isModify.set(isModify);
 
-        if (isModify) {
-
-        } else {
-            uploadAvatar(vm.photoUrl.get());
+        if (isModify == false){
+            if (isUpdatePic) { //如果有刷新图片
+                uploadAvatar(vm.photoUrl.get());
+            } else {
+                submitClient();
+            }
         }
 
-
-
-
-        fragments.get(position).onRightClick(isModify);
+        fragments.get(1).onRightClick(isModify);
+        fragments.get(0).onRightClick(isModify);
     }
 
+
     private void uploadAvatar(String path) {
+
+        DialogFragment dialogFragment = DialogUtil.showLoadingDialog(getSupportFragmentManager(),"正在上传头像..");
+
         File file = new File(path);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
@@ -288,9 +346,9 @@ public class AddClientActivity extends BaseActivity {
                 })).subscribe(new BaseObserver<BaseResp<UpLoadFileResp>>() {
             @Override
             protected void onSuccess(BaseResp<UpLoadFileResp> upLoadFileRespBaseResp) throws Exception {
-
+                dialogFragment.dismiss();
                 vm.photoUrl.set(upLoadFileRespBaseResp.getDatas().photoUrl);
-                addClient();
+                submitClient();
 
 
             }
@@ -305,20 +363,59 @@ public class AddClientActivity extends BaseActivity {
     /**
      * 修改客户
      */
-    private void modifyClient(){
+    private void modifyClient(AddClientReq req){
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.MODIFY_CLIENT)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddClientResp>>(){
 
+                })).subscribe(new BaseObserver<BaseResp<AddClientResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
+                ToastUtil.showToast("修改成功");
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
+
+    private void addClient(AddClientReq req) {
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_CLIENT)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddClientResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<AddClientResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
+                clientId = addClientRespBaseResp.getDatas().clientId;
+                ToastUtil.showToast("添加成功");
+                isUpdatePic = false;
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
     }
 
     /**
      * 服务信息 和 客户信息
      */
-    private void addClient(){
+    private void submitClient(){
         ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
         ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
         ClientBaseMsgVM clientBaseMsgVM = clientBaseMsgFragment.clientBaseMsgVM;
         ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.vm;
 
-        if(clientBaseMsgFragment.addPhoneVMS.size() == 1) {
+
+
+
+
+
+        if(clientBaseMsgFragment.addPhoneVMS.size() <= 0 && clientBaseMsgFragment.addPhoneVMS.get(0) == null) {
             ToastUtil.showToast("必须要添加一个电话号码");
             return;
         }
@@ -340,16 +437,28 @@ public class AddClientActivity extends BaseActivity {
         /**
          * 电话号码
          */
-        String[] phoneNum = new String[6];
+       String[] phoneNum  = {"","","","",""};
+        ArrayList<String> p = new ArrayList<>();
+
+
         for(int i = 0 ; i < clientBaseMsgFragment.addPhoneVMS.size();i++){
-            phoneNum[i] = clientBaseMsgFragment.addPhoneVMS.get(i).phoneNumber.get();//电话号码
+
+            String phone = clientBaseMsgFragment.addPhoneVMS.get(i).phoneNumber.get();//电话号码
+            if (TextUtils.isEmpty(phone))continue;
+            p.add(phone);
         }
+
+        for(int i = 0 ; i < p.size() ;i++){
+            phoneNum[i] = p.get(i);
+        }
+
+
         //电话号码
-        req.OnePhoneNumber = phoneNum[1];
-        req.TwoPhoneNumber = phoneNum[2];
-        req.ThreePhoneNumber = phoneNum[3];
-        req.FourPhoneNumber = phoneNum[4];
-        req.FivePhoneNumber = phoneNum[5]; //1 2 3 4 5个电话号码
+        req.OnePhoneNumber = phoneNum[0];
+        req.TwoPhoneNumber = phoneNum[1];
+        req.ThreePhoneNumber = phoneNum[2];
+        req.FourPhoneNumber = phoneNum[3];
+        req.FivePhoneNumber = phoneNum[4]; //1 2 3 4 5个电话号码
 
         req.idCard = clientBaseMsgVM.idCard.get();//身份证
         req.email = clientBaseMsgVM.email.get();
@@ -359,11 +468,13 @@ public class AddClientActivity extends BaseActivity {
         req.homeDetailAddress = clientBaseMsgVM.houseLocation.get();
         req.sex = clientBaseMsgVM.sex.get().contains("男") ?  1 :2; //
         req.marriage = clientBaseMsgVM.sex.get().contains("未婚") ? 1: 2; //婚姻
-        req.somNum = clientBaseMsgVM.son.get(); //儿子
+        req.sonNum = clientBaseMsgVM.son.get(); //儿子
         req.daughterNum = clientBaseMsgVM.gril.get();//女儿
+        req.birthday = clientBaseMsgVM.birthday.get();
         //req.birthdayJson = JsonUtil.GsonString(clientBaseMsgVM.birthDayTodo); //生日的东西
         req.height = clientBaseMsgVM.clientHeight.get();
         req.weight = clientBaseMsgVM.clientWidght.get();
+        req.clientId = clientId;
 
         req.relatedClientId = ""; //TODO
 
@@ -378,22 +489,14 @@ public class AddClientActivity extends BaseActivity {
         req.sign = SignUtil.signData(req);
 
 
+        if (TextUtils.isEmpty(clientId)) {
+            addClient(req);
+        } else {
+            modifyClient(req);
+        }
 
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_CLIENT)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddClientResp>>(){
 
-                })).subscribe(new BaseObserver<BaseResp<AddClientResp>>() {
-            @Override
-            protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
-                    clientId = addClientRespBaseResp.getDatas().clientId;
 
-            }
-
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-
-            }
-        });
 
     }
 }

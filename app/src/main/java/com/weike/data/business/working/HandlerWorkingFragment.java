@@ -36,6 +36,7 @@ import com.weike.data.model.resp.EditAndDeleteTodoResp;
 import com.weike.data.model.resp.GetHandleWorkListResp;
 import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.DialogUtil;
 import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -88,8 +89,9 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         if(requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
             lastModifyVM.time.set(toDo.toDoDate);
-            lastModifyVM.userName.set(toDo.content);
+            lastModifyVM.content.set(toDo.content);
             recycleAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -181,120 +183,69 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     @Override
     public void onClick(int type, HandleWorkItemVM handleWorkItemVM) {
         if (type == TYPE_OF_CHECK) {
-            new CircleDialog.Builder()
-                    .setCanceledOnTouchOutside(false)
-                    .setCancelable(false)
-                    .configDialog(new ConfigDialog() {
-                        @Override
-                        public void onConfig(DialogParams params) {
-                            params.backgroundColor = Color.WHITE;
-                            params.backgroundColorPress = Color.BLUE;
-                        }
-                    })
-                    .setTitle("提示").configTitle(new ConfigTitle() {
+
+
+            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否把该事项标记为已处理?", new View.OnClickListener() {
                 @Override
-                public void onConfig(TitleParams params) {
+                public void onClick(View v) {
 
                 }
-            })
-                    .setText("是否把该事项标记为已处理")
-                    .configText(new ConfigText() {
-                        @Override
-                        public void onConfig(TextParams params) {
-                            params.padding = new int[]{100, 0, 100, 50};
-                        }
-                    })
-                    .setNegative("取消", null).configNegative(new ConfigButton() {
+            }, new View.OnClickListener() {
                 @Override
-                public void onConfig(ButtonParams params) {
-                    params.backgroundColorPress = Color.WHITE;
+                public void onClick(View v) {
+                    read(handleWorkItemVM);
                 }
-            })
-                    .setPositive("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            read(handleWorkItemVM);
-                        }
-                    })
-                    .configPositive(new ConfigButton() {
-                        @Override
-                        public void onConfig(ButtonParams params) {
-                            params.backgroundColorPress = Color.WHITE;
-                        }
-                    })
-                    .show(getActivity().getSupportFragmentManager());
-
+            });
 
 
         } else if (type == TYPE_OF_MODIFY) {
 
-            modify(handleWorkItemVM);
+            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否修改该事项?", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    modify(handleWorkItemVM);
+                }
+            });
+
+
         } else if (type == TYPE_OF_DELETE) {
 
-            new CircleDialog.Builder()
-                    .setCanceledOnTouchOutside(false)
-                    .setCancelable(false)
-                    .configDialog(new ConfigDialog() {
-                        @Override
-                        public void onConfig(DialogParams params) {
-                            params.backgroundColor = Color.WHITE;
-                            params.backgroundColorPress = Color.BLUE;
-                        }
-                    })
-                    .setTitle("提示").configTitle(new ConfigTitle() {
+            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否确定删除该事项?", new View.OnClickListener() {
                 @Override
-                public void onConfig(TitleParams params) {
+                public void onClick(View v) {
 
                 }
-            })
-                    .setText("是否确定删除该事项")
-                    .configText(new ConfigText() {
-                        @Override
-                        public void onConfig(TextParams params) {
-                            params.padding = new int[]{100, 0, 100, 50};
-                        }
-                    })
-                    .setNegative("取消", null).configNegative(new ConfigButton() {
+            }, new View.OnClickListener() {
                 @Override
-                public void onConfig(ButtonParams params) {
-                    params.backgroundColorPress = Color.WHITE;
+                public void onClick(View v) {
+                    modify(handleWorkItemVM);
                 }
-            })
-                    .setPositive("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            delete(handleWorkItemVM);
-                        }
-                    })
-                    .configPositive(new ConfigButton() {
-                        @Override
-                        public void onConfig(ButtonParams params) {
-                            params.backgroundColorPress = Color.WHITE;
-                        }
-                    })
-                    .show(getActivity().getSupportFragmentManager());
+            });
 
 
         }
     }
 
     private void modify(HandleWorkItemVM vm) {
-        ToDo toDo = new ToDo();
-        toDo.toDoDate  = vm.time.get();
-        toDo.content = vm.content.get();
 
-        RemindSettingActivity.startActivity(this,toDo);
+
+        RemindSettingActivity.startActivity(this,vm.id.get());
         lastModifyVM = vm;
     }
 
     private void read(HandleWorkItemVM vm) {
-        updateStatus(1,vm);
+        updateStatus(2,vm);
     }
 
     private void updateStatus(int type , HandleWorkItemVM vm){
         EditAndDeleteTodoReq req = new EditAndDeleteTodoReq();
         req.toDoId = vm.id.get();
-        req.toDoType = type + "";
+        req.toDoType = type ;
         req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.EDIT_AND_DEL_TODO_STATUS)
@@ -304,11 +255,13 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             @Override
             protected void onSuccess(BaseResp<EditAndDeleteTodoResp> editAndDeleteTodoRespBaseResp) throws Exception {
 
-                if(type == 1){
+                if(type == 2){
                     vm.readClickBg.set(R.mipmap.ic_right_blue);
                     recycleAdapter.notifyDataSetChanged();
-                 } else {
+                 } else if(type == 4) {
                     vms.remove(vm);
+                }  else {
+                    ToastUtil.showToast("修改成功");
                 }
 
                 recycleAdapter.notifyDataSetChanged();
@@ -322,6 +275,6 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     }
 
     private void delete(HandleWorkItemVM vm) {
-      //  updateStatus(4,vm);
+       updateStatus(4,vm);
     }
 }

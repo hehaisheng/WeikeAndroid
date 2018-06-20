@@ -12,6 +12,9 @@ import com.weike.data.base.BaseVM;
  */
 
 public class AddPhoneVM  extends BaseVM{
+
+    public ObservableField<Boolean> allVisibility = new ObservableField<>(false);
+
     public ObservableField<String> phoneNumber = new ObservableField<>();
 
     public ObservableField<Boolean> isModify = new ObservableField<>(false);

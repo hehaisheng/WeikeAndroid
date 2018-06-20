@@ -1,29 +1,39 @@
 package com.weike.data.business.client;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.google.gson.reflect.TypeToken;
+import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigDialog;
+import com.mylhyl.circledialog.params.DialogParams;
 import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
+import com.weike.data.adapter.CheckedAdapter;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.setting.ClientTagSettingActivity;
 import com.weike.data.config.Config;
+import com.weike.data.model.business.ClientRelated;
 import com.weike.data.model.req.GetClientByLabelReq;
 import com.weike.data.model.req.GetClientTagListReq;
+import com.weike.data.model.req.MoveClientToLabelReq;
 import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.model.resp.GetClientTagListResp;
+import com.weike.data.model.resp.MoveClientToLabelResp;
 import com.weike.data.model.viewmodel.ClientTagContentVM;
 import com.weike.data.model.viewmodel.LabelOptionItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.ClientTagComparator;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -82,6 +92,8 @@ public class ClientTagActivity extends BaseActivity {
 
     public BaseDataBindingAdapter clientTagOptionAdapter;
 
+    private boolean isMove = true;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,21 +116,112 @@ public class ClientTagActivity extends BaseActivity {
 
 
         if (isModify) {
-            setRightText("移动");
-            for (int i = 0; i < contentVMS.size(); i++) {
-                contentVMS.get(i).isSelector.set(true);
-            }
+            resetModify(isModify);
+
         } else {
-            setRightText("编辑");
-            for (int i = 0; i < contentVMS.size(); i++) {
-                contentVMS.get(i).isSelector.set(isModify);
-            }
+
+            showChckDialog();
+
         }
 
 
         clientListContentAdapter.notifyDataSetChanged();
     }
 
+
+    private void showChckDialog(){
+
+
+
+
+        String[]  array = new String[optionItemVMS.size()];
+        String[] ids = new String[optionItemVMS.size()];
+
+        for(int i = 0 ; i <optionItemVMS.size() ; i++) {
+            array[i] = optionItemVMS.get(i).text.get();
+            ids[i] = optionItemVMS.get(i).id.get();
+        };
+
+        final CheckedAdapter checkedAdapter = new CheckedAdapter(this, array,true);
+
+        new CircleDialog.Builder()
+                .configDialog(new ConfigDialog() {
+                    @Override
+                    public void onConfig(DialogParams params) {
+                        params.backgroundColorPress = Color.CYAN;
+                    }
+                })
+                .setTitle("请选择您要关联的客户")
+                .setItems(checkedAdapter, new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        checkedAdapter.toggleId(position,ids[position]);
+                        checkedAdapter.toggle(position, array[position]);
+
+
+                    }
+                })
+                .setItemsManualClose(true)
+                .setPositive("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        resetModify(false);
+                        move(checkedAdapter.getids().valueAt(0));
+                    }
+                })
+                .show(getSupportFragmentManager());
+
+    }
+
+    private void move(String labelId) {
+        ArrayList<ClientRelated> relateds = new ArrayList<>();
+        for(int i = 0 ; i < contentVMS.size();i++) {
+
+            if (contentVMS.get(i).isCheck.get()) { //如果被选中
+                LogUtil.d("TagClientActivity","ischeck:---");
+                ClientRelated related = new ClientRelated();
+                related.clientId = contentVMS.get(i).id.get();
+                relateds.add(related);
+            }
+        }
+        MoveClientToLabelReq req = new MoveClientToLabelReq();
+        req.labelId = labelId;
+        req.clientArr = "" + JsonUtil.GsonString(relateds) + "";
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.MOVE_CLIENT_TO_LABEL)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetClientTagListResp>>() {
+
+                })).subscribe(new BaseObserver<BaseResp<MoveClientToLabelResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<MoveClientToLabelResp> getClientTagListRespBaseResp) throws Exception {
+                refreshTagClient(lastClickPosition);
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+
+
+
+    }
+
+    private void resetModify(boolean isModify){
+        if (isModify) {
+            setRightText("移动");
+            for (int i = 0; i < contentVMS.size(); i++) {
+                contentVMS.get(i).isSelector.set(true);
+            }
+        } else {
+
+            setRightText("编辑");
+            for (int i = 0; i < contentVMS.size(); i++) {
+                contentVMS.get(i).isSelector.set(isModify);
+            }
+        }
+    }
 
     public void initLabel() {
         optionItemVMS.clear();
@@ -228,6 +331,7 @@ public class ClientTagActivity extends BaseActivity {
                 for (int i = 0; i < getClientListRespBaseResp.getDatas().allClientList.size(); i++) {
                     GetClientListResp.ClientListSub sub = getClientListRespBaseResp.getDatas().allClientList.get(i);
                     ClientTagContentVM vm = new ClientTagContentVM();
+                    vm.id.set(sub.id);
                     vm.content.set(sub.company);
                     vm.title.set(sub.userName);
                     vm.isSelector.set(false);

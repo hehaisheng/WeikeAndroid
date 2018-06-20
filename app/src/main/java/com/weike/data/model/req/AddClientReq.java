@@ -27,6 +27,8 @@ public class AddClientReq extends BaseReq{
 
     public String clientLabelId;//标签ID
 
+    public String clientId; //客户ID 用于刷新用
+
     public String photoUrl ; //用户的头像
 
     public String office; //职位
@@ -61,7 +63,7 @@ public class AddClientReq extends BaseReq{
 
     public int marriage ; //1 未婚 ;已婚
 
-    public String somNum ; //儿子数量
+    public String sonNum ; //儿子数量
 
     public String daughterNum ; //女儿数量
 

@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 
 public abstract class BaseFragment extends android.support.v4.app.Fragment {
 
+    public boolean isModify;
+
     protected Context context;
 
     /**

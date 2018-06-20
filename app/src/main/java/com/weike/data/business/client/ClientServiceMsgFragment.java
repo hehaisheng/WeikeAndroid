@@ -27,7 +27,6 @@ public class ClientServiceMsgFragment extends BaseFragment {
 
     public ClientServiceMsgVM vm;
 
-    HashMap<String , ToDo> producetHashMap = new HashMap<>();
 
     @Override
     protected int setUpLayoutId() {
@@ -39,7 +38,11 @@ public class ClientServiceMsgFragment extends BaseFragment {
 
     }
 
-
+    @Override
+    public void onRightClick(boolean status) {
+        super.onRightClick(status);
+        vm.clickable.set(status);
+    }
 
     @Nullable
     @Override

@@ -7,7 +7,7 @@ public class ClientServiceMsgVM {
     /**
      * 是否可以编辑
      */
-    public ObservableField<Boolean> clickable = new ObservableField<>();
+    public ObservableField<Boolean> clickable = new ObservableField<>(false);
 
     /**
      * 收入
