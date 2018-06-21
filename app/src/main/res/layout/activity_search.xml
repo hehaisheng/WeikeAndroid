@@ -1,34 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:background="@color/color_white"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
-    <include
-        layout="@layout/widget_action_bar"
-        />
+    <include layout="@layout/widget_action_bar" />
 
     <EditText
         android:id="@+id/ed_input_search"
-        android:hint="关键字搜索"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:background="@drawable/shape_main_page_search"
         android:drawableLeft="@mipmap/ic_main_search"
-        android:paddingLeft="10dp"
         android:drawablePadding="10dp"
-        android:paddingTop="10dp"
+        android:hint="关键字搜索"
+        android:imeOptions="actionSearch"
         android:paddingBottom="10dp"
-        android:layout_margin="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:singleLine="true"
         android:textColor="@color/color_content"
-        android:layout_width="match_parent"
-        android:textSize="11sp"
-        android:layout_height="wrap_content" />
+        android:textSize="11sp" />
 
 
-    <android.support.v7.widget.RecyclerView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-    </android.support.v7.widget.RecyclerView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycle_search_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/view_loadding"
+            layout="@layout/widget_layout_loadding"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+
 </LinearLayout>

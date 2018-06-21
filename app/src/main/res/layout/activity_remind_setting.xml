@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="提醒"
-            android:button="@drawable/selector_checkbox"
+            android:button="@drawable/selector_checkbox_low"
             android:padding="10dp"
             android:onClick="@{()->remindSettingVM.remindCheckBoxClick()}"
             android:checked="@={remindSettingVM.isRemind}"
@@ -94,13 +94,13 @@
                 android:layout_gravity="center"
                 android:paddingLeft="10dp"
                 android:textColor="@color/color_bebebe"
-                android:button="@drawable/selector_checkbox_mid"
+                android:button="@drawable/selector_checkbox_height"
                 android:layout_width="wrap_content"
                 android:clickable="@{remindSettingVM.isRemind}"
                 android:checked="@={remindSettingVM.heightCheck}"
                 android:layout_height="wrap_content" />
             <RadioButton
-                android:button="@drawable/selector_checkbox"
+                android:button="@drawable/selector_checkbox_mid"
                 android:paddingLeft="10dp"
                 android:layout_weight="1"
                 android:layout_gravity="center"
@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <RadioButton
-                android:button="@drawable/selector_checkbox"
+                android:button="@drawable/selector_checkbox_low"
                 android:layout_weight="1"
                 android:text="低"
                 android:paddingLeft="10dp"
@@ -277,7 +277,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:button="@drawable/selector_checkbox"
+        android:button="@drawable/selector_checkbox_low"
         android:layout_marginTop="19dp"
         android:text="不提醒"
         android:padding="10dp"

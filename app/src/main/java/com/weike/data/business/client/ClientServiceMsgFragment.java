@@ -50,6 +50,7 @@ public class ClientServiceMsgFragment extends BaseFragment {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_client_service_msg,container,false);
         vm = new ClientServiceMsgVM();
+        vm.clickable.set(isModify);
         binding.setClientServiceVM(vm);
 
         return binding.getRoot();

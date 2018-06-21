@@ -172,7 +172,7 @@ public final class Config {
     public static final String MODIFY_CLIENT  = "wkzs-restful/client/saveClient";
 
     /**
-     * 批量移
+     * 批量移动客户
      */
     public static final String MOVE_CLIENT_TO_LABEL = "wkzs-restful/client/ClientMobileLabel";
 

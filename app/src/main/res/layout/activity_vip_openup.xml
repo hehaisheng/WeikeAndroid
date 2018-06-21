@@ -156,7 +156,7 @@
 
                         <CheckBox
                             android:checked="@{openUpActVM.isAliPay}"
-                            android:button="@drawable/selector_checkbox"
+                            android:button="@drawable/selector_checkbox_low"
                             android:layout_width="wrap_content"
                             android:gravity="right"
                             android:onClick="@{()->openUpActVM.aliPay()}"
@@ -198,7 +198,7 @@
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:button="@drawable/selector_checkbox"
+                            android:button="@drawable/selector_checkbox_low"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:checked="@{openUpActVM.wechatPay}"
