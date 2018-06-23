@@ -210,7 +210,7 @@ public class AddClientActivity extends BaseActivity {
             }
 
             @Override
-            public void onTabReselect(int position) {`
+            public void onTabReselect(int position) {
 
             }
         });
