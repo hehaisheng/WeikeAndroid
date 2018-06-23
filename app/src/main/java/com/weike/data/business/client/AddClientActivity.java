@@ -152,13 +152,13 @@ public class AddClientActivity extends BaseActivity {
         boolean status = false;
         if (clientId != null) {
             setRightText("编辑");
-            status = true;
-        } else {
             status = false;
+        } else {
+            status = true;
             setRightText("完成");
         }
         isModify = status;
-        vm.isModify.set(status);
+        vm.isModify.set(isModify);
         ClientBaseMsgFragment fragment = (ClientBaseMsgFragment) fragments.get(0);
         fragment.isModify = status;
         ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
@@ -412,13 +412,6 @@ public class AddClientActivity extends BaseActivity {
 
 
 
-
-
-
-        if(clientBaseMsgFragment.addPhoneVMS.size() <= 0 && clientBaseMsgFragment.addPhoneVMS.get(0) == null) {
-            ToastUtil.showToast("必须要添加一个电话号码");
-            return;
-        }
         if(TextUtils.isEmpty(vm.userName.get())){
 
             ToastUtil.showToast("名字不能为空");
@@ -446,6 +439,11 @@ public class AddClientActivity extends BaseActivity {
             String phone = clientBaseMsgFragment.addPhoneVMS.get(i).phoneNumber.get();//电话号码
             if (TextUtils.isEmpty(phone))continue;
             p.add(phone);
+        }
+
+        if (p.size() == 0) {
+            ToastUtil.showToast("必须要添加一个电话号码");
+            return;
         }
 
         for(int i = 0 ; i < p.size() ;i++){

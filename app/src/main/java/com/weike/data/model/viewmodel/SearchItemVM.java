@@ -7,6 +7,8 @@ import com.weike.data.base.BaseVM;
 import com.weike.data.business.client.AddClientActivity;
 import com.weike.data.databinding.ActivityAddLogBinding;
 
+import io.reactivex.internal.operators.observable.ObservableError;
+
 public class SearchItemVM extends BaseVM {
 
     /**
@@ -33,6 +35,23 @@ public class SearchItemVM extends BaseVM {
      * 日志ID
      */
     public ObservableField<String> logId = new ObservableField<>();
+
+    /**
+     *
+     */
+    public ObservableField<String> iconUrl = new ObservableField<>();
+
+
+    /**
+     * 内容
+     */
+    public ObservableField<String> content = new ObservableField<>();
+
+    /**
+     * 标题
+     */
+    public ObservableField<String> title = new ObservableField<>();
+
 
     public SearchItemVM(Activity activity){
         this.activity = activity;

@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.mylhyl.circledialog.CircleDialog;
@@ -27,6 +29,7 @@ import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.ToDo;
@@ -36,6 +39,7 @@ import com.weike.data.model.resp.EditAndDeleteTodoResp;
 import com.weike.data.model.resp.GetHandleWorkListResp;
 import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.LogUtil;
@@ -55,13 +59,15 @@ import static android.app.Activity.RESULT_OK;
  * 待办事
  */
 public class HandlerWorkingFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener,
-        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> {
+        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,View.OnClickListener{
 
     public CheckBox cb_sort_date;
 
     public CheckBox cb_sort_level;
 
     private View loadingView;
+
+    private View nothing;
 
     private HandleWorkItemVM lastModifyVM;
 
@@ -81,7 +87,11 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
     public ExpandableListView expandableListView;
 
+    private TextView goToAdd;
+
     private ToDo toDo;
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -109,14 +119,25 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         loadingView = view.findViewById(R.id.loaddingview);
         cb_sort_level.setOnCheckedChangeListener(this);
         cb_sort_date.setOnCheckedChangeListener(this);
-
+        nothing = view.findViewById(R.id.ll_nothing_view);
+        goToAdd = view.findViewById(R.id.tv_add_log);
+        goToAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivitySkipUtil.skipAnotherAct(getActivity(), AddLogActivity.class);
+            }
+        });
 
 
         loadDataOfList(1, 1, true);
         initRecycleView();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+    }
 
     private void initRecycleView() {
 
@@ -127,12 +148,11 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
     }
 
-    public void loadDataByLabel(int type, int page, boolean needFresh) {
 
-    }
 
     public void loadDataOfList(int type, int page, boolean needFresh) {
         loadingView.setVisibility(View.VISIBLE);
+        nothing.setVisibility(View.GONE);
 
         GetHandleWorkListReq req = new GetHandleWorkListReq();
         req.page = page;
@@ -146,6 +166,10 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             @Override
             protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
                 loadingView.setVisibility(View.GONE);
+                if(getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
+                    nothing.setVisibility(View.VISIBLE);
+                    return;
+                }
 
                 for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
                     HandleWorkItemVM vm = new HandleWorkItemVM();
@@ -223,7 +247,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             }, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    modify(handleWorkItemVM);
+                    delete(handleWorkItemVM);
                 }
             });
 
@@ -276,5 +300,10 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
     private void delete(HandleWorkItemVM vm) {
        updateStatus(4,vm);
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

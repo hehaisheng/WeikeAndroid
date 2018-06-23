@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 import com.weike.data.base.BaseVM;
+import com.weike.data.business.msg.MsgDetailActivity;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.ToastUtil;
 
@@ -70,6 +71,8 @@ public class MessageItemVM extends BaseVM
         else {
             ToastUtil.showToast("666");
         }
+
+        ActivitySkipUtil.skipAnotherAct(activity,MsgDetailActivity.class);
     }
 
 

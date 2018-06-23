@@ -87,9 +87,8 @@ public class RemindSettingActivity extends BaseActivity {
         toDo = getIntent().getParcelableExtra(KEY_OF_TODO);
         id = getIntent().getStringExtra(KEY_OF_ID);
 
-        LogUtil.d("acthome","-->" +id);
+
         if (toDo != null) {
-            LogUtil.d("RedmingSettingActivity","--->" + JsonUtil.GsonString(toDo));
             initCurrentTodo();
         }
 

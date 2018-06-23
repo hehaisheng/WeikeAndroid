@@ -30,6 +30,7 @@ import com.weike.data.model.req.GetMsgListReq;
 import com.weike.data.model.resp.GetMsgListResp;
 import com.weike.data.model.viewmodel.MessageItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -69,6 +70,12 @@ public class MsgFragment extends BaseFragment {
         nothingView = view.findViewById(R.id.ll_nothing_view);
         msgList.setLayoutManager(new LinearLayoutManager(WKBaseApplication.getInstance().getApplicationContext()));
         adapter = new BaseDataBindingAdapter(WKBaseApplication.getInstance().getApplicationContext(), R.layout.widget_message_item, vms, BR.messageItemVM);
+        adapter.setOnRecyclerViewItemClickListener(new BaseDataBindingAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(int position, View view) {
+                ActivitySkipUtil.skipAnotherAct(getActivity(),MsgDetailActivity.class);
+            }
+        });
         msgList.setAdapter(adapter);
 
 

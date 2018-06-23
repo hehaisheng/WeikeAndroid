@@ -26,8 +26,8 @@ public class PickerUtil {
     public static void  onYearMonthDayTimePicker(View view, DateTimePicker.OnYearMonthDayTimePickListener listener, Activity activity) {
         DateTimePicker picker = new DateTimePicker(activity, DateTimePicker.HOUR_24);
         picker.setActionButtonTop(false);
-        picker.setDateRangeStart(2017, 1, 1);
-        picker.setDateRangeEnd(2025, 11, 11);
+        picker.setDateRangeStart(1900, 1, 1);
+        picker.setDateRangeEnd(2019, 12, 12);
         picker.setSelectedItem(2018,6,16,16,43);
         picker.setTimeRangeStart(9, 0);
         picker.setTimeRangeEnd(20, 30);
@@ -52,7 +52,6 @@ public class PickerUtil {
         picker.setCanLoop(false);//不禁用循环
         picker.setTopBackgroundColor(Color.WHITE);
         picker.setTopHeight(50);
-        picker.setBackgroundColor(Color.WHITE);
         picker.setTopLineColor(0xFF33B5E5);
         picker.setTopLineHeight(1);
         picker.setTitleText("请选择");
@@ -60,6 +59,7 @@ public class PickerUtil {
         picker.setTitleTextSize(15);
         picker.setCancelTextColor(0xFF33B5E5);
         picker.setCancelTextSize(13);
+
         picker.setSubmitTextColor(0xFF33B5E5);
         picker.setSubmitTextSize(13);
         picker.setLineVisible(false);
@@ -71,7 +71,7 @@ public class PickerUtil {
 //        config.setRatio(1);//线比率
         picker.setLineConfig(config);
         picker.setItemWidth(300);
-        picker.setBackgroundColor(0xFFE1E1E1);
+        picker.setBackgroundColor(Color.WHITE);
         picker.setSelectedIndex(7);
         picker.setOnItemPickListener(listener);
 

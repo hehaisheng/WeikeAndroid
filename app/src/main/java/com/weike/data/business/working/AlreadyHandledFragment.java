@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
@@ -29,6 +30,7 @@ import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.ToDo;
@@ -38,6 +40,7 @@ import com.weike.data.model.resp.EditAndDeleteTodoResp;
 import com.weike.data.model.resp.GetHandleWorkListResp;
 import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.LogUtil;
@@ -79,6 +82,10 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
     public LinearLayout ll_handle_working_sort;
 
+    private TextView goToAdd;
+
+    private View nothingView;
+
     private ToDo toDo;
 
     @Override
@@ -106,6 +113,14 @@ public class AlreadyHandledFragment extends BaseFragment implements
         ll_handle_working_sort = view.findViewById(R.id.ll_handle_working_sort);
         ll_handle_working_sort.setVisibility(View.GONE);
         loadingView = view.findViewById(R.id.loaddingview);
+        goToAdd = view.findViewById(R.id.tv_add_log);
+        nothingView = view.findViewById(R.id.ll_nothing_view);
+        goToAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivitySkipUtil.skipAnotherAct(getActivity(), AddLogActivity.class);
+            }
+        });
 
 
 
@@ -114,7 +129,11 @@ public class AlreadyHandledFragment extends BaseFragment implements
         initRecycleView();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+    }
 
     private void initRecycleView() {
 
@@ -131,6 +150,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
     public void loadDataOfList(int type, int page, boolean needFresh) {
         loadingView.setVisibility(View.VISIBLE);
+        nothingView.setVisibility(View.GONE);
 
         GetHandleWorkListReq req = new GetHandleWorkListReq();
         req.page = page;
@@ -144,6 +164,10 @@ public class AlreadyHandledFragment extends BaseFragment implements
             @Override
             protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
                 loadingView.setVisibility(View.GONE);
+                if (getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
+                    nothingView.setVisibility(View.VISIBLE);
+                    return;
+                }
 
                 for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
                     HandleWorkItemVM vm = new HandleWorkItemVM();

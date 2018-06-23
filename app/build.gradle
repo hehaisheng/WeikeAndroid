@@ -20,6 +20,7 @@ android {
 
         buildConfigField "String", "APP_SERVER", '"http://114.116.15.19/"'
         buildConfigField "String", "APP_SECRET", '"62e1f24949dfad11db7d22fa59887c72"'
+        buildConfigField "String", "ALI_PAY_APP_ID", '"2018062060403663"'
         multiDexEnabled true
 
     }
