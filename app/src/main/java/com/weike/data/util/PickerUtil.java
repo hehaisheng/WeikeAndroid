@@ -17,6 +17,7 @@ import cn.addapp.pickers.common.LineConfig;
 import cn.addapp.pickers.listeners.OnItemPickListener;
 import cn.addapp.pickers.listeners.OnMoreItemPickListener;
 import cn.addapp.pickers.listeners.OnSingleWheelListener;
+
 import cn.addapp.pickers.picker.DateTimePicker;
 import cn.addapp.pickers.picker.LinkagePicker;
 import cn.addapp.pickers.picker.SinglePicker;
@@ -32,6 +33,8 @@ public class PickerUtil {
         picker.setTimeRangeStart(9, 0);
         picker.setTimeRangeEnd(20, 30);
         picker.setCanLinkage(false);
+        picker.setLabel("年","月","日","时","分");
+
         picker.setTitleText("请选择");
 //        picker.setStepMinute(5);
         picker.setWeightEnable(true);
@@ -41,7 +44,6 @@ public class PickerUtil {
         config.setAlpha(120);//线透明度
         config.setVisible(true);//线不显示 默认显示
         picker.setLineConfig(config);
-        picker.setLabel(null,null,null,null,null);
         picker.setOnDateTimePickListener(listener);
         picker.show();
     }

@@ -24,7 +24,7 @@ public class VipOpenUpActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_vip_openup);
-        OpenUpVipActVM vm = new OpenUpVipActVM();
+        OpenUpVipActVM vm = new OpenUpVipActVM(this);
         binding.setOpenUpActVM(vm);
 
 

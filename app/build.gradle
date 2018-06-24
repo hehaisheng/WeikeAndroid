@@ -47,5 +47,6 @@ dependencies {
     compile project(':library')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    compile files('libs/alipaySdk-20180601.jar')
     implementation project(':FDHSocialGeneralDialog')
 }

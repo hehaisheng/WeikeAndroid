@@ -1,13 +1,25 @@
 package com.weike.data.model.viewmodel;
 
+import android.app.Activity;
 import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.os.FileObserver;
 
+import com.alipay.sdk.app.AuthTask;
+import com.alipay.sdk.app.PayTask;
 import com.weike.data.base.BaseVM;
+import com.weike.data.payment.alipay.OrderInfoUtil2_0;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.ToastUtil;
+
+import java.util.Map;
+
+import static com.weike.data.payment.alipay.AliPayConfig.APPID;
+import static com.weike.data.payment.alipay.AliPayConfig.PID;
+import static com.weike.data.payment.alipay.AliPayConfig.RSA2_PRIVATE;
+import static com.weike.data.payment.alipay.AliPayConfig.TARGET_ID;
 
 /**
  * Created by LeoLu on 2018/6/5.
@@ -36,7 +48,12 @@ public class OpenUpVipActVM extends BaseVM {
     public ObservableField<String> vipTime = new ObservableField<>();
 
     public ObservableBoolean wechatPay = new ObservableBoolean(true);
+
     public ObservableBoolean isAliPay = new ObservableBoolean(false);
+
+    public OpenUpVipActVM(Activity activity) {
+        this.activity = activity;
+    }
 
     public void add(){
         updateData(true);
@@ -69,7 +86,26 @@ public class OpenUpVipActVM extends BaseVM {
     }
 
     public void pay(){
+
+        boolean rsa2 = (RSA2_PRIVATE.length() > 0);
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2,allMoney.get());
+        String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
+
+        String privateKey =  RSA2_PRIVATE;
+        String sign = OrderInfoUtil2_0.getSign(params, privateKey, rsa2);
+        final String orderInfo = orderParam + "&" + sign;
+
+        new Thread(){
+            public void run(){
+                PayTask alipay = new PayTask(activity);
+                Map<String, String> result = alipay.payV2(orderInfo, true);
+                LogUtil.d("OpenUVipAct", JsonUtil.GsonString(result));
+            }
+        }.start();
+
+
         if (isAliPay.get()) {
+
             //TODO go to alipay
         } else {
             //TODO go to wechatPay
