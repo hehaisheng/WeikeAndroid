@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ExpandableListView;
 
 import com.google.gson.reflect.TypeToken;
 import com.mylhyl.circledialog.CircleDialog;
@@ -35,6 +36,7 @@ import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
+import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
@@ -73,7 +75,11 @@ public class MsgFragment extends BaseFragment {
         adapter.setOnRecyclerViewItemClickListener(new BaseDataBindingAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(int position, View view) {
-                ActivitySkipUtil.skipAnotherAct(getActivity(),MsgDetailActivity.class);
+                //ActivitySkipUtil.skipAnotherAct(getActivity(),MsgDetailActivity.class);
+
+
+
+
             }
         });
         msgList.setAdapter(adapter);
@@ -150,6 +156,7 @@ public class MsgFragment extends BaseFragment {
                 ids.add(vms.get(i).clientId);
             }
         }
+
 
 
         DeleteHomeMsgReq req = new DeleteHomeMsgReq();

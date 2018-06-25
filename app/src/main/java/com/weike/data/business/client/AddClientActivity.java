@@ -148,6 +148,9 @@ public class AddClientActivity extends BaseActivity {
         initClickStatus();
     }
 
+    /**
+     * 状态初始化
+     */
     private void initClickStatus() {
         boolean status = false;
         if (clientId != null) {
@@ -167,6 +170,9 @@ public class AddClientActivity extends BaseActivity {
 
     }
 
+    /**
+     * 初始化图片选择
+     */
     private void initPhotoSel(){
         mLqrPhotoSelectUtils = new LQRPhotoSelectUtils(this, new LQRPhotoSelectUtils.PhotoSelectListener() {
             @Override
@@ -220,8 +226,9 @@ public class AddClientActivity extends BaseActivity {
     }
 
 
-
-
+    /**
+     * 初始化消息
+     */
     private void initMsg(){
         if (TextUtils.isEmpty(getIntent().getStringExtra(TAG_CLIENT_ID))){
             return;
@@ -311,9 +318,7 @@ public class AddClientActivity extends BaseActivity {
 
     }
 
-    private void modifyData(){
 
-    }
 
     @Override
     public void onRightClick(boolean isModify) {

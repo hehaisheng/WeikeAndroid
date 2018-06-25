@@ -176,4 +176,9 @@ public final class Config {
      */
     public static final String MOVE_CLIENT_TO_LABEL = "wkzs-restful/client/ClientMobileLabel";
 
+    /**
+     * 获取客户的消息详情列表
+     */
+    public static final String GET_CLIENT_DETAIL_MSG_LIST = "wkzs-restful/message/newsListByClient";
+
 }

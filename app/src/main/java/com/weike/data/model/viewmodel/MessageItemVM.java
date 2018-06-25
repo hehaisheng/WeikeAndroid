@@ -69,10 +69,10 @@ public class MessageItemVM extends BaseVM
         if (isSel.get())
             isCheck.set(isCheck.get() == true ? false : true);
         else {
-            ToastUtil.showToast("666");
+
         }
 
-        ActivitySkipUtil.skipAnotherAct(activity,MsgDetailActivity.class);
+        MsgDetailActivity.startActivity(activity,title.get(),clientId);
     }
 
 

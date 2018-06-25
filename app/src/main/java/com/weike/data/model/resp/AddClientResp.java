@@ -7,4 +7,7 @@ public class AddClientResp extends BaseResp {
      * 客户ID
      */
     public String clientId;
+
+
+
 }

@@ -2,6 +2,7 @@
 
 <layout>
     <data>
+        <import type="android.view.View"/>
         <variable
             name="searchItemVM"
             type="com.weike.data.model.viewmodel.SearchItemVM"></variable>
@@ -12,11 +13,13 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_white"
+    android:onClick="@{()->searchItemVM.jumpActivity()}"
     android:layout_height="wrap_content">
 
     <View
         android:layout_width="match_parent"
         android:background="@color/color_line"
+        android:visibility="@{searchItemVM.isShowClientTag ? View.VISIBLE : View.GONE}"
         android:layout_height="10dp"
 
         />
@@ -25,7 +28,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:textColor="@color/color_bebebe"
-        android:text="联系人"
+        android:text="@{searchItemVM.tagName}"
+        android:visibility="@{searchItemVM.isShowClientTag ? View.VISIBLE : View.GONE}"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

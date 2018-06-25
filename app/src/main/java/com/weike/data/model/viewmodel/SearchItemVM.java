@@ -52,16 +52,17 @@ public class SearchItemVM extends BaseVM {
      */
     public ObservableField<String> title = new ObservableField<>();
 
+    /**
+     * 标签名
+     */
+    public ObservableField<String> tagName = new ObservableField<>();
+
 
     public SearchItemVM(Activity activity){
         this.activity = activity;
     }
 
     public void jumpActivity(){
-        if (isClient.get()) {
-            AddClientActivity.startActivity(activity,clientId.get());
-        } else {
-
-        }
+        AddClientActivity.startActivity(activity,clientId.get());
     }
 }

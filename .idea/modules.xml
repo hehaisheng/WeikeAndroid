@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FDHSocialGeneralDialog/FDHSocialGeneralDialog.iml" filepath="$PROJECT_DIR$/FDHSocialGeneralDialog/FDHSocialGeneralDialog.iml" />
       <module fileurl="file://$PROJECT_DIR$/WKApp.iml" filepath="$PROJECT_DIR$/WKApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/WeikeAndroid.iml" filepath="$PROJECT_DIR$/WeikeAndroid.iml" />
+      <module fileurl="file://E:\WKApp\WeikeAndroid.iml" filepath="E:\WKApp\WeikeAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>

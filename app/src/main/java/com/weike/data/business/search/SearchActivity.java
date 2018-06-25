@@ -93,13 +93,13 @@ public class SearchActivity extends BaseActivity {
 
     private void initRecycleView(){
 
-        for(int i = 0 ; i < 10 ; i++) {
+        /*for(int i = 0 ; i < 10 ; i++) {
             SearchItemVM searchItemVM = new SearchItemVM(this);
 
 
             searchItemVMS.add(searchItemVM);
         }
-
+*/
         adapter = new BaseDataBindingAdapter(this,R.layout.widget_search_list_item,searchItemVMS, BR.searchItemVM);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -122,7 +122,56 @@ public class SearchActivity extends BaseActivity {
             @Override
             protected void onSuccess(BaseResp<SearchResp> searchRespBaseResp) throws Exception {
                 loaddingView.setVisibility(View.GONE);
+                for(int i = 0 ; i < searchRespBaseResp.getDatas().nameList.size();i++) {
+                    SearchItemVM searchItemVM = new SearchItemVM(SearchActivity.this);
+                    searchItemVM.title.set(searchRespBaseResp.getDatas().nameList.get(i).userName);
+                    searchItemVM.content.set(searchRespBaseResp.getDatas().nameList.get(i).remark);
+                    searchItemVM.clientId.set(searchRespBaseResp.getDatas().nameList.get(i).userId);
+                    if(i == 0) {
+                        searchItemVM.tagName.set("联系人");
+                        searchItemVM.isShowClientTag.set(true);
+                    } else {
+                        searchItemVM.isShowClientTag.set(false);
+                    }
+                    searchItemVMS.add(searchItemVM);
+                }
 
+
+                boolean  isShowTitle = false;
+                for(int i = 0 ; i < searchRespBaseResp.getDatas().remarkList.size() ; i++) {
+                    SearchItemVM searchItemVM = new SearchItemVM(SearchActivity.this);
+                    searchItemVM.title.set(searchRespBaseResp.getDatas().remarkList.get(i).userName);
+                    searchItemVM.content.set(searchRespBaseResp.getDatas().remarkList.get(i).remark);
+                    searchItemVM.clientId.set(searchRespBaseResp.getDatas().remarkList.get(i).userId);
+                    if(i == 0) {
+                        isShowTitle = true;
+                        searchItemVM.tagName.set("日志/公司");
+                        searchItemVM.isShowClientTag.set(true);
+                    } else {
+                        searchItemVM.isShowClientTag.set(false);
+                    }
+                    searchItemVMS.add(searchItemVM);
+                }
+
+                for(int i = 0 ; i < searchRespBaseResp.getDatas().companyList.size() ; i++) {
+                    SearchItemVM searchItemVM = new SearchItemVM(SearchActivity.this);
+                    searchItemVM.title.set(searchRespBaseResp.getDatas().companyList.get(i).userName);
+                    searchItemVM.content.set(searchRespBaseResp.getDatas().companyList.get(i).remark);
+                    searchItemVM.clientId.set(searchRespBaseResp.getDatas().companyList.get(i).userId);
+                    if(i == 0) {
+                        if (isShowTitle) continue;
+                        searchItemVM.tagName.set("日志/公司");
+                        searchItemVM.isShowClientTag.set(true);
+                    } else {
+                        searchItemVM.isShowClientTag.set(false);
+                    }
+                    searchItemVMS.add(searchItemVM);
+                }
+
+
+
+
+                adapter.notifyDataSetChanged();
 
             }
 
