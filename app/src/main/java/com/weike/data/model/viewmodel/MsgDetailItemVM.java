@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.databinding.ObservableField;
 import android.support.v4.app.FragmentActivity;
 
+import com.weike.data.R;
 import com.weike.data.base.BaseVM;
 
 /**
@@ -16,13 +17,27 @@ public class MsgDetailItemVM extends BaseVM {
 
     public ObservableField<String> title = new ObservableField<>();
 
-    public ObservableField<String> leftTextColor = new ObservableField<>();
+    public ObservableField<Integer> leftTextColor = new ObservableField<>(R.color.color_bebebe);
 
-    public ObservableField<Boolean> rightTextColor = new ObservableField<>();
+    public ObservableField<Integer> rightTextColor = new ObservableField<>(R.color.color_bebebe);
 
-    public ObservableField<Boolean> leftText = new ObservableField<>();
+    public ObservableField<String> leftText = new ObservableField<>();
 
+    public ObservableField<String> rightText = new ObservableField<>();
+
+    public ObservableField<String> time = new ObservableField<>();
+
+    /**
+     * 是否是已读
+     */
+    public ObservableField<Boolean> isRead = new ObservableField<>();
+
+    /**
+     * 是否选中
+     */
     public ObservableField<Boolean> isSle = new ObservableField<>();
+
+    public ObservableField<Boolean> isCheck = new ObservableField<>();
 
     public ObservableField<Boolean> isSystemMsg = new ObservableField<>(false);
 

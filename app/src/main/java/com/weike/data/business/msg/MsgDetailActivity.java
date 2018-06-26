@@ -94,7 +94,24 @@ public class MsgDetailActivity extends BaseActivity {
                 List<GetClientMsgDetailListResp.MessageListBean> list = getClientMsgDetailListRespBaseResp.getDatas().getMessageList();
                 for(int i = 0; i < list.size() ; i++) {
                     MsgDetailItemVM itemVM = new MsgDetailItemVM(MsgDetailActivity.this);
+                    itemVM.time.set(list.get(i).getCreateDate());
                     itemVM.content.set(list.get(i).getContent());
+                    if (list.get(i).getStatus() == 1) {
+                        //未读itemvm
+                        itemVM.rightText.set("处理");
+                        itemVM.isRead.set(true);
+                    } else {
+                        itemVM.isRead.set(false);
+                        itemVM.rightText.set("已处理");
+                    }
+
+                    if (list.get(i).getIs_remind() == 1) {
+                        itemVM.leftText.set("稍后提醒");
+                    } else {
+                        itemVM.leftText.set("不在提醒");
+                    }
+
+
                     vms.add(itemVM);
                 }
                 adapter.notifyDataSetChanged();
