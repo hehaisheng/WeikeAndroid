@@ -1,15 +1,21 @@
 package com.weike.data.model.viewmodel;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.os.FileObserver;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
 import com.weike.data.base.BaseVM;
 import com.weike.data.payment.alipay.OrderInfoUtil2_0;
+import com.weike.data.payment.alipay.PayResult;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.ToastUtil;
@@ -88,7 +94,7 @@ public class OpenUpVipActVM extends BaseVM {
     public void pay(){
 
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2,allMoney.get());
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2,"0.01");
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey =  RSA2_PRIVATE;
@@ -100,6 +106,10 @@ public class OpenUpVipActVM extends BaseVM {
                 PayTask alipay = new PayTask(activity);
                 Map<String, String> result = alipay.payV2(orderInfo, true);
                 LogUtil.d("OpenUVipAct", JsonUtil.GsonString(result));
+                Message message = Message.obtain();
+                message.obj = result;
+                handler.sendMessage(message);
+
             }
         }.start();
 
@@ -111,6 +121,24 @@ public class OpenUpVipActVM extends BaseVM {
             //TODO go to wechatPay
         }
     }
+
+   @SuppressLint("HandlerLeak")
+   Handler handler = new Handler(){
+        public void handleMessage(Message msg){
+
+            PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+            String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+            String resultStatus = payResult.getResultStatus();
+            // 判断resultStatus 为9000则代表支付成功
+            if (TextUtils.equals(resultStatus, "9000")) {
+                // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                ToastUtil.showToast("支付成功");
+            } else {
+                // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                ToastUtil.showToast("支付失败");
+            }
+        }
+    };
 
     public void reduce(){
         updateData(false);

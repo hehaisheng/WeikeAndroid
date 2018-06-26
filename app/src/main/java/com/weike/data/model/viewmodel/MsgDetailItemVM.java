@@ -18,9 +18,23 @@ public class MsgDetailItemVM extends BaseVM {
 
     public ObservableField<String> leftTextColor = new ObservableField<>();
 
+    public ObservableField<Boolean> rightTextColor = new ObservableField<>();
+
+    public ObservableField<Boolean> leftText = new ObservableField<>();
+
+    public ObservableField<Boolean> isSle = new ObservableField<>();
+
     public ObservableField<Boolean> isSystemMsg = new ObservableField<>(false);
 
 
+
+    public void leftClick(){
+
+    }
+
+    public void rightClick(){
+
+    }
 
     public MsgDetailItemVM(Activity activity) {
         super(activity);

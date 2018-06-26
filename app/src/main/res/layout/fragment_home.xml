@@ -113,6 +113,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:textSize="18sp"
                             android:layout_marginLeft="15dp"
                             android:layout_toRightOf="@+id/iv_widget_main_page_option_icon"
                             android:text="新增客户" />
@@ -143,6 +144,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_gravity="center"
+                            android:textSize="18sp"
                             android:layout_marginLeft="15dp"
                             android:text="新建日志" />
 
@@ -185,6 +187,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:textSize="18sp"
                             android:layout_marginLeft="15dp"
                             android:layout_toRightOf="@+id/iv_widget_main_page_option_icon"
                             android:text="待办事项" />
@@ -216,6 +219,7 @@
                             android:layout_centerVertical="true"
                             android:layout_gravity="center"
                             android:layout_marginLeft="15dp"
+                            android:textSize="18sp"
                             android:text="客户标签" />
 
                     </LinearLayout>

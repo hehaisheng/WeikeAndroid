@@ -32,7 +32,7 @@
             <View
                 android:layout_width="2dp"
                 android:background="@color/red_btn_bg_color"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="4dp"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>

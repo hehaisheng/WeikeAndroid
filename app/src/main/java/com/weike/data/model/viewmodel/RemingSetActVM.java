@@ -112,7 +112,7 @@ public class RemingSetActVM extends BaseVM {
         PickerUtil.onYearMonthDayTimePicker(null, new DateTimePicker.OnYearMonthDayTimePickListener() {
             @Override
             public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
-                time.set(s +"-"+ "-" + s1 +"-" + s2 + " " +s3 +":"+ s4);
+                time.set(s +"-" + s1 +"-" + s2 + " " +s3 +":"+ s4);
             }
         },activity);
     }

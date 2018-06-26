@@ -57,6 +57,7 @@
 
     <TextView
         android:layout_toRightOf="@+id/cardview_message_icon"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_alignTop="@+id/cardview_message_icon"
@@ -70,8 +71,11 @@
         android:layout_alignBottom="@+id/cardview_message_icon"
         android:layout_width="wrap_content"
         android:layout_marginLeft="10dp"
-        android:textSize="9sp"
+        android:layout_below="@+id/tv_title"
+        android:textSize="12sp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:text="@{messageItemVM.content}"
         />
 

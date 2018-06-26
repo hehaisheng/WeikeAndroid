@@ -119,7 +119,7 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
             @Override
             protected void onSuccess(BaseResp<AddAttrResp> baseResp) throws Exception {
                 AttrItemVM vm = new AttrItemVM();
-                vm.isDisplayReduce.set(false);
+                vm.isDisplayReduce.set(true);
                 vm.name.set(content);
                 vm.id.set(baseResp.getDatas().attributesId);
                 vms.add(vm);
@@ -159,8 +159,8 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
         setContentView(R.layout.activity_attr_managr);
         ButterKnife.bind(this);
         setCenterText("");
-        setLeftText("属性管理");
-        setRightText("编辑");
+        setLeftText("属性名称管理");
+        setRightText("");
 
         initDefault();
 
@@ -180,7 +180,7 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
                         AttrItemVM vm = new AttrItemVM();
                         vm.id.set(getAttrListRespBaseResp.getDatas().attributesValueList.get(i).id);
                         vm.name.set(getAttrListRespBaseResp.getDatas().attributesValueList.get(i).attributesName);
-                        vm.isDisplayReduce.set(false);
+                        vm.isDisplayReduce.set(true);
                         vm.setListener(AttrManagerActivity.this);
                         vms.add(vm);
                     }

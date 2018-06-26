@@ -98,8 +98,9 @@
                         android:layout_marginRight="20dp"
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@+id/tv_email_title"
+                        android:singleLine="true"
                         android:background="@color/color_touming"
-                        android:hint="请输入你的邮箱"
+                        android:hint="请输入邮箱"
                         android:text="@={clientBaseVM.email}"
                         android:textSize="15sp" />
 
@@ -133,8 +134,9 @@
                         android:layout_marginRight="20dp"
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@+id/tv_company"
+                        android:singleLine="true"
                         android:background="@color/color_touming"
-                        android:hint="请输入你的公司名字"
+                        android:hint="请输入公司名字"
                         android:text="@={clientBaseVM.companyName}"
                         android:textSize="15sp" />
 
@@ -170,6 +172,7 @@
                         android:layout_toRightOf="@+id/tv_job"
                         android:background="@color/color_touming"
                         android:hint="请输入职位"
+                        android:singleLine="true"
                         android:text="@={clientBaseVM.job}"
                         android:textSize="15sp" />
 
@@ -205,6 +208,7 @@
                         android:layout_toRightOf="@+id/tv_email_title"
                         android:background="@color/color_touming"
                         android:hint="请输入地址"
+                        android:singleLine="true"
                         android:text="@={clientBaseVM.companyLocation}"
                         android:textSize="15sp" />
 
@@ -236,6 +240,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/tv_home_location"
                         android:layout_marginLeft="20dp"
+                        android:singleLine="true"
                         android:layout_marginRight="20dp"
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@+id/tv_email_title"
@@ -371,8 +376,9 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_toRightOf="@+id/tv_sex"
+                        android:singleLine="true"
                         android:background="@color/color_touming"
-                        android:hint="请选择"
+                        android:hint="请输入"
                         android:paddingTop="15dp"
                         android:text="@={clientBaseVM.idCard}"
                         android:textSize="15sp" />
@@ -443,6 +449,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/tv_birth"
+                        android:singleLine="true"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_marginTop="15dp"
@@ -469,6 +476,7 @@
                         updateEditInput="@{clientBaseVM.isModify}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:singleLine="true"
                         android:layout_alignBottom="@+id/tv_birth"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
@@ -516,6 +524,7 @@
                         updateEditInput="@{clientBaseVM.isModify}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:singleLine="true"
                         android:layout_alignBottom="@+id/tv_height"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
@@ -564,6 +573,7 @@
                     <EditText
                         android:id="@+id/ed_weight"
                         updateEditInput="@{clientBaseVM.isModify}"
+                        android:singleLine="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/tv_weight"

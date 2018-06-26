@@ -28,7 +28,7 @@ public class PickerUtil {
         DateTimePicker picker = new DateTimePicker(activity, DateTimePicker.HOUR_24);
         picker.setActionButtonTop(false);
         picker.setDateRangeStart(1900, 1, 1);
-        picker.setDateRangeEnd(2019, 12, 12);
+        picker.setDateRangeEnd(2100, 12, 12);
         picker.setSelectedItem(2018,6,16,16,43);
         picker.setTimeRangeStart(9, 0);
         picker.setTimeRangeEnd(20, 30);

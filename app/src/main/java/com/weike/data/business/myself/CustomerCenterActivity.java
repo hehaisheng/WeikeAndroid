@@ -59,6 +59,7 @@ public class CustomerCenterActivity extends BaseActivity {
             @Override
             protected void onSuccess(BaseResp<UserFeedBackResp> userFeedBackRespBaseResp) throws Exception {
                 ToastUtil.showToast("谢谢您的反馈");
+                finish();
 
             }
 

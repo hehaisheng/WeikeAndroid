@@ -39,7 +39,7 @@
             android:layout_marginBottom="10dp"
             android:onClick="@{()->addClientVM.photoClick()}"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/ic_login_logo"
+            android:src="@mipmap/icon_normal_3"
             loadImage="@{addClientVM.photoUrl}"
             />
 

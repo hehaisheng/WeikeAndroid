@@ -155,6 +155,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 TagSettingVM vm = new TagSettingVM();
                 vm.setListener(ClientTagSettingActivity.this);
                 vm.name.set(req.sort);
+                vm.isModify.set(true);
                 vm.content.set(content);
                 vms.add(vm);
                 adapter.notifyDataSetChanged();
@@ -179,7 +180,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
 
         setCenterText("");
         setLeftText("标签管理");
-        setRightText("编辑");
+        setRightText("");
 
         initView();
         initLabel();
@@ -259,7 +260,11 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                     TagSettingVM vm = new TagSettingVM();
                     vm.content.set(list.get(i).labelName);
                     vm.tagId.set(list.get(i).id);
-                    vm.isModify.set(false);
+                    if (i >= 4) {
+                        vm.isModify.set(true);
+                    } else {
+                        vm.isModify.set(false);
+                    }
                     vm.setListener(ClientTagSettingActivity.this);
                     vm.name.set(list.get(i).sort);
                     vms.add(vm);

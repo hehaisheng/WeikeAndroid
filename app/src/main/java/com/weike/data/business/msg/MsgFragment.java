@@ -78,8 +78,6 @@ public class MsgFragment extends BaseFragment {
                 //ActivitySkipUtil.skipAnotherAct(getActivity(),MsgDetailActivity.class);
 
 
-
-
             }
         });
         msgList.setAdapter(adapter);
@@ -174,7 +172,6 @@ public class MsgFragment extends BaseFragment {
                 for (Iterator<MessageItemVM> it = vms.iterator(); it.hasNext(); ) {
                     MessageItemVM vm = it.next();
                     if (vm.isCheck.get()) {
-                        LogUtil.d("MessageItem","remove");
                         it.remove();
                     }
                 }

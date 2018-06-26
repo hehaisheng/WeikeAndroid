@@ -66,9 +66,10 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:gravity="center"
+
             android:text="选择"
             android:textColor="@color/color_white"
-            android:textSize="11sp" />
+            android:textSize="14sp" />
     </RelativeLayout>
 
 
