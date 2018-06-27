@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <import type="android.view.View"></import>
+        <variable
+            name="productItemVM"
+            type="com.weike.data.model.viewmodel.ProductItemVM"></variable>
+    </data>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_white"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:visibility="@{productItemVM.isFirst ? View.VISIBLE : View.GONE}"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="3dp"
+            android:paddingBottom="15dp"
+            android:onClick="@{()->productItemVM.onAdd()}"
+            android:src="@mipmap/ic_add_green"
+            />
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:text="产品"
+            android:textColor="@color/color_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:visibility="@{productItemVM.isModify ? View.VISIBLE : View.GONE}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="3dp"
+            android:paddingBottom="15dp"
+            android:onClick="@{()->productItemVM.onReduce()}"
+            android:src="@mipmap/ic_redue"
+            />
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:text="产品"
+            android:textColor="@color/color_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:text="12321321"
+            android:layout_marginLeft="10dp"
+            android:background="@color/color_white"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@mipmap/ic_remind"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:visibility="@{productItemVM.isShowContent ? View.VISIBLE : View.GONE}"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
+            android:text="产品"
+            android:textColor="@color/color_content"
+            android:layout_width="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="3dp"
+            android:paddingBottom="15dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@mipmap/ic_remind"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>
+</layout>
