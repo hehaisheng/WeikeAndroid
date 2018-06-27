@@ -10,22 +10,41 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.google.gson.reflect.TypeToken;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.callback.ConfigTitle;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TitleParams;
+import com.weike.data.base.BaseObserver;
+import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
 import com.weike.data.business.client.AddClientActivity;
+import com.weike.data.business.client.ClientTagActivity;
 import com.weike.data.business.setting.ClientTagSettingActivity;
+import com.weike.data.config.Config;
+import com.weike.data.model.business.User;
+import com.weike.data.model.req.GetClientTagListReq;
+import com.weike.data.model.resp.GetClientTagListResp;
+import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.ClientTagComparator;
 import com.weike.data.util.LQRPhotoSelectUtils;
+import com.weike.data.util.PickerUtil;
+import com.weike.data.util.SignUtil;
+import com.weike.data.util.SpUtil;
+import com.weike.data.util.TransformerUtils;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
+import cn.addapp.pickers.listeners.OnItemPickListener;
+import cn.addapp.pickers.picker.SinglePicker;
 import kr.co.namee.permissiongen.PermissionGen;
 import kr.co.namee.permissiongen.PermissionSuccess;
 
 import static com.weike.data.business.client.AddClientActivity.KEY_OF_LABEL;
+import static com.weike.data.business.client.AddClientActivity.TAG_CLIENT_ID;
 
 public class AddClientActVM extends BaseVM {
 
@@ -43,6 +62,7 @@ public class AddClientActVM extends BaseVM {
 
     public ObservableField<Boolean> isModify = new ObservableField<>(false);
 
+
     public void setmLqrPhotoSelectUtils(LQRPhotoSelectUtils mLqrPhotoSelectUtils) {
         this.mLqrPhotoSelectUtils = mLqrPhotoSelectUtils;
     }
@@ -55,11 +75,28 @@ public class AddClientActVM extends BaseVM {
 
 
     public void labelClick(){
-        Intent intent = new Intent(activity, ClientTagSettingActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        activity.startActivityForResult(intent,KEY_OF_LABEL);
+        User user = SpUtil.getInstance().getUser();
+
+        String[] array = new String[user.labelList.size()];
+        for(int i = 0 ; i < user.labelList.size();i++){
+            String str = user.labelList.get(i).sort + "." + user.labelList.get(i).labelName;;
+            if(i == 0)
+                str = str.replace(".","");
+            array[i] = str;
+        }
+
+        SinglePicker<String> picker = new SinglePicker<String>(activity,array);
+        PickerUtil.onConstellationPicker(null, picker, new OnItemPickListener<String>() {
+            @Override
+            public void onItemPicked(int i, String s) {
+                label.set(user.labelList.get(i).labelName);
+                labelId = user.labelList.get(i).id;
+            }
+        });
 
     }
+
+
 
 
 

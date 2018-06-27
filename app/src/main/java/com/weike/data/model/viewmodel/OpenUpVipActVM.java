@@ -13,12 +13,23 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
+import com.google.gson.reflect.TypeToken;
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.weike.data.base.BaseObserver;
+import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
+import com.weike.data.config.Config;
+import com.weike.data.model.req.GetPayDataReq;
+import com.weike.data.model.resp.GetPayDataResp;
+import com.weike.data.network.RetrofitFactory;
 import com.weike.data.payment.alipay.OrderInfoUtil2_0;
 import com.weike.data.payment.alipay.PayResult;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
+import com.weike.data.util.TransformerUtils;
 
 import java.util.Map;
 
@@ -53,9 +64,9 @@ public class OpenUpVipActVM extends BaseVM {
      */
     public ObservableField<String> vipTime = new ObservableField<>();
 
-    public ObservableBoolean wechatPay = new ObservableBoolean(true);
+    public ObservableBoolean wechatPay = new ObservableBoolean(false);
 
-    public ObservableBoolean isAliPay = new ObservableBoolean(false);
+    public ObservableBoolean isAliPay = new ObservableBoolean(true);
 
     public OpenUpVipActVM(Activity activity) {
         this.activity = activity;
@@ -93,34 +104,51 @@ public class OpenUpVipActVM extends BaseVM {
 
     public void pay(){
 
-        boolean rsa2 = (RSA2_PRIVATE.length() > 0);
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2,"0.01");
-        String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
-
-        String privateKey =  RSA2_PRIVATE;
-        String sign = OrderInfoUtil2_0.getSign(params, privateKey, rsa2);
-        final String orderInfo = orderParam + "&" + sign;
-
-        new Thread(){
-            public void run(){
-                PayTask alipay = new PayTask(activity);
-                Map<String, String> result = alipay.payV2(orderInfo, true);
-                LogUtil.d("OpenUVipAct", JsonUtil.GsonString(result));
-                Message message = Message.obtain();
-                message.obj = result;
-                handler.sendMessage(message);
-
-            }
-        }.start();
-
-
         if (isAliPay.get()) {
-
-            //TODO go to alipay
+            alipay();
         } else {
             //TODO go to wechatPay
         }
     }
+
+    private void alipay(){
+        GetPayDataReq req = new GetPayDataReq();
+        req.buyNum = 1;
+        req.money = 199 + "";
+        req.orderNo = System.currentTimeMillis() + "";
+        req.platform = "alipay";
+        req.sign = SignUtil.signData(req);
+
+
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_PAY_DATA)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetPayDataResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<GetPayDataResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetPayDataResp> getPayDataRespBaseResp) throws Exception {
+                String orderInfo = getPayDataRespBaseResp.getDatas().alipay;
+
+                new Thread(){
+                    public void run(){
+                        PayTask alipay = new PayTask(activity);
+                        Map<String, String> result = alipay.payV2(orderInfo, true);
+                        Message message = Message.obtain();
+                        message.obj = result;
+                        handler.sendMessage(message);
+
+                    }
+                }.start();
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
+
+
 
    @SuppressLint("HandlerLeak")
    Handler handler = new Handler(){

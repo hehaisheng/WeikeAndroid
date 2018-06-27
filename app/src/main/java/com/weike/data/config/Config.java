@@ -181,4 +181,8 @@ public final class Config {
      */
     public static final String GET_CLIENT_DETAIL_MSG_LIST = "wkzs-restful/message/newsListByClient";
 
+    /**
+     * 获取支付信息
+     */
+    public static final String GET_PAY_DATA = "wkzs-restful/payment/launch";
 }

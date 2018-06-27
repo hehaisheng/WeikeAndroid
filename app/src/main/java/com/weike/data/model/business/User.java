@@ -1,6 +1,7 @@
 package com.weike.data.model.business;
 
 import com.weike.data.model.resp.GetClientListResp;
+import com.weike.data.model.resp.GetClientTagListResp;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class User {
      */
     public List<GetClientListResp.ClientListSub> clietList;
 
+    public List<GetClientTagListResp.TagSub> labelList;
 
     /**
      * 职业

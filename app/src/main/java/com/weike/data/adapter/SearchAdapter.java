@@ -26,8 +26,8 @@ public class SearchAdapter extends BaseDataBindingAdapter {
         super.onBindViewHolder(holder, position);
 
        /* WidgetNearbyshopHotsearchKeywordItemBinding binding = (WidgetNearbyshopHotsearchKeywordItemBinding) holder.getBinding();
-        NearByShopHotSearchHistoryItemVM vm =  binding.getHotSearchItemVM();
-        binding.tvHistoryItem.setText(KeyWordUtil.setKeyWordColor(vm.name.get(),keyword));*/
+        NearByShopHotSearchHistoryItemVM serviceMsgVM =  binding.getHotSearchItemVM();
+        binding.tvHistoryItem.setText(KeyWordUtil.setKeyWordColor(serviceMsgVM.name.get(),keyword));*/
 
 
     }
