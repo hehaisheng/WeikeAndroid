@@ -2,6 +2,7 @@ package com.weike.data.model.viewmodel;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
@@ -113,12 +114,11 @@ public class OpenUpVipActVM extends BaseVM {
 
     private void alipay(){
         GetPayDataReq req = new GetPayDataReq();
-        req.buyNum = 1;
-        req.money = 199 + "";
+        req.buyNum = Integer.parseInt(allYear.get());
+        req.money = allMoney.get();
         req.orderNo = System.currentTimeMillis() + "";
         req.platform = "alipay";
         req.sign = SignUtil.signData(req);
-
 
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_PAY_DATA)
@@ -136,7 +136,6 @@ public class OpenUpVipActVM extends BaseVM {
                         Message message = Message.obtain();
                         message.obj = result;
                         handler.sendMessage(message);
-
                     }
                 }.start();
             }

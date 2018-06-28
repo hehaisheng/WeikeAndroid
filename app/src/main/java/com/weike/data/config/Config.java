@@ -185,4 +185,10 @@ public final class Config {
      * 获取支付信息
      */
     public static final String GET_PAY_DATA = "wkzs-restful/payment/launch";
+
+
+    /**
+     * 获取客户日志
+     */
+    public static final String GET_LOG_BY_ID = "wkzs-restful/log/selectLogByClient";
 }
