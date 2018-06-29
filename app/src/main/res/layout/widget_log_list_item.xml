@@ -38,6 +38,7 @@
                     android:layout_height="10dp"/>
                 <View
                     android:layout_width="2dp"
+                    android:visibility="@{clientLogItemVM.isShowLine ? View.VISIBLE : View.GONE}"
                     android:background="@color/red_btn_bg_color"
                     android:layout_marginLeft="4dp"
                     android:layout_height="wrap_content"/>
@@ -92,7 +93,7 @@
                 android:id="@+id/tv_base_line"
                 android:layout_below="@+id/tv_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="19dp"
+                android:layout_marginTop="13dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             
