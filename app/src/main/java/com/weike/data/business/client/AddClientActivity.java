@@ -257,7 +257,7 @@ public class AddClientActivity extends BaseActivity {
                     ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
                     ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
                     ClientBaseMsgVM clientBaseMsgVM = clientBaseMsgFragment.clientBaseMsgVM;
-                    ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.vm;
+                    ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.serviceMsgVM;
 
                     String[] phone = new String[5];
                     phone[0] = data.getOnePhoneNumber();
@@ -413,7 +413,7 @@ public class AddClientActivity extends BaseActivity {
         ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
         ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
         ClientBaseMsgVM clientBaseMsgVM = clientBaseMsgFragment.clientBaseMsgVM;
-        ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.vm;
+        ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.serviceMsgVM;
 
 
 

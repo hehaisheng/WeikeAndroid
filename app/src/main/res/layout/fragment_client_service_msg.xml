@@ -1,313 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="clientServiceVM"
-            type="com.weike.data.model.viewmodel.ClientServiceMsgVM"/>
+            type="com.weike.data.model.viewmodel.ClientServiceMsgVM" />
 
     </data>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@color/color_all_bg"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent">
 
-    <android.support.v7.widget.CardView
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        app:cardBackgroundColor="@color/color_white"
-        android:minHeight="40dp"
-        app:cardCornerRadius="10dp"
         android:layout_height="wrap_content">
 
-
-        <RelativeLayout
+        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:background="@color/color_all_bg"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_money_in"
-                android:layout_width="wrap_content"
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="收入"
-                android:minWidth="80dp"
-                android:layout_marginLeft="15dp"
-                android:textColor="@color/color_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="15dp"
-                />
-
-            <EditText
-                android:id="@+id/ed_money_in"
-                android:background="@color/color_touming"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
-                android:clickable="@{clientServiceVM.clickable}"
-                android:text="@={clientServiceVM.moneyIn}"
-                android:hint="请输入"
-                android:singleLine="true"
-                android:layout_toRightOf="@+id/tv_money_in"
-                android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
-                android:layout_width="match_parent"
-                android:ellipsize="end"
-                android:inputType="number"
-                android:maxLines="1"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:id="@+id/view_line_1"
-                android:layout_width="match_parent"
-                android:background="@color/color_line"
-                android:layout_below="@+id/tv_money_in"
-                android:layout_height="1dp"/>
-
-
-            <TextView
-                android:id="@+id/tv_money_out"
-                android:layout_width="wrap_content"
-                android:minWidth="80dp"
-                android:layout_height="wrap_content"
-                android:text="开支"
-                android:layout_below="@+id/view_line_1"
-                android:layout_marginLeft="15dp"
-                android:textColor="@color/color_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="15dp"
-                />
-
-            <EditText
-                android:id="@+id/ed_money_out"
-                android:background="@color/color_touming"
-                android:layout_marginTop="15dp"
-                android:layout_toRightOf="@+id/tv_money_out"
-                android:layout_alignBottom="@+id/tv_money_out"
-                android:inputType="number"
-                android:layout_width="match_parent"
-                android:text="@={clientServiceVM.moneyOut}"
-                android:hint="请输入"
-
-                android:layout_marginLeft="20dp"
-                android:clickable="@{clientServiceVM.clickable}"
-
-                android:ellipsize="end"
-                android:layout_marginRight="20dp"
-                android:maxLines="1"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:id="@+id/view_line_2"
-                android:layout_width="match_parent"
-                android:background="@color/color_line"
-                android:layout_below="@+id/tv_money_out"
-                android:layout_height="1dp"/>
-
-
-            <TextView
-                android:id="@+id/tv_financial_assets"
-                android:layout_width="wrap_content"
-                android:minWidth="80dp"
-                android:layout_height="wrap_content"
-                android:text="金融资产"
-                android:layout_marginLeft="15dp"
-                android:layout_below="@+id/view_line_2"
-                android:textColor="@color/color_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="15dp"
-                />
-
-            <EditText
-                android:id="@+id/ed_financial_assets"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@color/color_touming"
-                android:hint="请输入"
-                android:clickable="@{clientServiceVM.clickable}"
-                android:inputType="number"
-                android:layout_marginTop="15dp"
-                android:layout_toRightOf="@+id/tv_financial_assets"
-                android:maxLines="1"
-                android:layout_alignBottom="@+id/tv_financial_assets"
-                android:layout_width="match_parent"
-                android:ellipsize="end"
-                android:text="@={clientServiceVM.financialAssets}"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:id="@+id/view_line_3"
-
-                android:layout_width="match_parent"
-                android:background="@color/color_line"
-                android:layout_below="@+id/tv_financial_assets"
-                android:layout_height="1dp"/>
-
-            <TextView
-                android:id="@+id/tv_fixed_assets"
-                android:layout_width="wrap_content"
-                android:minWidth="80dp"
-                android:layout_height="wrap_content"
-                android:text="固定资产"
-                android:layout_marginLeft="15dp"
-                android:layout_below="@+id/view_line_3"
-                android:textColor="@color/color_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="15dp"
-                />
-
-            <EditText
-                android:id="@+id/ed_fixed_assets"
-                android:background="@color/color_touming"
-                android:layout_marginTop="15dp"
-                android:maxLines="1"
-                android:layout_alignBottom="@+id/tv_fixed_assets"
-                android:layout_toRightOf="@+id/tv_fixed_assets"
-                android:hint="请输入"
-                android:ellipsize="end"
-                android:clickable="@{clientServiceVM.clickable}"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:text="@={clientServiceVM.fixedAssets}"
-
-                android:layout_height="wrap_content" />
-
-            <View
-                android:id="@+id/view_line_4"
-
-                android:layout_width="match_parent"
-                android:background="@color/color_line"
-                android:layout_below="@+id/tv_fixed_assets"
-                android:layout_height="1dp"/>
-
-            <TextView
-                android:id="@+id/tv_car_type"
-                android:layout_width="wrap_content"
-                android:layout_below="@+id/view_line_4"
-                android:layout_height="wrap_content"
-                android:minWidth="80dp"
-                android:text="汽车"
-                android:layout_marginLeft="15dp"
-                android:textColor="@color/color_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="15dp"
-                />
-
-            <EditText
-                android:id="@+id/ed_car_type"
-                android:background="@color/color_touming"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="20dp"
-                android:clickable="@{clientServiceVM.clickable}"
-                android:text="@={clientServiceVM.carType}"
-                android:maxLines="1"
-                android:layout_marginRight="20dp"
-                android:ellipsize="end"
-                android:layout_alignBottom="@+id/tv_car_type"
-                android:layout_toRightOf="@+id/tv_car_type"
-                android:hint="请输入"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:id="@+id/view_line_5"
-
-                android:layout_width="match_parent"
-                android:background="@color/color_line"
-                android:layout_below="@+id/tv_car_type"
-                android:layout_height="1dp"/>
-
-            <TextView
-                android:id="@+id/tv_liabilities"
-                android:layout_width="wrap_content"
-                android:layout_below="@+id/view_line_5"
-                android:layout_height="wrap_content"
-                android:minWidth="80dp"
-                android:text="负债"
-                android:layout_marginLeft="15dp"
-                android:textColor="@color/color_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="15dp"
-                />
-
-            <EditText
-                android:id="@+id/ed_liabilities"
-                android:background="@color/color_touming"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="20dp"
-                android:hint="请输入"
-                android:clickable="@{clientServiceVM.clickable}"
-                android:text="@={clientServiceVM.liabilities}"
-                android:layout_marginRight="20dp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:inputType="number"
-                android:layout_alignBottom="@+id/tv_liabilities"
-                android:layout_toRightOf="@+id/tv_liabilities"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        app:cardBackgroundColor="@color/color_white"
-        android:minHeight="40dp"
-        app:cardCornerRadius="10dp"
-        android:layout_height="wrap_content">
-        
-        <LinearLayout
-            android:id="@+id/ll_add_product"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-
-
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:src="@mipmap/ic_add_green"
-                    />
-
-                <TextView
-                    android:layout_marginLeft="10dp"
-                    android:layout_gravity="center"
-                    android:text="产品"
-                    android:textColor="@color/color_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_line"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                />
+                android:layout_marginTop="10dp"
+                android:minHeight="40dp"
+                app:cardBackgroundColor="@color/color_white"
+                app:cardCornerRadius="10dp">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_money_in"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="80dp"
+                        android:text="收入"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_money_in"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_money_in"
+                        android:background="@color/color_touming"
+                        android:clickable="@{clientServiceVM.clickable}"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
+                        android:ellipsize="end"
+                        android:hint="请输入"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="@={clientServiceVM.moneyIn}" />
+
+                    <View
+                        android:id="@+id/view_line_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_money_in"
+                        android:background="@color/color_line" />
+
+
+                    <TextView
+                        android:id="@+id/tv_money_out"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line_1"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="80dp"
+                        android:text="开支"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_money_out"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_money_out"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_money_out"
+                        android:background="@color/color_touming"
+
+                        android:clickable="@{clientServiceVM.clickable}"
+                        android:ellipsize="end"
+
+                        android:hint="请输入"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:text="@={clientServiceVM.moneyOut}" />
+
+                    <View
+                        android:id="@+id/view_line_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_money_out"
+                        android:background="@color/color_line" />
+
+
+                    <TextView
+                        android:id="@+id/tv_financial_assets"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line_2"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="80dp"
+                        android:text="金融资产"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_financial_assets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_financial_assets"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_financial_assets"
+                        android:background="@color/color_touming"
+                        android:clickable="@{clientServiceVM.clickable}"
+                        android:ellipsize="end"
+                        android:hint="请输入"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:text="@={clientServiceVM.financialAssets}" />
+
+                    <View
+                        android:id="@+id/view_line_3"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_financial_assets"
+                        android:background="@color/color_line" />
+
+                    <TextView
+                        android:id="@+id/tv_fixed_assets"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line_3"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="80dp"
+                        android:text="固定资产"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_fixed_assets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_fixed_assets"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_fixed_assets"
+                        android:background="@color/color_touming"
+                        android:clickable="@{clientServiceVM.clickable}"
+                        android:ellipsize="end"
+                        android:hint="请输入"
+                        android:maxLines="1"
+
+                        android:text="@={clientServiceVM.fixedAssets}" />
+
+                    <View
+                        android:id="@+id/view_line_4"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_fixed_assets"
+                        android:background="@color/color_line" />
+
+                    <TextView
+                        android:id="@+id/tv_car_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line_4"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="80dp"
+                        android:text="汽车"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_car_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_car_type"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_car_type"
+                        android:background="@color/color_touming"
+                        android:clickable="@{clientServiceVM.clickable}"
+                        android:ellipsize="end"
+                        android:hint="请输入"
+                        android:maxLines="1"
+                        android:text="@={clientServiceVM.carType}" />
+
+                    <View
+                        android:id="@+id/view_line_5"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_car_type"
+                        android:background="@color/color_line" />
+
+                    <TextView
+                        android:id="@+id/tv_liabilities"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_line_5"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:minWidth="80dp"
+                        android:text="负债"
+                        android:textColor="@color/color_content" />
+
+                    <EditText
+                        android:id="@+id/ed_liabilities"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_liabilities"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/tv_liabilities"
+                        android:background="@color/color_touming"
+                        android:clickable="@{clientServiceVM.clickable}"
+                        android:ellipsize="end"
+                        android:hint="请输入"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:text="@={clientServiceVM.liabilities}" />
+
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:minHeight="40dp"
+                android:layout_marginBottom="30dp"
+                app:cardBackgroundColor="@color/color_white"
+                app:cardCornerRadius="10dp">
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_product_msg_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+
+
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
-        
-    </android.support.v7.widget.CardView>
-
-</LinearLayout>
+    </ScrollView>
 </layout>

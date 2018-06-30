@@ -108,7 +108,46 @@
   public static final android.os.Parcelable$Creator *;
 }
 
-# adding this in to preserve line numbers so that the stack traces
+# 微信专用
 # can be remapped
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
+
+-keep class com.tencent.mm.opensdk.** {
+
+*;
+
+}
+
+-keep class com.tencent.wxop.** {
+
+*;
+
+}
+
+-keep class com.tencent.mm.sdk.** {
+
+*;
+
+}
+
+#jPush专用
+
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontnote
+-verbose
+
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.app.IntentService
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class com.android.vending.licensing.ILicensingService
+
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }

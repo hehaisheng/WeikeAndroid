@@ -32,17 +32,20 @@ import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.config.Config;
+import com.weike.data.model.business.User;
 import com.weike.data.model.req.AddLabelReq;
 import com.weike.data.model.req.DeleteLabelReq;
 import com.weike.data.model.req.GetClientTagListReq;
 import com.weike.data.model.req.GetLabelNumReq;
 import com.weike.data.model.resp.AddClientResp;
+import com.weike.data.model.resp.AddLabelResp;
 import com.weike.data.model.resp.GetClientTagListResp;
 import com.weike.data.model.resp.GetLabelNumResp;
 import com.weike.data.model.viewmodel.LabelOptionItemVM;
 import com.weike.data.model.viewmodel.TagSettingVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ClientTagComparator;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -52,6 +55,8 @@ import com.weike.data.util.TransformerUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -146,20 +151,33 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
         req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_LABEL)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetClientTagListResp>>(){
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddLabelResp>>(){
 
-                })).subscribe(new BaseObserver<BaseResp<AddClientResp>>() {
+                })).subscribe(new BaseObserver<BaseResp<AddLabelResp>>() {
             @Override
-            protected void onSuccess(BaseResp<AddClientResp> getClientTagListRespBaseResp) throws Exception {
+            protected void onSuccess(BaseResp<AddLabelResp> getClientTagListRespBaseResp) throws Exception {
+
 
                 TagSettingVM vm = new TagSettingVM();
                 vm.setListener(ClientTagSettingActivity.this);
+                vm.tagId.set(getClientTagListRespBaseResp.getDatas().id + "");
                 vm.name.set(req.sort);
                 vm.isModify.set(true);
                 vm.content.set(content);
                 vms.add(vm);
                 adapter.notifyDataSetChanged();
                 checkLabelNum();
+                // 本地保存
+
+
+                User user = SpUtil.getInstance().getUser();
+                GetClientTagListResp.TagSub tagSub = new GetClientTagListResp.TagSub();
+                tagSub.id = getClientTagListRespBaseResp.getDatas().id + "";
+                tagSub.labelName = content;
+                tagSub.sort = req.sort;
+                user.labelList.add(tagSub);
+                SpUtil.getInstance().saveNewsUser(user); //保存本地
+
             }
 
             @Override
@@ -230,6 +248,14 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 vms.remove(vm);
                 adapter.notifyDataSetChanged();
 
+                User u = SpUtil.getInstance().getUser();
+                for(int i = 0 ; i < u.labelList.size();i++) {
+                    if (u.labelList.get(i).id == vm.tagId.get()) {
+                        u.labelList.remove(i);
+                    }
+                }
+                SpUtil.getInstance().saveNewsUser(u);
+
             }
 
             @Override
@@ -291,7 +317,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
     @Override
     public void onReduce(TagSettingVM vm) {
 
-        LogUtil.d("ClientTagSettingAct","---->delete:" + vm.tagId + ",vm:" + vm.name + ",content:" + vm.content);
+        LogUtil.d("ClientTagSettingAct","---->delete:" + vm.tagId + ",serviceMsgVM:" + vm.name + ",content:" + vm.content);
         new CircleDialog.Builder()
                 .setCanceledOnTouchOutside(false)
                 .setCancelable(false)

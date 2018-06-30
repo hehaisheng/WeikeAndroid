@@ -44,6 +44,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     public List<AddClientRelateItemVM> clientRelateItemVMS = new ArrayList<>();
     BaseDataBindingAdapter clientRelateAdapter;
 
+    /**
+     * 这里是 获取客户信息 也就是有电话信息的时候 才调用 一般不用
+     * @param phoneNum
+     */
     public void setPhoneNum(String[] phoneNum) {
         addPhoneVMS.clear();
 
@@ -192,11 +196,12 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_client_base_msg,container,false);
         clientBaseMsgVM = new ClientBaseMsgVM(this);
         clientBaseMsgVM.isModify.set(isModify);
+
         binding.setClientBaseVM(clientBaseMsgVM);
 
         initPhoneRecycle();
         initClientRelateRecycle();
-
+        updateModify(clientBaseMsgVM.isModify.get());//更新一下电话的状态
 
         return binding.getRoot();
     }

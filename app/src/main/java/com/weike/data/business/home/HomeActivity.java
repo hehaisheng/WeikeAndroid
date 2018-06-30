@@ -32,10 +32,13 @@ import com.weike.data.config.Config;
 import com.weike.data.model.business.TabEntity;
 import com.weike.data.model.business.User;
 import com.weike.data.model.req.GetClientListReq;
+import com.weike.data.model.req.GetClientTagListReq;
 import com.weike.data.model.req.MainPageDataReq;
 import com.weike.data.model.resp.GetClientListResp;
+import com.weike.data.model.resp.GetClientTagListResp;
 import com.weike.data.model.resp.MainPageDataResp;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.ClientTagComparator;
 import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
@@ -47,6 +50,7 @@ import com.weike.data.view.BottomBarLayout;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -205,6 +209,8 @@ public class HomeActivity extends BaseActivity {
 
         getClientList();
 
+        initLabel();
+
         new Handler().postAtTime(new Runnable() {
             @Override
             public void run() {
@@ -234,6 +240,8 @@ public class HomeActivity extends BaseActivity {
                         User user = SpUtil.getInstance().getUser();
                         user.clietList = clientListSubs;
                         SpUtil.getInstance().saveNewsUser(user);
+
+
                     }
 
                     @Override
@@ -241,6 +249,41 @@ public class HomeActivity extends BaseActivity {
 
                     }
                 });
+    }
+
+    private void initLabel(){
+
+        GetClientTagListReq req = new GetClientTagListReq();
+        req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_CLIENT_TAG_LIST)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetClientTagListResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<GetClientTagListResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetClientTagListResp> getClientTagListRespBaseResp) throws Exception {
+                List<GetClientTagListResp.TagSub> list = getClientTagListRespBaseResp.getDatas().clientLabelList;
+                Collections.sort(list,new ClientTagComparator());
+                User user = SpUtil.getInstance().getUser();
+                user.labelList = list;
+
+
+                GetClientTagListResp.TagSub zero = new GetClientTagListResp.TagSub();
+                zero.labelName = "未分组客户";
+
+                zero.id = "";
+                user.labelList.add(0,zero);
+
+                SpUtil.getInstance().saveNewsUser(user);
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
     }
 
     private void getUnreadMsg() {

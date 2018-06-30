@@ -254,4 +254,9 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
         clientRelateVMS.remove(relateCLientItemVM);
         clientRelateAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onAdd(RelateCLientItemVM relateCLientItemVM) {
+
+    }
 }

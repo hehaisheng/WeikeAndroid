@@ -7,5 +7,9 @@
 /build
 /captures
 .externalNativeBuild
-/.idea
+/FDHSocialGeneralDialog/build/intermediates/res/merged/androidTest/debug/*.flat
 /app/build
+/app/release
+/FDHSocialGeneralDialog/build
+/.idea
+/FDHSocialGeneralDialog/build

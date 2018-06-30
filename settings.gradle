@@ -1,1 +1,1 @@
-include ':app', ':library', ':FDHSocialGeneralDialog'
+include ':app', ':library', ':FDHSocialGeneralDialog', ':jpush'

@@ -9,11 +9,11 @@ public class GetClientTagListResp extends BaseResp {
 
     public List<TagSub> clientLabelList;
 
-    public class TagSub{
+    public static class TagSub{
         public String id ;
 
         public String labelName;
 
-        public String sort;
+        public String sort="";
     }
 }
