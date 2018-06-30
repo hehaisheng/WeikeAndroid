@@ -196,6 +196,8 @@ public class AddClientActivity extends BaseActivity {
 
     private void addFragment() {
 
+        clientId = getIntent().getStringExtra(TAG_CLIENT_ID);
+
         ClientBaseMsgFragment clientBaseMsgFragment = new ClientBaseMsgFragment();
         ClientServiceMsgFragment serviceMsgFragment = new ClientServiceMsgFragment();
 
@@ -234,7 +236,7 @@ public class AddClientActivity extends BaseActivity {
             return;
         }
 
-        clientId = getIntent().getStringExtra(TAG_CLIENT_ID);
+
         GetClientDetailMsgReq req = new GetClientDetailMsgReq();
         req.clientId = getIntent().getStringExtra(TAG_CLIENT_ID);
         req.sign = SignUtil.signData(req);

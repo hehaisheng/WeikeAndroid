@@ -13,4 +13,15 @@ public class ClientLogItemVM extends BaseVM {
 
     public ObservableField<String> time = new ObservableField<>();
 
+    public ObservableField<Boolean> isRemind = new ObservableField<>();
+
+    /**
+     *
+     */
+    public ObservableField<Boolean> isShowLine = new ObservableField<>(true);
+
+    public void delete(){
+
+    }
+
 }
