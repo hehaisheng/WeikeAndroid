@@ -81,6 +81,7 @@
                 android:textColor="@color/color_bebebe"
                 android:text="@{handleWorkItemVM.userName,default=12321312}"
                 android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
                 />
 
             <TextView

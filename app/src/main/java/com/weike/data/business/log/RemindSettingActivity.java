@@ -99,6 +99,7 @@ public class RemindSettingActivity extends BaseActivity {
         binding.setRemindSettingVM(vm);
         setRightText("保存");
         setLeftText("设置提醒");
+        setCenterText("");
 
 
     }

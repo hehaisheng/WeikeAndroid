@@ -191,4 +191,9 @@ public final class Config {
      * 获取客户日志
      */
     public static final String GET_LOG_BY_ID = "wkzs-restful/log/selectLogByClient";
+
+    /**
+     * 根据待办事项 获取日志
+     */
+    public static final String GET_TODO_BY_LOG = "wkzs-restful/log/selectToDoByLog";
 }

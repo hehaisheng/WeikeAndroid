@@ -63,6 +63,16 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
+    public void onRightClick(boolean status) {
+        super.onRightClick(status);
+
+        for(int i  = 0 ; i < vms.size();i++) {
+            vms.get(i).isModify.set(status);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     protected void loadFinish(View view) {
 
 
@@ -105,6 +115,7 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
                     ClientLogItemVM vm = new ClientLogItemVM();
                     vm.content.set(bean.getContent());
                     vm.time.set(bean.getLogDate());
+                    vm.isModify.set(false);
                     if(i == getClientLogByIdRespBaseResp.getDatas().getLogList().size() - 1) {
                         vm.isShowLine.set(false);
                     } else {

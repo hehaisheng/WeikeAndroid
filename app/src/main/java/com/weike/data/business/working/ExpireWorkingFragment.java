@@ -231,7 +231,7 @@ public class ExpireWorkingFragment extends BaseFragment implements
     private void modify(HandleWorkItemVM vm) {
 
 
-        RemindSettingActivity.startActivity(this,toDo);
+        RemindSettingActivity.startActivity(this,vm.id.get());
         lastModifyVM = vm;
     }
 

@@ -19,4 +19,9 @@ public class LoginByPwdReq {
      */
     public String sign;
 
+    /**
+     * 极光推送ID
+     */
+    public String igNo;
+
 }

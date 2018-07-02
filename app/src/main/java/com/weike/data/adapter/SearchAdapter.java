@@ -1,6 +1,12 @@
 package com.weike.data.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+
+import com.weike.data.databinding.WidgetSearchListItemBinding;
+import com.weike.data.model.viewmodel.SearchItemVM;
+import com.weike.data.util.KeyWordUtil;
+import com.weike.data.util.LogUtil;
 
 import java.util.List;
 
@@ -25,9 +31,12 @@ public class SearchAdapter extends BaseDataBindingAdapter {
     public void onBindViewHolder(BindingHolder holder, int position) {
         super.onBindViewHolder(holder, position);
 
-       /* WidgetNearbyshopHotsearchKeywordItemBinding binding = (WidgetNearbyshopHotsearchKeywordItemBinding) holder.getBinding();
-        NearByShopHotSearchHistoryItemVM serviceMsgVM =  binding.getHotSearchItemVM();
-        binding.tvHistoryItem.setText(KeyWordUtil.setKeyWordColor(serviceMsgVM.name.get(),keyword));*/
+
+        WidgetSearchListItemBinding  binding = (WidgetSearchListItemBinding) holder.getBinding();
+        SearchItemVM serviceMsgVM =  binding.getSearchItemVM();
+
+        binding.tvContent.setText(KeyWordUtil.setKeyWordColor(serviceMsgVM.content.get(),keyword));
+        binding.tvName.setText(KeyWordUtil.setKeyWordColor(serviceMsgVM.title.get(),keyword));
 
 
     }

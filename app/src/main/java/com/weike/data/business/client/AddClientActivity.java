@@ -18,6 +18,7 @@ import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.config.Config;
+import com.weike.data.config.Test;
 import com.weike.data.databinding.ActivityClientAddBinding;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.AddClientReq;
@@ -30,6 +31,7 @@ import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LQRPhotoSelectUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -232,9 +234,11 @@ public class AddClientActivity extends BaseActivity {
      * 初始化消息
      */
     private void initMsg(){
-        if (TextUtils.isEmpty(getIntent().getStringExtra(TAG_CLIENT_ID))){
+        if (clientId == null){
             return;
         }
+
+
 
 
         GetClientDetailMsgReq req = new GetClientDetailMsgReq();
@@ -283,7 +287,7 @@ public class AddClientActivity extends BaseActivity {
                     clientBaseMsgVM.clientHeight.set(data.getHeight());
                     clientBaseMsgVM.clientWidght.set(data.getWeight());
                     ToDo toDo = new ToDo();
-                    toDo.dateType = data.getBirthdayjson().getDateType();
+                     toDo.dateType = data.getBirthdayjson().getDateType();
                     toDo.priority = data.getBirthdayjson().getPriority();
                     toDo.toDoDate = data.getBirthdayjson().getRemindDate();
                     toDo.beforeRemindDay = data.getBirthdayjson().getBeforeRemindDay();
@@ -299,6 +303,8 @@ public class AddClientActivity extends BaseActivity {
                     clientServiceMsgVM.moneyOut.set(data.getExpenditure());
                     clientServiceMsgVM.fixedAssets.set(data.getFixedAssets());
 
+
+                    serviceMsgFragment.updateProductList(data.getProduct());
                     //服务信息
 
 
@@ -313,6 +319,8 @@ public class AddClientActivity extends BaseActivity {
         });
     }
 
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -325,18 +333,27 @@ public class AddClientActivity extends BaseActivity {
     @Override
     public void onRightClick(boolean isModify) {
         super.onRightClick(isModify);
-        vm.isModify.set(isModify);
+        LogUtil.d("AddClientActivity","------" +isModify);
 
-        if (isModify == false){
-            if (isUpdatePic) { //如果有刷新图片
-                uploadAvatar(vm.photoUrl.get());
-            } else {
-                submitClient();
-            }
+
+
+        if (isUpdatePic) {
+            uploadAvatar(vm.photoUrl.get());
+        } else if (clientId != null && isModify == true) {
+          fragments.get(0).onRightClick(isModify);
+          fragments.get(1).onRightClick(isModify);
+        } else if (isModify == false && submitClient() == false){ //恢复状态
+            LogUtil.d("AddClientActivity","false");
+            setRightText("完成");
+            AddClientActivity.this.isModify = true;
+            vm.isModify.set(true);
+            vm.isModify.set(AddClientActivity.this.isModify);
+        } else if (isModify && clientId == null) { //添加客户
+            submitClient();
+            return;
         }
 
-        fragments.get(1).onRightClick(isModify);
-        fragments.get(0).onRightClick(isModify);
+
     }
 
 
@@ -379,6 +396,8 @@ public class AddClientActivity extends BaseActivity {
             protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
                 ToastUtil.showToast("修改成功");
 
+                resetRight();
+
             }
 
             @Override
@@ -387,6 +406,15 @@ public class AddClientActivity extends BaseActivity {
             }
         });
     }
+
+    private void resetRight(){
+        vm.isModify.set(false); //恢复状态
+        setRightText("编辑");
+        setModify(false);
+        fragments.get(0).onRightClick(false);
+        fragments.get(1).onRightClick(false);
+    }
+
 
     private void addClient(AddClientReq req) {
         RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_CLIENT)
@@ -398,6 +426,10 @@ public class AddClientActivity extends BaseActivity {
                 clientId = addClientRespBaseResp.getDatas().clientId;
                 ToastUtil.showToast("添加成功");
                 isUpdatePic = false;
+
+                resetRight();
+
+                initMsg();
 
             }
 
@@ -411,7 +443,7 @@ public class AddClientActivity extends BaseActivity {
     /**
      * 服务信息 和 客户信息
      */
-    private void submitClient(){
+    private boolean submitClient(){
         ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
         ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
         ClientBaseMsgVM clientBaseMsgVM = clientBaseMsgFragment.clientBaseMsgVM;
@@ -422,7 +454,7 @@ public class AddClientActivity extends BaseActivity {
         if(TextUtils.isEmpty(vm.userName.get())){
 
             ToastUtil.showToast("名字不能为空");
-            return;
+            return false;
         }
 
         AddClientReq req = new AddClientReq();
@@ -450,7 +482,7 @@ public class AddClientActivity extends BaseActivity {
 
         if (p.size() == 0) {
             ToastUtil.showToast("必须要添加一个电话号码");
-            return;
+            return false;
         }
 
         for(int i = 0 ; i < p.size() ;i++){
@@ -480,7 +512,6 @@ public class AddClientActivity extends BaseActivity {
         req.height = clientBaseMsgVM.clientHeight.get();
         req.weight = clientBaseMsgVM.clientWidght.get();
         req.clientId = clientId;
-
         req.relatedClientId = ""; //TODO
 
 
@@ -491,7 +522,12 @@ public class AddClientActivity extends BaseActivity {
         req.fixedAssets = clientServiceMsgVM.fixedAssets.get();
         req.car = clientServiceMsgVM.carType.get();
         req.liabilities = clientServiceMsgVM.liabilities.get();
+        req.product = "" + serviceMsgFragment.getAllProduct() + "";
+
+        LogUtil.d("addClientActivity",serviceMsgFragment.getAllProduct());
+
         req.sign = SignUtil.signData(req);
+
 
 
         if (TextUtils.isEmpty(clientId)) {
@@ -500,8 +536,7 @@ public class AddClientActivity extends BaseActivity {
             modifyClient(req);
         }
 
-
-
+        return true;
 
     }
 }

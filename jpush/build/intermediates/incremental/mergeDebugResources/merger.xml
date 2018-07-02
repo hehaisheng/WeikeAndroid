@@ -31,4 +31,4 @@
 	</style><style name="push_tag">
 		<item name="android:hint">@string/tag_hint</item>
 		<item name="android:textSize">14sp</item>
-	</style></file></source><source path="D:\WeikeAndroid\jpush\build\generated\res\rs\debug"/><source path="D:\WeikeAndroid\jpush\build\generated\res\resValues\debug"/></dataSet><dataSet config="debug$Generated" generated="true"><source path="D:\WeikeAndroid\jpush\build-types\debug\res"/></dataSet><dataSet config="debug" generated-set="debug$Generated"><source path="D:\WeikeAndroid\jpush\build-types\debug\res"/></dataSet><mergedItems/></merger>
+	</style></file></source><source path="D:\WeikeAndroid\jpush\build\generated\res\rs\debug"/><source path="D:\WeikeAndroid\jpush\build\generated\res\resValues\debug"/></dataSet><dataSet config="debug$Generated" generated="true"><source path="D:\WeikeAndroid\jpush\src\debug\res"/></dataSet><dataSet config="debug" generated-set="debug$Generated"><source path="D:\WeikeAndroid\jpush\src\debug\res"/></dataSet><mergedItems/></merger>

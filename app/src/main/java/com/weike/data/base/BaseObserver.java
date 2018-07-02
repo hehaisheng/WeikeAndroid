@@ -53,7 +53,7 @@ public abstract class BaseObserver<T>  implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
-        LogUtil.d("BaseObServer","---->" +e.getMessage());
+        LogUtil.d("BaseObServer","Error---->" +JsonUtil.GsonString(e));
         onRequestEnd();
         try {
             if (e instanceof ConnectException

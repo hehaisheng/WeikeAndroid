@@ -35,6 +35,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     public boolean isModify = false;
 
+    public void setModify(boolean isModify) {
+        this.isModify = isModify;
+    }
+
     protected TextView leftText;
 
     protected TextView center;

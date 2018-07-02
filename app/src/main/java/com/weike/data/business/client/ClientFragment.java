@@ -115,6 +115,7 @@ public class ClientFragment extends BaseFragment {
         ArrayList<String> indexString = new ArrayList<>();
 
         for (int i = 0; i < date.size(); i++) {
+
             ClientSortModel sortModel = new ClientSortModel();
             sortModel.setName(date.get(i).userName);
             sortModel.setClientId(date.get(i).id);
@@ -126,6 +127,8 @@ public class ClientFragment extends BaseFragment {
                 if (!indexString.contains(sortString)) {
                     indexString.add(sortString);
                 }
+            } else {
+                sortModel.setSortLetters("#");
             }
             mSortList.add(sortModel);
         }

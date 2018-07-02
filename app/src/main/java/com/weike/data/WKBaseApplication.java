@@ -21,6 +21,8 @@ import com.weike.data.payment.wechat.WXRegister;
 
 import java.text.SimpleDateFormat;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by LeoLu on 2018/5/21.
  */
@@ -35,6 +37,8 @@ public class WKBaseApplication extends Application {
         instance = this;
         WXRegister.rg(this); //注册微信
         Logger.addLogAdapter(new AndroidLogAdapter());
+        JPushInterface.init(this);//初始化jPush
+        JPushInterface.setDebugMode(true);
         initSmartLayout();
     }
 

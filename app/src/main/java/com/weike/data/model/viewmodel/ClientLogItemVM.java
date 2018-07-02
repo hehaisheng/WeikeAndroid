@@ -13,6 +13,11 @@ public class ClientLogItemVM extends BaseVM {
 
     public ObservableField<String> time = new ObservableField<>();
 
+    /**
+     * 是否是编辑
+     */
+    public ObservableField<Boolean> isModify = new ObservableField<>();
+
     public ObservableField<Boolean> isRemind = new ObservableField<>();
 
     /**
@@ -23,5 +28,7 @@ public class ClientLogItemVM extends BaseVM {
     public void delete(){
 
     }
+
+
 
 }

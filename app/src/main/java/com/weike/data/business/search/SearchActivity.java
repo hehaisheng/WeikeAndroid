@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
+import com.weike.data.adapter.SearchAdapter;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
@@ -53,7 +54,7 @@ public class SearchActivity extends BaseActivity {
     @BindView(R.id.view_loadding)
     public View loaddingView;
 
-    private BaseDataBindingAdapter adapter;
+    private SearchAdapter adapter;
 
 
     @OnTextChanged(R.id.ed_input_search)
@@ -100,7 +101,7 @@ public class SearchActivity extends BaseActivity {
             searchItemVMS.add(searchItemVM);
         }
 */
-        adapter = new BaseDataBindingAdapter(this,R.layout.widget_search_list_item,searchItemVMS, BR.searchItemVM);
+        adapter = new SearchAdapter(this,R.layout.widget_search_list_item,searchItemVMS, BR.searchItemVM);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -109,6 +110,8 @@ public class SearchActivity extends BaseActivity {
         loaddingView.setVisibility(View.VISIBLE);
         searchItemVMS.clear();
         adapter.notifyDataSetChanged();
+
+        adapter.setKeyword(content);
 
         SearchReq req = new SearchReq();
         req.content = content;

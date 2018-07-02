@@ -3,6 +3,8 @@ package com.weike.data.model.business;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.weike.data.util.TimeUtil;
+
 import java.io.Serializable;
 
 /**
@@ -14,11 +16,23 @@ public class ToDo implements Parcelable{
     /**
      * 待办事时间
      */
-    public String toDoDate = null ;
+    public String toDoDate;
+
+    /**
+     * 这个坑爹的字段用于
+     */
+    public String birthdaydate = TimeUtil.getTimeFormat();
+
+
+    /**
+     *
+     */
+    public String id;
+
     /**
      * 内容
      */
-    public String content = null;
+    public String content = "无";
 
     /**
      * 优先级 1 == 高 2 == 中 3== 低
@@ -34,7 +48,7 @@ public class ToDo implements Parcelable{
     /**
      * 是否提醒
      */
-    public int isRemind = 1; // 1提醒 2不提醒
+    public int isRemind = 2; // 1提醒 2不提醒
 
     /**
      * 重复提醒日期类型

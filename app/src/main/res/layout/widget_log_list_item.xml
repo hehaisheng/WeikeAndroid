@@ -71,23 +71,45 @@
                 android:background="@drawable/shape_white"
                 />
 
-            <ImageButton
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_mute"
-                android:layout_marginRight="40dp"
                 android:layout_alignParentRight="true"
-                android:background="@color/color_touming"
-                />
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_redue"
-                android:layout_marginRight="20dp"
-                android:layout_alignParentRight="true"
-                android:background="@color/color_touming"
-                />
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_mute"
+                    android:layout_marginRight="20dp"
+                    android:layout_alignParentRight="true"
+                    android:visibility="@{clientLogItemVM.isModify?View.GONE : View.VISIBLE}"
+                    android:background="@color/color_touming"
+                    />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_redue"
+                    android:layout_marginRight="20dp"
+                    android:layout_alignParentRight="true"
+                    android:visibility="@{clientLogItemVM.isModify?View.GONE : View.VISIBLE}"
+                    android:background="@color/color_touming"
+                    />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_mute"
+                    android:visibility="@{clientLogItemVM.isModify?View.VISIBLE : View.GONE}"
+                    android:layout_marginRight="20dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/color_touming"
+                    />
+
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_base_line"

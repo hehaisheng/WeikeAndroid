@@ -1,11 +1,14 @@
 package com.weike.data.business.client;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +19,14 @@ import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.databinding.FragmentClientServiceMsgBinding;
 import com.weike.data.listener.OnReduceListener;
+import com.weike.data.model.business.Product;
+import com.weike.data.model.business.ProductBean;
 import com.weike.data.model.business.ToDo;
+import com.weike.data.model.resp.GetClientDetailMsgResp;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.model.viewmodel.ProductItemVM;
+import com.weike.data.util.JsonUtil;
+import com.weike.data.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +43,11 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
 
     private BaseDataBindingAdapter adapter;
 
-    private RecyclerView product_list;
-
     private List<ProductItemVM> itemVMS = new ArrayList<>();
 
     @Override
     protected int setUpLayoutId() {
-       return 0;
+        return 0;
     }
 
     @Override
@@ -53,13 +59,63 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
     public void onRightClick(boolean status) {
         super.onRightClick(status);
         serviceMsgVM.clickable.set(status);
+
+        if (status) {//如果是编辑
+            binding.recyclerProductMsgList.setVisibility(View.VISIBLE);
+
+            for(int i = 0 ; i< itemVMS.size();i++){
+                itemVMS.get(i).isShowContent.set(false);
+                itemVMS.get(i).isFirst.set(false);
+                itemVMS.get(i).isModify.set(true);
+            }
+            initHead();
+        } else {
+            itemVMS.remove(0);
+
+            if (itemVMS.size() == 0) {
+                binding.recyclerProductMsgList.setVisibility(View.GONE);
+                return;
+            }
+            for(int i = 0 ; i < itemVMS.size() ; i++) {
+                itemVMS.get(i).isShowContent.set(true);
+                itemVMS.get(i).isFirst.set(false);
+                itemVMS.get(i).isModify.set(false);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public String getAllProduct() {
+        List<Product> products = new ArrayList<>();
+
+        for (int i = 1; i < itemVMS.size(); i++) {
+
+            if (TextUtils.isEmpty(itemVMS.get(i).content.get()))continue;
+
+            Product product = new Product();
+            ProductItemVM vm = itemVMS.get(i);
+            product.remind = vm.toDo;
+            product.productName = vm.content.get();
+            product.id = vm.productId;
+
+            products.add(product);
+        }
+
+        return "" + JsonUtil.GsonString(products) + "";
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_client_service_msg,container,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_client_service_msg, container, false);
         serviceMsgVM = new ClientServiceMsgVM();
         serviceMsgVM.clickable.set(isModify);
         binding.setClientServiceVM(serviceMsgVM);
@@ -69,26 +125,98 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
         return binding.getRoot();
     }
 
-    public void updateProductList(){
+
+    private ToDo compass(ProductBean.RemindBean remindBean) {
+        ToDo toDo = new ToDo();
+        if (TextUtils.isEmpty(remindBean.isRemind) == false) {
+            toDo.isRemind = Integer.parseInt(remindBean.isRemind);
+        }
+        if (TextUtils.isEmpty(remindBean.remindDate) == false) {
+            toDo.toDoDate = remindBean.remindDate;
+        }
+        if (TextUtils.isEmpty(remindBean.repeatIntervalHour) == false) {
+            toDo.repeatIntervalHour = Integer.parseInt(remindBean.repeatIntervalHour);
+        }
+        if (TextUtils.isEmpty(remindBean.isRepeat) == false)
+            toDo.isRepeat = Integer.parseInt(remindBean.isRepeat);
+
+        if (TextUtils.isEmpty(remindBean.priority) == false )
+            toDo.priority = Integer.parseInt(remindBean.priority);
+
+        if (TextUtils.isEmpty(remindBean.beforeRemindDay) == false)
+            toDo.beforeRemindDay = Integer.parseInt(remindBean.beforeRemindDay);
+
+        if (TextUtils.isEmpty(remindBean.dateType) == false)
+            toDo.dateType = Integer.parseInt(remindBean.dateType);
+
+        toDo.content = remindBean.content;
+        return toDo;
+    }
+
+    public void updateProductList(List<ProductBean> product) {
+        if (product.size() == 0) {
+            binding.recyclerProductMsgList.setVisibility(View.GONE);
+            return;
+        }
+        itemVMS.clear();
+
+        for (int i = 0; i < product.size(); i++) {
+            ProductItemVM productItemVM = new ProductItemVM();
+            productItemVM.isModify.set(false);
+            productItemVM.isShowContent.set(true);
+            productItemVM.isFirst.set(false);
+            productItemVM.content.set(product.get(i).productName);
+            productItemVM.productId = product.get(i).id + "";
+            productItemVM.setListener(this);
+            if (product.get(i).remind != null) {
+
+                productItemVM.toDo = compass(product.get(i).remind);
+
+
+                int remind = 1;
+                if (TextUtils.isEmpty(product.get(i).remind.isRemind) == false) {
+                    remind = Integer.parseInt(product.get(i).remind.isRemind);
+                }
+
+                if (remind == 1) {
+                    productItemVM.remindIcon.set(R.mipmap.ic_remind);
+                } else {
+                    productItemVM.remindIcon.set(R.mipmap.ic_remind_dis);
+                }
+            }
+            itemVMS.add(productItemVM);
+        }
+        adapter = new BaseDataBindingAdapter(getContext(), R.layout.widget_service_product_item, itemVMS, BR.productItemVM);
+        binding.recyclerProductMsgList.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerProductMsgList.setAdapter(adapter);
 
     }
 
-    private void initProductRecycler(){
-
-
+    private void initHead() {
         ProductItemVM itemVM = new ProductItemVM();
         itemVM.isFirst.set(true);
         itemVM.isModify.set(false);
         itemVM.setListener(this);
-        itemVMS.add(itemVM);
+        itemVMS.add(0,itemVM);
+    }
 
-        adapter = new BaseDataBindingAdapter(getContext(),R.layout.widget_service_product_item,itemVMS, BR.productItemVM);
+    private void initProductRecycler() {
+
+
+        initHead();
+
+        adapter = new BaseDataBindingAdapter(getContext(), R.layout.widget_service_product_item, itemVMS, BR.productItemVM);
         binding.recyclerProductMsgList.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerProductMsgList.setAdapter(adapter);
+        binding.recyclerProductMsgList.setScrollContainer(false);
 
 
     }
 
+
+    public void updateProduct() {
+
+    }
 
 
     @Override

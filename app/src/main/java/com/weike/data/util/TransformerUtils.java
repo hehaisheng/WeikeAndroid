@@ -48,7 +48,8 @@ public class TransformerUtils {
                             com.orhanobut.logger.Logger.json(responseStr);
                             return Observable.just(t);
                         }catch (Exception e) {
-                            return Observable.error(new RuntimeException("错误"));
+                            LogUtil.d("acthome",e.toString());
+                            return Observable.error(new RuntimeException(e.getMessage()));
                         }
 
                     });
@@ -59,7 +60,7 @@ public class TransformerUtils {
             return responseBodyObservable -> responseBodyObservable
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread()).flatMap(responseBody -> {
-                        return Observable.error(new RuntimeException("错误"));
+                        return Observable.error(new RuntimeException(e.getMessage()));
                     });
         }
 

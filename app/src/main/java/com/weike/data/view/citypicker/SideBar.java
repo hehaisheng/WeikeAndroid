@@ -24,7 +24,7 @@ public class SideBar extends View {
 
     public static String[] INDEX_STRING = {"A", "B", "C", "D", "E", "F", "G", "H", "I",
             "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-            "W", "X", "Y", "Z"};
+            "W", "X", "Y", "Z","#"};
 
     private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
     private List<String> letterList;

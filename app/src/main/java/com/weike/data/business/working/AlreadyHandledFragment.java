@@ -94,7 +94,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
         if(requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
             lastModifyVM.time.set(toDo.toDoDate);
-            lastModifyVM.userName.set(toDo.content);
+            lastModifyVM.content.set(toDo.content);
             updateStatus(1,lastModifyVM);
             recycleAdapter.notifyDataSetChanged();
         }

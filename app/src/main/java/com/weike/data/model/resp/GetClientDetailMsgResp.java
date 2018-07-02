@@ -2,6 +2,8 @@ package com.weike.data.model.resp;
 
 import com.google.gson.annotations.SerializedName;
 import com.weike.data.base.BaseResp;
+import com.weike.data.model.business.Product;
+import com.weike.data.model.business.ProductBean;
 
 import java.util.List;
 
@@ -20,9 +22,11 @@ public class GetClientDetailMsgResp extends BaseResp {
      * userAttributesList : []
      * productList : {"id":149,"clentId":354,"income":"5000","expenditure":"1200","monetaryAssets":"十五万","fixedAssets":"五百万","car":"桑普纳","liabilities":"10000","product":[{"id":33,"productName":"产品名称","remind":{"id":65,"isRemind":1,"content":"测试2","remindDate":"1999-05-02 20:20","beforeRemindDay":3,"repeatIntervalHour":1,"priority":1,"isRepeat":1,"dateType":2}},{"id":34,"productName":"asd","remind":{}}]}
      */
-
+   // public List<ProductListBean.ProductBean> product;
     public BirthdayjsonBean birthdayjson;
-    private ProductListBean productList;
+
+    private List<ProductBean> product;
+
     private List<?> clientRelatedList;
     private List<AnniversaryListBean> anniversaryList;
     private List<?> userAttributesList;
@@ -64,6 +68,13 @@ public class GetClientDetailMsgResp extends BaseResp {
     private String car;
     private String liabilities;
 
+    public List<ProductBean> getProduct() {
+        return product;
+    }
+
+    public void setProduct(List<ProductBean> product) {
+        this.product = product;
+    }
 
     public int getId() {
         return id;
@@ -371,13 +382,6 @@ public class GetClientDetailMsgResp extends BaseResp {
         this.birthdayjson = birthdayjson;
     }
 
-    public ProductListBean getProductList() {
-        return productList;
-    }
-
-    public void setProductList(ProductListBean productList) {
-        this.productList = productList;
-    }
 
     public List<?> getClientRelatedList() {
         return clientRelatedList;
@@ -535,162 +539,7 @@ public class GetClientDetailMsgResp extends BaseResp {
         }
     }
 
-    public static class ProductListBean {
-        /**
-         * id : 149
-         * clentId : 354
-         * income : 5000
-         * expenditure : 1200
-         * monetaryAssets : 十五万
-         * fixedAssets : 五百万
-         * car : 桑普纳
-         * liabilities : 10000
-         * product : [{"id":33,"productName":"产品名称","remind":{"id":65,"isRemind":1,"content":"测试2","remindDate":"1999-05-02 20:20","beforeRemindDay":3,"repeatIntervalHour":1,"priority":1,"isRepeat":1,"dateType":2}},{"id":34,"productName":"asd","remind":{}}]
-         */
 
-
-        private List<ProductBean> product;
-
-        public List<ProductBean> getProduct() {
-            return product;
-        }
-
-        public void setProduct(List<ProductBean> product) {
-            this.product = product;
-        }
-
-        public static class ProductBean {
-            /**
-             * id : 33
-             * productName : 产品名称
-             * remind : {"id":65,"isRemind":1,"content":"测试2","remindDate":"1999-05-02 20:20","beforeRemindDay":3,"repeatIntervalHour":1,"priority":1,"isRepeat":1,"dateType":2}
-             */
-
-            private int id;
-            private String productName;
-            private RemindBean remind;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public String getProductName() {
-                return productName;
-            }
-
-            public void setProductName(String productName) {
-                this.productName = productName;
-            }
-
-            public RemindBean getRemind() {
-                return remind;
-            }
-
-            public void setRemind(RemindBean remind) {
-                this.remind = remind;
-            }
-
-            public static class RemindBean {
-                /**
-                 * id : 65
-                 * isRemind : 1
-                 * content : 测试2
-                 * remindDate : 1999-05-02 20:20
-                 * beforeRemindDay : 3
-                 * repeatIntervalHour : 1
-                 * priority : 1
-                 * isRepeat : 1
-                 * dateType : 2
-                 */
-
-                private int id;
-                private int isRemind;
-                private String content;
-                private String remindDate;
-                private int beforeRemindDay;
-                private int repeatIntervalHour;
-                private int priority;
-                private int isRepeat;
-                private int dateType;
-
-                public int getId() {
-                    return id;
-                }
-
-                public void setId(int id) {
-                    this.id = id;
-                }
-
-                public int getIsRemind() {
-                    return isRemind;
-                }
-
-                public void setIsRemind(int isRemind) {
-                    this.isRemind = isRemind;
-                }
-
-                public String getContent() {
-                    return content;
-                }
-
-                public void setContent(String content) {
-                    this.content = content;
-                }
-
-                public String getRemindDate() {
-                    return remindDate;
-                }
-
-                public void setRemindDate(String remindDate) {
-                    this.remindDate = remindDate;
-                }
-
-                public int getBeforeRemindDay() {
-                    return beforeRemindDay;
-                }
-
-                public void setBeforeRemindDay(int beforeRemindDay) {
-                    this.beforeRemindDay = beforeRemindDay;
-                }
-
-                public int getRepeatIntervalHour() {
-                    return repeatIntervalHour;
-                }
-
-                public void setRepeatIntervalHour(int repeatIntervalHour) {
-                    this.repeatIntervalHour = repeatIntervalHour;
-                }
-
-                public int getPriority() {
-                    return priority;
-                }
-
-                public void setPriority(int priority) {
-                    this.priority = priority;
-                }
-
-                public int getIsRepeat() {
-                    return isRepeat;
-                }
-
-                public void setIsRepeat(int isRepeat) {
-                    this.isRepeat = isRepeat;
-                }
-
-                public int getDateType() {
-                    return dateType;
-                }
-
-                public void setDateType(int dateType) {
-                    this.dateType = dateType;
-                }
-            }
-        }
-    }
 
     public static class AnniversaryListBean {
         /**

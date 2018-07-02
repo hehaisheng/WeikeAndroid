@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.logging.Handler;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by LeoLu on 2018/5/22.
  * 登录模块用的VM
@@ -124,7 +126,6 @@ public class LoginActVM extends BaseVM {
 
         GetVerificationCodeReq req = new GetVerificationCodeReq();
         req.phoneNumber = phoneNum.get();
-
         req.sign = SignUtil.signData(req);
 
 
@@ -201,7 +202,7 @@ public class LoginActVM extends BaseVM {
         LoginByCodeReq req = new LoginByCodeReq();
         req.phoneNumber = phoneNum.get();
         req.code = smsCode.get();
-
+        req.igNo = JPushInterface.getRegistrationID(WKBaseApplication.getInstance());;
         req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.LOGIN_FOR_CODE)
@@ -243,6 +244,8 @@ public class LoginActVM extends BaseVM {
     private void loginForPwd() {
         LoginByPwdReq req = new LoginByPwdReq();
         req.phoneNumber = phoneNum.get();
+        LogUtil.d("LoginActVm","" +JPushInterface.getRegistrationID(WKBaseApplication.getInstance()));
+        req.igNo = JPushInterface.getRegistrationID(WKBaseApplication.getInstance());;
         req.password = pwd.get();
         req.sign = SignUtil.signData(req);
 

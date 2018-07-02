@@ -39,7 +39,7 @@ android {
         sourceCompatibility 1.8
     }
     sourceSets {
-        main {
+        main{
             jniLibs.srcDirs = ['libs']
         }
     }
@@ -49,11 +49,10 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/pinyin4j-2.5.0.jar')
     //noinspection GradleCompatible
-    compile project(':library')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     compile files('libs/alipaySdk-20180601.jar')
-    implementation project(':FDHSocialGeneralDialog')
-    implementation files('libs/jcore-android-1.2.1.jar')
-    implementation files('libs/jpush-android-3.1.3.jar')
+    compile files('libs/jcore-android-1.2.1.jar')
+    compile files('libs/jpush-android-3.1.3.jar')
+    implementation project(':library')
 }
