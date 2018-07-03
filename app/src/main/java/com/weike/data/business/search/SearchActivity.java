@@ -130,6 +130,7 @@ public class SearchActivity extends BaseActivity {
                     searchItemVM.title.set(searchRespBaseResp.getDatas().nameList.get(i).userName);
                     searchItemVM.content.set(searchRespBaseResp.getDatas().nameList.get(i).remark);
                     searchItemVM.clientId.set(searchRespBaseResp.getDatas().nameList.get(i).userId);
+                    searchItemVM.iconUrl.set(searchRespBaseResp.getDatas().nameList.get(i).clienturl);
                     if(i == 0) {
                         searchItemVM.tagName.set("联系人");
                         searchItemVM.isShowClientTag.set(true);
@@ -146,6 +147,7 @@ public class SearchActivity extends BaseActivity {
                     searchItemVM.title.set(searchRespBaseResp.getDatas().remarkList.get(i).userName);
                     searchItemVM.content.set(searchRespBaseResp.getDatas().remarkList.get(i).remark);
                     searchItemVM.clientId.set(searchRespBaseResp.getDatas().remarkList.get(i).userId);
+                    searchItemVM.iconUrl.set(searchRespBaseResp.getDatas().remarkList.get(i).clienturl);
                     if(i == 0) {
                         isShowTitle = true;
                         searchItemVM.tagName.set("日志/公司");
@@ -161,6 +163,7 @@ public class SearchActivity extends BaseActivity {
                     searchItemVM.title.set(searchRespBaseResp.getDatas().companyList.get(i).userName);
                     searchItemVM.content.set(searchRespBaseResp.getDatas().companyList.get(i).remark);
                     searchItemVM.clientId.set(searchRespBaseResp.getDatas().companyList.get(i).userId);
+                    searchItemVM.iconUrl.set(searchRespBaseResp.getDatas().companyList.get(i).clienturl);
                     if(i == 0) {
                         if (isShowTitle) continue;
                         searchItemVM.tagName.set("日志/公司");

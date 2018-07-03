@@ -1,90 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout>
+
     <data>
+
+        <import type="android.view.View"></import>
+
         <variable
             name="messageDetailItemVM"
-            type="com.weike.data.model.viewmodel.MsgDetailItemVM"/>
+            type="com.weike.data.model.viewmodel.MsgDetailItemVM" />
 
     </data>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="10dp"
-    android:layout_height="wrap_content">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@{messageDetailItemVM.time}"
-        android:layout_marginBottom="10dp"
-        android:textColor="#999999"
-
-        />
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:background="@drawable/shape_white"
-        android:minHeight="30dp"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
 
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:minHeight="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:padding="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:text="@{messageDetailItemVM.content}"
-            android:layout_height="wrap_content" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
 
-            android:background="@color/color_line"
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:checked="@={messageDetailItemVM.isCheck}"
+            android:visibility="@{messageDetailItemVM.isSle ? View.VISIBLE:View.GONE}"
+            android:button="@drawable/selector_checkbox_low"
             />
+
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
 
             <TextView
-                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="47dp"
-                android:onClick="@{()->messageDetailItemVM.leftClick()}"
-                android:text="@{messageDetailItemVM.leftText}"
-                android:textColor="@{messageDetailItemVM.leftTextColor.get()}"
-                android:gravity="center"
-                />
-
-            <View
-                android:layout_width="1dp"
-                android:background="@color/color_line"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_height="match_parent"></View>
-
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{messageDetailItemVM.rightText}"
-                android:onClick="@{()->messageDetailItemVM.rightClick()}"
-                android:gravity="center"
-                android:textColor="@{messageDetailItemVM.rightTextColor.get()}"
-                android:minHeight="47dp"
+                android:layout_marginBottom="10dp"
+                android:text="@{messageDetailItemVM.time}"
+                android:textColor="#999999"
 
                 />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_white"
+                android:minHeight="30dp"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:minHeight="100dp"
+                    android:padding="10dp"
+                    android:text="@{messageDetailItemVM.content}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/color_line"
+                    android:visibility="@{messageDetailItemVM.isSystemMsg ? View.GONE:View.VISIBLE}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="@{messageDetailItemVM.isSystemMsg ? View.GONE:View.VISIBLE}">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:minHeight="47dp"
+                        android:onClick="@{()->messageDetailItemVM.leftClick()}"
+                        android:text="@{messageDetailItemVM.leftText}"
+                        android:textColor="@{messageDetailItemVM.leftTextColor.get()}" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/color_line"></View>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:minHeight="47dp"
+                        android:onClick="@{()->messageDetailItemVM.rightClick()}"
+                        android:text="@{messageDetailItemVM.rightText}"
+                        android:textColor="@{messageDetailItemVM.rightTextColor.get()}"
+
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
 </layout>

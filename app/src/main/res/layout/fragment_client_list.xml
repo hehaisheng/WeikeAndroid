@@ -1,44 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
 
-    <FrameLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
+        android:id="@+id/smartrefreshlayout"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/lv_client_list"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:divider="@null"
-            android:scrollbars="none" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/dialog"
-            android:layout_width="60dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:background="#606060"
-            android:gravity="center"
-            android:text="A"
-            android:textColor="@android:color/white"
-            android:textSize="36sp"
-            android:visibility="gone"
-            tools:visibility="visible" />
 
-        <com.weike.data.view.citypicker.SideBar
-            android:id="@+id/sidrbar"
-            android:layout_width="24dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="60dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right|center" />
-    </FrameLayout>
+            <ListView
+                android:id="@+id/lv_client_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:divider="@null"
+                android:scrollbars="none" />
+
+            <TextView
+                android:id="@+id/dialog"
+                android:layout_width="60dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:background="#606060"
+                android:gravity="center"
+                android:text="A"
+                android:textColor="@android:color/white"
+                android:textSize="36sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.weike.data.view.citypicker.SideBar
+                android:id="@+id/sidrbar"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center"
+                android:layout_marginBottom="60dp"
+                android:layout_marginTop="60dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" />
+
+        </FrameLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

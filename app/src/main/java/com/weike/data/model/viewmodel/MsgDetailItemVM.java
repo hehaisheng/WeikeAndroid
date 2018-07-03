@@ -27,6 +27,7 @@ public class MsgDetailItemVM extends BaseVM {
 
     public ObservableField<String> time = new ObservableField<>();
 
+
     /**
      * 是否是已读
      */

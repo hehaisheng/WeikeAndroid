@@ -18,6 +18,9 @@ import com.mylhyl.circledialog.params.ButtonParams;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
@@ -48,7 +51,7 @@ import java.util.List;
  * <p>
  * 消息的Fragment
  */
-public class MsgFragment extends BaseFragment {
+public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListener {
 
 
     RecyclerView msgList;
@@ -57,8 +60,11 @@ public class MsgFragment extends BaseFragment {
 
     public List<MessageItemVM> vms = new ArrayList<>();
 
+    private SmartRefreshLayout smartRefreshLayout;
 
-    GetMsgListReq req = new GetMsgListReq();
+
+
+    private int page = 1;
 
     View nothingView;
 
@@ -70,6 +76,8 @@ public class MsgFragment extends BaseFragment {
     private void initView(View view) {
         msgList = view.findViewById(R.id.ry_msg_list);
         nothingView = view.findViewById(R.id.ll_nothing_view);
+        smartRefreshLayout = view.findViewById(R.id.smartrefreshlayout);
+        smartRefreshLayout.setOnRefreshLoadmoreListener(this);
         msgList.setLayoutManager(new LinearLayoutManager(WKBaseApplication.getInstance().getApplicationContext()));
         adapter = new BaseDataBindingAdapter(WKBaseApplication.getInstance().getApplicationContext(), R.layout.widget_message_item, vms, BR.messageItemVM);
         adapter.setOnRecyclerViewItemClickListener(new BaseDataBindingAdapter.OnRecyclerViewItemClickListener() {
@@ -100,12 +108,10 @@ public class MsgFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected void loadFinish(View view) {
-
-        initView(view);
-
-        req.page = 1;
+    private void initMsg(int page) {
+        LogUtil.d("MsgFragment",page +"");
+        GetMsgListReq req = new GetMsgListReq();
+        req.page = page;
         req.token = SpUtil.getInstance().getCurrentToken();
         req.sign = SignUtil.signData(req);
         RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_MSG_LIST)
@@ -115,6 +121,18 @@ public class MsgFragment extends BaseFragment {
             @Override
             protected void onSuccess(BaseResp<GetMsgListResp> getMsgListRespBaseResp) throws Exception {
 
+                if (page> 1 && getMsgListRespBaseResp.getDatas().messageGroupVmList.size() == 0) {
+                    ToastUtil.showToast("暂无更多");
+                    MsgFragment.this.page = MsgFragment.this.page - 1;//恢复页码
+                    smartRefreshLayout.finishLoadmore();
+                    return;
+                }
+
+                if(page == 1) {//下拉
+
+                    vms.clear();
+                    smartRefreshLayout.finishRefresh();
+                }
 
                 if (getMsgListRespBaseResp.getDatas().messageGroupVmList.size() == 0) {
                     nothingView.setVisibility(View.VISIBLE);
@@ -132,6 +150,8 @@ public class MsgFragment extends BaseFragment {
                     vms.add(vm);
                 }
                 adapter.notifyDataSetChanged();
+                smartRefreshLayout.finishRefresh();
+                smartRefreshLayout.finishLoadmore();
             }
 
             @Override
@@ -139,6 +159,14 @@ public class MsgFragment extends BaseFragment {
 
             }
         });
+
+    }
+
+    @Override
+    protected void loadFinish(View view) {
+
+        initView(view);
+        initMsg(page);
 
 
     }
@@ -236,5 +264,16 @@ public class MsgFragment extends BaseFragment {
 
     public void loadView() {
 
+    }
+
+    @Override
+    public void onLoadmore(RefreshLayout refreshlayout) {
+        page++;
+        initMsg(page);
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        initMsg(page);
     }
 }

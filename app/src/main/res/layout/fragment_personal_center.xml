@@ -3,364 +3,370 @@
 <layout>
 
     <data>
+
         <variable
             name="personalVM"
             type="com.weike.data.model.viewmodel.PersonalFragmentVM"></variable>
 
     </data>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_all_bg"
 
-    android:orientation="vertical">
-
-    <RelativeLayout
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/bg_personal_img">
+        android:layout_height="match_parent"
+        android:background="@color/color_all_bg">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-
-            android:drawablePadding="3dp"
-            android:drawableTop="@mipmap/ic_modify_data"
-            android:text="修改资料"
-            android:layout_alignTop="@+id/iv_user_icon"
-            android:onClick="@{()-> personalVM.modifyPersonalData()}"
-            android:textColor="@color/color_white" />
-
-        <com.weike.data.view.CircleImageView
-            android:id="@+id/iv_user_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            loadImage="@{personalVM.photoUrl}"
-            android:src="@mipmap/icon_normal_2"
-             />
-
-        <TextView
-            android:id="@+id/tv_nick_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_user_icon"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="@{personalVM.nickName,default=未知用户}"
-            android:textColor="@color/color_white" />
-
-        <TextView
-            android:id="@+id/tv_phone_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_nick_name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="@{personalVM.phoneNum}"
-            android:textColor="@color/color_white" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFE991"
-        android:onClick="@{()->personalVM.openUpVip()}"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:drawableLeft="@mipmap/ic_my_vip"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:textSize="12sp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:textColor="@color/color_EC6F4F"
-            android:drawablePadding="5dp"
-            android:text="VIP会员" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp"
-            android:textColor="@color/color_bebebe"
-
-            android:text="@{personalVM.vipTime}"
-
-            />
-
-        <ImageView
-            android:layout_centerVertical="true"
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:scaleType="fitEnd"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/icon_arrow_2"
-            android:layout_gravity="right|center"
-
-            />
-
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_white"
-        android:orientation="vertical">
 
         <LinearLayout
-            android:onClick="@{()->personalVM.jumpToQrCode()}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/color_white">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:src="@mipmap/ic_my_qrcode" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:text="我的二维码" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="邀请好友,即可获得10积分"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/color_bebebe"
-                />
-
-            <ImageView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:scaleType="fitEnd"
-                android:layout_marginRight="10dp"
-                android:src="@mipmap/icon_arrow_2"
-                android:layout_gravity="right|center"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/bg_personal_img">
 
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/iv_user_icon"
 
+                    android:layout_marginRight="10dp"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@mipmap/ic_modify_data"
+                    android:onClick="@{()-> personalVM.modifyPersonalData()}"
+                    android:text="修改资料"
+                    android:textColor="@color/color_white" />
 
-        </LinearLayout>
+                <com.weike.data.view.CircleImageView
+                    android:id="@+id/iv_user_icon"
+                    loadImage="@{personalVM.photoUrl}"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:src="@mipmap/icon_normal_2" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:visibility="gone"
-            android:layout_marginLeft="50dp"
-            android:background="@color/color_line" />
+                <TextView
+                    android:id="@+id/tv_nick_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_user_icon"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@{personalVM.nickName,default=未知用户}"
+                    android:textColor="@color/color_white" />
 
-        <LinearLayout
-            android:visibility="gone"
-            android:onClick="@{()-> personalVM.jumpToMyIntegral()}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_white">
+                <TextView
+                    android:id="@+id/tv_phone_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_nick_name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@{personalVM.phoneNum}"
+                    android:textColor="@color/color_white" />
+            </RelativeLayout>
 
-
-            <ImageView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:src="@mipmap/ic_my_integral" />
+                android:background="#FFE991"
+                android:onClick="@{()->personalVM.openUpVip()}"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@mipmap/ic_my_vip"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="VIP会员"
+                    android:textColor="@color/color_EC6F4F"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="30dp"
+                    android:text="@{personalVM.vipTime}"
+
+                    android:textColor="@color/color_bebebe"
+
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right|center"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="fitEnd"
+                    android:src="@mipmap/icon_arrow_2"
+
+                    />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:text="我的积分" />
+                android:background="@color/color_white"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:onClick="@{()->personalVM.jumpToQrCode()}"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/ic_my_qrcode" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="我的二维码" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="邀请好友,即可获得10积分"
+                        android:textColor="@color/color_bebebe" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:layout_gravity="right|center"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="fitEnd"
+                        android:src="@mipmap/icon_arrow_2"
+
+                        />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="50dp"
+                    android:background="@color/color_line"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:onClick="@{()-> personalVM.jumpToMyIntegral()}"
+                    android:visibility="gone">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/ic_my_integral" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="我的积分" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|right"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingRight="10dp"
+                        android:text="@{personalVM.integral,default=60}"
+                        android:textColor="@color/color_bebebe" />
+
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_gravity="right|center"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="fitEnd"
+                        android:src="@mipmap/icon_arrow_2"
+
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="50dp"
+                    android:background="@color/color_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:onClick="@{()->personalVM.jumpToCustomer()}">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/ic_customer_center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="客服中心" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:layout_gravity="right|center"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="fitEnd"
+                        android:src="@mipmap/icon_arrow_2"
+
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="50dp"
+                    android:background="@color/color_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:onClick="@{()->personalVM.jumpServiceSetting()}">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/ic_service_setting" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="服务设置" />
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:layout_gravity="right|center"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="fitEnd"
+                        android:src="@mipmap/icon_arrow_2"
+
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="50dp"
+                    android:background="@color/color_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:onClick="@{()->personalVM.jumpAppSetting()}">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/ic_app_setting" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="应用设置" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:layout_gravity="right|center"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="fitEnd"
+                        android:src="@mipmap/icon_arrow_2"
+
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|right"
-                android:gravity="right"
-                android:paddingRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/color_bebebe"
-                android:text="@{personalVM.integral,default=60}" />
+                android:background="@color/color_white"
+                android:gravity="center|bottom"
+                android:paddingBottom="10dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:text="广州维客易科技有限公司 版权所有"
+                    android:textColor="@color/color_bebebe" />
 
-
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:scaleType="fitEnd"
-                android:layout_marginRight="10dp"
-                android:src="@mipmap/icon_arrow_2"
-                android:layout_gravity="right|center"
-
-                />
+            </LinearLayout>
 
         </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="50dp"
-            android:background="@color/color_line" />
-
-        <LinearLayout
-            android:onClick="@{()->personalVM.jumpToCustomer()}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_white">
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:src="@mipmap/ic_customer_center" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:text="客服中心" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:scaleType="fitEnd"
-                android:layout_marginRight="10dp"
-                android:src="@mipmap/icon_arrow_2"
-                android:layout_gravity="right|center"
-
-                />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="50dp"
-            android:background="@color/color_line" />
-
-        <LinearLayout
-            android:onClick="@{()->personalVM.jumpServiceSetting()}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_white">
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:src="@mipmap/ic_service_setting" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:text="服务设置" />
-
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:scaleType="fitEnd"
-                android:layout_marginRight="10dp"
-                android:src="@mipmap/icon_arrow_2"
-                android:layout_gravity="right|center"
-
-                />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="50dp"
-            android:background="@color/color_line" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:onClick="@{()->personalVM.jumpAppSetting()}"
-            android:layout_height="wrap_content"
-            android:background="@color/color_white">
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:src="@mipmap/ic_app_setting" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:text="应用设置" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:scaleType="fitEnd"
-                android:layout_marginRight="10dp"
-                android:src="@mipmap/icon_arrow_2"
-                android:layout_gravity="right|center"
-
-                />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:gravity="center|bottom"
-        android:paddingBottom="10dp"
-        android:background="@color/color_white"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="广州维客易科技有限公司 版权所有"
-            android:textColor="@color/color_bebebe"
-            android:layout_gravity="center_horizontal|bottom"
-            />
-
-    </LinearLayout>
-
-
-</LinearLayout>
 </layout>

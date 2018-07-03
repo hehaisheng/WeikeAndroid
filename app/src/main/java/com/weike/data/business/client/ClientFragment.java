@@ -7,6 +7,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.weike.data.R;
 import com.weike.data.adapter.SortAdapter;
 import com.weike.data.base.BaseFragment;
@@ -36,11 +39,11 @@ import java.util.List;
  * <p>
  * 客户 首页Fragment
  */
-public class ClientFragment extends BaseFragment {
+public class ClientFragment extends BaseFragment implements OnRefreshListener {
 
     private ListView clientList;
     private SideBar sideBar;
-
+    private SmartRefreshLayout smartRefreshLayout;
     private SortAdapter adapter;
     private List<ClientSortModel> datas = new ArrayList<>();
 
@@ -52,6 +55,9 @@ public class ClientFragment extends BaseFragment {
     @Override
     protected void loadFinish(View view) {
         clientList = view.findViewById(R.id.lv_client_list);
+        smartRefreshLayout = view.findViewById(R.id.smartrefreshlayout);
+        smartRefreshLayout.setEnableLoadmore(false);
+        smartRefreshLayout.setOnRefreshListener(this);
         sideBar = view.findViewById(R.id.sidrbar);
         clientList.addHeaderView(initHeadView());
 
@@ -76,6 +82,12 @@ public class ClientFragment extends BaseFragment {
             }
         });
 
+       fresh(true);
+    }
+
+    private void fresh(boolean isFresh){
+        datas.clear();
+
         GetClientListReq req = new GetClientListReq();
         req.token = SpUtil.getInstance().getCurrentToken();
         req.sign = SignUtil.signData(req);
@@ -87,6 +99,7 @@ public class ClientFragment extends BaseFragment {
                 })).subscribe(new BaseObserver<BaseResp<GetClientListResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetClientListResp> getClientListRespBaseResp) throws Exception {
+                smartRefreshLayout.finishRefresh();
                 datas = filledData(getClientListRespBaseResp.getDatas().allClientList);
                 Collections.sort(datas, new PinyinComparator());
                 adapter.updateListView(datas);
@@ -98,11 +111,6 @@ public class ClientFragment extends BaseFragment {
             }
         });
     }
-
-    public void initSlideBar() {
-
-    }
-
 
     /**
      * 排序你的title
@@ -164,5 +172,9 @@ public class ClientFragment extends BaseFragment {
         return headView;
     }
 
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        fresh(true);
+    }
 }
 

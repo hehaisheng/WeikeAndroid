@@ -294,6 +294,13 @@ public class ClientTagActivity extends BaseActivity {
         });
 
         clientListContentAdapter = new BaseDataBindingAdapter(this, R.layout.widget_layout_client_tag_list_item, contentVMS, BR.tagClientContentVM);
+        clientListContentAdapter.setOnRecyclerViewItemClickListener(new BaseDataBindingAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(int position, View view) {
+                String id = contentVMS.get(position).id.get();
+                AddClientActivity.startActivity(ClientTagActivity.this,id);
+            }
+        });
         recycle_client_list.setLayoutManager(new LinearLayoutManager(this));
         recycle_client_list.setAdapter(clientListContentAdapter);
 

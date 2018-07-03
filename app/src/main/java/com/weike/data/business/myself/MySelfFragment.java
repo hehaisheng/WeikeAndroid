@@ -7,14 +7,27 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
+import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseFragment;
+import com.weike.data.base.BaseObserver;
+import com.weike.data.base.BaseResp;
+import com.weike.data.config.Config;
 import com.weike.data.databinding.FragmentPersonalCenterBinding;
+import com.weike.data.model.business.User;
+import com.weike.data.model.req.GetUserInfoReq;
+import com.weike.data.model.resp.GetUserInfoResp;
 import com.weike.data.model.viewmodel.PersonalFragmentVM;
+import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.SignUtil;
+import com.weike.data.util.SpUtil;
+import com.weike.data.util.TransformerUtils;
 
 /**
  * Created by LeoLu on 2018/5/21.
@@ -43,10 +56,60 @@ public class MySelfFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_personal_center,container,false);
+        binding.swipeRefreshLayout.setColorSchemeColors(WKBaseApplication.getInstance().getResources().getColor((R.color.color_41BCF6)));
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                init();
+            }
+        });
 
         vm = new PersonalFragmentVM((FragmentActivity) context);
         binding.setPersonalVM(vm);
 
         return binding.getRoot();
+    }
+
+    private void init(){
+        GetUserInfoReq req = new GetUserInfoReq();
+        req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.USER_INFO)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetUserInfoResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<GetUserInfoResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
+                binding.swipeRefreshLayout.setRefreshing(false);
+                if (getUserInfoRespBaseResp.getResult() == 0) {
+                    vm.nickName.set(getUserInfoRespBaseResp.getDatas().userName);
+                    vm.phoneNum.set("电话号码：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
+                    vm.photoUrl.set(getUserInfoRespBaseResp.getDatas().photoUrl);
+                    vm.integral.set(getUserInfoRespBaseResp.getDatas().currentIntegral);
+                    if(getUserInfoRespBaseResp.getDatas().memberLevel == 1) {
+                        vm. vipTime.set("开通");
+                    } else {
+                        vm.vipTime.set(getUserInfoRespBaseResp.getDatas().timeoutDate + "   到期");
+                    }
+
+                    User user = SpUtil.getInstance().getUser();
+                    user.phoneNumber = getUserInfoRespBaseResp.getDatas().phoneNumber;
+                    user.iconUrl = getUserInfoRespBaseResp.getDatas().photoUrl;
+                    user.userName = getUserInfoRespBaseResp.getDatas().userName;
+                    user.email = getUserInfoRespBaseResp.getDatas().email;
+                    user.job = getUserInfoRespBaseResp.getDatas().occupation;
+                    user.address  = getUserInfoRespBaseResp.getDatas().detailAddress;
+
+                    SpUtil.getInstance().saveNewsUser(user);
+
+                }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
     }
 }

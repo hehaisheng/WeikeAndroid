@@ -49,9 +49,15 @@ public class WKBaseApplication extends Application {
             @Override
             public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
                 //指定为经典Footer，默认是 BallPulseFooter
-
-                return new BallPulseFooter(context).setAnimatingColor(context.getResources().getColor(R.color.color_41BCF6));
-
+                return new ClassicsFooter(context).setDrawableSize(20);
+            }
+        });
+        SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @NonNull
+            @Override
+            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+                layout.setPrimaryColorsId(R.color.color_41BCF6, android.R.color.white);//全局设置主题颜色
+                return new ClassicsHeader(context).setTimeFormat(new SimpleDateFormat("yyyy-MM-dd"));//.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
             }
         });
 

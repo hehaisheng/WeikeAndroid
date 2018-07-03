@@ -1,43 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--消息提示的Fragment-->
+<?xml version="1.0" encoding="utf-8"?><!--消息提示的Fragment-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/color_white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_white">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/ry_msg_list"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smartrefreshlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ry_msg_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <RelativeLayout
         android:id="@+id/ll_nothing_view"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_nothging_label"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="95dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_empty_msg"
-            />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="95dp"
+            android:src="@mipmap/ic_empty_msg" />
 
         <TextView
             android:id="@+id/nothing_text"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/iv_nothging_label"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
-            android:text="好像真的没有你想要的"
-            android:textColor="@color/color_content"
             android:padding="5dp"
-            android:layout_height="wrap_content" />
+            android:text="好像真的没有你想要的"
+            android:textColor="@color/color_content" />
 
 
         <TextView
@@ -48,15 +52,13 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="55dp"
             android:background="@drawable/shape_button_none_bg"
+            android:paddingBottom="5dp"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
             android:paddingTop="5dp"
-            android:textColor="@color/color_41BCF6"
-            android:paddingBottom="5dp"
             android:text="刷新"
-            />
+            android:textColor="@color/color_41BCF6" />
     </RelativeLayout>
-
 
 
 </FrameLayout>
