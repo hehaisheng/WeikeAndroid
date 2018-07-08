@@ -119,9 +119,8 @@ public class ClientTagActivity extends BaseActivity {
             resetModify(isModify);
 
         } else {
-
+            setRightText("移动");
             showChckDialog();
-
         }
 
 
@@ -167,6 +166,8 @@ public class ClientTagActivity extends BaseActivity {
                     public void onClick(View v) {
                         resetModify(false);
                         move(checkedAdapter.getids().valueAt(0));
+                        setRightText("编辑");
+                        ClientTagActivity.this.isModify = false;
                     }
                 })
                 .show(getSupportFragmentManager());
@@ -215,8 +216,6 @@ public class ClientTagActivity extends BaseActivity {
                 contentVMS.get(i).isSelector.set(true);
             }
         } else {
-
-            setRightText("编辑");
             for (int i = 0; i < contentVMS.size(); i++) {
                 contentVMS.get(i).isSelector.set(isModify);
             }

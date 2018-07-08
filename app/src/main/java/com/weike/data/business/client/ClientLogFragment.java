@@ -19,6 +19,7 @@ import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.config.Config;
+import com.weike.data.model.business.ClientRelated;
 import com.weike.data.model.req.GetClientLogByIdReq;
 import com.weike.data.model.resp.GetClientLogByIdResp;
 import com.weike.data.model.viewmodel.ClientLogItemVM;
@@ -85,7 +86,10 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ActivitySkipUtil.skipAnotherAct(getActivity(),AddLogActivity.class);
+                ClientRelated clientRelated = new ClientRelated();
+                clientRelated.clientId =clientId;
+                clientRelated.name = ((AddClientActivity)getActivity()).vm.userName.get();
+                AddLogActivity.startActivity(clientRelated,getActivity());
             }
         });
         recyclerView = view.findViewById(R.id.recycler_log_list);

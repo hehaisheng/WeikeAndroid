@@ -131,7 +131,7 @@ public class ResetPwdActVM extends BaseVM {
                 })).subscribe(new BaseObserver<BaseResp<ResetPwdResp>>() {
             @Override
             protected void onSuccess(BaseResp<ResetPwdResp> resetPwdRespBaseResp) throws Exception {
-                if (resetPwdRespBaseResp.getResult() == 6){
+                if (resetPwdRespBaseResp.getResult() == 1){
                     ToastUtil.showToast("修改成功");
                     activity.finish();
                 } else {

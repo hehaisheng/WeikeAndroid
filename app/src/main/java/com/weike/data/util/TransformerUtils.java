@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseResp;
+import com.weike.data.broadcast.TokenFailedBroadcast;
 import com.weike.data.model.resp.LoginByPwdResp;
 
 import java.util.logging.Logger;
@@ -37,9 +38,10 @@ public class TransformerUtils {
 
 
                             BaseResp baseResp = JsonUtil.GsonToBean(responseStr,BaseResp.class);
-                            if (baseResp.getResult() == 100040){
+                            if ((baseResp.getResult() + "") .equals("100040")){
                                 WKBaseApplication.getInstance().getApplicationContext()
-                                        .sendBroadcast(new Intent());
+                                        .sendBroadcast(new Intent(TokenFailedBroadcast.TOKEN_FAILED));
+
                             }
 
 

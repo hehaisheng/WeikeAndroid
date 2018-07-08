@@ -2,9 +2,14 @@ package com.weike.data.business.working;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,29 +31,39 @@ import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
 import com.weike.data.adapter.BaseDataBindingAdapter;
+import com.weike.data.adapter.ExpandableAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
+import com.weike.data.config.DataConfig;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.EditAndDeleteTodoReq;
+import com.weike.data.model.req.GetClientTagListReq;
 import com.weike.data.model.req.GetHandleWorkListReq;
 import com.weike.data.model.resp.EditAndDeleteTodoResp;
+import com.weike.data.model.resp.GetClientTagListResp;
 import com.weike.data.model.resp.GetHandleWorkListResp;
+import com.weike.data.model.viewmodel.ExpandGroupVM;
 import com.weike.data.model.viewmodel.HandleWorkItemVM;
+import com.weike.data.model.viewmodel.LabelOptionItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
+import com.weike.data.util.ClientTagComparator;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
+import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Handler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,11 +102,16 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
     public ExpandableListView expandableListView;
 
+    private ExpandableAdapter adapter;
+
     private TextView goToAdd;
+
+    private boolean isLeft =false;
 
     private ToDo toDo;
 
-
+    private List<List<HandleWorkItemVM>> childVMs = new ArrayList<>();
+    private List<ExpandGroupVM> groupVMS = new ArrayList<>();
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -105,6 +125,83 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         }
     }
 
+
+
+    public void initLabel() {
+
+
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+
+
+
+                if ( expandableListView.isGroupExpanded(groupPosition) ) {
+                    expandableListView.collapseGroup(groupPosition);
+                }
+
+                expandableListView.expandGroup(groupPosition, true);
+
+
+
+                return true;
+            }
+        });
+
+
+
+
+
+        GetClientTagListReq req = new GetClientTagListReq();
+        req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_CLIENT_TAG_LIST)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetClientTagListResp>>() {
+
+                })).subscribe(new BaseObserver<BaseResp<GetClientTagListResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetClientTagListResp> getClientTagListRespBaseResp) throws Exception {
+                List<GetClientTagListResp.TagSub> list = getClientTagListRespBaseResp.getDatas().clientLabelList;
+
+                Collections.sort(list, new ClientTagComparator());
+                for (int i = 0; i < list.size(); i++) {
+                    ExpandGroupVM vm = new ExpandGroupVM();
+                    vm.name.set(list.get(i).sort + "." + list.get(i).labelName);
+                    vm.id = list.get(i).id;
+                    groupVMS.add(vm);
+                }
+
+                ExpandGroupVM vm = new ExpandGroupVM();
+                vm.name.set("未分组客户");
+                vm.id = "";
+                groupVMS.add(0,vm);
+
+
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                display.getMetrics(displayMetrics);
+                int widthPixels = displayMetrics.widthPixels;
+
+                int width = getActivity().getWindowManager().getDefaultDisplay().getWidth();
+
+                for(int i = 0 ; i < groupVMS.size();i++) {
+                    List<HandleWorkItemVM> vms = new ArrayList<>();
+                    childVMs.add(vms);
+                }
+
+                adapter = new ExpandableAdapter(groupVMS,childVMs,R.layout.widget_expandable_group_tag,R.layout.widget_handle_working_list_item,BR.expanableVM,BR.handleWorkItemVM);
+                expandableListView.setAdapter(adapter);
+                expandableListView.setIndicatorBounds(width - 120, width - 30);
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
+
     @Override
     protected int setUpLayoutId() {
         return R.layout.fragment_handle_working;
@@ -116,6 +213,9 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         cb_sort_level = view.findViewById(R.id.checkbox_sort_of_level);
         recycleHandleWorking = view.findViewById(R.id.reycle_handler_working);
         expandableListView = view.findViewById(R.id.lv_handler_working);
+        Drawable d = getResources().getDrawable(R.color.color_touming,null);
+        expandableListView.setDivider(d);
+        expandableListView.setChildDivider(d);
         loadingView = view.findViewById(R.id.loaddingview);
         cb_sort_level.setOnCheckedChangeListener(this);
         cb_sort_date.setOnCheckedChangeListener(this);
@@ -131,6 +231,10 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
         loadDataOfList(1, 1, true);
         initRecycleView();
+        initLabel();
+
+        cb_sort_date.setClickable(false);
+        cb_sort_level.setClickable(true);
     }
 
     @Override
@@ -178,6 +282,14 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                     vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
                     vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
                     vm.setListener(HandlerWorkingFragment.this);
+                    int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
+                    if (pro == DataConfig.RemindLevel.TYPE_OF_HEIGHT) {
+                        vm.readClickBg.set(R.mipmap.ic_right_blue);
+                    } else if (pro == DataConfig.RemindLevel.TYPE_OF_MID) {
+                        vm.readClickBg.set(R.mipmap.ic_right_yellow);
+                    } else if (pro == DataConfig.RemindLevel.TYPE_OF_LOAD) {
+                        vm.readClickBg.set(R.mipmap.ic_finish_gray);
+                    }
                     vms.add(vm);
                 }
                 recycleAdapter.notifyDataSetChanged();
@@ -194,13 +306,22 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (b && compoundButton.equals(cb_sort_date)) {
-            vms.clear();
+
             cb_sort_level.setChecked(false);
-            loadDataOfList(1, 1, true);
+            expandableListView.setVisibility(View.GONE);
+            recycleHandleWorking.setVisibility(View.VISIBLE);
+            loadDataOfList(1,1,true);
+            cb_sort_date.setClickable(false);
+            cb_sort_level.setClickable(true);
         } else if (b && compoundButton.equals(cb_sort_level)) {
-            vms.clear();
+            compoundButton.setChecked(true);
+            nothing.setVisibility(View.GONE);
+            recycleHandleWorking.setVisibility(View.GONE);
+            expandableListView.setVisibility(View.VISIBLE);
             cb_sort_date.setChecked(false);
-            loadDataOfList(2, 1, true);
+
+            cb_sort_date.setClickable(true);
+            cb_sort_level.setClickable(false);
         }
     }
 
@@ -280,7 +401,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             protected void onSuccess(BaseResp<EditAndDeleteTodoResp> editAndDeleteTodoRespBaseResp) throws Exception {
 
                 if(type == 2){
-                    vm.readClickBg.set(R.mipmap.ic_right_blue);
+                    vms.remove(vm);
                     recycleAdapter.notifyDataSetChanged();
                  } else if(type == 4) {
                     vms.remove(vm);

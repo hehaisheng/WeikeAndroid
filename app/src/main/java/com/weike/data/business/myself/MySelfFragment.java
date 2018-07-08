@@ -1,7 +1,7 @@
 package com.weike.data.business.myself;
 
 import android.app.Activity;
-import android.arch.lifecycle.ViewModel;
+
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

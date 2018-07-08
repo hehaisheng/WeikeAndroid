@@ -16,6 +16,7 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        android:id="@+id/scrollView"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -99,6 +100,8 @@
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@+id/tv_email_title"
                         android:singleLine="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:background="@color/color_touming"
                         android:hint="请输入邮箱"
                         android:text="@={clientBaseVM.email}"
@@ -614,9 +617,16 @@
                 app:cardCornerRadius="5dp"
                 app:cardElevation="5dp">
 
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="@{()->clientBaseVM.goToManagerAttr()}"
                     android:visibility="@{clientBaseVM.isModify ?View.VISIBLE:View.GONE}">
 
                     <TextView

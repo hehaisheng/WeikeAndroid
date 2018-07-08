@@ -109,6 +109,8 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
     }
 
 
+
+
     @Override
     public void onClick(View view) {
         if(mOnItemClickListener == null){
@@ -143,7 +145,23 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
 
     }
 
-
+    public void checkCurrent(int position) {
+        for(int i = 0 ; i < mLinearLayout.getChildCount();i++) {
+            View view = mLinearLayout.getChildAt(i);
+            if (position == i) {
+                TextView text = (TextView) view.findViewById(R.id.tv_title);
+                text.setTextColor(selectTextColor);
+                ImageView icon = (ImageView) view.findViewById(R.id.iv_icon);
+                icon.setImageResource(tabList.get(position).getSelectIconId());
+            } else {
+                ImageView icon = (ImageView) view.findViewById(R.id.iv_icon);
+                TextView text = (TextView) view.findViewById(R.id.tv_title);
+                TextView number = view.findViewById(R.id.tv_count);
+                text.setTextColor(normalTextColor);
+                icon.setImageResource(tabList.get(i).getNormalIconId());
+            }
+        }
+    }
 
 
     public void clearStatus(int count , int position) {

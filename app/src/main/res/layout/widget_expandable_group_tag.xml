@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="expanableVM"
+            type="com.weike.data.model.viewmodel.ExpandGroupVM"/>
+    </data>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:textColor="@color/color_content"
+        android:background="@drawable/shape_white"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@{expanableVM.name}"
+        />
+
+</LinearLayout>
+</layout>

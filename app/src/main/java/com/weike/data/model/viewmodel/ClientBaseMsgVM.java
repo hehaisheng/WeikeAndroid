@@ -3,14 +3,18 @@ package com.weike.data.model.viewmodel;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.ObservableField;
+import android.text.TextUtils;
 
 import com.weike.data.R;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseVM;
 import com.weike.data.business.log.RemindSettingActivity;
+import com.weike.data.business.setting.AttrManagerActivity;
 import com.weike.data.config.DataConfig;
 import com.weike.data.model.business.ToDo;
+import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.PickerUtil;
+import com.weike.data.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +113,8 @@ public class ClientBaseMsgVM extends BaseVM {
      */
     public ObservableField<Boolean> isModify = new ObservableField<>(false);
 
+
+
     public BaseFragment baseFragment;
 
     public ClientBaseMsgVM(BaseFragment baseFragment) {
@@ -138,12 +144,26 @@ public class ClientBaseMsgVM extends BaseVM {
      * 生日时间点击
      */
     public void birthdayTimeClick(){
-        PickerUtil.onYearMonthDayTimePicker(null, new DateTimePicker.OnYearMonthDayTimePickListener() {
-            @Override
-            public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
-                birthday.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
-            }
-        },baseFragment.getActivity());
+
+
+        if(TextUtils.isEmpty(birthday.get())) {
+
+            PickerUtil.onYearMonthDayTimePicker(null, new DateTimePicker.OnYearMonthDayTimePickListener() {
+                @Override
+                public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
+                    birthday.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
+                }
+            }, baseFragment.getActivity());
+        } else {
+            ArrayList<Integer> tmp = TimeUtil.formatTimeClick(birthday.get());
+
+            PickerUtil.onYearMonthDayTimePicker(tmp.get(0),tmp.get(1),tmp.get(2),tmp.get(3),tmp.get(4), new DateTimePicker.OnYearMonthDayTimePickListener() {
+                @Override
+                public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
+                    birthday.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
+                }
+            }, baseFragment.getActivity());
+        }
     }
 
     /*
@@ -164,7 +184,7 @@ public class ClientBaseMsgVM extends BaseVM {
      * 婚姻选择
      */
     public void marryClick(){
-        SinglePicker<String> picker = new SinglePicker<String>(baseFragment.getActivity(),new String[]{"已婚","未婚"});
+        SinglePicker<String> picker = new SinglePicker<String>(baseFragment.getActivity(),new String[]{"已婚","未婚","离异"});
 
         PickerUtil.onConstellationPicker(null, picker, new OnItemPickListener<String>() {
             @Override
@@ -182,6 +202,10 @@ public class ClientBaseMsgVM extends BaseVM {
     }
 
     public void goToManagerAttr(){
+        Intent intent = new Intent(baseFragment.getContext(),AttrManagerActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        baseFragment.startActivityForResult(intent,AttrManagerActivity.REQUEST_CODE);
+
 
     }
 }

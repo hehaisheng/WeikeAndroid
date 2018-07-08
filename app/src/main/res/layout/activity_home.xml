@@ -11,12 +11,15 @@
         layout="@layout/widget_action_bar"
         android:id="@+id/include_acionbar" />
 
-    <FrameLayout
-        android:id="@+id/framgnet_home"
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_below="@+id/include_acionbar"
         android:layout_above="@+id/bottom_bar_line"
-        android:layout_below="@+id/include_acionbar" />
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
 
 
 

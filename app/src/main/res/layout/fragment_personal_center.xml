@@ -48,6 +48,7 @@
                     loadImage="@{personalVM.photoUrl}"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:onClick="@{()-> personalVM.modifyPersonalData()}"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
                     android:src="@mipmap/icon_normal_2" />

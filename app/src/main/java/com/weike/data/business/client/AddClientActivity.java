@@ -278,7 +278,15 @@ public class AddClientActivity extends BaseActivity {
                     clientBaseMsgVM.companyLocation.set(data.getCompanyDetailAddress());
                     clientBaseMsgVM.sex.set( Integer.parseInt(data.getSex()) == 1 ? "男" : "女");
                     clientBaseMsgVM.birthday.set(data.getBirthday());
-                    clientBaseMsgVM.marry.set(Integer.parseInt(data.getMarriage()) == 1 ? "已婚": "未婚");
+                    int marry = Integer.parseInt(data.getMarriage());
+                    if (marry == 1){
+                        clientBaseMsgVM.marry.set("已婚");
+                    } else if (marry == 2){
+                        clientBaseMsgVM.marry.set("未婚");
+                    } else if (marry == 3) {
+                        clientBaseMsgVM.marry.set("离异");
+                    }
+
                     clientBaseMsgVM.idCard.set(data.getIdCard());
                     clientBaseMsgVM.son.set(data.getSonNum());
                     clientBaseMsgVM.job.set(data.getOffice());

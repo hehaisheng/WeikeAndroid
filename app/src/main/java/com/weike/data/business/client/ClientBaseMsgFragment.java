@@ -16,11 +16,15 @@ import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.business.log.RemindSettingActivity;
+import com.weike.data.business.setting.AttrManagerActivity;
 import com.weike.data.databinding.FragmentClientBaseMsgBinding;
+import com.weike.data.model.business.ClientRelated;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.viewmodel.AddPhoneVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.model.viewmodel.AddClientRelateItemVM;
+import com.weike.data.model.viewmodel.RelateCLientItemVM;
+import com.weike.data.util.DialogUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.ToastUtil;
 
@@ -43,6 +47,14 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     public List<AddClientRelateItemVM> clientRelateItemVMS = new ArrayList<>();
     BaseDataBindingAdapter clientRelateAdapter;
+
+
+    private AddClientRelateItemVM lastRelateClientVM;
+
+    public ClientBaseMsgVM clientBaseMsgVM;
+
+    public FragmentClientBaseMsgBinding binding;
+
 
     /**
      * 这里是 获取客户信息 也就是有电话信息的时候 才调用 一般不用
@@ -74,9 +86,6 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     }
 
 
-    public ClientBaseMsgVM clientBaseMsgVM;
-
-    public FragmentClientBaseMsgBinding binding;
 
 
     @Override
@@ -88,6 +97,16 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         if(requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
             clientBaseMsgVM.onBirthdayRemindResult(toDo);
+
+        } else if (requestCode == RelateClientActivity.REQUEST_CODE && data != null) {
+            List<ClientRelated> list = (List<ClientRelated>) data.getSerializableExtra("data");
+
+            lastRelateClientVM.clientId = list.get(0).clientId;
+            lastRelateClientVM.clientName.set(list.get(0).name);
+            clientRelateAdapter.notifyDataSetChanged();
+
+
+        } else if (requestCode == AttrManagerActivity.CONTEXT_INCLUDE_CODE) {
 
         }
     }
@@ -203,6 +222,16 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         initClientRelateRecycle();
         updateModify(clientBaseMsgVM.isModify.get());//更新一下电话的状态
 
+        binding.edCompany.requestFocus();
+        binding.edCompany.requestFocusFromTouch();
+
+        binding.scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                binding.scrollView.fullScroll(View.FOCUS_UP);
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -230,8 +259,19 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             addPhoneVMS.add(addPhoneVM);
             addPhoneAdapter.notifyDataSetChanged();
         } else {
-            addPhoneVMS.remove(vm);
-            addPhoneAdapter.notifyDataSetChanged();
+            DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否删除电话?", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addPhoneVMS.remove(vm);
+                    addPhoneAdapter.notifyDataSetChanged();
+                }
+            });
+
         }
     }
 
@@ -248,10 +288,25 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
 
         } else if (type == AddClientRelateItemVM.AddClientRelateItemListener.ADD_RELATE) {
-            //TODO showDialog
+
+            RelateClientActivity.startActivity(true,this,RelateClientActivity.REQUEST_CODE);
+            lastRelateClientVM = vm;
+
         } else if(type == AddClientRelateItemVM.AddClientRelateItemListener.REDUCE){
-            clientRelateItemVMS.remove(vm);
-            clientRelateAdapter.notifyDataSetChanged();
+
+            DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否删除关联客户", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clientRelateItemVMS.remove(vm);
+                    clientRelateAdapter.notifyDataSetChanged();
+                }
+            });
+
         }
 
     }

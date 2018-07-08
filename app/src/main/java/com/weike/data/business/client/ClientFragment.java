@@ -1,8 +1,12 @@
 package com.weike.data.business.client;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -15,6 +19,7 @@ import com.weike.data.adapter.SortAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.search.SearchActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.ClientSortModel;
 import com.weike.data.model.req.GetClientListReq;
@@ -50,6 +55,14 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
     @Override
     protected int setUpLayoutId() {
         return R.layout.fragment_client_list;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        LogUtil.d("ClientFragemnt","onCreateView");
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -157,18 +170,21 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
                     ActivitySkipUtil.skipAnotherAct((Activity) context, ClientTagActivity.class);
                 } else if (view.getId() == R.id.ll_goto_add_for_phone) {
 
+                } else if (view.getId() == R.id.tv_search) {
+                    ActivitySkipUtil.skipAnotherAct(getActivity(),SearchActivity.class);
                 }
             }
         };
 
         View headView = LayoutInflater.from(context).inflate(R.layout.widget_client_list_header, null);
+        View goToSearch = headView.findViewById(R.id.tv_search);
         View gotoAddClient = headView.findViewById(R.id.ll_goto_add_client);
         View gotoClientTag = headView.findViewById(R.id.ll_goto_client_tag);
         View gotoAddForPhone = headView.findViewById(R.id.ll_goto_add_for_phone);
         gotoAddClient.setOnClickListener(headClick);
         gotoClientTag.setOnClickListener(headClick);
         gotoAddForPhone.setOnClickListener(headClick);
-
+        goToSearch.setOnClickListener(headClick);
         return headView;
     }
 

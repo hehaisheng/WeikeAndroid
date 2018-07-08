@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.weike.data.R;
 import com.weike.data.base.BaseVM;
+import com.weike.data.listener.OnReduceListener;
 
 /**
  * Created by LeoLu on 2018/6/1.
@@ -17,15 +18,16 @@ public class MsgDetailItemVM extends BaseVM {
 
     public ObservableField<String> title = new ObservableField<>();
 
-    public ObservableField<Integer> leftTextColor = new ObservableField<>(R.color.color_bebebe);
+    public String id;
 
-    public ObservableField<Integer> rightTextColor = new ObservableField<>(R.color.color_bebebe);
+    public int remindType;
 
-    public ObservableField<String> leftText = new ObservableField<>();
 
-    public ObservableField<String> rightText = new ObservableField<>();
+    public ObservableField<String> rightText = new ObservableField<>("稍后提醒");
 
     public ObservableField<String> time = new ObservableField<>();
+
+    public ObservableField<Boolean> isTextRemind = new ObservableField<>(true);
 
 
     /**
@@ -42,14 +44,14 @@ public class MsgDetailItemVM extends BaseVM {
 
     public ObservableField<Boolean> isSystemMsg = new ObservableField<>(false);
 
+    public OnReduceListener<MsgDetailItemVM> listener;
 
-
-    public void leftClick(){
-
+    public void setListener(OnReduceListener<MsgDetailItemVM> listener) {
+        this.listener = listener;
     }
 
     public void rightClick(){
-
+        listener.onReduce(this);
     }
 
     public MsgDetailItemVM(Activity activity) {

@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
+import android.text.TextUtils;
 import android.widget.TimePicker;
 
 import com.weike.data.base.BaseVM;
 import com.weike.data.config.DataConfig;
 import com.weike.data.util.PickerUtil;
+import com.weike.data.util.TimeUtil;
 
 import java.util.ArrayList;
 
@@ -21,8 +23,14 @@ import io.reactivex.internal.operators.observable.ObservableFilter;
 public class RemingSetActVM extends BaseVM {
 
     public int beforeRemindDay;
-
+    /**
+     *
+     */
     public int repeatIntervalHour;
+    /**
+     * 日期类型
+     */
+    public int dateType = 0;
     /**
      * 时间
      */
@@ -53,10 +61,7 @@ public class RemingSetActVM extends BaseVM {
      */
     public ObservableField<Boolean> isRemind = new ObservableField<>(true);
 
-    /**
-     * 日期类型
-     */
-    public int dateType;
+
 
     /**
      * 设置不提醒
@@ -109,12 +114,24 @@ public class RemingSetActVM extends BaseVM {
      * 时间Dialog
      */
     public void timeClick(){
-        PickerUtil.onYearMonthDayTimePicker(null, new DateTimePicker.OnYearMonthDayTimePickListener() {
-            @Override
-            public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
-                time.set(s +"-" + s1 +"-" + s2 + " " +s3 +":"+ s4);
-            }
-        },activity);
+        if(TextUtils.isEmpty(time.get())) {
+
+            PickerUtil.onYearMonthDayTimePicker(null, new DateTimePicker.OnYearMonthDayTimePickListener() {
+                @Override
+                public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
+                    time.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
+                }
+            }, activity);
+        } else {
+            ArrayList<Integer> tmp = TimeUtil.formatTimeClick(time.get());
+
+            PickerUtil.onYearMonthDayTimePicker(tmp.get(0),tmp.get(1),tmp.get(2),tmp.get(3),tmp.get(4), new DateTimePicker.OnYearMonthDayTimePickListener() {
+                @Override
+                public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
+                    time.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
+                }
+            }, activity);
+        }
     }
 
     /**

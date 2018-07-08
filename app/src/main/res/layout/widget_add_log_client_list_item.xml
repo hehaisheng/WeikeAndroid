@@ -10,19 +10,21 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginLeft="3dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/shape_white"
     android:layout_height="wrap_content">
 
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:minWidth="80dp"
-        android:layout_height="wrap_content">
+
+
     <TextView
         android:id="@+id/tv_widget_add_log_client"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@{relateClientItemVM.name}"
+        android:text="@{relateClientItemVM.name,default=123123213213}"
         android:textSize="12sp"
         android:singleLine="true"
         android:ellipsize="end"
@@ -42,6 +44,6 @@
         android:onClick="@{()->relateClientItemVM.onReduce()}"
         android:layout_marginLeft="10dp"
         />
-    </android.support.v7.widget.CardView>
+
 </LinearLayout>
 </layout>

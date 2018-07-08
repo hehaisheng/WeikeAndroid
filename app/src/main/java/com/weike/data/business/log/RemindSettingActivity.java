@@ -123,6 +123,9 @@ public class RemindSettingActivity extends BaseActivity {
                 vm.lowCheck.set(getHandleWorkListRespBaseResp.getDatas().priority == 3 ? true :false);
                 vm.time.set(getHandleWorkListRespBaseResp.getDatas().remindDate);
                 vm.remindTime.set(getHandleWorkListRespBaseResp.getDatas().beforeRemindDay + "天");
+                vm.repeatIntervalHour = getHandleWorkListRespBaseResp.getDatas().repeatIntervalHour;
+                vm.beforeRemindDay = getHandleWorkListRespBaseResp.getDatas().beforeRemindDay;
+                vm.dateType = getHandleWorkListRespBaseResp.getDatas().dateType;
                 if (getHandleWorkListRespBaseResp.getDatas().isRepeat == 1) { //重复
                     if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_DAY){
                         //天
@@ -133,6 +136,8 @@ public class RemindSettingActivity extends BaseActivity {
                         vm.repeatText.set("" + toDo.repeatIntervalHour + "月");
                     } else if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
                         vm.repeatText.set("" + toDo.repeatIntervalHour + "年");
+                    } else if (toDo.dateType == 0) {
+                        vm.repeatText.set("不重复");
                     }
                 } else {
                     vm.repeatText.set("不重复");
@@ -148,6 +153,8 @@ public class RemindSettingActivity extends BaseActivity {
     }
 
     private void initCurrentTodo(){
+        LogUtil.d("RemindSetting","" + JsonUtil.GsonString(toDo));
+
         vm.isRemind.set(toDo.isRemind == 1  ? true : false);
         vm.isUnRemind.set(toDo.isRemind == 2  ? true : false);
         vm.content.set(toDo.content); //内容
@@ -155,6 +162,9 @@ public class RemindSettingActivity extends BaseActivity {
         vm.midCheck.set(toDo.priority == 2 ? true : false);
         vm.lowCheck.set(toDo.priority == 3 ? true :false);
         vm.time.set(toDo.toDoDate);
+        vm.beforeRemindDay = toDo.beforeRemindDay;
+        vm.repeatIntervalHour = toDo.repeatIntervalHour;
+        vm.dateType = toDo.dateType;
         vm.remindTime.set(toDo.beforeRemindDay + "天");
         if (toDo.isRepeat == 1) { //重复
             if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_DAY){
@@ -177,29 +187,30 @@ public class RemindSettingActivity extends BaseActivity {
 
 
 
-        if (TextUtils.isEmpty(vm.content.get())){
+        if (TextUtils.isEmpty(vm.content.get()) && vm.isRemind.get()){
             ToastUtil.showToast("内容不能为空");
             return;
         }
 
-        if(TextUtils.isEmpty(vm.time.get())) {
+        if(TextUtils.isEmpty(vm.time.get())  && vm.isRemind.get()) {
             ToastUtil.showToast("请选择时间");
             return;
         }
 
-        if (TextUtils.isEmpty(vm.remindTime.get())){
+        if (TextUtils.isEmpty(vm.remindTime.get())  && vm.isRemind.get()){
             ToastUtil.showToast("请设置您的提前提醒时间");
             return;
         }
 
 
-        if (TextUtils.isEmpty(vm.repeatText.get())){
+        if (TextUtils.isEmpty(vm.repeatText.get())  && vm.isRemind.get()){
             ToastUtil.showToast("请设置您的重复提醒时间");
             return;
         }
 
 
         toDo = compass();
+        LogUtil.d("acthome","-->" +toDo.dateType);
 
         if (id != null) { //如果ID 不为空 那么就是修改
             modifyOneTodo();
@@ -254,10 +265,10 @@ public class RemindSettingActivity extends BaseActivity {
         toDo.toDoDate = vm.time.get();
         if (vm.heightCheck.get()) {
             toDo.priority = DataConfig.RemindLevel.TYPE_OF_HEIGHT;
-        } else if (vm.heightCheck.get()) {
-            toDo.priority = DataConfig.RemindLevel.TYPE_OF_HEIGHT;
-        } else if (vm.heightCheck.get()) {
-            toDo.priority = DataConfig.RemindLevel.TYPE_OF_HEIGHT;
+        } else if (vm.midCheck.get()) {
+            toDo.priority = DataConfig.RemindLevel.TYPE_OF_MID;
+        } else if (vm.lowCheck.get()) {
+            toDo.priority = DataConfig.RemindLevel.TYPE_OF_LOAD;
         }
         if (vm.repeatText.get().contains("不重复")) {
             toDo.isRepeat = DataConfig.RemindRepeat.TYPE_UNREPEAT;

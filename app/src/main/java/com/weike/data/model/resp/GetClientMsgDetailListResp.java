@@ -44,6 +44,7 @@ public class GetClientMsgDetailListResp extends BaseResp {
         private int type;  //0-系统消息、1-生日提醒、2-产品提醒、3-日志提醒、4-纪念日提醒
         private int status;
         private int is_remind;
+        public int isRepeat;
 
         public int getId() {
             return id;

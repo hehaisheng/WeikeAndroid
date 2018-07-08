@@ -15,6 +15,7 @@ import com.orhanobut.logger.Logger;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,13 +27,18 @@ import cn.jpush.android.api.JPushInterface;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class    JPushReceiver extends BroadcastReceiver {
-    private static final String TAG = "JIGUANG-Example";
+    private static final String TAG = "JPushReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
             Bundle bundle = intent.getExtras();
-            Logger.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
+            LogUtil.d("acthomeJpush", "" + intent.getAction() + ", extras: " + printBundle(bundle));
+
+
+           /* JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+            ToastUtil.showToast(json.toString());*/
+
 
             if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
                 String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
@@ -49,9 +55,10 @@ public class    JPushReceiver extends BroadcastReceiver {
                 Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-               /* Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
+                Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
 
-                //打开自定义的Activity
+
+                /*//打开自定义的Activity
                 Intent i = new Intent(context, TestActivity.class);
                 i.putExtras(bundle);
                 //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -83,6 +90,8 @@ public class    JPushReceiver extends BroadcastReceiver {
             }else if(key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)){
                 sb.append("\nkey:" + key + ", value:" + bundle.getBoolean(key));
             } else if (key.equals(JPushInterface.EXTRA_EXTRA)) {
+
+
                 if (TextUtils.isEmpty(bundle.getString(JPushInterface.EXTRA_EXTRA))) {
                     Logger.i(TAG, "This message has no Extra data");
                     continue;

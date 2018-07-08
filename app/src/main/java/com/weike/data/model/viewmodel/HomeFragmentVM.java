@@ -68,7 +68,7 @@ public class HomeFragmentVM {
                 }
                 banenrData.addAll(data);
 
-                LogUtil.d("HomeFragment","fragment call back");
+                LogUtil.d("HomeFragment","currentFragment call back");
             }
 
             @Override

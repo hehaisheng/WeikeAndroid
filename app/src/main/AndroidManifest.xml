@@ -22,6 +22,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission>
 
 
 
@@ -70,6 +71,15 @@
         </activity>
         <activity android:name=".business.login.LoginActivity">
 
+
+
+        </activity>
+
+        <activity android:name=".business.client.RelateClientActivity"></activity>
+
+        <activity android:name=".wxapi.TokenFailedActivity"
+            android:theme="@style/dialogstyle"
+            >
 
 
         </activity>
@@ -136,6 +146,12 @@
             android:launchMode="singleTop"
             android:exported="true"/>
 
+
+        <activity
+            android:name="cn.jpush.android.ui.PopWinActivity"
+            android:theme="@style/AlertDialog.AppCompat"
+            android:exported="false">
+        </activity>
 
 
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" android:exported="false"/>
@@ -251,6 +267,15 @@
         </activity>
 
         <!-- alipay sdk end -->
+
+        <receiver android:name=".broadcast.TokenFailedBroadcast">
+            <intent-filter>
+                <action
+                    android:name="com.weike.data.TOKEN_FAILED"
+                    />
+            </intent-filter>
+
+        </receiver>
 
     </application>
 

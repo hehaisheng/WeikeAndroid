@@ -48,6 +48,61 @@ public class PickerUtil {
         picker.show();
     }
 
+    public static void  onYearMonthDayTimePicker(int year,int month , int day ,int hour , int min,DateTimePicker.OnYearMonthDayTimePickListener listener, Activity activity) {
+        DateTimePicker picker = new DateTimePicker(activity, DateTimePicker.HOUR_24);
+        picker.setActionButtonTop(false);
+        picker.setDateRangeStart(1900, 1, 1);
+        picker.setDateRangeEnd(2100, 12, 12);
+        picker.setSelectedItem(year,month,day,hour,min);
+        picker.setTimeRangeStart(9, 0);
+        picker.setTimeRangeEnd(20, 30);
+        picker.setCanLinkage(false);
+        picker.setLabel("年","月","日","时","分");
+
+        picker.setTitleText("请选择");
+//        picker.setStepMinute(5);
+        picker.setWeightEnable(true);
+        picker.setWheelModeEnable(true);
+        LineConfig config = new LineConfig();
+        config.setColor(Color.BLUE);//线颜色
+        config.setAlpha(120);//线透明度
+        config.setVisible(true);//线不显示 默认显示
+        picker.setLineConfig(config);
+        picker.setOnDateTimePickListener(listener);
+        picker.show();
+    }
+
+
+    public static void onOptionPicker(Activity activity,OnItemPickListener listener) {
+        ArrayList<String> list = new ArrayList<>();
+        for(int i = 0;i<10; i++){
+            String s = "";
+            if(i<10){
+                s = "0"+i;
+            }else{
+                s = i+"";
+            }
+            list.add(s);
+        }
+//        String[] ss = (String[]) list.toArray();
+        SinglePicker<String> picker = new SinglePicker<>(activity, list);
+        picker.setCanLoop(false);//不禁用循环
+        picker.setLineVisible(true);
+        picker.setTitleText("设置你的提醒时间");
+        picker.setTextSize(18);
+        picker.setSelectedIndex(8);
+        picker.setWheelModeEnable(false);
+        //启用权重 setWeightWidth 才起作用
+        picker.setSelectedTextColor(WKBaseApplication.getInstance().getResources().getColor(R.color.color_41BCF6));
+        picker.setUnSelectedTextColor(WKBaseApplication.getInstance().getResources().getColor(R.color.color_bebebe));
+        picker.setLabel("小时");
+        picker.setWeightEnable(true);
+        picker.setWeightWidth(1);
+
+        picker.setOnItemPickListener(listener);
+        picker.show();
+    }
+
     public static void onConstellationPicker(View view ,SinglePicker<String> picker,OnItemPickListener<String> listener) {
 
 

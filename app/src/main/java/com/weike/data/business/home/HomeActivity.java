@@ -4,23 +4,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
 
 import com.google.gson.reflect.TypeToken;
-import com.mylhyl.circledialog.CircleDialog;
-import com.mylhyl.circledialog.callback.ConfigButton;
-import com.mylhyl.circledialog.callback.ConfigDialog;
-import com.mylhyl.circledialog.callback.ConfigText;
-import com.mylhyl.circledialog.callback.ConfigTitle;
-import com.mylhyl.circledialog.params.ButtonParams;
-import com.mylhyl.circledialog.params.DialogParams;
-import com.mylhyl.circledialog.params.TextParams;
-import com.mylhyl.circledialog.params.TitleParams;
 import com.weike.data.R;
-import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
@@ -29,22 +22,22 @@ import com.weike.data.business.client.ClientFragment;
 import com.weike.data.business.msg.MsgFragment;
 import com.weike.data.business.myself.MySelfFragment;
 import com.weike.data.config.Config;
+import com.weike.data.model.business.AnotherAttributes;
 import com.weike.data.model.business.TabEntity;
 import com.weike.data.model.business.User;
+import com.weike.data.model.req.GetAttrListReq;
 import com.weike.data.model.req.GetClientListReq;
 import com.weike.data.model.req.GetClientTagListReq;
 import com.weike.data.model.req.MainPageDataReq;
+import com.weike.data.model.resp.GetAttrListResp;
 import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.model.resp.GetClientTagListResp;
 import com.weike.data.model.resp.MainPageDataResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ClientTagComparator;
-import com.weike.data.util.FileCacheUtils;
-import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
-import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 import com.weike.data.view.BottomBarLayout;
 
@@ -66,6 +59,9 @@ public class HomeActivity extends BaseActivity {
     @BindView(R.id.bottom_bar)
     public BottomBarLayout bottomBarLayout;
 
+    @BindView(R.id.view_pager)
+    public ViewPager viewPager;
+
     @BindView(R.id.btn_delete)
     public Button btn_deleteMsg;
 
@@ -75,13 +71,16 @@ public class HomeActivity extends BaseActivity {
      */
     @OnClick(R.id.btn_delete)
     public void deleteMsgClick(View view){
-        ((MsgFragment)fragment).onBottomClick(); //响应Fragment的点击
+        ((MsgFragment) currentFragment).onBottomClick(); //响应Fragment的点击
     }
 
 
+    private android.support.v4.app.FragmentManager fm;
+    private android.support.v4.app.FragmentTransaction ft;
 
 
-    public BaseFragment fragment;
+
+    public BaseFragment currentFragment,homeFragment ,clientFragment, msgFragment , mySelfFragment ;
 
     /**
      * 当前的Fragment位置
@@ -91,6 +90,8 @@ public class HomeActivity extends BaseActivity {
      * 是否是选择
      */
     private boolean isSle = false;
+
+    private List<BaseFragment> fragmentList = new ArrayList<>();
 
     /**
      * 底部栏的tag
@@ -133,6 +134,7 @@ public class HomeActivity extends BaseActivity {
             public void onItemClick(int position,boolean isAdd) {
                 replaceFragment(position);
                 currentPosition = position;
+
             }
         });
 
@@ -145,18 +147,24 @@ public class HomeActivity extends BaseActivity {
 
     public void replaceFragment(int position) {
         if (position == 0) {
-            fragment = new HomeFragment();
+            //switchFragment(homeFragment);
+            currentFragment = homeFragment;
+            viewPager.setCurrentItem(0);
             setCenterText("维客助手");
         } else if (position == 1) {
-            fragment = new ClientFragment();
+            //switchFragment(clientFragment);
+            currentFragment = clientFragment;
             setCenterText("客户");
         } else if (position == 2) {
-            fragment = new MsgFragment();
+
+            currentFragment = msgFragment;
             setCenterText("消息");
         } else {
+            //switchFragment(mySelfFragment);
+            currentFragment = mySelfFragment;
             setCenterText("个人中心");
-            fragment = new MySelfFragment();
         }
+        viewPager.setCurrentItem(position);
 
         if (position == 2) {
             setRightText("编辑");
@@ -171,14 +179,17 @@ public class HomeActivity extends BaseActivity {
         }
 
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.framgnet_home, fragment).commit();
+
     }
+
+
+
 
     @Override
     public void onRightClick() {
         super.onRightClick();
 
-        fragment.onRightClick();
+        //currentFragment.onRightClick();
 
         if (currentPosition == 2) { //如果是消息页面
             isSle = isSle == true ? false:true;
@@ -195,6 +206,15 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(false);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -202,10 +222,10 @@ public class HomeActivity extends BaseActivity {
 
         setCenterText("维客助手");
         initBottomLayout();
-        BaseFragment fragment = new HomeFragment();
+
         isShowBack(false);
         setRightText("");
-        getSupportFragmentManager().beginTransaction().replace(R.id.framgnet_home, fragment).commit();
+
 
         getClientList();
 
@@ -218,7 +238,73 @@ public class HomeActivity extends BaseActivity {
             }
         },3000);
 
+        initFragment();
     }
+
+    private void initFragment(){
+        homeFragment = new HomeFragment();
+        clientFragment = new ClientFragment();
+         msgFragment = new MsgFragment();
+         mySelfFragment = new MySelfFragment();
+
+         fragmentList.add(homeFragment);
+         fragmentList.add(clientFragment);
+         fragmentList.add(msgFragment);
+         fragmentList.add(mySelfFragment);
+         viewPager.setOffscreenPageLimit(4);
+
+         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+             @Override
+             public Fragment getItem(int position) {
+                 return fragmentList.get(position);
+             }
+
+             @Override
+             public int getCount() {
+                 return fragmentList.size();
+             }
+         });
+
+         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+             @Override
+             public void onPageSelected(int position) {
+                 super.onPageSelected(position);
+                bottomBarLayout.checkCurrent(position);
+
+                 if (position == 0) {
+                     setCenterText("维客助手");
+                 } else if (position == 1) {
+                     setCenterText("客户");
+                 } else if (position == 2) {
+                     setCenterText("消息");
+                 } else if (position == 3){
+                     setCenterText("个人中心");
+                 }
+
+                 if (position == 2) {
+                     setRightText("编辑");
+                 } else {
+                     setRightText("");
+                 }
+
+                 if (position == 3) {
+                     hideAll(false);
+                 } else {
+                     hideAll(true);
+                 }
+             }
+         });
+
+
+
+
+
+
+    }
+
+
+
+
 
     /**
      * 进来获取客户列表 用于缓存使用
@@ -275,6 +361,40 @@ public class HomeActivity extends BaseActivity {
                 zero.id = "";
                 user.labelList.add(0,zero);
 
+                SpUtil.getInstance().saveNewsUser(user);
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
+
+    public void initAnotherType(){
+        GetAttrListReq req = new GetAttrListReq();
+        req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_ATTR_LIST)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetAttrListResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<GetAttrListResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetAttrListResp> getAttrListRespBaseResp) throws Exception {
+
+                User user = SpUtil.getInstance().getUser();
+                List<AnotherAttributes> list = user.anotherAttributes;
+                list.clear();
+
+                for(int i = 0 ; i < getAttrListRespBaseResp.getDatas().attributesValueList.size();i++) {
+                    AnotherAttributes atr = new AnotherAttributes();
+                    atr.attributesName = getAttrListRespBaseResp.getDatas().attributesValueList.get(i).attributesName;
+                    atr.attributesId = getAttrListRespBaseResp.getDatas().attributesValueList.get(i).id;
+                    list.add(atr);
+                }
                 SpUtil.getInstance().saveNewsUser(user);
 
             }

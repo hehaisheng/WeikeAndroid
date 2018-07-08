@@ -1,5 +1,6 @@
 package com.weike.data.business.log;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -23,6 +24,7 @@ import com.weike.data.adapter.CheckedAdapter;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.client.RelateClientActivity;
 import com.weike.data.config.Config;
 import com.weike.data.databinding.ActivityAddLogBinding;
 import com.weike.data.listener.OnReduceListener;
@@ -42,6 +44,7 @@ import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -57,6 +60,8 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
     private ToDo toDo;
     private ClientLog clientLog;
     AddLogActVM logActVM;
+
+    public int requestCode = 100;
 
     DialogFragment dialogFragment ;
 
@@ -102,6 +107,16 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
         binding.tagFlowLayout.setLayoutManager(new GridLayoutManager(this,3));
         binding.tagFlowLayout.setAdapter(clientRelateAdapter);
 
+        if(getIntent().getSerializableExtra("clientRelate") != null) {
+            ClientRelated clientRelated = (ClientRelated) getIntent().getSerializableExtra("clientRelate");
+            RelateCLientItemVM vm = new RelateCLientItemVM();
+            vm.name = clientRelated.name;
+            vm.id = clientRelated.clientId;
+            vm.setLientItemVMOnReduceListener(this);
+            clientRelateVMS.add(vm);
+
+        }
+
     }
 
     @Override
@@ -116,12 +131,30 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
 
     }
 
+    public static void startActivity(ClientRelated clientRelated,Activity activity){
+        Intent intent = new Intent(activity,AddLogActivity.class);
+        intent.putExtra("clientRelate",clientRelated);
+        activity.startActivity(intent);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RemindSettingActivity.CODE_OF_REQUEST  && resultCode == RESULT_OK) {
             toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
             logActVM.setToDo(toDo);
+        } else if (requestCode == RelateClientActivity.REQUEST_CODE && resultCode == RESULT_OK ){
+
+            ArrayList<ClientRelated> relateds = (ArrayList<ClientRelated>) data.getSerializableExtra("data");
+
+            for(int i = 0 ; i <relateds.size(); i++) {
+                RelateCLientItemVM vm = new RelateCLientItemVM();
+                vm.name = relateds.get(i).name;
+                vm.id = relateds.get(i).clientId;
+                vm.setLientItemVMOnReduceListener(this);
+                clientRelateVMS.add(vm);
+            }
+            clientRelateAdapter.notifyDataSetChanged();
         }
     }
 
@@ -182,54 +215,15 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
 
 
     public void addRelate(){
+
+
+
+
         if(SpUtil.getInstance().getUser().clietList.size() == 0) {
             ToastUtil.showToast("您还没有客户,不能添加日志");
             return;
         } else  {
-
-            if (toDo == null) {
-
-            }
-
-
-
-            List<GetClientListResp.ClientListSub> subList = SpUtil.getInstance().getUser().clietList;
-
-            String[]  array = new String[subList.size()];
-            String[] ids = new String[subList.size()];
-
-            for(int i = 0 ; i <subList.size() ; i++) {
-                array[i] = subList.get(i).userName;
-                ids[i] = subList.get(i).id;
-            };
-
-            final CheckedAdapter checkedAdapter = new CheckedAdapter(this, array);
-
-            new CircleDialog.Builder()
-                    .configDialog(new ConfigDialog() {
-                        @Override
-                        public void onConfig(DialogParams params) {
-                            params.backgroundColorPress = Color.CYAN;
-                        }
-                    })
-                    .setTitle("请选择您要关联的客户")
-                    .setItems(checkedAdapter, new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            checkedAdapter.toggleId(position,ids[position]);
-                            checkedAdapter.toggle(position, array[position]);
-
-
-                        }
-                    })
-                    .setItemsManualClose(true)
-                    .setPositive("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            addClient(checkedAdapter);
-                        }
-                    })
-                    .show(getSupportFragmentManager());
+            RelateClientActivity.startActivity(false,this,RelateClientActivity.REQUEST_CODE);
         }
     }
 

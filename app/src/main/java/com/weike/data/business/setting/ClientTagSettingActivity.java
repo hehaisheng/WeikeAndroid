@@ -144,6 +144,13 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
 
     private void addLabel(String content) {
 
+        for(int  i = 0 ; i < vms.size();i++) {
+            if (vms.get(i).content.get().equals(content)) {
+                ToastUtil.showToast("存在相同的客户签名");
+                return;
+            }
+        }
+
 
         AddLabelReq req = new AddLabelReq();
         req.labelName = content;

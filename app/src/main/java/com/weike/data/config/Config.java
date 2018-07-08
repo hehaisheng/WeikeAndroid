@@ -196,4 +196,25 @@ public final class Config {
      * 根据待办事项 获取日志
      */
     public static final String GET_TODO_BY_LOG = "wkzs-restful/log/selectToDoByLog";
+
+    /**
+     * 获取分享海报
+     */
+    public static final String GET_SHARED_PIC = "wkzs-restful/user/sharePictures";
+
+    /**
+     * 根据标签ID获取待办事项
+     */
+    public static final String GET_WORKING_BY_TAG = "wkzs-restful/client/getClientByLabelAndUser";
+
+
+    /**
+     * 修改客户消息的状态
+     */
+    public static final String MODIFY_CLIENT_MSG = "wkzs-restful/message/newsEditStatus";
+
+    /**
+     * 修改提醒或者不在提醒
+     */
+    public static final String MODIFY_CLIENT_MSG_REMIND ="wkzs-restful/message/newsEditRemind";
 }

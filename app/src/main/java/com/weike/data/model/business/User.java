@@ -3,6 +3,7 @@ package com.weike.data.model.business;
 import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.model.resp.GetClientTagListResp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,4 +58,6 @@ public class User {
      * 如果是自定义 那么 就是  天数
      */
     public int handleWorkingType;
+
+    public List<AnotherAttributes> anotherAttributes = new ArrayList<>();
 }

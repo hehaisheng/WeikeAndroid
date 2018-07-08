@@ -23,7 +23,7 @@
         android:id="@+id/btn_add_attr"
         android:background="@drawable/shape_button_radius_10"
         android:layout_marginBottom="30dp"
-        android:text="添加属性"
+        android:text="+添加属性名称"
         android:layout_marginTop="30dp"
         android:textColor="@color/color_white"
         android:layout_marginLeft="30dp"

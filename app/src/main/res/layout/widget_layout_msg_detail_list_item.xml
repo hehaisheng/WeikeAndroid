@@ -68,6 +68,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="@color/color_line"
+
                     android:visibility="@{messageDetailItemVM.isSystemMsg ? View.GONE:View.VISIBLE}" />
 
                 <LinearLayout
@@ -76,33 +77,17 @@
                     android:orientation="horizontal"
                     android:visibility="@{messageDetailItemVM.isSystemMsg ? View.GONE:View.VISIBLE}">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:minHeight="47dp"
-                        android:onClick="@{()->messageDetailItemVM.leftClick()}"
-                        android:text="@{messageDetailItemVM.leftText}"
-                        android:textColor="@{messageDetailItemVM.leftTextColor.get()}" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginTop="4dp"
-                        android:background="@color/color_line"></View>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="right|center"
+                        android:paddingRight="10dp"
                         android:minHeight="47dp"
                         android:onClick="@{()->messageDetailItemVM.rightClick()}"
                         android:text="@{messageDetailItemVM.rightText}"
-                        android:textColor="@{messageDetailItemVM.rightTextColor.get()}"
-
+                        android:textColor="@{messageDetailItemVM.isTextRemind ? @color/color_41BCF6 :@color/color_bebebe}"
                         />
 
                 </LinearLayout>

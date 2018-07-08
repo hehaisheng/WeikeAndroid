@@ -22,6 +22,7 @@ public class GetOneTodoStatusResp extends BaseResp {
     public int isRepeat;
     public int repeatIntervalHour;
     public int beforeRemindDay;
+    public int dateType;
 
 
 

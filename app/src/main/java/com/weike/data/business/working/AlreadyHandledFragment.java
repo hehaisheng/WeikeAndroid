@@ -33,6 +33,7 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
+import com.weike.data.config.DataConfig;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.EditAndDeleteTodoReq;
 import com.weike.data.model.req.GetHandleWorkListReq;
@@ -177,6 +178,15 @@ public class AlreadyHandledFragment extends BaseFragment implements
                     vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
                     vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
                     vm.setListener(AlreadyHandledFragment.this);
+
+                    int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
+                    if (pro == DataConfig.RemindLevel.TYPE_OF_HEIGHT) {
+                        vm.readClickBg.set(R.mipmap.ic_right_blue);
+                    } else if (pro == DataConfig.RemindLevel.TYPE_OF_MID) {
+                        vm.readClickBg.set(R.mipmap.ic_right_yellow);
+                    } else if (pro == DataConfig.RemindLevel.TYPE_OF_LOAD) {
+                        vm.readClickBg.set(R.mipmap.ic_finish_gray);
+                    }
                     vms.add(vm);
                 }
                 recycleAdapter.notifyDataSetChanged();
@@ -221,7 +231,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
             }, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    modify(handleWorkItemVM);
+                    delete(handleWorkItemVM);
                 }
             });
 

@@ -69,6 +69,12 @@ public class OpenUpVipActVM extends BaseVM {
 
     public ObservableBoolean isAliPay = new ObservableBoolean(true);
 
+    public ObservableField<Boolean> oneCheck = new ObservableField<>(false);
+
+    public ObservableField<Boolean> twoCheck = new ObservableField<>(false);
+
+    public ObservableField<Boolean> threeCheck = new ObservableField<>(true);
+
     public OpenUpVipActVM(Activity activity) {
         this.activity = activity;
     }
@@ -112,10 +118,38 @@ public class OpenUpVipActVM extends BaseVM {
         }
     }
 
+    public void oneCheckClick(){
+        oneCheck.set(true);
+        twoCheck.set(false);
+        threeCheck.set(false);
+    }
+
+    public void twoCheckClick(){
+        twoCheck.set(true);
+        oneCheck.set(false);
+        threeCheck.set(false);
+    }
+
+    public void threeCheckClick(){
+        twoCheck.set(false);
+        oneCheck.set(false);
+        threeCheck.set(true);
+    }
+
     private void alipay(){
+
+        int money = 0;
+        if (oneCheck.get()) {
+            money = 188;
+        } else if (twoCheck.get()){
+            money = 328;
+        } else if (threeCheck.get()) {
+            money = 418;
+        }
+
         GetPayDataReq req = new GetPayDataReq();
         req.buyNum = Integer.parseInt(allYear.get());
-        req.money = allMoney.get();
+        req.money = money + "";
         req.orderNo = System.currentTimeMillis() + "";
         req.platform = "alipay";
         req.sign = SignUtil.signData(req);

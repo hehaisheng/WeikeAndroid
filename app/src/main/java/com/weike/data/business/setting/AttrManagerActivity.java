@@ -2,6 +2,7 @@ package com.weike.data.business.setting;
 
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,6 +38,8 @@ import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.config.Config;
+import com.weike.data.model.business.AnotherAttributes;
+import com.weike.data.model.business.User;
 import com.weike.data.model.req.AddAttrReq;
 import com.weike.data.model.req.DeleteAttrReq;
 import com.weike.data.model.req.DeleteLabelReq;
@@ -62,6 +65,8 @@ import butterknife.OnClick;
 
 public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnReduceListener {
 
+    public static final int REQUEST_CODE = 1000;
+
     @BindView(R.id.recycleview_attr_manager)
     public RecyclerView recyclerView;
 
@@ -80,9 +85,9 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
                 .setCanceledOnTouchOutside(false)
                 .setCancelable(true)
                 .setInputManualClose(true)
-                .setTitle("输入框")
-                .setInputHint("请输入条件")
-                .setInputText("默认文本")
+                .setTitle("添加属性")
+                .setInputHint("请输入")
+                .setInputText("")
                 .configInput(new ConfigInput() {
                     @Override
                     public void onConfig(InputParams params) {
@@ -105,6 +110,16 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
     }
 
     private void addAttr(String content){
+
+        for(int i = 0  ; i < vms.size();i++) {
+            if (vms.get(i).name.get().equals(content)) {
+                ToastUtil.showToast("已存在相同的属性");
+                return;
+            }
+        }
+
+
+
         AddAttrReq req = new AddAttrReq();
         req.token = SpUtil.getInstance().getCurrentToken();
         req.attributesName = content;
@@ -142,15 +157,39 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
             for(int i = 18 ; i < vms.size() ; i++ ){
                 vms.get(i).isDisplayReduce.set(true);
             }
-            setRightText("保存");
         } else {
 
             for(int i = vms.size() - 18 ; i < vms.size() ; i++ ){
                 vms.get(i).isDisplayReduce.set(false);
             }
-            setLeftText("编辑");
+
             submit.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        User user = SpUtil.getInstance().getUser();
+        List<AnotherAttributes> list = user.anotherAttributes;
+        list.clear();
+
+        for(int i = vms.size() - 18 ; i < vms.size() ;i++){
+            AnotherAttributes anotherAttributes = new AnotherAttributes();
+            anotherAttributes.attributesId = vms.get(i).id.get();
+            anotherAttributes.attributesName = vms.get(i).name.get();
+            list.add(anotherAttributes);
+        }
+        SpUtil.getInstance().saveNewsUser(user);
+
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
     }
 
     @Override

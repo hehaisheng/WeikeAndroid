@@ -59,6 +59,10 @@ public class PersonalFragmentVM extends BaseVM {
         init();
     }
 
+    public void iconClick(){
+
+    }
+
     public void init(){
         GetUserInfoReq req = new GetUserInfoReq();
         req.token = SpUtil.getInstance().getCurrentToken();

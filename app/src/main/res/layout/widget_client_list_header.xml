@@ -99,6 +99,23 @@
         android:layout_height="1dp"
         android:background="@color/color_line"
         />
+    <TextView
+        android:id="@+id/tv_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardview"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_main_page_search"
+        android:gravity="center|left"
+        android:drawableLeft="@mipmap/ic_main_search"
+        android:minHeight="40dp"
+        android:drawablePadding="10dp"
+        android:paddingLeft="10dp"
+        android:text="搜索客户"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/color_bebebe" />
 
 
 </LinearLayout>
