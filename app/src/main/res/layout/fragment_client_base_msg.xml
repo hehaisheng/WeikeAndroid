@@ -85,7 +85,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="18dp"
                         android:minWidth="70dp"
-
+                        android:textSize="12sp"
                         android:text="电子邮箱"
                         android:textColor="@color/color_content" />
 
@@ -101,11 +101,12 @@
                         android:layout_toRightOf="@+id/tv_email_title"
                         android:singleLine="true"
                         android:focusable="true"
+
                         android:focusableInTouchMode="true"
                         android:background="@color/color_touming"
                         android:hint="请输入邮箱"
                         android:text="@={clientBaseVM.email}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                     <View
                         android:id="@+id/view_line_1"
@@ -120,6 +121,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/view_line_1"
+                        android:textSize="12sp"
                         android:layout_marginBottom="15dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="18dp"
@@ -132,6 +134,7 @@
                         updateEditInput="@{clientBaseVM.isModify}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="12sp"
                         android:layout_alignBottom="@+id/tv_company"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
@@ -141,7 +144,7 @@
                         android:background="@color/color_touming"
                         android:hint="请输入公司名字"
                         android:text="@={clientBaseVM.companyName}"
-                        android:textSize="15sp" />
+                        />
 
                     <View
                         android:id="@+id/view_line_2"
@@ -158,6 +161,7 @@
                         android:layout_below="@+id/view_line_2"
                         android:layout_marginBottom="15dp"
                         android:layout_marginLeft="15dp"
+                        android:textSize="12sp"
                         android:layout_marginTop="18dp"
                         android:minWidth="70dp"
                         android:text="职位"
@@ -177,7 +181,7 @@
                         android:hint="请输入职位"
                         android:singleLine="true"
                         android:text="@={clientBaseVM.job}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp"/>
 
                     <View
                         android:id="@+id/view_line_3"
@@ -196,6 +200,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="18dp"
                         android:minWidth="70dp"
+                        android:textSize="12sp"
                         android:text="公司地址"
                         android:textColor="@color/color_content" />
 
@@ -213,7 +218,7 @@
                         android:hint="请输入地址"
                         android:singleLine="true"
                         android:text="@={clientBaseVM.companyLocation}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp"/>
 
                     <View
                         android:id="@+id/view_line_4"
@@ -227,6 +232,7 @@
                         android:id="@+id/tv_home_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="12sp"
                         android:layout_below="@+id/view_line_4"
                         android:layout_marginBottom="15dp"
                         android:layout_marginLeft="15dp"
@@ -250,7 +256,7 @@
                         android:background="@color/color_touming"
                         android:hint="请输入地址"
                         android:text="@={clientBaseVM.houseLocation}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp"/>
 
 
                 </RelativeLayout>
@@ -279,6 +285,7 @@
                         android:layout_marginTop="18dp"
                         android:minWidth="70dp"
                         android:text="性别"
+                        android:textSize="12sp"
                         android:textColor="@color/color_content" />
 
                     <TextView
@@ -295,7 +302,7 @@
                         android:hint="请选择"
                         android:onClick="@{()->clientBaseVM.sexClick()}"
                         android:text="@={clientBaseVM.sex}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp"/>
 
                     <View
                         android:id="@+id/view_br2_line_1"
@@ -315,6 +322,7 @@
                         android:layout_marginTop="18dp"
                         android:minWidth="70dp"
                         android:text="出生日期"
+                        android:textSize="12sp"
                         android:textColor="@color/color_content" />
 
                     <TextView
@@ -331,7 +339,7 @@
                         android:onClick="@{()->clientBaseVM.birthdayTimeClick()}"
                         android:paddingTop="15dp"
                         android:text="@={clientBaseVM.birthday}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/iv_birthday_remind"
@@ -368,6 +376,7 @@
                         android:layout_marginTop="18dp"
                         android:minWidth="70dp"
                         android:text="身份证号"
+                        android:textSize="12sp"
                         android:textColor="@color/color_content" />
 
                     <EditText
@@ -384,7 +393,7 @@
                         android:hint="请输入"
                         android:paddingTop="15dp"
                         android:text="@={clientBaseVM.idCard}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp"/>
 
 
                     <View
@@ -406,6 +415,7 @@
                         android:layout_marginTop="18dp"
                         android:minWidth="70dp"
                         android:text="婚姻"
+                        android:textSize="12sp"
                         android:textColor="@color/color_content" />
 
                     <TextView
@@ -422,7 +432,7 @@
                         android:onClick="@{()->clientBaseVM.marryClick()}"
                         android:paddingTop="15dp"
                         android:text="@={clientBaseVM.marry}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
 
                     <View
@@ -444,6 +454,7 @@
                         android:layout_marginTop="18dp"
                         android:minWidth="70dp"
                         android:text="生育"
+                        android:textSize="12sp"
                         android:textColor="@color/color_content" />
 
                     <EditText
@@ -462,7 +473,7 @@
                         android:maxLength="3"
                         android:minWidth="50dp"
                         android:text="@={clientBaseVM.son}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tv_son_title"
@@ -471,6 +482,7 @@
                         android:layout_alignBottom="@+id/tv_birth"
                         android:layout_toRightOf="@+id/ed_birth_son"
                         android:text="子"
+                        android:textSize="12sp"
                         android:textColor="@color/color_content" />
 
 
@@ -490,7 +502,7 @@
                         android:maxLength="3"
                         android:minWidth="50dp"
                         android:text="@={clientBaseVM.gril}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -498,6 +510,7 @@
                         android:layout_alignBottom="@+id/ed_birth_girl"
                         android:layout_toRightOf="@+id/ed_birth_girl"
                         android:text="女"
+                        android:textSize="12sp"
                         android:textColor="@color/color_content" />
 
 
@@ -520,6 +533,7 @@
                         android:layout_marginTop="18dp"
                         android:minWidth="70dp"
                         android:text="身高"
+                        android:textSize="12sp"
                         android:textColor="@color/color_content" />
 
                     <EditText
@@ -538,7 +552,7 @@
                         android:maxLength="3"
                         android:minWidth="50dp"
                         android:text="@={clientBaseVM.clientHeight}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -571,6 +585,7 @@
                         android:layout_marginTop="18dp"
                         android:minWidth="70dp"
                         android:text="体重"
+                        android:textSize="12sp"
                         android:textColor="@color/color_content" />
 
                     <EditText
@@ -587,9 +602,10 @@
                         android:background="@color/color_touming"
                         android:hint="请输入"
                         android:maxLength="3"
+
                         android:minWidth="50dp"
                         android:text="@={clientBaseVM.clientWidght}"
-                        android:textSize="15sp" />
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
