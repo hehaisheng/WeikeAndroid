@@ -3,7 +3,6 @@ package com.weike.data.model.viewmodel;
 import android.app.Activity;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -27,18 +26,11 @@ import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.AccountValidatorUtil;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.CountDownUtil;
-import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
-import com.weike.data.util.MD5Util;
-import com.weike.data.util.ReflexObjectUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
-
-import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.logging.Handler;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -51,7 +43,7 @@ public class LoginActVM extends BaseVM {
     /**
      * 是否用密码登录
      */
-    public ObservableField<Boolean> isPwdLogin = new ObservableField<>(false);
+    public ObservableField<Boolean> isPwdLogin = new ObservableField<>(true);
     /**
      * 手机号码
      */
@@ -64,7 +56,7 @@ public class LoginActVM extends BaseVM {
     /**
      * 登录密码类型
      */
-    public ObservableField<String> typeText = new ObservableField<>("使用密码登录");
+    public ObservableField<String> typeText = new ObservableField<>("使用验证码登录");
 
     /*
      *密码

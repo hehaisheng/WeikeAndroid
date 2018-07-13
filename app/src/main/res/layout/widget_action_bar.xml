@@ -55,7 +55,7 @@
             android:layout_marginRight="50dp"
             android:text="待处理事"
             android:textColor="@color/color_white"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
 
         <TextView

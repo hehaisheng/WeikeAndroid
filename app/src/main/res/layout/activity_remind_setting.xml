@@ -56,7 +56,7 @@
             android:background="@drawable/shape_main_page_search"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:hint="请输入事项"
+            android:hint="提醒事项名称"
             android:paddingTop="12dp"
             android:clickable="@{remindSettingVM.isRemind}"
             android:paddingBottom="12dp"
@@ -148,12 +148,15 @@
                 android:textColor="@color/color_content"
                 />
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{remindSettingVM.time}"
                 android:layout_toRightOf="@+id/tv_remind_time"
                 android:layout_marginLeft="10dp"
+                android:hint="设置处理事项的时间"
+                android:background="@color/color_touming"
+                android:textSize="12sp"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/color_bebebe"
                 android:layout_centerVertical="true"
@@ -201,6 +204,8 @@
                 android:text="@{remindSettingVM.remindTime}"
                 android:layout_toRightOf="@+id/tv_remind_title"
                 android:layout_marginLeft="10dp"
+                android:hint="设置提前提醒的时间"
+                android:background="@color/color_touming"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/color_bebebe"
                 android:layout_centerVertical="true"
@@ -249,6 +254,8 @@
                 android:text="@{remindSettingVM.repeatText}"
                 android:layout_toRightOf="@+id/tv_repeat"
                 android:layout_marginLeft="10dp"
+                android:hint="设置重复提醒的时间"
+                android:background="@color/color_touming"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/color_bebebe"
                 android:layout_centerVertical="true"

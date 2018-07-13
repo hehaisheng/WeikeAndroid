@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +20,10 @@ import com.weike.data.listener.OnReduceListener;
 import com.weike.data.model.business.Product;
 import com.weike.data.model.business.ProductBean;
 import com.weike.data.model.business.ToDo;
-import com.weike.data.model.resp.GetClientDetailMsgResp;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.model.viewmodel.ProductItemVM;
 import com.weike.data.util.JsonUtil;
-import com.weike.data.util.LogUtil;
+import com.weike.data.util.NoScrollLinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,7 +184,9 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
             itemVMS.add(productItemVM);
         }
         adapter = new BaseDataBindingAdapter(getContext(), R.layout.widget_service_product_item, itemVMS, BR.productItemVM);
-        binding.recyclerProductMsgList.setLayoutManager(new LinearLayoutManager(getContext()));
+        NoScrollLinearLayoutManager linearLayoutManager = new NoScrollLinearLayoutManager(getContext());
+        linearLayoutManager.setScrollEnabled(false);
+        binding.recyclerProductMsgList.setLayoutManager(linearLayoutManager);
         binding.recyclerProductMsgList.setAdapter(adapter);
 
     }

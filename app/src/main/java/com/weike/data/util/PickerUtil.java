@@ -1,7 +1,6 @@
 package com.weike.data.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.view.View;
@@ -11,17 +10,13 @@ import com.weike.data.WKBaseApplication;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import cn.addapp.pickers.common.LineConfig;
 import cn.addapp.pickers.listeners.OnItemPickListener;
 import cn.addapp.pickers.listeners.OnMoreItemPickListener;
-import cn.addapp.pickers.listeners.OnSingleWheelListener;
-
 import cn.addapp.pickers.picker.DateTimePicker;
 import cn.addapp.pickers.picker.LinkagePicker;
 import cn.addapp.pickers.picker.SinglePicker;
-import cn.addapp.pickers.util.DateUtils;
 
 public class PickerUtil {
     public static void  onYearMonthDayTimePicker(View view, DateTimePicker.OnYearMonthDayTimePickListener listener, Activity activity) {
@@ -174,7 +169,8 @@ public class PickerUtil {
             @Override
             public List<String> provideSecondData(int firstIndex) {
                 ArrayList<String> secondList = new ArrayList<>();
-
+               secondList.add("分钟");
+               secondList.add("小时");
                secondList.add("天");
                secondList.add("周");
                secondList.add("月");

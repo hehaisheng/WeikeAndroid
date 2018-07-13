@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import com.weike.data.util.TimeUtil;
 
-import java.io.Serializable;
-
 /**
  * Created by LeoLu on 2018/6/6.
  */
@@ -32,7 +30,7 @@ public class ToDo implements Parcelable{
     /**
      * 内容
      */
-    public String content = "无";
+    public String content;
 
     /**
      * 优先级 1 == 高 2 == 中 3== 低
@@ -48,7 +46,7 @@ public class ToDo implements Parcelable{
     /**
      * 是否提醒
      */
-    public int isRemind = 2; // 1提醒 2不提醒
+    public int isRemind = 1; // 1提醒 2不提醒
 
     /**
      * 重复提醒日期类型

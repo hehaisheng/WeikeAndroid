@@ -3,9 +3,7 @@ package com.weike.data.model.viewmodel;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 import android.text.TextUtils;
-import android.widget.TimePicker;
 
 import com.weike.data.base.BaseVM;
 import com.weike.data.config.DataConfig;
@@ -18,7 +16,6 @@ import cn.addapp.pickers.listeners.OnItemPickListener;
 import cn.addapp.pickers.listeners.OnMoreItemPickListener;
 import cn.addapp.pickers.picker.DateTimePicker;
 import cn.addapp.pickers.picker.SinglePicker;
-import io.reactivex.internal.operators.observable.ObservableFilter;
 
 public class RemingSetActVM extends BaseVM {
 
@@ -116,7 +113,10 @@ public class RemingSetActVM extends BaseVM {
     public void timeClick(){
         if(TextUtils.isEmpty(time.get())) {
 
-            PickerUtil.onYearMonthDayTimePicker(null, new DateTimePicker.OnYearMonthDayTimePickListener() {
+
+            ArrayList<Integer> tmp = TimeUtil.formatTimeClick(TimeUtil.getTimeFormat());
+
+            PickerUtil.onYearMonthDayTimePicker(tmp.get(0),tmp.get(1),tmp.get(2),tmp.get(3),tmp.get(4), new DateTimePicker.OnYearMonthDayTimePickListener() {
                 @Override
                 public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
                     time.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);

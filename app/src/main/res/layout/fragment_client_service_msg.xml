@@ -257,7 +257,6 @@
                         android:clickable="@{clientServiceVM.clickable}"
                         android:ellipsize="end"
                         android:hint="请输入"
-                        android:inputType="number"
                         android:maxLines="1"
                         android:text="@={clientServiceVM.liabilities}" />
 

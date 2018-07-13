@@ -618,6 +618,25 @@
                         android:text="KG"
                         android:textColor="@color/color_content" />
 
+                    <View
+                        android:id="@+id/view_br2_line_7"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+
+                        android:layout_below="@+id/tv_weight"
+                        android:background="@color/color_line" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_below="@+id/view_br2_line_7"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                    </android.support.v7.widget.RecyclerView>
+
 
                 </RelativeLayout>
 

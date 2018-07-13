@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +19,12 @@ import com.weike.data.business.setting.AttrManagerActivity;
 import com.weike.data.databinding.FragmentClientBaseMsgBinding;
 import com.weike.data.model.business.ClientRelated;
 import com.weike.data.model.business.ToDo;
+import com.weike.data.model.viewmodel.AddClientRelateItemVM;
 import com.weike.data.model.viewmodel.AddPhoneVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
-import com.weike.data.model.viewmodel.AddClientRelateItemVM;
-import com.weike.data.model.viewmodel.RelateCLientItemVM;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.NoScrollLinearLayoutManager;
 import com.weike.data.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -158,7 +157,9 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         //加载添加号码那个框 把后面两个显示去掉
 
         addPhoneAdapter = new BaseDataBindingAdapter(getActivity(),R.layout.widget_layout_add_phone,addPhoneVMS, BR.addPhoneVM);
-        binding.addPhoneNum.setLayoutManager(new LinearLayoutManager(getActivity()));
+        NoScrollLinearLayoutManager linearLayoutManager = new NoScrollLinearLayoutManager(getActivity());
+        linearLayoutManager.setScrollEnabled(false);
+        binding.addPhoneNum.setLayoutManager(linearLayoutManager);
         binding.addPhoneNum.setAdapter(addPhoneAdapter);
         binding.addPhoneNum.setVisibility(View.GONE);
     }
@@ -204,7 +205,9 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         clientRelateItemVMS.add(vm);
 
         clientRelateAdapter = new BaseDataBindingAdapter(getActivity(),R.layout.widget_add_client_relate_item,clientRelateItemVMS, BR.clientRelateForAddVM);
-        binding.addRelateClient.setLayoutManager(new LinearLayoutManager(getActivity()));
+        NoScrollLinearLayoutManager linearLayoutManager = new NoScrollLinearLayoutManager(getActivity());
+        linearLayoutManager.setScrollEnabled(false);
+        binding.addRelateClient.setLayoutManager(linearLayoutManager);
         binding.addRelateClient.setAdapter(clientRelateAdapter);
     }
 

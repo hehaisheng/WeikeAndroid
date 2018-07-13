@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.weike.data.R;
 import com.weike.data.model.business.TabEntity;
-import com.weike.data.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,12 +172,12 @@ public class BottomBarLayout extends LinearLayout implements View.OnClickListene
             text.setTextColor(normalTextColor);
             icon.setImageResource(tabList.get(i).getNormalIconId());
 
-            if (i == 2)
+            if (i == 2 && position > 0)
                 number.setVisibility(View.VISIBLE);
             else
                 number.setVisibility(View.GONE);
 
-            if (position == -1) continue;
+            if (position == -1 || position == 0) continue;
             if (i == 2 && count >= 99) {
                 number.setText("99+");
             } else if (i == 2 && count <= 99) {

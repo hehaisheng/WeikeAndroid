@@ -18,7 +18,6 @@ import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.config.Config;
-import com.weike.data.config.Test;
 import com.weike.data.databinding.ActivityClientAddBinding;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.AddClientReq;
@@ -31,7 +30,6 @@ import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
-import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LQRPhotoSelectUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -142,7 +140,7 @@ public class AddClientActivity extends BaseActivity {
 
         setCenterText("");
         addFragment();
-        setLeftText("添加客户");
+
         initPhotoSel();
         initMsg();
 
@@ -156,9 +154,11 @@ public class AddClientActivity extends BaseActivity {
     private void initClickStatus() {
         boolean status = false;
         if (clientId != null) {
+            setLeftText("客户信息");
             setRightText("编辑");
             status = false;
         } else {
+            setLeftText("添加客户");
             status = true;
             setRightText("完成");
         }
@@ -350,6 +350,7 @@ public class AddClientActivity extends BaseActivity {
         } else if (clientId != null && isModify == true) {
           fragments.get(0).onRightClick(isModify);
           fragments.get(1).onRightClick(isModify);
+          setLeftText("编辑客户");
         } else if (isModify == false && submitClient() == false){ //恢复状态
             LogUtil.d("AddClientActivity","false");
             setRightText("完成");
@@ -403,7 +404,7 @@ public class AddClientActivity extends BaseActivity {
             @Override
             protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
                 ToastUtil.showToast("修改成功");
-
+                setLeftText("客户信息");
                 resetRight();
 
             }
@@ -505,6 +506,7 @@ public class AddClientActivity extends BaseActivity {
         req.FourPhoneNumber = phoneNum[3];
         req.FivePhoneNumber = phoneNum[4]; //1 2 3 4 5个电话号码
 
+        req.relatedClientId =
         req.idCard = clientBaseMsgVM.idCard.get();//身份证
         req.email = clientBaseMsgVM.email.get();
         req.company = clientBaseMsgVM.companyName.get();

@@ -73,7 +73,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="645958167"
+            android:text="020-28192228"
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="如果你对维客助手有各种建议或者意见，请告诉我们"
+        android:text="如果您对维客助手有建议或意见，请告诉我们"
         android:layout_marginLeft="10dp"
         android:textColor="@color/color_content"
         />
@@ -106,7 +106,7 @@
         android:id="@+id/ed_activity_customer_center"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:hint="请输入遇到的问题和建议"
+        android:hint="请输入您的问题或建议"
         android:textSize="12sp"
         android:gravity="top"
         android:paddingLeft="10dp"
