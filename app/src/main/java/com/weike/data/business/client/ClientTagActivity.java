@@ -141,6 +141,7 @@ public class ClientTagActivity extends BaseActivity {
             ids[i] = optionItemVMS.get(i).id.get();
         };
 
+
         final CheckedAdapter checkedAdapter = new CheckedAdapter(this, array,true);
 
         new CircleDialog.Builder()
@@ -296,6 +297,7 @@ public class ClientTagActivity extends BaseActivity {
         clientListContentAdapter.setOnRecyclerViewItemClickListener(new BaseDataBindingAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(int position, View view) {
+                if (ClientTagActivity.this.isModify) return;
                 String id = contentVMS.get(position).id.get();
                 AddClientActivity.startActivity(ClientTagActivity.this,id);
             }

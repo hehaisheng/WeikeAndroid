@@ -1,6 +1,5 @@
 package com.weike.data.business.setting;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,15 +36,12 @@ import com.weike.data.model.req.AddLabelReq;
 import com.weike.data.model.req.DeleteLabelReq;
 import com.weike.data.model.req.GetClientTagListReq;
 import com.weike.data.model.req.GetLabelNumReq;
-import com.weike.data.model.resp.AddClientResp;
 import com.weike.data.model.resp.AddLabelResp;
 import com.weike.data.model.resp.GetClientTagListResp;
 import com.weike.data.model.resp.GetLabelNumResp;
-import com.weike.data.model.viewmodel.LabelOptionItemVM;
 import com.weike.data.model.viewmodel.TagSettingVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ClientTagComparator;
-import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -55,8 +51,6 @@ import com.weike.data.util.TransformerUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.net.ssl.SSLPeerUnverifiedException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,8 +86,8 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 .setCanceledOnTouchOutside(false)
                 .setCancelable(true)
                 .setInputManualClose(true)
-                .setTitle("输入框")
-                .setInputHint("请输入条件")
+                .setTitle("添加客户")
+                .setInputHint("请输入")
                 .configInput(new ConfigInput() {
                     @Override
                     public void onConfig(InputParams params) {
@@ -212,21 +206,63 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
         checkLabelNum(); //获取剩余的标签
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        User user = SpUtil.getInstance().getUser();
+        List<GetClientTagListResp.TagSub> list = user.labelList;
+        list.clear();
+        for(int i = 0 ; i < vms.size();i++){
+            GetClientTagListResp.TagSub su = new GetClientTagListResp.TagSub();
+            su.id = vms.get(i).tagId.get();
+            su.sort = vms.get(i).name.get();
+            su.labelName = vms.get(i).content.get();
+            list.add(su);
+        }
+        SpUtil.getInstance().saveNewsUser(user);
+    }
+
     private void initView(){
         adapter = new BaseDataBindingAdapter(this,R.layout.widget_clieng_tag_setting_list_item,vms, BR.tagSettingVM);
         adapter.setOnRecyclerViewItemClickListener(new BaseDataBindingAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(int position, View view) {
-                Intent intent = new Intent();
-                intent.putExtra("labelName",vms.get(position).content.get());
-                intent.putExtra("labelId",vms.get(position).tagId.get());
-                setResult(RESULT_OK,intent);
-                finish();
+                if(position > 0 && position <= 4) {
+                    dialogFragment = new CircleDialog.Builder()
+                            .setCanceledOnTouchOutside(false)
+                            .setCancelable(true)
+                            .setInputManualClose(true)
+                            .setTitle("修改标签客户" + vms.get(position).name.get())
+                            .setInputHint("请输入")
+                            .setInputText(vms.get(position).content.get())
+                            .configInput(new ConfigInput() {
+                                @Override
+                                public void onConfig(InputParams params) {
+                                    params.padding = new int[]{20, 20, 20, 20};
+                                    params.inputType = InputType.TYPE_CLASS_TEXT;
+                                }
+                            })
+                            .setNegative("取消", null)
+                            .setPositiveInput("确定", new OnInputClickListener() {
+                                @Override
+                                public void onClick(String text, View v) {
+
+
+                                    dialogFragment.dismiss();
+                                }
+                            })
+                            .show(getSupportFragmentManager());
+
+                }
             }
         });
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void modify(TagSettingVM vm){
+
     }
 
     @Override

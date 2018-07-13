@@ -11,6 +11,8 @@
 /app/build
 /app/release
 FDHSocialGeneralDialog
+/FDHSocialGeneralDialog/build
+/jpush/build
 /.idea
 /jpush/build
 amm_sdk_sample

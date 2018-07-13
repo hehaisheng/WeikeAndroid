@@ -1,12 +1,10 @@
 package com.weike.data.business.myself;
 
-import android.app.Activity;
-
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +26,8 @@ import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by LeoLu on 2018/5/21.
@@ -64,10 +64,20 @@ public class MySelfFragment extends BaseFragment {
             }
         });
 
-        vm = new PersonalFragmentVM((FragmentActivity) context);
+        vm = new PersonalFragmentVM(this,getActivity());
+
         binding.setPersonalVM(vm);
+        init();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 200 && resultCode==RESULT_OK) {
+            init();
+        }
     }
 
     private void init(){

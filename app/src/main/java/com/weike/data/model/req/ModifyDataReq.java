@@ -25,21 +25,6 @@ public class ModifyDataReq extends BaseReq {
     public String email;
 
     /**
-     * 省id
-     */
-    public String provinceId;
-
-    /**
-     * 市地址
-     */
-    public String cityId;
-
-    /**
-     * 地区
-     */
-    public String areaId;
-
-    /**
      * 详细地址
      */
     public String detailAddress;

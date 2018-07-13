@@ -1,11 +1,11 @@
 package com.weike.data.util;
 
+import android.util.Log;
+
 import com.weike.data.config.Config;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -30,6 +30,7 @@ public class SignUtil {
             builder.append(key + "=" + map.get(key));
         }
         builder.append(Config.APP_SECRET);
+        Log.d("acthome","sign:" + builder.toString());
 
         String md5 = MD5Util.MD5(builder.toString());
 
@@ -47,9 +48,10 @@ public class SignUtil {
             Field f = fs[i];
             f.setAccessible(true); // 设置些属性是可以访问的
             Object val = new Object();
-            if (f.getName().equals("sign")||f.getName().contains("$")) continue;
+            if (f.getName().equals("sign")||f.getName().contains("$") || f.getName().contains("serialVersionUID")) continue;
             try {
                 val = f.get(obj);
+                if (val == null ) continue;
                 // 得到此属性的值
 
                 map.put(f.getName(), val);// 设置键值

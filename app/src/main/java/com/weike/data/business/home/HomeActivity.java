@@ -11,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
-
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
 import com.weike.data.base.BaseActivity;
@@ -35,12 +34,10 @@ import com.weike.data.model.resp.GetClientTagListResp;
 import com.weike.data.model.resp.MainPageDataResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ClientTagComparator;
-import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
 import com.weike.data.view.BottomBarLayout;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -420,7 +417,7 @@ public class HomeActivity extends BaseActivity {
 
             @Override
             protected void onSuccess(BaseResp<MainPageDataResp> mainPageData) throws Exception {
-
+                if(mainPageData.getDatas().count ==0) return;
                 bottomBarLayout.clearStatus(mainPageData.getDatas().count,2);
 
             }

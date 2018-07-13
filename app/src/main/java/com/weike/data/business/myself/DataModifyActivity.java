@@ -1,6 +1,5 @@
 package com.weike.data.business.myself;
 
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -21,24 +20,17 @@ import com.weike.data.model.req.ModifyDataReq;
 import com.weike.data.model.resp.UpLoadFileResp;
 import com.weike.data.model.viewmodel.DataModifyActVM;
 import com.weike.data.network.RetrofitFactory;
-import com.weike.data.network.RetrofitService;
 import com.weike.data.util.LQRPhotoSelectUtils;
-import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.io.File;
-import java.io.IOException;
 
 import kr.co.namee.permissiongen.PermissionSuccess;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by LeoLu on 2018/6/1.
@@ -79,6 +71,12 @@ public class DataModifyActivity extends BaseActivity {
         },true);
     }
 
+    @Override
+    public void onLeftClick() {
+        setResult(RESULT_OK,null);
+        finish();
+    }
+
     @PermissionSuccess(requestCode = LQRPhotoSelectUtils.REQ_TAKE_PHOTO)
     private void takePhoto() {
         utils.takePhoto();
@@ -99,6 +97,7 @@ public class DataModifyActivity extends BaseActivity {
             ToastUtil.showToast("用户名不能为空");
             return;
         }
+        setRightText("保存");
         dialogFragment = new CircleDialog.Builder()
                 .setProgressText("正在保存")
                 .setProgressStyle(ProgressParams.STYLE_SPINNER)
@@ -110,6 +109,12 @@ public class DataModifyActivity extends BaseActivity {
             uploadData();
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK,null);
+        finish();
     }
 
     private void uploadData(){

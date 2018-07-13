@@ -151,14 +151,16 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
-                        android:text="我的二维码" />
+                        android:text="推荐给朋友" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
-                        android:text="邀请好友,即可获得10积分"
+                        android:paddingRight="60dp"
+                        android:gravity="center"
+                        android:text="双方各延长二个月会期"
                         android:textColor="@color/color_bebebe" />
 
                     <ImageView
