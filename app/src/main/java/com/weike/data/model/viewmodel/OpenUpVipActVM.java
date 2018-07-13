@@ -17,15 +17,19 @@ import com.alipay.sdk.app.PayTask;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
 import com.weike.data.config.Config;
 import com.weike.data.model.req.GetPayDataReq;
 import com.weike.data.model.resp.GetPayDataResp;
+import com.weike.data.model.resp.WeChatPayDataResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.payment.alipay.OrderInfoUtil2_0;
 import com.weike.data.payment.alipay.PayResult;
+import com.weike.data.payment.wechat.WXRegister;
+import com.weike.data.payment.wechat.WxConfig;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -114,8 +118,58 @@ public class OpenUpVipActVM extends BaseVM {
         if (isAliPay.get()) {
             alipay();
         } else {
+            wechat();
             //TODO go to wechatPay
         }
+    }
+
+    private void wechat(){
+        int money = 0;
+        if (oneCheck.get()) {
+            money = 188;
+        } else if (twoCheck.get()){
+            money = 328;
+        } else if (threeCheck.get()) {
+            money = 418;
+        }
+
+        GetPayDataReq req = new GetPayDataReq();
+        req.buyNum = Integer.parseInt(allYear.get());
+        req.money = money + "";
+        req.orderNo = System.currentTimeMillis() + "";
+        req.platform = "wxpay";
+        req.sign = SignUtil.signData(req);
+
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_PAY_DATA)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<WeChatPayDataResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<WeChatPayDataResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<WeChatPayDataResp> getPayDataRespBaseResp) throws Exception {
+                WeChatPayDataResp.WxPay orderInfo = getPayDataRespBaseResp.getDatas().wxpay;
+
+                new Thread(){
+                    public void run(){
+                        PayReq payReq = new PayReq();
+                        payReq.packageValue = "Sign=WXPay";
+                        payReq.appId = orderInfo.appid;
+                        payReq.partnerId		= orderInfo.partnerid;
+                        payReq.prepayId		= orderInfo.prepayid;
+                        payReq.nonceStr		= orderInfo.noncestr;
+                        payReq.timeStamp		= orderInfo.timestamp;
+                        payReq.sign			= orderInfo.sign;
+                        payReq.extData			= "app data"; // optional
+                        WXRegister.getApi().sendReq(payReq);
+                    }
+                }.start();
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
     }
 
     public void oneCheckClick(){

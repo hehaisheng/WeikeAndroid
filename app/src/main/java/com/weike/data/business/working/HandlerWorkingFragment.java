@@ -1,35 +1,22 @@
 package com.weike.data.business.working;
 
+
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
-import com.mylhyl.circledialog.CircleDialog;
-import com.mylhyl.circledialog.callback.ConfigButton;
-import com.mylhyl.circledialog.callback.ConfigDialog;
-import com.mylhyl.circledialog.callback.ConfigText;
-import com.mylhyl.circledialog.callback.ConfigTitle;
-import com.mylhyl.circledialog.params.ButtonParams;
-import com.mylhyl.circledialog.params.DialogParams;
-import com.mylhyl.circledialog.params.TextParams;
-import com.mylhyl.circledialog.params.TitleParams;
 import com.weike.data.BR;
 import com.weike.data.R;
-import com.weike.data.WKBaseApplication;
 import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.adapter.ExpandableAdapter;
 import com.weike.data.base.BaseFragment;
@@ -43,18 +30,18 @@ import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.EditAndDeleteTodoReq;
 import com.weike.data.model.req.GetClientTagListReq;
 import com.weike.data.model.req.GetHandleWorkListReq;
+import com.weike.data.model.req.GetToDoByTagReq;
 import com.weike.data.model.resp.EditAndDeleteTodoResp;
 import com.weike.data.model.resp.GetClientTagListResp;
 import com.weike.data.model.resp.GetHandleWorkListResp;
+import com.weike.data.model.resp.GetTodoByTagResp;
+import com.weike.data.model.viewmodel.ExpandChildVM;
 import com.weike.data.model.viewmodel.ExpandGroupVM;
 import com.weike.data.model.viewmodel.HandleWorkItemVM;
-import com.weike.data.model.viewmodel.LabelOptionItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.ClientTagComparator;
 import com.weike.data.util.DialogUtil;
-import com.weike.data.util.FileCacheUtils;
-import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
@@ -63,10 +50,6 @@ import com.weike.data.util.TransformerUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Handler;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -110,6 +93,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
     private ToDo toDo;
 
+    DialogFragment dialogFragment;
     private List<List<HandleWorkItemVM>> childVMs = new ArrayList<>();
     private List<ExpandGroupVM> groupVMS = new ArrayList<>();
 
@@ -138,11 +122,12 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
                 if ( expandableListView.isGroupExpanded(groupPosition) ) {
                     expandableListView.collapseGroup(groupPosition);
+                    return true;
                 }
 
-                expandableListView.expandGroup(groupPosition, true);
 
-
+                dialogFragment = DialogUtil.showLoadingDialog(getFragmentManager(),"正在加载");
+                getLabelToDo(groupPosition,groupVMS.get(groupPosition).id);
 
                 return true;
             }
@@ -173,7 +158,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
                 ExpandGroupVM vm = new ExpandGroupVM();
                 vm.name.set("未分组客户");
-                vm.id = "";
+                vm.id = "0";
                 groupVMS.add(0,vm);
 
 
@@ -202,6 +187,37 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         });
     }
 
+    private void getLabelToDo(int groupPosition ,String labelId){
+        GetToDoByTagReq req = new GetToDoByTagReq();
+        req.labelId = labelId;
+        req.page = 1;
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_TODO_BY_TAG)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetTodoByTagResp>>() {
+
+                })).subscribe(new BaseObserver<BaseResp<GetTodoByTagResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetTodoByTagResp> getClientTagListRespBaseResp) throws Exception {
+                dialogFragment.dismiss();
+                List<HandleWorkItemVM>  cs = childVMs.get(groupPosition);
+                for(int i = 0 ; i < 3 ; i++){
+                    HandleWorkItemVM h = new HandleWorkItemVM();
+                    cs.add(h);
+                }
+                expandableListView.expandGroup(groupPosition, true);
+
+
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
+
     @Override
     protected int setUpLayoutId() {
         return R.layout.fragment_handle_working;
@@ -213,7 +229,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         cb_sort_level = view.findViewById(R.id.checkbox_sort_of_level);
         recycleHandleWorking = view.findViewById(R.id.reycle_handler_working);
         expandableListView = view.findViewById(R.id.lv_handler_working);
-        Drawable d = getResources().getDrawable(R.color.color_touming,null);
+        Drawable d = getResources().getDrawable(R.color.color_touming);
         expandableListView.setDivider(d);
         expandableListView.setChildDivider(d);
         loadingView = view.findViewById(R.id.loaddingview);

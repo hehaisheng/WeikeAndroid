@@ -10,7 +10,7 @@
 /FDHSocialGeneralDialog/build/intermediates/res/merged/androidTest/debug/*.flat
 /app/build
 /app/release
-/FDHSocialGeneralDialog/build
+FDHSocialGeneralDialog
 /.idea
-/FDHSocialGeneralDialog/build
 /jpush/build
+amm_sdk_sample

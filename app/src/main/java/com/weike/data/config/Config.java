@@ -195,7 +195,7 @@ public final class Config {
     /**
      * 根据待办事项 获取日志
      */
-    public static final String GET_TODO_BY_LOG = "wkzs-restful/log/selectToDoByLog";
+    public static final String GET_LOG_BY_TODO = "wkzs-restful/log/selectToDoByLog";
 
     /**
      * 获取分享海报
@@ -205,7 +205,7 @@ public final class Config {
     /**
      * 根据标签ID获取待办事项
      */
-    public static final String GET_WORKING_BY_TAG = "wkzs-restful/client/getClientByLabelAndUser";
+    public static final String GET_TODO_BY_TAG = "wkzs-restful/log/seleteToDoByLable";
 
 
     /**
@@ -217,4 +217,9 @@ public final class Config {
      * 修改提醒或者不在提醒
      */
     public static final String MODIFY_CLIENT_MSG_REMIND ="wkzs-restful/message/newsEditRemind";
+
+    /**
+     * 微信支付订单
+     */
+    public static final String GET_WX_PAY_DATA = "wkzs-restful/payment/wxpayNotify";
 }

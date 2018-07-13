@@ -1,1 +1,2 @@
 include ':app', ':library', ':FDHSocialGeneralDialog', ':jpush'
+include ':amm_sdk_sample'

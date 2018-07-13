@@ -82,7 +82,7 @@ public class MySelfFragment extends BaseFragment {
             @Override
             protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
                 binding.swipeRefreshLayout.setRefreshing(false);
-                if (getUserInfoRespBaseResp.getResult() == 0) {
+                if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0) {
                     vm.nickName.set(getUserInfoRespBaseResp.getDatas().userName);
                     vm.phoneNum.set("电话号码：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
                     vm.photoUrl.set(getUserInfoRespBaseResp.getDatas().photoUrl);
