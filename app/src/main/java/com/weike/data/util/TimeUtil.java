@@ -11,6 +11,19 @@ public class TimeUtil {
         return format.format(System.currentTimeMillis());
     };
 
+    public static ArrayList<Integer> formatDateClick(String date){
+        int year = Integer.parseInt(date.substring(0,4));
+        int month = Integer.parseInt(date.substring(5,7));
+        int day = Integer.parseInt(date.substring(8,10));
+
+        ArrayList<Integer> tmp = new ArrayList<>();
+        tmp.add(year);
+        tmp.add(month);
+        tmp.add(day);
+
+        return tmp;
+    }
+
     public static ArrayList<Integer> formatTimeClick(String time) {
         int year = Integer.parseInt(time.substring(0,4));
         int month = Integer.parseInt(time.substring(5,7));

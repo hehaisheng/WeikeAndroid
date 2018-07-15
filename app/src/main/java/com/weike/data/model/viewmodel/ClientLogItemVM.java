@@ -25,7 +25,13 @@ public class ClientLogItemVM extends BaseVM {
      */
     public ObservableField<Boolean> isShowLine = new ObservableField<>(true);
 
-    public void delete(){
+
+
+    public void modify(ClientLogItemVM vm){
+
+    }
+
+    public void delete(ClientLogItemVM vm){
 
     }
 

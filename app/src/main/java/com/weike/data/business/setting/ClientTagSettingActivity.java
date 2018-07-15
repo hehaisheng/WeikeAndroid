@@ -104,7 +104,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                             return;
                         }
 
-                        addLabel(text);
+                        addLabel(text,null,null);
 
                         dialogFragment.dismiss();
                     }
@@ -119,6 +119,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
     private void checkLabelNum(){
         GetLabelNumReq req = new GetLabelNumReq();
         req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.CHECK_LABEL_TAG_NUM)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetLabelNumResp>>(){
@@ -136,7 +137,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
         });
     }
 
-    private void addLabel(String content) {
+    private void addLabel(String content,String id,TagSettingVM vm) {
 
         for(int  i = 0 ; i < vms.size();i++) {
             if (vms.get(i).content.get().equals(content)) {
@@ -148,7 +149,8 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
 
         AddLabelReq req = new AddLabelReq();
         req.labelName = content;
-        req.sort = currentLabelTagArray[0];
+        req.sort = TextUtils.isEmpty(id) ?  currentLabelTagArray[0] : vm.sort;
+        req.labelId = id;
         req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_LABEL)
@@ -158,19 +160,24 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
             @Override
             protected void onSuccess(BaseResp<AddLabelResp> getClientTagListRespBaseResp) throws Exception {
 
+                if (TextUtils.isEmpty(id)) {
+                    TagSettingVM vm = new TagSettingVM();
+                    vm.setListener(ClientTagSettingActivity.this);
+                    vm.tagId.set(getClientTagListRespBaseResp.getDatas().id + "");
+                    vm.name.set(req.sort);
+                    vm.isModify.set(true);
+                    vm.content.set(content);
+                    vms.add(vm);
+                    adapter.notifyDataSetChanged();
 
-                TagSettingVM vm = new TagSettingVM();
-                vm.setListener(ClientTagSettingActivity.this);
-                vm.tagId.set(getClientTagListRespBaseResp.getDatas().id + "");
-                vm.name.set(req.sort);
-                vm.isModify.set(true);
-                vm.content.set(content);
-                vms.add(vm);
-                adapter.notifyDataSetChanged();
-                checkLabelNum();
+                } else {
+                    vm.content.set(content);
+                    adapter.notifyDataSetChanged();
+                    ToastUtil.showToast("修改成功");
+                }
                 // 本地保存
 
-
+                checkLabelNum();
                 User user = SpUtil.getInstance().getUser();
                 GetClientTagListResp.TagSub tagSub = new GetClientTagListResp.TagSub();
                 tagSub.id = getClientTagListRespBaseResp.getDatas().id + "";
@@ -197,13 +204,14 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
         setContentView(R.layout.activity_client_tag_setting);
         ButterKnife.bind(this);
 
+        checkLabelNum(); //获取剩余的标签
         setCenterText("");
         setLeftText("标签管理");
         setRightText("");
 
         initView();
         initLabel();
-        checkLabelNum(); //获取剩余的标签
+
     }
 
     @Override
@@ -246,8 +254,11 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                             .setPositiveInput("确定", new OnInputClickListener() {
                                 @Override
                                 public void onClick(String text, View v) {
-
-
+                                    if (TextUtils.isEmpty(text)) {
+                                        ToastUtil.showToast("信息不能为空");
+                                        return;
+                                    }
+                                    addLabel(text,vms.get(position).tagId.get(),vms.get(position));
                                     dialogFragment.dismiss();
                                 }
                             })
@@ -298,6 +309,8 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                     }
                 }
                 SpUtil.getInstance().saveNewsUser(u);
+
+                checkLabelNum();
 
             }
 

@@ -19,15 +19,24 @@ import cn.addapp.pickers.picker.SinglePicker;
 
 public class RemingSetActVM extends BaseVM {
 
-    public int beforeRemindDay;
     /**
-     *
+     * 是否提前提醒
      */
-    public int repeatIntervalHour;
-    /**
-     * 日期类型
+    public int isAdvance;  // 1是 2 否
+
+    public int advanceDateType; //提前提醒时间类型
+
+    public int advanceInterval; // 提醒时间间隔
+
+    /*
+     * 是否重复提醒
      */
-    public int dateType = 0;
+    public int isRepeat = 1; // 是 2 否
+
+    public int repeatInterval;//重复提醒时间间隔
+
+    public int repeatDateType; //重复提醒时间类型
+
     /**
      * 时间
      */
@@ -37,10 +46,6 @@ public class RemingSetActVM extends BaseVM {
      */
     public ObservableField<String> content = new ObservableField<>();
 
-    /**
-     * 是否重复
-     */
-    public ObservableField<Boolean> IsRepeat = new ObservableField<>(false);
 
     /**
      * 是否重复文字
@@ -54,7 +59,7 @@ public class RemingSetActVM extends BaseVM {
 
 
     /**
-     * 是否提醒
+     * 设置提醒
      */
     public ObservableField<Boolean> isRemind = new ObservableField<>(true);
 
@@ -77,23 +82,25 @@ public class RemingSetActVM extends BaseVM {
     }
 
     public void repeatClick(){
-        PickerUtil.onLinkagePicker(activity, new OnMoreItemPickListener<String>() {
+        PickerUtil.onLinkagePicker("不重复",activity, new OnMoreItemPickListener<String>() {
             @Override
             public void onItemPicked(String s, String t1, String t2) {
 
                 if(s.contains("不重复")) {
                     repeatText.set("不重复");
+                    isRepeat = DataConfig.RemindType.TYPE_UNREMIND;
                 } else {
+                    isRepeat = DataConfig.RemindType.TYPE_REMIND;
                     repeatText.set(s + " " + t1);
-                    repeatIntervalHour = Integer.parseInt(s);
+                    repeatInterval = Integer.parseInt(s);
                     if (t1.contains("天")) {
-                        dateType = DataConfig.RemindDateType.TYPE_OF_DAY;
+                        repeatDateType = DataConfig.RemindDateType.TYPE_OF_DAY;
                     } else if (t1.contains("周")) {
-                        dateType = DataConfig.RemindDateType.TYPE_OF_WEEK;
+                        repeatDateType = DataConfig.RemindDateType.TYPE_OF_WEEK;
                     } else if (t1.contains("月")) {
-                        dateType = DataConfig.RemindDateType.TYPE_OF_MONTH ;
+                        repeatDateType = DataConfig.RemindDateType.TYPE_OF_MONTH ;
                     } else if (t1.contains("年")) {
-                        dateType = DataConfig.RemindDateType.TYPE_OF_YEAR;
+                        repeatDateType = DataConfig.RemindDateType.TYPE_OF_YEAR;
                     }
                 }
 
@@ -139,28 +146,34 @@ public class RemingSetActVM extends BaseVM {
      */
     public void remindClick() {
 
-        ArrayList<String> list = new ArrayList<>();
-        for(int i = 1;i<31; i++){
-            String s = "";
-            if(i<10){
-                s = "0"+i;
-            }else{
-                s = i+"";
-            }
-            list.add(s);
-        }
-
-        SinglePicker<String> picker = new SinglePicker<String>(activity,list);
-        picker.setLabel("天");
-        PickerUtil.showSignTitlePicker(picker, new OnItemPickListener<String>() {
+        PickerUtil.onLinkagePicker("不提前",activity, new OnMoreItemPickListener<String>() {
             @Override
-            public void onItemPicked(int i, String s) {
-                if(Integer.parseInt(s) < 10) {
-                    remindTime.set(s.replace("0","") + "天");
+            public void onItemPicked(String s, String t1, String t2) {
+
+                if(s.contains("不提前")) {
+                    remindTime.set("不提前");
+                    isAdvance = DataConfig.RemindType.TYPE_UNREMIND;
                 } else {
-                    remindTime.set(s + "天");
+                    isAdvance = DataConfig.RemindType.TYPE_REMIND;
+                    remindTime.set(s + " " + t1);
+                    advanceInterval = Integer.parseInt(s);
+                    if (t1.contains("天")) {
+                        advanceDateType = DataConfig.RemindDateType.TYPE_OF_DAY;
+                    } else if (t1.contains("周")) {
+                        advanceDateType = DataConfig.RemindDateType.TYPE_OF_WEEK;
+                    } else if (t1.contains("月")) {
+                        advanceDateType = DataConfig.RemindDateType.TYPE_OF_MONTH ;
+                    } else if (t1.contains("年")) {
+                        advanceDateType = DataConfig.RemindDateType.TYPE_OF_YEAR;
+                    }
                 }
-                beforeRemindDay = Integer.parseInt(s);
+
+
+            }
+        }, new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
             }
         });
     }

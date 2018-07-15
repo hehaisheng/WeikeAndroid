@@ -14,7 +14,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.weike.data.payment.wechat.WxConfig;
-
+import com.weike.data.util.ToastUtil;
 
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -45,13 +45,12 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
 	@Override
 	public void onResp(BaseResp resp) {
-
-
-		/*if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.app_tip);
-			builder.setMessage(getString(R.string.pay_result_callback_msg, String.valueOf(resp.errCode)));
-			builder.show();
-		}*/
+		if (resp.errCode == 0 ){
+			ToastUtil.showToast("支付成功");
+			finish();
+		} else if (resp.errCode != 0){
+			ToastUtil.showToast("支付失败");
+			finish();
+		}
 	}
 }

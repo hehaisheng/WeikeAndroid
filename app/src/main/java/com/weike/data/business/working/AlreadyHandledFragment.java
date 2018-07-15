@@ -23,6 +23,9 @@ import com.mylhyl.circledialog.params.ButtonParams;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
@@ -61,7 +64,7 @@ import static android.app.Activity.RESULT_OK;
  * 待办事
  */
 public class AlreadyHandledFragment extends BaseFragment implements
-        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> {
+        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,OnRefreshLoadmoreListener {
 
     public CheckBox cb_sort_date;
 
@@ -85,16 +88,19 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
     private TextView goToAdd;
 
+    private SmartRefreshLayout smartRefreshLayout;
+
     private View nothingView;
 
     private ToDo toDo;
+    private int page = 1;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
-            lastModifyVM.time.set(toDo.toDoDate);
+            lastModifyVM.time.set(toDo.birthdaydate);
             lastModifyVM.content.set(toDo.content);
             updateStatus(1,lastModifyVM);
             recycleAdapter.notifyDataSetChanged();
@@ -108,6 +114,8 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
     @Override
     protected void loadFinish(View view) {
+        smartRefreshLayout = view.findViewById(R.id.smartrefreshlayout);
+        smartRefreshLayout.setOnRefreshLoadmoreListener(this);
         cb_sort_date = view.findViewById(R.id.checkbox_sort_of_date);
         cb_sort_level = view.findViewById(R.id.checkbox_sort_of_level);
         recycleHandleWorking = view.findViewById(R.id.reycle_handler_working);
@@ -126,7 +134,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
 
 
-        loadDataOfList(3, 1, true);
+        loadDataOfList(2, 1, true);
         initRecycleView();
     }
 
@@ -283,5 +291,16 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
     private void delete(HandleWorkItemVM vm) {
           updateStatus(4,vm);
+    }
+
+    @Override
+    public void onLoadmore(RefreshLayout refreshlayout) {
+        page ++;
+        loadDataOfList(2, page, true);
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        loadDataOfList(2, page, true);
     }
 }

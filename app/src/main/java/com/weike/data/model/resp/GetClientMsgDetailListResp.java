@@ -45,6 +45,7 @@ public class GetClientMsgDetailListResp extends BaseResp {
         private int status;
         private int is_remind;
         public int isRepeat;
+        public int handleType;
 
         public int getId() {
             return id;

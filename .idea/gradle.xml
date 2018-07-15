@@ -9,7 +9,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/FDHSocialGeneralDialog" />
-            <option value="$PROJECT_DIR$/amm_sdk_sample" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/jpush" />
             <option value="$PROJECT_DIR$/library" />

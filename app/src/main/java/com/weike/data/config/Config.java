@@ -193,9 +193,9 @@ public final class Config {
     public static final String GET_LOG_BY_ID = "wkzs-restful/log/selectLogByClient";
 
     /**
-     * 根据待办事项 获取日志
+     * 根据日志ID 获取待办事项
      */
-    public static final String GET_LOG_BY_TODO = "wkzs-restful/log/selectToDoByLog";
+    public static final String GET_TODO_BY_LOG = "wkzs-restful/log/selectToDoByLog";
 
     /**
      * 获取分享海报
@@ -219,7 +219,7 @@ public final class Config {
     public static final String MODIFY_CLIENT_MSG_REMIND ="wkzs-restful/message/newsEditRemind";
 
     /**
-     * 微信支付订单
+     * 更换手机号码
      */
-    public static final String GET_WX_PAY_DATA = "wkzs-restful/payment/wxpayNotify";
+    public static final String CHANGE_PHONE_NUM = "wkzs-restful/user/editPhoneNumber";
 }

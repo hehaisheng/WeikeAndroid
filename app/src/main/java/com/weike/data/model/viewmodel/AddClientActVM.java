@@ -36,7 +36,7 @@ public class AddClientActVM extends BaseVM {
 
     public ObservableField<String> photoUrl = new ObservableField<>();
 
-    public ObservableField<String> label = new ObservableField<>("添加标签");
+    public ObservableField<String> label = new ObservableField<>("未分组");
 
     public String labelId;
 

@@ -15,6 +15,8 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
@@ -57,7 +59,7 @@ import static android.app.Activity.RESULT_OK;
  * 待办事
  */
 public class HandlerWorkingFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener,
-        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,View.OnClickListener{
+        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,View.OnClickListener,OnRefreshLoadmoreListener{
 
     public CheckBox cb_sort_date;
 
@@ -93,6 +95,8 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
     private ToDo toDo;
 
+    private int page;
+
     DialogFragment dialogFragment;
     private List<List<HandleWorkItemVM>> childVMs = new ArrayList<>();
     private List<ExpandGroupVM> groupVMS = new ArrayList<>();
@@ -102,7 +106,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
-            lastModifyVM.time.set(toDo.toDoDate);
+            lastModifyVM.time.set(toDo.birthdaydate);
             lastModifyVM.content.set(toDo.content);
             recycleAdapter.notifyDataSetChanged();
 
@@ -441,6 +445,16 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
     @Override
     public void onClick(View view) {
+
+    }
+
+    @Override
+    public void onLoadmore(RefreshLayout refreshlayout) {
+
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
 
     }
 }

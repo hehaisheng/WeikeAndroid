@@ -9,8 +9,8 @@
 
         <variable
 
-            name="addPhoneVM"
-            type="com.weike.data.model.viewmodel.AddPhoneVM">
+            name="anniverVM"
+            type="com.weike.data.model.viewmodel.AnniversariesItemVM">
 
         </variable>
 
@@ -26,7 +26,7 @@
         <LinearLayout
             android:id="@+id/ll_fragment_client_add_phone"
             android:layout_width="match_parent"
-            android:visibility="@{addPhoneVM.isFirst ?View.VISIBLE : View.GONE}"
+            android:visibility="@{anniverVM.isFirst ?View.VISIBLE : View.GONE}"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="3dp">
@@ -43,7 +43,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="15dp"
                     android:minWidth="20dp"
-                    android:onClick="@{()->addPhoneVM.add()}"
+                    android:onClick="@{()->anniverVM.add()}"
                     android:src="@mipmap/ic_add_green" />
 
                 <TextView
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:text="添加电话"
+                    android:text="添加纪念日"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -59,65 +59,13 @@
         </LinearLayout>
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{addPhoneVM.isShowModify ? View.VISIBLE :View.GONE}">
-
-            <TextView
-                android:id="@+id/tv_phone_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="18dp"
-                android:minWidth="70dp"
-
-                android:text="手机号码"
-                android:textColor="@color/color_content" />
-
-            <TextView
-                android:id="@+id/ed_email_content"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tv_phone_num"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
-                android:layout_toRightOf="@+id/tv_phone_num"
-                android:background="@color/color_touming"
-                android:hint="请输入"
-                android:text="@={addPhoneVM.phoneNumber}"
-                android:textSize="15sp" />
-
-            <View
-                android:id="@+id/view_line_1"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/tv_email_title"
-                android:background="@color/color_line" />
-
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@mipmap/ic_phone"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:onClick="@{()->addPhoneVM.hitUpPhone()}"
-                />
-
-
-        </RelativeLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="@{addPhoneVM.isModify ? View.VISIBLE :View.GONE}">
+            android:visibility="@{anniverVM.isModify ? View.VISIBLE :View.GONE}">
 
             <ImageView
                 android:id="@+id/ic_widget_add_phone"
@@ -126,16 +74,22 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="10dp"
-                android:onClick="@{()->addPhoneVM.reduce()}"
+                android:onClick="@{()->anniverVM.reduce()}"
                 android:src="@mipmap/ic_redue" />
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingBottom="15dp"
                 android:paddingTop="15dp"
-                android:text="手机号码"
+                android:hint="请输入"
+                android:text="@={anniverVM.name}"
+                android:clickable="@{anniverVM.isModify}"
+                android:textSize="15sp"
+                android:background="@color/color_touming"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textColor="@color/color_content" />
 
             <ImageView
@@ -145,15 +99,36 @@
                 android:layout_marginLeft="10dp"
                 android:src="@mipmap/icon_arrow_2" />
 
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/color_line"
+                android:layout_marginLeft="10dp"
+
+                />
+
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:clickable="@{anniverVM.isModify}"
                 android:layout_marginLeft="10dp"
                 android:textSize="15sp"
+                android:layout_weight="1"
                 android:background="@color/color_touming"
-                android:hint="请输入"
-                android:text="@={addPhoneVM.phoneNumber}" />
+                android:hint="请选择时间"
+                android:text="@={anniverVM.time}" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@mipmap/ic_remind_dis"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center|right"
+
+                />
 
         </LinearLayout>
 

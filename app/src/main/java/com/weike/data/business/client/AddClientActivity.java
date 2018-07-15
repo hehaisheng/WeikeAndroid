@@ -144,7 +144,6 @@ public class AddClientActivity extends BaseActivity {
         initPhotoSel();
         initMsg();
 
-
         initClickStatus();
     }
 
@@ -224,6 +223,8 @@ public class AddClientActivity extends BaseActivity {
 
             }
         });
+
+
         binding.slidingTabLayout.setViewPager(binding.viewpagerActivityClientAdd);
 
 
@@ -257,7 +258,7 @@ public class AddClientActivity extends BaseActivity {
                     vm.photoUrl.set(data.getPhotoUrl());
                     vm.userName.set(data.getUserName());
                     vm.remarks.set(data.getRemark());
-                    vm.label.set(data.getClientLabelName());
+                    vm.label.set(TextUtils.isEmpty(data.getClientLabelName()) ? data.getClientLabelName() : "未分组");
 
                     //基本信息
                     ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
@@ -295,13 +296,7 @@ public class AddClientActivity extends BaseActivity {
                     clientBaseMsgVM.clientHeight.set(data.getHeight());
                     clientBaseMsgVM.clientWidght.set(data.getWeight());
                     ToDo toDo = new ToDo();
-                     toDo.dateType = data.getBirthdayjson().getDateType();
-                    toDo.priority = data.getBirthdayjson().getPriority();
-                    toDo.toDoDate = data.getBirthdayjson().getRemindDate();
-                    toDo.beforeRemindDay = data.getBirthdayjson().getBeforeRemindDay();
-                    toDo.isRepeat = data.getBirthdayjson().getIsRepeat();
-                    toDo.isRemind = data.getBirthdayjson().getIsRemind();
-                    toDo.repeatIntervalHour = data.getBirthdayjson().getRepeatIntervalHour();
+                    clientBaseMsgFragment.updateAnnaDay(data.getAnniversaryList());
                     clientBaseMsgVM.birthDayTodo = toDo;
 
                     clientServiceMsgVM.liabilities.set(data.getLiabilities());
@@ -487,11 +482,6 @@ public class AddClientActivity extends BaseActivity {
             String phone = clientBaseMsgFragment.addPhoneVMS.get(i).phoneNumber.get();//电话号码
             if (TextUtils.isEmpty(phone))continue;
             p.add(phone);
-        }
-
-        if (p.size() == 0) {
-            ToastUtil.showToast("必须要添加一个电话号码");
-            return false;
         }
 
         for(int i = 0 ; i < p.size() ;i++){

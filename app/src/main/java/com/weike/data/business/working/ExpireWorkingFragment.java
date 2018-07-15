@@ -23,6 +23,9 @@ import com.mylhyl.circledialog.params.ButtonParams;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TextParams;
 import com.mylhyl.circledialog.params.TitleParams;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
@@ -32,6 +35,7 @@ import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
+import com.weike.data.business.msg.MsgDetailActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.EditAndDeleteTodoReq;
@@ -60,7 +64,7 @@ import static android.app.Activity.RESULT_OK;
  * 待办事
  */
 public class ExpireWorkingFragment extends BaseFragment implements
-        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> {
+        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,OnRefreshLoadmoreListener{
 
     public CheckBox cb_sort_date;
 
@@ -80,11 +84,15 @@ public class ExpireWorkingFragment extends BaseFragment implements
 
     public RecyclerView recycleHandleWorking;
 
+    private SmartRefreshLayout smartRefreshLayout;
+
     public LinearLayout ll_handle_working_sort;
 
     private View nothingView;
 
     private TextView goToAdd;
+
+    private int page = 1;
 
     private ToDo toDo;
 
@@ -93,7 +101,7 @@ public class ExpireWorkingFragment extends BaseFragment implements
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
-            lastModifyVM.time.set(toDo.toDoDate);
+            lastModifyVM.time.set(toDo.birthdaydate);
             lastModifyVM.userName.set(toDo.content);
             updateStatus(1,lastModifyVM);
             recycleAdapter.notifyDataSetChanged();
@@ -111,7 +119,10 @@ public class ExpireWorkingFragment extends BaseFragment implements
         cb_sort_level = view.findViewById(R.id.checkbox_sort_of_level);
         recycleHandleWorking = view.findViewById(R.id.reycle_handler_working);
         ll_handle_working_sort = view.findViewById(R.id.ll_handle_working_sort);
+
         ll_handle_working_sort.setVisibility(View.GONE);
+        smartRefreshLayout = view.findViewById(R.id.smartrefreshlayout);
+        smartRefreshLayout.setOnRefreshLoadmoreListener(this);
         loadingView = view.findViewById(R.id.loaddingview);
         nothingView = view.findViewById(R.id.ll_nothing_view);
         goToAdd = view.findViewById(R.id.tv_add_log);
@@ -125,7 +136,7 @@ public class ExpireWorkingFragment extends BaseFragment implements
 
 
 
-        loadDataOfList(3, 1, true);
+        loadDataOfList(3, page, true);
         initRecycleView();
     }
 
@@ -168,6 +179,18 @@ public class ExpireWorkingFragment extends BaseFragment implements
                     nothingView.setVisibility(View.VISIBLE);
                     return;
                 }
+
+                if (page > 1 && getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
+                    ExpireWorkingFragment.this.page = ExpireWorkingFragment.this.page - 1;//恢复页码
+                    ToastUtil.showToast("暂无更多");
+                    smartRefreshLayout.finishLoadmore();
+                    return;
+                }
+
+                if(page == 1) { //如果是第一页
+                    vms.clear();
+                }
+
 
                 for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
                     HandleWorkItemVM vm = new HandleWorkItemVM();
@@ -272,5 +295,17 @@ public class ExpireWorkingFragment extends BaseFragment implements
 
     private void delete(HandleWorkItemVM vm) {
           updateStatus(4,vm);
+    }
+
+    @Override
+    public void onLoadmore(RefreshLayout refreshlayout) {
+        page ++;
+        loadDataOfList(3, page, true);
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        page = 1;
+        loadDataOfList(3, page, true);
     }
 }
