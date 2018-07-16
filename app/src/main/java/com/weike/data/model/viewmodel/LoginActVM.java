@@ -1,6 +1,7 @@
 package com.weike.data.model.viewmodel;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.text.TextUtils;
@@ -127,7 +128,7 @@ public class LoginActVM extends BaseVM {
                 })).subscribe(new BaseObserver<BaseResp<GetVerificationCodeResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetVerificationCodeResp> getVerificationCodeRespBaseResp) throws Exception {
-                    if (getVerificationCodeRespBaseResp.getResult() == 1) {
+                    if (Integer.parseInt(getVerificationCodeRespBaseResp.getResult()) == 1) {
                         ToastUtil.showToast("验证码获成功,请查看短信");
                         countGetVCode();
                         return;
@@ -204,10 +205,13 @@ public class LoginActVM extends BaseVM {
             @Override
             protected void onSuccess(BaseResp<LoginByCodeResp> loginByPwdResp) throws Exception {
 
-                LogUtil.d("acthome","---->" + loginByPwdResp.getDatas().getToken());
-                String token = loginByPwdResp.getDatas().getToken();
-                SpUtil.getInstance().saveCurrentToken(token); //登录保存令牌
-                ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class,true);
+                if(Integer.parseInt(loginByPwdResp.getResult()) == 1) {
+                    String token = loginByPwdResp.getDatas().getToken();
+                    SpUtil.getInstance().saveCurrentToken(token); //登录保存令牌
+                    ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class, true);
+                } else {
+                    ToastUtil.showToast(loginByPwdResp.getMessage());
+                }
             }
 
             @Override
@@ -249,9 +253,13 @@ public class LoginActVM extends BaseVM {
                 })).subscribe(new BaseObserver<BaseResp<LoginByPwdResp>>() {
             @Override
             protected void onSuccess(BaseResp<LoginByPwdResp> loginByPwdResp) throws Exception {
-                String token = loginByPwdResp.getDatas().token;
-                SpUtil.getInstance().saveCurrentToken(token); //登录保存令牌
-                ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class,true);
+                if (Integer.parseInt(loginByPwdResp.getResult()) == 1) {
+                    String token = loginByPwdResp.getDatas().token;
+                    SpUtil.getInstance().saveCurrentToken(token); //登录保存令牌
+                    ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class, true);
+                } else {
+                    ToastUtil.showToast(loginByPwdResp.getMessage());
+                }
             }
 
             @Override

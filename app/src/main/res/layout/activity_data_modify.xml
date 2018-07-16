@@ -51,6 +51,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:minHeight="50dp"
+        android:onClick="@{()->modifyDataVM.modifyPhone()}"
         android:layout_height="wrap_content">
         <View
             android:layout_width="match_parent"

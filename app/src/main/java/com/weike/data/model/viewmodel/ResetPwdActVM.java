@@ -71,7 +71,7 @@ public class ResetPwdActVM extends BaseVM {
                 })).subscribe(new BaseObserver<BaseResp<GetVCodeAfterLoginResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetVCodeAfterLoginResp> getVerificationCodeRespBaseResp) throws Exception {
-                if (getVerificationCodeRespBaseResp.getResult() == 1) {
+                if (Integer.parseInt(getVerificationCodeRespBaseResp.getResult()) == 1) {
                     ToastUtil.showToast("验证码获成功,请查看短信");
                     countGetVCode();
                     return;
@@ -131,7 +131,7 @@ public class ResetPwdActVM extends BaseVM {
                 })).subscribe(new BaseObserver<BaseResp<ResetPwdResp>>() {
             @Override
             protected void onSuccess(BaseResp<ResetPwdResp> resetPwdRespBaseResp) throws Exception {
-                if (resetPwdRespBaseResp.getResult() == 1){
+                if (Integer.parseInt(resetPwdRespBaseResp.getResult()) == 1){
                     ToastUtil.showToast("修改成功");
                     activity.finish();
                 } else {

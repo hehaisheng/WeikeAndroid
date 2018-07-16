@@ -14,6 +14,7 @@ import java.util.List;
 import cn.addapp.pickers.common.LineConfig;
 import cn.addapp.pickers.listeners.OnItemPickListener;
 import cn.addapp.pickers.listeners.OnMoreItemPickListener;
+import cn.addapp.pickers.picker.DatePicker;
 import cn.addapp.pickers.picker.DateTimePicker;
 import cn.addapp.pickers.picker.LinkagePicker;
 import cn.addapp.pickers.picker.SinglePicker;
@@ -67,18 +68,36 @@ public class PickerUtil {
         picker.show();
     }
 
+    public void onYearMonthDayPicker(int year,int month , int day ,View view,Activity activity,DatePicker.OnYearMonthDayPickListener listener) {
+        final DatePicker picker = new DatePicker(activity);
+        picker.setCanLoop(true);
+        picker.setWheelModeEnable(true);
+        picker.setTopPadding(15);
+        picker.setDateRangeStart(1900, 1, 1);
+        picker.setDateRangeEnd(2100, 12, 12);
+        picker.setSelectedItem(year, month, day);
+        picker.setWeightEnable(true);
+        picker.setLineColor(Color.BLACK);
+        picker.setOnDatePickListener(listener);
+
+        LineConfig config = new LineConfig();
+        config.setColor(Color.BLUE);//线颜色
+        config.setAlpha(120);//线透明度
+        config.setVisible(true);//线不显示 默认显示
+        picker.setLineConfig(config);
+        picker.show();
+    }
+
 
     public static void onOptionPicker(Activity activity,OnItemPickListener listener) {
         ArrayList<String> list = new ArrayList<>();
-        for(int i = 0;i<10; i++){
-            String s = "";
-            if(i<10){
-                s = "0"+i;
-            }else{
-                s = i+"";
-            }
-            list.add(s);
-        }
+        list.add("0.5");
+        list.add("1");
+        list.add("1.5");
+        list.add("2");
+        list.add("2.5");
+        list.add("3");
+
 //        String[] ss = (String[]) list.toArray();
         SinglePicker<String> picker = new SinglePicker<>(activity, list);
         picker.setCanLoop(false);//不禁用循环
@@ -148,7 +167,7 @@ public class PickerUtil {
         picker.show();
     }
 
-    public static void onLinkagePicker(Activity activity,OnMoreItemPickListener<String> listener,DialogInterface.OnDismissListener dismissListener) {
+    public static void onLinkagePicker(String notTitle , Activity activity,OnMoreItemPickListener<String> listener,DialogInterface.OnDismissListener dismissListener) {
         LinkagePicker.DataProvider provider = new LinkagePicker.DataProvider() {
 
             @Override
@@ -162,7 +181,7 @@ public class PickerUtil {
                 for(int i = 1 ; i < 11 ; i++) {
                     firstList.add("" + i);
                 }
-                firstList.add(0,"不重复");
+                firstList.add(0,notTitle);
                 return firstList;
             }
 

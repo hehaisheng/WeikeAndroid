@@ -125,11 +125,11 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
 
     private ToDo compass(ProductBean.RemindBean remindBean) {
         ToDo toDo = new ToDo();
-        if (TextUtils.isEmpty(remindBean.isRemind) == false) {
-            toDo.isRemind = Integer.parseInt(remindBean.isRemind);
+        /*if (TextUtils.isEmpty(remindBean.isRemind) == false) {
+            toDo.isAdvance = Integer.parseInt(remindBean.isRemind);
         }
         if (TextUtils.isEmpty(remindBean.remindDate) == false) {
-            toDo.toDoDate = remindBean.remindDate;
+            toDo.birthdaydate = remindBean.remindDate;
         }
         if (TextUtils.isEmpty(remindBean.repeatIntervalHour) == false) {
             toDo.repeatIntervalHour = Integer.parseInt(remindBean.repeatIntervalHour);
@@ -145,7 +145,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
 
         if (TextUtils.isEmpty(remindBean.dateType) == false)
             toDo.dateType = Integer.parseInt(remindBean.dateType);
-
+*/
         toDo.content = remindBean.content;
         return toDo;
     }

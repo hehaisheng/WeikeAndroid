@@ -19,8 +19,10 @@ import com.weike.data.business.setting.AttrManagerActivity;
 import com.weike.data.databinding.FragmentClientBaseMsgBinding;
 import com.weike.data.model.business.ClientRelated;
 import com.weike.data.model.business.ToDo;
+import com.weike.data.model.resp.GetClientDetailMsgResp;
 import com.weike.data.model.viewmodel.AddClientRelateItemVM;
 import com.weike.data.model.viewmodel.AddPhoneVM;
+import com.weike.data.model.viewmodel.AnniversariesItemVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.LogUtil;
@@ -40,12 +42,24 @@ import static android.app.Activity.RESULT_OK;
 public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickListener,AddPhoneVM.OnPhoneClickListener,AddClientRelateItemVM.AddClientRelateItemListener {
 
 
-
+    /**
+     * 添加号码适配器
+     */
     public List<AddPhoneVM> addPhoneVMS = new ArrayList<>();
     BaseDataBindingAdapter addPhoneAdapter;
 
+    /**
+     * 客户关联适配器
+     */
     public List<AddClientRelateItemVM> clientRelateItemVMS = new ArrayList<>();
     BaseDataBindingAdapter clientRelateAdapter;
+
+
+    /**
+     * 纪念日适配器
+     */
+    public List<AnniversariesItemVM> anniDayVMS = new ArrayList<>();
+    BaseDataBindingAdapter anniDayAdapter;
 
 
     private AddClientRelateItemVM lastRelateClientVM;
@@ -54,6 +68,13 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     public FragmentClientBaseMsgBinding binding;
 
+
+    /**
+     * 纪念日集合
+     */
+    public void updateAnnaDay(List<GetClientDetailMsgResp.AnniversaryListBean> list){
+
+    }
 
     /**
      * 这里是 获取客户信息 也就是有电话信息的时候 才调用 一般不用
@@ -79,8 +100,11 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         }
 
-
-        binding.addPhoneNum.setVisibility(View.VISIBLE);
+        if (phoneNum.length == 0) {
+            binding.addPhoneNum.setVisibility(View.GONE);
+        }else {
+            binding.addPhoneNum.setVisibility(View.VISIBLE);
+        }
         addPhoneAdapter.notifyDataSetChanged();
     }
 
@@ -134,7 +158,17 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     }
 
-    private void initClientMsg(){
+    private void initAniDay(){
+        anniDayAdapter = new BaseDataBindingAdapter(getActivity(),R.layout.widget_layout_ani_day,anniDayVMS, BR.anniverVM);
+        NoScrollLinearLayoutManager linearLayoutManager = new NoScrollLinearLayoutManager(getActivity());
+        linearLayoutManager.setScrollEnabled(false);
+
+
+        initAniDayHead();
+    }
+
+    private void initAniDayHead(){
+
 
     }
 
@@ -223,6 +257,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         initPhoneRecycle();
         initClientRelateRecycle();
+        initAniDay();
         updateModify(clientBaseMsgVM.isModify.get());//更新一下电话的状态
 
         binding.edCompany.requestFocus();

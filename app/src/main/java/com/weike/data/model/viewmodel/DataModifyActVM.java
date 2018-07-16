@@ -8,16 +8,27 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.google.gson.reflect.TypeToken;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.callback.ConfigDialog;
 import com.mylhyl.circledialog.callback.ConfigTitle;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TitleParams;
+import com.weike.data.base.BaseObserver;
+import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
+import com.weike.data.business.setting.ModifyPhoneNumAct;
+import com.weike.data.config.Config;
 import com.weike.data.model.business.User;
+import com.weike.data.model.req.GetUserInfoReq;
+import com.weike.data.model.resp.GetUserInfoResp;
+import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.LQRPhotoSelectUtils;
+import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
+import com.weike.data.util.TransformerUtils;
 
 import kr.co.namee.permissiongen.PermissionGen;
 import kr.co.namee.permissiongen.PermissionSuccess;
@@ -48,8 +59,52 @@ public class DataModifyActVM extends BaseVM {
         job.set(user.job);
         location.set(user.address);
         email.set(user.email);
+        init();
     }
 
+    public void modifyPhone(){
+        ActivitySkipUtil.skipAnotherAct(activity, ModifyPhoneNumAct.class);
+    }
+
+    public void init(){
+        GetUserInfoReq req = new GetUserInfoReq();
+        req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.USER_INFO)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetUserInfoResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<GetUserInfoResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
+
+                if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0) {
+                    userName.set(getUserInfoRespBaseResp.getDatas().userName);
+                    phoneNum.set(getUserInfoRespBaseResp.getDatas().phoneNumber );
+                    photoUrl.set(getUserInfoRespBaseResp.getDatas().photoUrl);
+                    job.set(getUserInfoRespBaseResp.getDatas().occupation);
+                    email.set(getUserInfoRespBaseResp.getDatas().email);
+                    detailAddress.set(getUserInfoRespBaseResp.getDatas().detailAddress);
+
+                    User user = SpUtil.getInstance().getUser();
+                    user.phoneNumber = getUserInfoRespBaseResp.getDatas().phoneNumber;
+                    user.iconUrl = getUserInfoRespBaseResp.getDatas().photoUrl;
+                    user.userName = getUserInfoRespBaseResp.getDatas().userName;
+                    user.email = getUserInfoRespBaseResp.getDatas().email;
+                    user.job = getUserInfoRespBaseResp.getDatas().occupation;
+                    user.address  = getUserInfoRespBaseResp.getDatas().detailAddress;
+
+                    SpUtil.getInstance().saveNewsUser(user);
+
+                }
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
 
 
     public void photoClick(){

@@ -1,49 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/color_all_bg">
+    android:background="@color/color_all_bg"
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:id="@+id/ll_handle_working_sort"
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="10dp"
+        android:gravity="center">
 
         <CheckBox
             android:id="@+id/checkbox_sort_of_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_handle_working_selector_left"
-            android:textColor="@drawable/selector_handle_working_text_selector"
             android:button="@null"
-            android:text="日期排序"
             android:checked="true"
+            android:paddingBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            />
+            android:text="日期排序"
+            android:textColor="@drawable/selector_handle_working_text_selector" />
 
         <CheckBox
             android:id="@+id/checkbox_sort_of_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_handle_working_selector_right"
-            android:textColor="@drawable/selector_handle_working_text_selector"
             android:button="@null"
+            android:paddingBottom="5dp"
 
-            android:text="等级排序"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            />
+            android:text="等级排序"
+            android:textColor="@drawable/selector_handle_working_text_selector" />
 
     </LinearLayout>
 
@@ -54,31 +52,42 @@
 
         <include
             android:id="@+id/loadingView"
-            android:visibility="gone"
             layout="@layout/widget_layout_loadding"
-            />
+            android:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/reycle_handler_working"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
         </android.support.v7.widget.RecyclerView>
 
-        <ExpandableListView
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/smartrefreshlayout"
+            android:layout_width="match_parent"
             android:visibility="gone"
+            android:layout_height="match_parent">
+
+
+
+
+
+
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        <ExpandableListView
             android:id="@+id/lv_handler_working"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
 
         </ExpandableListView>
 
         <include
             android:id="@+id/loaddingview"
-            layout="@layout/widget_layout_loadding"
-            />
+            layout="@layout/widget_layout_loadding" />
 
         <RelativeLayout
 
@@ -88,23 +97,22 @@
 
             <ImageView
                 android:id="@+id/iv_nothging_label"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="95dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_empty_plan"
-                />
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="95dp"
+                android:src="@mipmap/ic_empty_plan" />
 
             <TextView
                 android:id="@+id/nothing_text"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_nothging_label"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
-                android:text="您真的没有一点计划吗"
-                android:textColor="@color/color_content"
                 android:padding="5dp"
-                android:layout_height="wrap_content" />
+                android:text="您真的没有一点计划吗"
+                android:textColor="@color/color_content" />
 
 
             <TextView
@@ -115,13 +123,12 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="55dp"
                 android:background="@drawable/shape_button_none_bg"
+                android:paddingBottom="5dp"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:paddingTop="5dp"
-                android:textColor="@color/color_41BCF6"
-                android:paddingBottom="5dp"
                 android:text="添加日志"
-                />
+                android:textColor="@color/color_41BCF6" />
         </RelativeLayout>
 
     </FrameLayout>

@@ -193,7 +193,7 @@ public final class Config {
     public static final String GET_LOG_BY_ID = "wkzs-restful/log/selectLogByClient";
 
     /**
-     * 根据待办事项 获取日志
+     * 根据日志ID 获取待办事项
      */
     public static final String GET_TODO_BY_LOG = "wkzs-restful/log/selectToDoByLog";
 
@@ -205,7 +205,7 @@ public final class Config {
     /**
      * 根据标签ID获取待办事项
      */
-    public static final String GET_WORKING_BY_TAG = "wkzs-restful/client/getClientByLabelAndUser";
+    public static final String GET_TODO_BY_TAG = "wkzs-restful/log/seleteToDoByLable";
 
 
     /**
@@ -217,4 +217,9 @@ public final class Config {
      * 修改提醒或者不在提醒
      */
     public static final String MODIFY_CLIENT_MSG_REMIND ="wkzs-restful/message/newsEditRemind";
+
+    /**
+     * 更换手机号码
+     */
+    public static final String CHANGE_PHONE_NUM = "wkzs-restful/user/editPhoneNumber";
 }

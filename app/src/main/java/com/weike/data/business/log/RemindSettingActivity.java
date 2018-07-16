@@ -115,32 +115,57 @@ public class RemindSettingActivity extends BaseActivity {
                 })).subscribe(new BaseObserver<BaseResp<GetOneTodoStatusResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetOneTodoStatusResp> getHandleWorkListRespBaseResp) throws Exception {
-                vm.isRemind.set(getHandleWorkListRespBaseResp.getDatas().isRemind == 1  ? true : false);
+                vm.isRemind.set(getHandleWorkListRespBaseResp.getDatas().isRemind == 1  ? true : false); //是否是提醒 和 不提醒
                 vm.isUnRemind.set(getHandleWorkListRespBaseResp.getDatas().isRemind == 2  ? true : false);
+
+
                 vm.content.set(getHandleWorkListRespBaseResp.getDatas().content); //内容
                 vm.heightCheck.set(getHandleWorkListRespBaseResp.getDatas().priority == 1 ? true : false);
                 vm.midCheck.set(getHandleWorkListRespBaseResp.getDatas().priority == 2 ? true : false);
                 vm.lowCheck.set(getHandleWorkListRespBaseResp.getDatas().priority == 3 ? true :false);
-                vm.time.set(getHandleWorkListRespBaseResp.getDatas().remindDate);
-                vm.remindTime.set(getHandleWorkListRespBaseResp.getDatas().beforeRemindDay + "天");
-                vm.repeatIntervalHour = getHandleWorkListRespBaseResp.getDatas().repeatIntervalHour;
-                vm.beforeRemindDay = getHandleWorkListRespBaseResp.getDatas().beforeRemindDay;
-                vm.dateType = getHandleWorkListRespBaseResp.getDatas().dateType;
+                vm.time.set(getHandleWorkListRespBaseResp.getDatas().birthdaydate);
+
+                vm.advanceDateType = getHandleWorkListRespBaseResp.getDatas().advanceDateType;
+                vm.advanceInterval = getHandleWorkListRespBaseResp.getDatas().advanceInterval;
+                vm.isAdvance = getHandleWorkListRespBaseResp.getDatas().isAdvance;
+
+                vm.isRepeat = getHandleWorkListRespBaseResp.getDatas().isRepeat;
+                vm.repeatDateType = getHandleWorkListRespBaseResp.getDatas().repeatDateType;
+                vm.repeatInterval = getHandleWorkListRespBaseResp.getDatas().repeatInterval;
+
+
                 if (getHandleWorkListRespBaseResp.getDatas().isRepeat == 1) { //重复
-                    if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_DAY){
+                    if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_DAY){
                         //天
-                        vm.repeatText.set("" + toDo.repeatIntervalHour + "天");
-                    } else if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_WEEK) {
-                        vm.repeatText.set("" + toDo.repeatIntervalHour + "周");
-                    } else if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_MONTH) {
-                        vm.repeatText.set("" + toDo.repeatIntervalHour + "月");
-                    } else if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
-                        vm.repeatText.set("" + toDo.repeatIntervalHour + "年");
-                    } else if (toDo.dateType == 0) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "天");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_WEEK) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "周");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_MONTH) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "月");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "年");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == 0) {
                         vm.repeatText.set("不重复");
                     }
                 } else {
                     vm.repeatText.set("不重复");
+                }
+
+                if (getHandleWorkListRespBaseResp.getDatas().isAdvance == 1) { //重复
+                    if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_DAY){
+                        //天
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "天");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_WEEK) {
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "周");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_MONTH) {
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "月");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "年");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == 0) {
+                        vm.remindTime.set("不提前");
+                    }
+                } else {
+                    vm.remindTime.set("不提前");
                 }
 
             }
@@ -161,24 +186,40 @@ public class RemindSettingActivity extends BaseActivity {
         vm.heightCheck.set(toDo.priority == 1 ? true : false);
         vm.midCheck.set(toDo.priority == 2 ? true : false);
         vm.lowCheck.set(toDo.priority == 3 ? true :false);
-        vm.time.set(toDo.toDoDate);
-        vm.beforeRemindDay = toDo.beforeRemindDay;
-        vm.repeatIntervalHour = toDo.repeatIntervalHour;
-        vm.dateType = toDo.dateType;
-        vm.remindTime.set(toDo.beforeRemindDay + "天");
+        vm.time.set(toDo.birthdaydate);
+
+
+        //
+
+
         if (toDo.isRepeat == 1) { //重复
-            if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_DAY){
+            if (toDo.repeatDateType == DataConfig.RemindDateType.TYPE_OF_DAY){
                 //天
-                vm.repeatText.set("" + toDo.repeatIntervalHour + "天");
-            } else if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_WEEK) {
-                vm.repeatText.set("" + toDo.repeatIntervalHour + "周");
-            } else if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_MONTH) {
-                vm.repeatText.set("" + toDo.repeatIntervalHour + "月");
-            } else if (toDo.dateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
-                vm.repeatText.set("" + toDo.repeatIntervalHour + "年");
+                vm.repeatText.set("" + toDo.repeatInterval + "天");
+            } else if (toDo.repeatDateType == DataConfig.RemindDateType.TYPE_OF_WEEK) {
+                vm.repeatText.set("" + toDo.repeatInterval + "周");
+            } else if (toDo.repeatDateType == DataConfig.RemindDateType.TYPE_OF_MONTH) {
+                vm.repeatText.set("" + toDo.repeatInterval + "月");
+            } else if (toDo.repeatDateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
+                vm.repeatText.set("" + toDo.repeatInterval + "年");
             }
         } else {
             vm.repeatText.set("不重复");
+        }
+
+        if (toDo.isAdvance == 1) { //提前
+            if (toDo.advanceDateType == DataConfig.RemindDateType.TYPE_OF_DAY){
+                //天
+                vm.remindTime.set("提前" + toDo.advanceInterval + "天");
+            } else if (toDo.advanceDateType == DataConfig.RemindDateType.TYPE_OF_WEEK) {
+                vm.remindTime.set("提前" + toDo.advanceInterval + "周");
+            } else if (toDo.advanceDateType == DataConfig.RemindDateType.TYPE_OF_MONTH) {
+                vm.remindTime.set("提前" + toDo.advanceInterval + "月");
+            } else if (toDo.advanceDateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
+                vm.remindTime.set("提前" + toDo.advanceInterval + "年");
+            }
+        } else {
+            vm.remindTime.set("不提前");
         }
     }
 
@@ -210,7 +251,7 @@ public class RemindSettingActivity extends BaseActivity {
 
 
         toDo = compass();
-        LogUtil.d("acthome","-->" +toDo.dateType);
+
 
         if (id != null) { //如果ID 不为空 那么就是修改
             modifyOneTodo();
@@ -227,14 +268,19 @@ public class RemindSettingActivity extends BaseActivity {
 
     private void modifyOneTodo(){
         ModifyOneTodoReq req  = new ModifyOneTodoReq();
-        req.beforeRemindDay = toDo.beforeRemindDay;
+        req.isRemind = toDo.isRemind;
         req.content = toDo.content;
         req.id = id;
         req.isRepeat = toDo.isRepeat;
         req.priority = toDo.priority;
-        req.toDoDate = toDo.toDoDate;
-        req.isRemind = toDo.isRemind;
-        req.repeatIntervalHour = toDo.repeatIntervalHour;
+        req.birthdaydate = toDo.birthdaydate;
+        req.isAdvance = toDo.isAdvance;
+        req.advanceDateType = toDo.advanceDateType;
+        req.advanceInterval = toDo.advanceInterval;
+        req.isRepeat = toDo.isRepeat;
+        req.repeatDateType = toDo.repeatDateType;
+
+
         req.sign = SignUtil.signData(req);
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.MODIFY_ONE_TODO_STATUS)
@@ -261,8 +307,10 @@ public class RemindSettingActivity extends BaseActivity {
         ToDo toDo = new ToDo();
 
         toDo.isRemind = vm.isRemind.get() ? DataConfig.RemindType.TYPE_REMIND : DataConfig.RemindType.TYPE_UNREMIND;
+
+
         toDo.content = vm.content.get();
-        toDo.toDoDate = vm.time.get();
+        toDo.birthdaydate = vm.time.get();
         if (vm.heightCheck.get()) {
             toDo.priority = DataConfig.RemindLevel.TYPE_OF_HEIGHT;
         } else if (vm.midCheck.get()) {
@@ -270,15 +318,25 @@ public class RemindSettingActivity extends BaseActivity {
         } else if (vm.lowCheck.get()) {
             toDo.priority = DataConfig.RemindLevel.TYPE_OF_LOAD;
         }
+
+
+
         if (vm.repeatText.get().contains("不重复")) {
             toDo.isRepeat = DataConfig.RemindRepeat.TYPE_UNREPEAT;
         } else {
             toDo.isRepeat = DataConfig.RemindRepeat.TYPE_REPEAT;
-
+            toDo.repeatInterval = vm.repeatInterval;
+            toDo.repeatDateType = vm.repeatDateType;
         }
-        toDo.repeatIntervalHour = vm.repeatIntervalHour;
-        toDo.dateType = vm.dateType;
-        toDo.beforeRemindDay = vm.beforeRemindDay;
+
+        if (vm.remindTime.get().contains("不提前")) {
+            toDo.isAdvance = DataConfig.RemindRepeat.TYPE_UNREPEAT;
+        } else {
+            toDo.isAdvance = DataConfig.RemindRepeat.TYPE_REPEAT;
+            toDo.advanceInterval = vm.advanceInterval;
+            toDo.advanceDateType = vm.advanceDateType;
+        }
+
 
         return toDo;
     }

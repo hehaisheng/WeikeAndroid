@@ -153,6 +153,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="维客助手3年3折"
                                 android:textColor="@color/color_content" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/ic_recommend"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="3dp"
+                                />
 
                             <ImageView
                                 android:layout_gravity="center"

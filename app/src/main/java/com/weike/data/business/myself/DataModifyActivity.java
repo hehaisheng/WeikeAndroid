@@ -72,6 +72,12 @@ public class DataModifyActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        vm.init();
+    }
+
+    @Override
     public void onLeftClick() {
         setResult(RESULT_OK,null);
         finish();

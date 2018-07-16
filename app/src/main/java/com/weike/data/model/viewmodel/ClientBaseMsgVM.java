@@ -132,7 +132,7 @@ public class ClientBaseMsgVM extends BaseVM {
     public void onBirthdayRemindResult(ToDo toDo){
 
         birthDayTodo = toDo;
-        if (toDo.isRemind == DataConfig.RemindType.TYPE_REMIND) {
+        if (toDo.isAdvance == DataConfig.RemindType.TYPE_REMIND) {
             birthdayRemindIcon.set(R.mipmap.ic_remind);
         } else {
             birthdayRemindIcon.set(R.mipmap.ic_remind_dis);

@@ -148,7 +148,7 @@
                 android:textColor="@color/color_content"
                 />
 
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{remindSettingVM.time}"
@@ -156,7 +156,6 @@
                 android:layout_marginLeft="10dp"
                 android:hint="设置处理事项的时间"
                 android:background="@color/color_touming"
-                android:textSize="12sp"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/color_bebebe"
                 android:layout_centerVertical="true"

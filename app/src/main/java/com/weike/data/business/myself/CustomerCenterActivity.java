@@ -1,10 +1,16 @@
 package com.weike.data.business.myself;
 
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
@@ -24,6 +30,7 @@ import com.weike.data.util.TransformerUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 /**
  * Created by LeoLu on 2018/6/1.
@@ -34,6 +41,12 @@ public class CustomerCenterActivity extends BaseActivity {
 
     @BindView(R.id.ed_activity_customer_center)
     public EditText inputText;
+
+    @BindView(R .id.tv_qq)
+    public TextView qq;
+
+    @BindView(R.id.tv_phone)
+    public TextView phoneNum;
 
     @OnClick(R.id.ll_goto_web)
     public void goToWeb(View view){
@@ -68,6 +81,21 @@ public class CustomerCenterActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @OnClick(R.id.tv_phone)
+    public void phoneClick(View view){
+        Intent dialIntent =  new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNum.getText().toString()));
+        startActivity(dialIntent);
+    }
+
+    @OnLongClick(R.id.tv_qq)
+    public boolean qqClick(View view){
+        ClipboardManager manager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
+        manager.setText(qq.getText().toString());
+        ToastUtil.showToast("复制成功");
+        return false;
     }
 
     @Override

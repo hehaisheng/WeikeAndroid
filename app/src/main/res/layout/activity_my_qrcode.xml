@@ -10,6 +10,7 @@
 
     </data>
 
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
 
@@ -19,78 +20,132 @@
 
         <include layout="@layout/widget_action_bar" />
 
-
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="30dp"
-            android:clipChildren="false"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="30dp"
-            android:layout_weight="2" ></android.support.v4.view.ViewPager>
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="长按保存图片到本地"
+                    android:textColor="@color/color_content"
+                    android:textSize="18sp"
+
+                    />
+
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginLeft="38dp"
+                    android:layout_marginRight="38dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="2"
+
+                    android:clipChildren="false"></android.support.v4.view.ViewPager>
 
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@mipmap/icon_wx"
-                android:gravity="center"
-                android:onClick="shareToFriend"
-                android:text="分享到微信"
-                android:textColor="@color/color_content"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@mipmap/icon_pyq"
-                android:gravity="center"
-                android:text="分享到朋友圈"
-                android:onClick="shareToMoment"
-                android:textColor="@color/color_content"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@mipmap/icon_qq"
-                android:gravity="center"
-                android:text="分享到QQ"
-
-                android:textColor="@color/color_content"
-                android:textSize="12sp"
-                android:visibility="gone" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@mipmap/icon_save"
-                android:gravity="center"
-                android:onClick="savePic"
-                android:text="保存到手机"
-                android:textColor="@color/color_content"
-                android:textSize="12sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
 
 
-        </LinearLayout>
+                    android:orientation="horizontal"
+                    android:visibility="invisible">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@mipmap/icon_wx"
+                        android:gravity="center"
+                        android:onClick="shareToFriend"
+                        android:text="分享到微信"
+                        android:textColor="@color/color_content"
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_share_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
+                android:onClick="shareLayout"
+                android:visibility="gone"
+                android:background="#55000000"
+                android:orientation="horizontal">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+
+                    android:background="@color/color_white"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@mipmap/icon_wx"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center"
+                        android:onClick="shareToFriend"
+                        android:text="分享到微信"
+                        android:textColor="@color/color_content"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_line"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:drawableTop="@mipmap/icon_pyq"
+                        android:gravity="center"
+                        android:onClick="shareToMoment"
+                        android:text="分享到朋友圈"
+                        android:textColor="@color/color_content"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+
+        </FrameLayout>
 
     </LinearLayout>
+
+
 </layout>

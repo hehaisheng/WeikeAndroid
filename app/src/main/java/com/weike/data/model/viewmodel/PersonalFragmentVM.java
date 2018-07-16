@@ -83,7 +83,7 @@ public class PersonalFragmentVM extends BaseVM {
                 })).subscribe(new BaseObserver<BaseResp<GetUserInfoResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
-                if (getUserInfoRespBaseResp.getResult() == 0) {
+                if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0) {
                     nickName.set(getUserInfoRespBaseResp.getDatas().userName);
                     phoneNum.set("电话号码：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
                     photoUrl.set(getUserInfoRespBaseResp.getDatas().photoUrl);

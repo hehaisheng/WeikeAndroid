@@ -5,17 +5,17 @@ package com.weike.data.base;
  * 响应基类
  */
 public class BaseResp<T> {
-    private int result;
+    private String result;
 
     private String message = "";
 
     private T datas;
 
-    public int getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(String result) {
         this.result = result;
     }
 

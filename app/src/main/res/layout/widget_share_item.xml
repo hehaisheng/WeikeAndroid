@@ -15,11 +15,11 @@
 
         <ImageView
             android:id="@+id/image_custom"
-            android:layout_width="230dp"
+            android:layout_width="235dp"
             android:scaleType="centerCrop"
             android:layout_gravity="top|center"
             android:src="@mipmap/ic_share_add"
-            android:layout_height="210dp"/>
+            android:layout_height="215dp"/>
 
 
 </FrameLayout>

@@ -12,18 +12,27 @@ import com.weike.data.util.TimeUtil;
 public class ToDo implements Parcelable{
 
     /**
+     * 是否提醒
+     */
+    public int isRemind;
+
+    /**
      * 待办事时间
      */
-    public String toDoDate;
+    public String birthdaydate;
 
     /**
-     * 这个坑爹的字段用于
+     * 是否提前提醒
      */
-    public String birthdaydate = TimeUtil.getTimeFormat();
+    public int isAdvance;  // 1是 2 否
+
+    public int advanceDateType; //提前提醒时间类型
+
+    public int advanceInterval; // 提醒时间间隔
 
 
     /**
-     *
+     * id啦
      */
     public String id;
 
@@ -38,45 +47,48 @@ public class ToDo implements Parcelable{
     public int priority = 1;
 
     /*
-     * 是否重复
+     * 是否重复提醒
      */
-    public int isRepeat = 1; // 重复 2 重复
+    public int isRepeat = 1; // 是 2 否
 
+    public int repeatInterval;//重复提醒时间间隔
 
-    /**
-     * 是否提醒
-     */
-    public int isRemind = 1; // 1提醒 2不提醒
+    public int repeatDateType; //重复提醒时间类型
 
-    /**
-     * 重复提醒日期类型
-     */
-    public int dateType = 1;
-
-    /**
-     * 重复提醒数量
-     */
-    public int repeatIntervalHour = 1;
-
-    /**
-     * 提前提醒几天
-     */
-    public int beforeRemindDay = 1;
-
-    public ToDo(){
+    public  ToDo(){
 
     }
 
-
     protected ToDo(Parcel in) {
-        toDoDate = in.readString();
+        birthdaydate = in.readString();
+        isAdvance = in.readInt();
+        advanceDateType = in.readInt();
+        advanceInterval = in.readInt();
+        id = in.readString();
         content = in.readString();
         priority = in.readInt();
         isRepeat = in.readInt();
-        isRemind = in.readInt();
-        dateType = in.readInt();
-        repeatIntervalHour = in.readInt();
-        beforeRemindDay = in.readInt();
+        repeatInterval = in.readInt();
+        repeatDateType = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(birthdaydate);
+        dest.writeInt(isAdvance);
+        dest.writeInt(advanceDateType);
+        dest.writeInt(advanceInterval);
+        dest.writeString(id);
+        dest.writeString(content);
+        dest.writeInt(priority);
+        dest.writeInt(isRepeat);
+        dest.writeInt(repeatInterval);
+        dest.writeInt(repeatDateType);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ToDo> CREATOR = new Creator<ToDo>() {
@@ -90,21 +102,4 @@ public class ToDo implements Parcelable{
             return new ToDo[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(toDoDate);
-        dest.writeString(content);
-        dest.writeInt(priority);
-        dest.writeInt(isRepeat);
-        dest.writeInt(isRemind);
-        dest.writeInt(dateType);
-        dest.writeInt(repeatIntervalHour);
-        dest.writeInt(beforeRemindDay);
-    }
 }

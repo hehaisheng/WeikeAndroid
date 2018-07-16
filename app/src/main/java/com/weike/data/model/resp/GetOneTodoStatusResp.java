@@ -4,25 +4,47 @@ import com.weike.data.base.BaseResp;
 
 public class GetOneTodoStatusResp extends BaseResp {
 
-    /**
-     * id : 6
-     * toDoDate : 2018-05-03
-     * content : 待办事项内容
-     * priority : 1
-     * isRepeat : 1
-     * repeatIntervalHour : 5
-     * beforeRemindDay : 5
-     */
 
     public int isRemind;
-    public int id;
-    public String remindDate;
+    /**
+     * 待办事时间
+     */
+    public String birthdaydate;
+
+    /**
+     * 是否提前提醒
+     */
+    public int isAdvance;  // 1是 2 否
+
+    public int advanceDateType; //提前提醒时间类型
+
+    public int advanceInterval; // 提醒时间间隔
+
+
+    /**
+     * id啦
+     */
+    public String id;
+
+    /**
+     * 内容
+     */
     public String content;
-    public int priority;
-    public int isRepeat;
-    public int repeatIntervalHour;
-    public int beforeRemindDay;
-    public int dateType;
+
+    /**
+     * 优先级 1 == 高 2 == 中 3== 低
+     */
+    public int priority = 1;
+
+    /*
+     * 是否重复提醒
+     */
+    public int isRepeat = 1; // 是 2 否
+
+    public int repeatInterval;//重复提醒时间间隔
+
+    public int repeatDateType; //重复提醒时间类型
+
 
 
 

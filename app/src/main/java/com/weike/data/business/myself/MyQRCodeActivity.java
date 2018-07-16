@@ -55,6 +55,9 @@ import java.util.List;
 import kr.co.namee.permissiongen.PermissionGen;
 import kr.co.namee.permissiongen.PermissionSuccess;
 
+import static com.weike.data.util.BitmapUtil.PIC_NAME;
+import static com.weike.data.util.BitmapUtil.PIC_PATH;
+
 /**
  * Created by LeoLu on 2018/6/1.
  * 我的二维码Activity
@@ -81,7 +84,7 @@ public class MyQRCodeActivity extends BaseActivity {
         binding.setMyqrcodeVM(vm);
 
 
-        setRightText("");
+        setRightText("分享");
         setCenterText("");
         setLeftText("我的二维码");
 
@@ -98,6 +101,8 @@ public class MyQRCodeActivity extends BaseActivity {
 
             }
         },true);
+
+
         binding.viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageSelected(int position) {
@@ -136,8 +141,6 @@ public class MyQRCodeActivity extends BaseActivity {
             protected void onSuccess(BaseResp<GetSharePicResp> getSharePicRespBaseResp) throws Exception {
                 vm.iconUrl.set(getSharePicRespBaseResp.getDatas().sharePicturesUrl);
 
-
-
                 resetViewPager(customUrl,0);
 
 
@@ -150,6 +153,23 @@ public class MyQRCodeActivity extends BaseActivity {
         });
     }
 
+    public void shareLayout(View view){
+        binding.llShareLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRightClick(boolean isModify) {
+        super.onRightClick(isModify);
+
+        setRightText("分享");
+        if (isModify) {
+
+            binding.llShareLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.llShareLayout.setVisibility(View.GONE);
+        }
+    }
+
     public void shareToMoment(View view){
         shared(true,pagePosition);
     }
@@ -157,6 +177,8 @@ public class MyQRCodeActivity extends BaseActivity {
     public void shareToFriend(View view){
         shared(false,pagePosition);
     }
+
+
 
     public void savePic(View view){
         if (pagePosition == 1) {
@@ -172,8 +194,15 @@ public class MyQRCodeActivity extends BaseActivity {
             public void run(){
                 if (pagePosition == 0) {
                     String url = vm.iconUrl.get();
+
+                    File crsh = new File(PIC_PATH + PIC_NAME);
+                    if (crsh.exists()) {
+                        ToastUtil.showToast("图片已存在");
+                        return;
+                    }
+
                     Bitmap bitmap = BitmapUtil.GetImageInputStream(url);
-                   String path =  BitmapUtil.savePicture(bitmap,BitmapUtil.PIC_NAME);
+                   String path =  BitmapUtil.savePicture(bitmap, PIC_NAME);
                     runOnUiThread(()->{
                         ToastUtil.showToast("保存至:" + path);
                     });
@@ -247,6 +276,13 @@ public class MyQRCodeActivity extends BaseActivity {
         for(int i = 0 ; i < 2;i++){
             View view = LayoutInflater.from(MyQRCodeActivity.this).inflate(R.layout.widget_share_item,null);
             ImageView outSide = view.findViewById(R.id.image_outSide);
+            outSide.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    savePic(null);
+                    return false;
+                }
+            });
             ImageView custom = view.findViewById(R.id.image_custom);
             if (i == 0) {
 

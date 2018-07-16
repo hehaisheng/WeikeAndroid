@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_white"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/widget_action_bar"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:minHeight="40dp"
+        android:background="#f0f0f0"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title_1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/color_bebebe"
+            android:text="当前手机号码"
+            android:layout_height="wrap_content"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_title_2"
+            android:gravity="center"
+
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/color_content"
+            android:text="当前手机号码"
+            android:layout_height="wrap_content"
+
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="43dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+86"
+            android:layout_marginLeft="20dp"
+
+            />
+
+        <EditText
+            android:id="@+id/ed_inputext"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:hint="请输入新的号码"
+            android:textSize="15sp"
+            android:layout_marginLeft="10dp"
+            android:background="@color/color_touming"
+            android:minHeight="50dp"
+            android:inputType="number"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/tv_get_code"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取验证码"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_line"
+        ></View>
+
+
+
+    <Button
+        android:id="@+id/btn_click"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:text="下一步"
+        android:textColor="@color/color_white"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+
+        android:background="@drawable/login_button"
+        />
+
+</LinearLayout>
