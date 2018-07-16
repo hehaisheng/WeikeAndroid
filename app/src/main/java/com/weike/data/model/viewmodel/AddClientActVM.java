@@ -62,8 +62,6 @@ public class AddClientActVM extends BaseVM {
         String[] array = new String[tmp.size()];
         for(int i = 0 ; i < tmp.size();i++){
             String str = tmp.get(i).sort + "." + tmp.get(i).labelName;;
-            if(i == 0)
-                continue;
             array[i] = str;
         }
 
