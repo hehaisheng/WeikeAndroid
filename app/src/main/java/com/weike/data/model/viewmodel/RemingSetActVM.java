@@ -7,15 +7,14 @@ import android.text.TextUtils;
 
 import com.weike.data.base.BaseVM;
 import com.weike.data.config.DataConfig;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.PickerUtil;
 import com.weike.data.util.TimeUtil;
 
 import java.util.ArrayList;
 
-import cn.addapp.pickers.listeners.OnItemPickListener;
 import cn.addapp.pickers.listeners.OnMoreItemPickListener;
 import cn.addapp.pickers.picker.DateTimePicker;
-import cn.addapp.pickers.picker.SinglePicker;
 
 public class RemingSetActVM extends BaseVM {
 
@@ -68,7 +67,7 @@ public class RemingSetActVM extends BaseVM {
     /**
      * 设置不提醒
      */
-    public ObservableField<Boolean> isUnRemind = new ObservableField<>();
+    public ObservableField<Boolean> isUnRemind = new ObservableField<>(false);
 
 
     public ObservableField<Boolean> heightCheck = new ObservableField<>(true);
@@ -93,14 +92,24 @@ public class RemingSetActVM extends BaseVM {
                     isRepeat = DataConfig.RemindType.TYPE_REMIND;
                     repeatText.set(s + " " + t1);
                     repeatInterval = Integer.parseInt(s);
+
+                    LogUtil.d("ActhomeRemind","-->" + t1.contains("天"));
                     if (t1.contains("天")) {
+                        LogUtil.d("ActhomeRemind","-->1");
                         repeatDateType = DataConfig.RemindDateType.TYPE_OF_DAY;
                     } else if (t1.contains("周")) {
+                        LogUtil.d("ActhomeRemind","-->2");
                         repeatDateType = DataConfig.RemindDateType.TYPE_OF_WEEK;
                     } else if (t1.contains("月")) {
+                        LogUtil.d("ActhomeRemind","-->3");
                         repeatDateType = DataConfig.RemindDateType.TYPE_OF_MONTH ;
                     } else if (t1.contains("年")) {
+                        LogUtil.d("ActhomeRemind","-->4");
                         repeatDateType = DataConfig.RemindDateType.TYPE_OF_YEAR;
+                    } else if (t1.contains("分") || t1.contains("分钟")){
+                        repeatDateType = DataConfig.RemindDateType.TYPE_OF_MIN;
+                    } else if (t1.contains("时") || t1.contains("小时")){
+                        repeatDateType = DataConfig.RemindDateType.TYPE_OF_HOUR;
                     }
                 }
 
@@ -165,6 +174,10 @@ public class RemingSetActVM extends BaseVM {
                         advanceDateType = DataConfig.RemindDateType.TYPE_OF_MONTH ;
                     } else if (t1.contains("年")) {
                         advanceDateType = DataConfig.RemindDateType.TYPE_OF_YEAR;
+                    } else if (t1.contains("分") || t1.contains("分钟")){
+                        advanceDateType = DataConfig.RemindDateType.TYPE_OF_MIN;
+                    } else if (t1.contains("时") || t1.contains("小时")){
+                        advanceDateType = DataConfig.RemindDateType.TYPE_OF_HOUR;
                     }
                 }
 

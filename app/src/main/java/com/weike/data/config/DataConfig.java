@@ -5,10 +5,13 @@ public final class DataConfig {
 
 
     public static class RemindDateType {
-        public static final int TYPE_OF_DAY = 1;
-        public static final int TYPE_OF_WEEK = 2;
-        public static final int TYPE_OF_MONTH = 3;
-        public static final int TYPE_OF_YEAR = 4;
+        public static final int TYPE_OF_MIN = 1;
+        public static final int TYPE_OF_HOUR = 2;
+        public static final int TYPE_OF_DAY = 3;
+        public static final int TYPE_OF_WEEK = 4;
+        public static final int TYPE_OF_MONTH = 5;
+        public static final int TYPE_OF_YEAR = 6;
+
     }
 
     public static class RemindType{

@@ -107,7 +107,7 @@ public class    JPushReceiver extends BroadcastReceiver {
                                 myKey + " - " +json.optString(myKey) + "]");
                     }
                 } catch (JSONException e) {
-                    Logger.e(TAG, "Get message extra JSON error!");
+                    Logger.e(TAG, "GetVipLicencePicReq message extra JSON error!");
                 }
 
             } else {

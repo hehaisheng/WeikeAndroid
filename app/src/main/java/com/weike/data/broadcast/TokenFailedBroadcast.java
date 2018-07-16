@@ -1,21 +1,11 @@
 package com.weike.data.broadcast;
 
         import android.app.AlertDialog;
-        import android.app.Dialog;
         import android.content.BroadcastReceiver;
         import android.content.Context;
-        import android.content.DialogInterface;
         import android.content.Intent;
-        import android.view.WindowManager;
 
-        import com.weike.data.base.BaseActivity;
-        import com.weike.data.business.login.LoginActivity;
-        import com.weike.data.util.ActivitySkipUtil;
-        import com.weike.data.util.LogUtil;
-        import com.weike.data.util.ToastUtil;
-        import com.weike.data.wxapi.TokenFailedActivity;
-
-        import cn.pedant.SweetAlert.SweetAlertDialog;
+        import com.weike.data.business.setting.TokenFailedActivity;
 
 /**
  * Created by LeoLu on 2018/6/1.

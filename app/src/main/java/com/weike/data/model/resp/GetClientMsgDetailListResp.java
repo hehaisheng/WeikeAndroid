@@ -1,6 +1,5 @@
 package com.weike.data.model.resp;
 
-import com.google.gson.annotations.SerializedName;
 import com.weike.data.base.BaseResp;
 
 import java.util.List;
@@ -38,62 +37,15 @@ public class GetClientMsgDetailListResp extends BaseResp {
          * is_remind : 1
          */
 
-        private int id;
-        private String content;
-        private String createDate;
-        private int type;  //0-系统消息、1-生日提醒、2-产品提醒、3-日志提醒、4-纪念日提醒
-        private int status;
-        private int is_remind;
-        public int isRepeat;
+        public int id;
+        public String content;
+        public String createDate;
+        public int type;  //0-系统消息、1-生日提醒、2-产品提醒、3-日志提醒、4-纪念日提醒
+        public int status;
+        public int remindType;
         public int handleType;
 
-        public int getId() {
-            return id;
-        }
 
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public String getCreateDate() {
-            return createDate;
-        }
-
-        public void setCreateDate(String createDate) {
-            this.createDate = createDate;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
-
-        public int getIs_remind() {
-            return is_remind;
-        }
-
-        public void setIs_remind(int is_remind) {
-            this.is_remind = is_remind;
-        }
     }
 
 }

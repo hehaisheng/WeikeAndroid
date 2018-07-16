@@ -1,12 +1,6 @@
 package com.weike.data.model.req;
 
 import com.weike.data.base.BaseReq;
-import com.weike.data.model.business.AnotherAttributes;
-import com.weike.data.model.business.BirthDayBean;
-import com.weike.data.model.business.ClientRelated;
-import com.weike.data.model.business.Product;
-
-import java.util.List;
 
 /**
  * Created by LeoLu on 2018/6/4.
@@ -79,12 +73,16 @@ public class AddClientReq extends BaseReq{
     /**
      * 客户关联ID
      */
-    public String relatedClientId;
+    public String clientRelated;
     /**
      * 额外的标签集合
      */
     public String attributesValue;
 
+    /**
+     * 纪念日集合
+     */
+    public String anniversary;
 
     // 服务信息
 

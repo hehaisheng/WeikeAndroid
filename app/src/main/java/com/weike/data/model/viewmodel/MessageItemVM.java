@@ -2,15 +2,9 @@ package com.weike.data.model.viewmodel;
 
 import android.app.Activity;
 import android.databinding.ObservableField;
-import android.support.v4.app.FragmentActivity;
-import android.widget.Toast;
 
 import com.weike.data.base.BaseVM;
 import com.weike.data.business.msg.MsgDetailActivity;
-import com.weike.data.util.ActivitySkipUtil;
-import com.weike.data.util.ToastUtil;
-
-import java.util.HashMap;
 
 /**
  * Created by LeoLu on 2018/5/31.
@@ -66,13 +60,13 @@ public class MessageItemVM extends BaseVM
      *
      */
     public void itemClick(){
-        if (isSel.get())
+        if (isSel.get()) {
             isCheck.set(isCheck.get() == true ? false : true);
-        else {
-
+        } else {
+            MsgDetailActivity.startActivity(activity,title.get(),clientId);
         }
 
-        MsgDetailActivity.startActivity(activity,title.get(),clientId);
+
     }
 
 

@@ -2,46 +2,33 @@ package com.weike.data.model.viewmodel;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.os.FileObserver;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.widget.Toast;
 
-import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.reflect.TypeToken;
-import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelpay.PayReq;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
 import com.weike.data.config.Config;
 import com.weike.data.model.req.GetPayDataReq;
+import com.weike.data.model.req.GetVipLicencePicReq;
 import com.weike.data.model.resp.GetPayDataResp;
+import com.weike.data.model.resp.GetVipLicencePicResp;
 import com.weike.data.model.resp.WeChatPayDataResp;
 import com.weike.data.network.RetrofitFactory;
-import com.weike.data.payment.alipay.OrderInfoUtil2_0;
 import com.weike.data.payment.alipay.PayResult;
 import com.weike.data.payment.wechat.WXRegister;
-import com.weike.data.payment.wechat.WxConfig;
-import com.weike.data.util.JsonUtil;
-import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
+import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.util.Map;
-
-import static com.weike.data.payment.alipay.AliPayConfig.APPID;
-import static com.weike.data.payment.alipay.AliPayConfig.PID;
-import static com.weike.data.payment.alipay.AliPayConfig.RSA2_PRIVATE;
-import static com.weike.data.payment.alipay.AliPayConfig.TARGET_ID;
 
 /**
  * Created by LeoLu on 2018/6/5.
@@ -79,8 +66,35 @@ public class OpenUpVipActVM extends BaseVM {
 
     public ObservableField<Boolean> threeCheck = new ObservableField<>(true);
 
+
+    public ObservableField<String> licencePic = new ObservableField<>();
+
     public OpenUpVipActVM(Activity activity) {
         this.activity = activity;
+        initLicence();
+    }
+
+    private void initLicence(){
+        GetVipLicencePicReq req = new GetVipLicencePicReq();
+        req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_VIP_LICENCE)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetVipLicencePicResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<GetVipLicencePicResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetVipLicencePicResp> getPayDataRespBaseResp) throws Exception {
+                licencePic.set(getPayDataRespBaseResp.getDatas().imgUrl);
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
     }
 
     public void add(){

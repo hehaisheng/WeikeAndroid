@@ -19,6 +19,8 @@ import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.config.Config;
 import com.weike.data.databinding.ActivityClientAddBinding;
+import com.weike.data.model.business.AnniversaryDay;
+import com.weike.data.model.business.ClientRelateForNet;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.AddClientReq;
 import com.weike.data.model.req.GetClientDetailMsgReq;
@@ -26,10 +28,12 @@ import com.weike.data.model.resp.AddClientResp;
 import com.weike.data.model.resp.GetClientDetailMsgResp;
 import com.weike.data.model.resp.UpLoadFileResp;
 import com.weike.data.model.viewmodel.AddClientActVM;
+import com.weike.data.model.viewmodel.AnniversariesItemVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LQRPhotoSelectUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -191,10 +195,6 @@ public class AddClientActivity extends BaseActivity {
 
 
 
-
-
-
-
     private void addFragment() {
 
         clientId = getIntent().getStringExtra(TAG_CLIENT_ID);
@@ -243,7 +243,7 @@ public class AddClientActivity extends BaseActivity {
 
 
         GetClientDetailMsgReq req = new GetClientDetailMsgReq();
-        req.clientId = getIntent().getStringExtra(TAG_CLIENT_ID);
+        req.clientId = clientId;
         req.sign = SignUtil.signData(req);
 
 
@@ -496,7 +496,7 @@ public class AddClientActivity extends BaseActivity {
         req.FourPhoneNumber = phoneNum[3];
         req.FivePhoneNumber = phoneNum[4]; //1 2 3 4 5个电话号码
 
-        req.relatedClientId =
+
         req.idCard = clientBaseMsgVM.idCard.get();//身份证
         req.email = clientBaseMsgVM.email.get();
         req.company = clientBaseMsgVM.companyName.get();
@@ -508,11 +508,49 @@ public class AddClientActivity extends BaseActivity {
         req.sonNum = clientBaseMsgVM.son.get(); //儿子
         req.daughterNum = clientBaseMsgVM.gril.get();//女儿
         req.birthday = clientBaseMsgVM.birthday.get();
-        //req.birthdayJson = JsonUtil.GsonString(clientBaseMsgVM.birthDayTodo); //生日的东西
+        req.birthdayJson = JsonUtil.GsonString(clientBaseMsgVM.birthDayTodo); //生日的东西
         req.height = clientBaseMsgVM.clientHeight.get();
         req.weight = clientBaseMsgVM.clientWidght.get();
         req.clientId = clientId;
-        req.relatedClientId = ""; //TODO
+
+
+
+        //关联客户
+        ArrayList<ClientRelateForNet> clientRelateds = new ArrayList<>();
+        for(int i = 0 ; i < clientBaseMsgFragment.clientRelateItemVMS.size();i++){
+            String name = clientBaseMsgFragment.clientRelateItemVMS.get(i).clientName.get();
+            String id = clientBaseMsgFragment.clientRelateItemVMS.get(i).clientId;
+            if (TextUtils.isEmpty(name)) {
+                continue;
+            } else {
+                ClientRelateForNet c = new ClientRelateForNet();
+                c.relatedClientId = id;
+                clientRelateds.add(c);
+            }
+        }
+        req.clientRelated = "" + JsonUtil.GsonString(clientRelateds) + ""; //TODO
+
+
+        //纪念日
+
+
+        ArrayList<AnniversaryDay> anniversaryDays = new ArrayList<>();
+
+        for(int i = 0 ; i < clientBaseMsgFragment.anniDayVMS.size();i++) {
+            AnniversariesItemVM vm = clientBaseMsgFragment.anniDayVMS.get(i);
+            if (TextUtils.isEmpty(vm.name.get()) || TextUtils.isEmpty(vm.id.get())){
+                continue;
+            } else {
+                AnniversaryDay day = new AnniversaryDay();
+                day.remind = vm.toDo;
+                day.anniversaryDate = vm.time.get();
+                day.anniversaryName = vm.name.get();
+                anniversaryDays.add(day);
+            }
+        }
+
+        req.anniversary = "" + JsonUtil.GsonString(anniversaryDays) + "";
+
 
 
         //服务信息
@@ -523,6 +561,7 @@ public class AddClientActivity extends BaseActivity {
         req.car = clientServiceMsgVM.carType.get();
         req.liabilities = clientServiceMsgVM.liabilities.get();
         req.product = "" + serviceMsgFragment.getAllProduct() + "";
+
 
         LogUtil.d("addClientActivity",serviceMsgFragment.getAllProduct());
 

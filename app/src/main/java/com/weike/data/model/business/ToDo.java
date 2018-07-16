@@ -3,8 +3,6 @@ package com.weike.data.model.business;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.weike.data.util.TimeUtil;
-
 /**
  * Created by LeoLu on 2018/6/6.
  */
@@ -60,6 +58,7 @@ public class ToDo implements Parcelable{
     }
 
     protected ToDo(Parcel in) {
+        isRemind = in.readInt();
         birthdaydate = in.readString();
         isAdvance = in.readInt();
         advanceDateType = in.readInt();
@@ -70,25 +69,6 @@ public class ToDo implements Parcelable{
         isRepeat = in.readInt();
         repeatInterval = in.readInt();
         repeatDateType = in.readInt();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(birthdaydate);
-        dest.writeInt(isAdvance);
-        dest.writeInt(advanceDateType);
-        dest.writeInt(advanceInterval);
-        dest.writeString(id);
-        dest.writeString(content);
-        dest.writeInt(priority);
-        dest.writeInt(isRepeat);
-        dest.writeInt(repeatInterval);
-        dest.writeInt(repeatDateType);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<ToDo> CREATOR = new Creator<ToDo>() {
@@ -102,4 +82,24 @@ public class ToDo implements Parcelable{
             return new ToDo[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(isRemind);
+        parcel.writeString(birthdaydate);
+        parcel.writeInt(isAdvance);
+        parcel.writeInt(advanceDateType);
+        parcel.writeInt(advanceInterval);
+        parcel.writeString(id);
+        parcel.writeString(content);
+        parcel.writeInt(priority);
+        parcel.writeInt(isRepeat);
+        parcel.writeInt(repeatInterval);
+        parcel.writeInt(repeatDateType);
+    }
 }

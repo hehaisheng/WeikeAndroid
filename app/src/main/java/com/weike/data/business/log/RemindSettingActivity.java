@@ -1,14 +1,11 @@
 package com.weike.data.business.log;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
@@ -16,16 +13,13 @@ import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
-import com.weike.data.business.working.HandlerWorkingFragment;
 import com.weike.data.config.Config;
 import com.weike.data.config.DataConfig;
 import com.weike.data.databinding.ActivityRemindSettingBinding;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.GetOneTodoStatusReq;
 import com.weike.data.model.req.ModifyOneTodoReq;
-import com.weike.data.model.resp.GetHandleWorkListResp;
 import com.weike.data.model.resp.GetOneTodoStatusResp;
-import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.model.viewmodel.RemingSetActVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.JsonUtil;
@@ -144,6 +138,10 @@ public class RemindSettingActivity extends BaseActivity {
                         vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "月");
                     } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
                         vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "年");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_MIN) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "分钟");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_HOUR) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "小时");
                     } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == 0) {
                         vm.repeatText.set("不重复");
                     }
@@ -161,6 +159,10 @@ public class RemindSettingActivity extends BaseActivity {
                         vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "月");
                     } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
                         vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "年");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_MIN) {
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "分钟");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_HOUR) {
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "小时");
                     } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == 0) {
                         vm.remindTime.set("不提前");
                     }
@@ -178,7 +180,7 @@ public class RemindSettingActivity extends BaseActivity {
     }
 
     private void initCurrentTodo(){
-        LogUtil.d("RemindSetting","" + JsonUtil.GsonString(toDo));
+        LogUtil.d("ActhomeRemindSetting","" + JsonUtil.GsonString(toDo));
 
         vm.isRemind.set(toDo.isRemind == 1  ? true : false);
         vm.isUnRemind.set(toDo.isRemind == 2  ? true : false);
@@ -187,7 +189,12 @@ public class RemindSettingActivity extends BaseActivity {
         vm.midCheck.set(toDo.priority == 2 ? true : false);
         vm.lowCheck.set(toDo.priority == 3 ? true :false);
         vm.time.set(toDo.birthdaydate);
-
+        vm.advanceDateType = toDo.advanceDateType;
+        vm.advanceInterval = toDo.advanceInterval;
+        vm.isAdvance = toDo.isAdvance;
+        vm.isRepeat = toDo.isRepeat;
+        vm.repeatDateType = toDo.repeatDateType;
+        vm.repeatInterval = toDo.repeatInterval;
 
         //
 
@@ -202,6 +209,10 @@ public class RemindSettingActivity extends BaseActivity {
                 vm.repeatText.set("" + toDo.repeatInterval + "月");
             } else if (toDo.repeatDateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
                 vm.repeatText.set("" + toDo.repeatInterval + "年");
+            } else if (toDo.repeatDateType == DataConfig.RemindDateType.TYPE_OF_MIN) {
+                vm.repeatText.set("" + toDo.repeatInterval + "分钟");
+            } else if (toDo.repeatDateType == DataConfig.RemindDateType.TYPE_OF_HOUR) {
+                vm.repeatText.set("" + toDo.repeatInterval + "小时");
             }
         } else {
             vm.repeatText.set("不重复");
@@ -217,6 +228,10 @@ public class RemindSettingActivity extends BaseActivity {
                 vm.remindTime.set("提前" + toDo.advanceInterval + "月");
             } else if (toDo.advanceDateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
                 vm.remindTime.set("提前" + toDo.advanceInterval + "年");
+            } else if (toDo.repeatDateType == DataConfig.RemindDateType.TYPE_OF_MIN) {
+                vm.remindTime.set("提前" + toDo.advanceInterval + "分钟");
+            } else if (toDo.repeatDateType == DataConfig.RemindDateType.TYPE_OF_HOUR) {
+                vm.remindTime.set("提前" + toDo.advanceInterval + "小时");
             }
         } else {
             vm.remindTime.set("不提前");
@@ -251,7 +266,7 @@ public class RemindSettingActivity extends BaseActivity {
 
 
         toDo = compass();
-
+        LogUtil.d("addlog","bef:" + JsonUtil.GsonString(toDo));
 
         if (id != null) { //如果ID 不为空 那么就是修改
             modifyOneTodo();
@@ -270,7 +285,7 @@ public class RemindSettingActivity extends BaseActivity {
         ModifyOneTodoReq req  = new ModifyOneTodoReq();
         req.isRemind = toDo.isRemind;
         req.content = toDo.content;
-        req.id = id;
+        req.remindId = id;
         req.isRepeat = toDo.isRepeat;
         req.priority = toDo.priority;
         req.birthdaydate = toDo.birthdaydate;
@@ -306,8 +321,12 @@ public class RemindSettingActivity extends BaseActivity {
 
         ToDo toDo = new ToDo();
 
-        toDo.isRemind = vm.isRemind.get() ? DataConfig.RemindType.TYPE_REMIND : DataConfig.RemindType.TYPE_UNREMIND;
 
+        if (vm.isRemind.get()) {
+            toDo.isRemind = 1;
+        } else {
+            toDo.isRemind = 2;
+        }
 
         toDo.content = vm.content.get();
         toDo.birthdaydate = vm.time.get();

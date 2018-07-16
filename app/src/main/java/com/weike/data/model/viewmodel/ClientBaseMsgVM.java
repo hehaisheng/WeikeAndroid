@@ -12,7 +12,6 @@ import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.business.setting.AttrManagerActivity;
 import com.weike.data.config.DataConfig;
 import com.weike.data.model.business.ToDo;
-import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.PickerUtil;
 import com.weike.data.util.TimeUtil;
 
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.addapp.pickers.listeners.OnItemPickListener;
-import cn.addapp.pickers.picker.DateTimePicker;
+import cn.addapp.pickers.picker.DatePicker;
 import cn.addapp.pickers.picker.SinglePicker;
 
 /**
@@ -103,7 +102,7 @@ public class ClientBaseMsgVM extends BaseVM {
      */
     public ObservableField<Boolean> canClickable = new ObservableField<>(false);
 
-    public ToDo birthDayTodo = new ToDo();
+    public ToDo birthDayTodo = null;
 
 
     public ObservableField<Integer> birthdayRemindIcon = new ObservableField<>(R.mipmap.ic_remind_dis);
@@ -132,7 +131,7 @@ public class ClientBaseMsgVM extends BaseVM {
     public void onBirthdayRemindResult(ToDo toDo){
 
         birthDayTodo = toDo;
-        if (toDo.isAdvance == DataConfig.RemindType.TYPE_REMIND) {
+        if (toDo.isRemind == DataConfig.RemindType.TYPE_REMIND) {
             birthdayRemindIcon.set(R.mipmap.ic_remind);
         } else {
             birthdayRemindIcon.set(R.mipmap.ic_remind_dis);
@@ -146,23 +145,23 @@ public class ClientBaseMsgVM extends BaseVM {
     public void birthdayTimeClick(){
 
 
-        if(TextUtils.isEmpty(birthday.get())) {
 
-            PickerUtil.onYearMonthDayTimePicker(null, new DateTimePicker.OnYearMonthDayTimePickListener() {
+        if (TextUtils.isEmpty(birthday.get())){
+            List<Integer> tmp = TimeUtil.formatDateClick(TimeUtil.getTimeFormat("yyyy-MM-dd"));
+            PickerUtil.onYearMonthDayPicker(tmp.get(0),tmp.get(1),tmp.get(2),activity, new DatePicker.OnYearMonthDayPickListener() {
                 @Override
-                public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
-                    birthday.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
+                public void onDatePicked(String s, String s1, String s2) {
+                    birthday.set(s + "-" + s1 + "-" + s2);
                 }
-            }, baseFragment.getActivity());
+            });
         } else {
-            ArrayList<Integer> tmp = TimeUtil.formatTimeClick(birthday.get());
-
-            PickerUtil.onYearMonthDayTimePicker(tmp.get(0),tmp.get(1),tmp.get(2),tmp.get(3),tmp.get(4), new DateTimePicker.OnYearMonthDayTimePickListener() {
+            List<Integer> tmp = TimeUtil.formatDateClick(birthday.get());
+            PickerUtil.onYearMonthDayPicker(tmp.get(0),tmp.get(1),tmp.get(2),activity, new DatePicker.OnYearMonthDayPickListener() {
                 @Override
-                public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
-                    birthday.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
+                public void onDatePicked(String s, String s1, String s2) {
+                    birthday.set(s + "-" + s1 + "-" + s2);
                 }
-            }, baseFragment.getActivity());
+            });
         }
     }
 

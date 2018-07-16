@@ -196,6 +196,7 @@ public class HomeActivity extends BaseActivity {
             } else {
                 btn_deleteMsg.setVisibility(View.GONE);
             }
+            ((MsgFragment)currentFragment).onRightClick();
         } else {
             setRightText("");
             isSle = false;

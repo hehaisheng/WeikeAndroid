@@ -3,20 +3,16 @@ package com.weike.data.business.log;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.google.gson.reflect.TypeToken;
 import com.mylhyl.circledialog.CircleDialog;
-import com.mylhyl.circledialog.callback.ConfigDialog;
-import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.ProgressParams;
 import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
@@ -29,10 +25,10 @@ import com.weike.data.config.Config;
 import com.weike.data.databinding.ActivityAddLogBinding;
 import com.weike.data.listener.OnReduceListener;
 import com.weike.data.model.business.ClientLog;
+import com.weike.data.model.business.ClientRelateForNet;
 import com.weike.data.model.business.ClientRelated;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.AddLogReq;
-import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.model.viewmodel.AddLogActVM;
 import com.weike.data.model.viewmodel.RelateCLientItemVM;
 import com.weike.data.network.RetrofitFactory;
@@ -44,7 +40,6 @@ import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -141,7 +136,8 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RemindSettingActivity.CODE_OF_REQUEST  && resultCode == RESULT_OK) {
-            toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
+             toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
+            LogUtil.d("addLog","todo:" + toDo.isRemind);
             logActVM.setToDo(toDo);
         } else if (requestCode == RelateClientActivity.REQUEST_CODE && resultCode == RESULT_OK ){
 
@@ -163,9 +159,9 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
 
 
 
-        List<ClientRelated> subs = new ArrayList<>();
+        List<ClientRelateForNet> subs = new ArrayList<>();
         for(int  i = 0 ; i < clientRelateVMS.size();i++) {
-            ClientRelated related = new ClientRelated();
+            ClientRelateForNet related = new ClientRelateForNet();
             related.clientId = clientRelateVMS.get(i).id;
             subs.add(related);
         }

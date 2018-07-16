@@ -68,7 +68,7 @@ public class PickerUtil {
         picker.show();
     }
 
-    public void onYearMonthDayPicker(int year,int month , int day ,View view,Activity activity,DatePicker.OnYearMonthDayPickListener listener) {
+    public static void onYearMonthDayPicker(int year,int month , int day ,Activity activity,DatePicker.OnYearMonthDayPickListener listener) {
         final DatePicker picker = new DatePicker(activity);
         picker.setCanLoop(true);
         picker.setWheelModeEnable(true);
@@ -100,6 +100,28 @@ public class PickerUtil {
 
 //        String[] ss = (String[]) list.toArray();
         SinglePicker<String> picker = new SinglePicker<>(activity, list);
+        picker.setCanLoop(false);//不禁用循环
+        picker.setLineVisible(true);
+        picker.setTitleText("设置你的提醒时间");
+        picker.setTextSize(18);
+        picker.setSelectedIndex(8);
+        picker.setWheelModeEnable(false);
+        //启用权重 setWeightWidth 才起作用
+        picker.setSelectedTextColor(WKBaseApplication.getInstance().getResources().getColor(R.color.color_41BCF6));
+        picker.setUnSelectedTextColor(WKBaseApplication.getInstance().getResources().getColor(R.color.color_bebebe));
+        picker.setLabel("小时");
+        picker.setWeightEnable(true);
+        picker.setWeightWidth(1);
+
+        picker.setOnItemPickListener(listener);
+        picker.show();
+    }
+
+    public static void onOptionPicker(List<String> data ,Activity activity,OnItemPickListener listener) {
+
+
+//        String[] ss = (String[]) list.toArray();
+        SinglePicker<String> picker = new SinglePicker<>(activity, data);
         picker.setCanLoop(false);//不禁用循环
         picker.setLineVisible(true);
         picker.setTitleText("设置你的提醒时间");

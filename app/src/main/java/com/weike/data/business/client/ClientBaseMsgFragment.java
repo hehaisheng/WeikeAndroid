@@ -39,7 +39,7 @@ import static android.app.Activity.RESULT_OK;
  * 客户基本信息Fragment
  */
 
-public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickListener,AddPhoneVM.OnPhoneClickListener,AddClientRelateItemVM.AddClientRelateItemListener {
+public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickListener,AddPhoneVM.OnPhoneClickListener,AddClientRelateItemVM.AddClientRelateItemListener,AnniversariesItemVM.AnniversariseDayClickListener {
 
 
     /**
@@ -67,6 +67,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     public ClientBaseMsgVM clientBaseMsgVM;
 
     public FragmentClientBaseMsgBinding binding;
+
 
 
     /**
@@ -162,13 +163,29 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         anniDayAdapter = new BaseDataBindingAdapter(getActivity(),R.layout.widget_layout_ani_day,anniDayVMS, BR.anniverVM);
         NoScrollLinearLayoutManager linearLayoutManager = new NoScrollLinearLayoutManager(getActivity());
         linearLayoutManager.setScrollEnabled(false);
-
+        binding.recycleAnnidayList.setLayoutManager(linearLayoutManager);
+        binding.recycleAnnidayList.setAdapter(anniDayAdapter);
 
         initAniDayHead();
+
+        anniDayAdapter.notifyDataSetChanged();
     }
 
     private void initAniDayHead(){
+        for(int i = 0 ; i < 2;i++) {
+            AnniversariesItemVM vm = new AnniversariesItemVM(getActivity());
+            if (i == 0) {
+                vm.isModify.set(false);
+                vm.isFirst.set(true);
+            } else {
+                vm.isModify.set(true);
+                vm.isFirst.set(false);
+            }
+            vm.setListener(this);
 
+            anniDayVMS.add(vm);
+
+        }
 
     }
 
@@ -347,5 +364,33 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         }
 
+    }
+
+    @Override
+    public void anniDayClick(int type, AnniversariesItemVM item) {
+        if (type == 1) { //add
+            AnniversariesItemVM news = new AnniversariesItemVM(getActivity());
+            news.isFirst.set(false);
+            news.isModify.set(true);
+            news.setListener(this);
+            anniDayVMS.add(news);
+            anniDayAdapter.notifyDataSetChanged();
+        } else if (type == 2) { //reduce
+            DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否移除该纪念日", new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    anniDayVMS.remove(item);
+                    anniDayAdapter.notifyDataSetChanged();
+                }
+            });
+        } else {
+
+        }
     }
 }

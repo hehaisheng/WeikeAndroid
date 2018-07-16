@@ -78,17 +78,34 @@
             android:layout_height="1dp"
             android:background="@color/color_line" />
 
-
-        <RadioButton
-            android:id="@+id/radiobutton_custom"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_marginLeft="16dp"
-            android:button="@drawable/selector_checkbox_low"
-            android:text="自定义"
-            android:textColor="@color/color_content"
-            android:paddingLeft="16dp" />
+
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/radiobutton_custom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginLeft="16dp"
+                android:button="@drawable/selector_checkbox_low"
+                android:text="自定义"
+                android:textColor="@color/color_content"
+                android:paddingLeft="16dp" />
+
+            <TextView
+                android:id="@+id/tv_customer_day"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+
+                android:textColor="@color/color_bebebe"
+                android:layout_height="wrap_content"
+
+                />
+
+        </FrameLayout>
+
+
 
 
 

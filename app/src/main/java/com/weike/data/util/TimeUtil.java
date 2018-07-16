@@ -11,6 +11,12 @@ public class TimeUtil {
         return format.format(System.currentTimeMillis());
     };
 
+    public static String getTimeFormat(String f){
+        SimpleDateFormat format = new SimpleDateFormat(f);
+
+        return format.format(System.currentTimeMillis());
+    };
+
     public static ArrayList<Integer> formatDateClick(String date){
         int year = Integer.parseInt(date.substring(0,4));
         int month = Integer.parseInt(date.substring(5,7));

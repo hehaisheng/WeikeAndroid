@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="forcePwdActVM"
+            type="com.weike.data.model.viewmodel.ForcePwdActVM"></variable>
+
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_white"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+
+        <include layout="@layout/widget_action_bar" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_line"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="密码"
+                android:layout_gravity="center"
+                android:textColor="@color/color_content" />
+
+
+            <EditText
+                android:layout_weight="1"
+
+                android:background="@color/color_touming"
+                android:layout_width="wrap_content"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
+                android:hint="请输入密码"
+                android:textSize="15sp"
+                android:ellipsize="end"
+                android:layout_gravity="center"
+                android:text="@={forcePwdActVM.pwd}"
+                updateInputType="@{forcePwdActVM.reset1}"
+                android:maxLines="1"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:onClick="@{()->forcePwdActVM.pwd1Click()}"
+                android:layout_width="wrap_content"
+                loadImageId="@{forcePwdActVM.pwdImageId}"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_line"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="重复密码"
+                android:layout_gravity="center"
+                android:textColor="@color/color_content" />
+
+
+            <EditText
+                android:layout_weight="1"
+                android:background="@color/color_touming"
+                android:textSize="15sp"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_gravity="center"
+                updateInputType="@{forcePwdActVM.reset2}"
+                android:hint="请再次输入密码"
+                android:layout_width="wrap_content"
+                android:text="@={forcePwdActVM.pwd2}"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                loadImageId="@{forcePwdActVM.pwd2ImageId}"
+                android:onClick="@{()->forcePwdActVM.pwd2Click()}"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_line"
+            />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:background="@drawable/login_button"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="80dp"
+            android:textColor="@color/color_white"
+            android:text="确定"
+            android:onClick="@{()->forcePwdActVM.submit()}"
+            android:layout_marginRight="30dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</layout>

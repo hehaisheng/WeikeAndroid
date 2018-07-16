@@ -37,7 +37,6 @@ import com.weike.data.model.resp.EditAndDeleteTodoResp;
 import com.weike.data.model.resp.GetClientTagListResp;
 import com.weike.data.model.resp.GetHandleWorkListResp;
 import com.weike.data.model.resp.GetTodoByTagResp;
-import com.weike.data.model.viewmodel.ExpandChildVM;
 import com.weike.data.model.viewmodel.ExpandGroupVM;
 import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.network.RetrofitFactory;
@@ -295,6 +294,10 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                     return;
                 }
 
+                if (page == 1) {
+                    vms.clear();
+                }
+
                 for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
                     HandleWorkItemVM vm = new HandleWorkItemVM();
                     vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
@@ -425,11 +428,12 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                     recycleAdapter.notifyDataSetChanged();
                  } else if(type == 4) {
                     vms.remove(vm);
+                    recycleAdapter.notifyDataSetChanged();
                 }  else {
                     ToastUtil.showToast("修改成功");
                 }
 
-                recycleAdapter.notifyDataSetChanged();
+
             }
 
             @Override

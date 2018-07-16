@@ -1,4 +1,4 @@
-package com.weike.data.wxapi;
+package com.weike.data.business.setting;
 
 import android.app.Activity;
 import android.content.Intent;

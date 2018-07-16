@@ -109,7 +109,7 @@
 
                 />
 
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -119,6 +119,8 @@
                 android:layout_weight="1"
                 android:background="@color/color_touming"
                 android:hint="请选择时间"
+                android:onClick="@{()->anniverVM.timeSelector()}"
+                android:layout_marginRight="5dp"
                 android:text="@={anniverVM.time}" />
 
             <ImageView

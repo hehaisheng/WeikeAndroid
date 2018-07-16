@@ -20,19 +20,16 @@ import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.config.Config;
 import com.weike.data.listener.OnReduceListener;
-import com.weike.data.model.req.GetClientDetailMsgReq;
 import com.weike.data.model.req.GetClientMsgDetailListReq;
 import com.weike.data.model.req.ModifyClientMsgRemindReq;
 import com.weike.data.model.req.ModifyClientMsgReq;
 import com.weike.data.model.resp.GetClientMsgDetailListResp;
 import com.weike.data.model.resp.ModifyClientMsgRemindResp;
 import com.weike.data.model.resp.ModifyClientMsgResp;
-import com.weike.data.model.viewmodel.MessageItemVM;
 import com.weike.data.model.viewmodel.MsgDetailItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
-import com.weike.data.util.LogUtil;
 import com.weike.data.util.PickerUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
@@ -46,7 +43,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.addapp.pickers.listeners.OnItemPickListener;
-import cn.addapp.pickers.listeners.OnSingleWheelListener;
 
 /**
  * Created by LeoLu on 2018/6/1.
@@ -232,29 +228,32 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
                 for (int i = 0; i < list.size(); i++) {
                     MsgDetailItemVM itemVM = new MsgDetailItemVM(MsgDetailActivity.this);
                     itemVM.setListener(MsgDetailActivity.this);
-                    itemVM.time.set(list.get(i).getCreateDate());
-                    itemVM.content.set(list.get(i).getContent());
-                    itemVM.id = list.get(i).getId() + "";
+                    itemVM.time.set(list.get(i).createDate);
+                    itemVM.content.set(list.get(i).content);
+                    itemVM.id = list.get(i).id + "";
                     itemVM.isSle.set(false);
                     itemVM.isCheck.set(false);
-                    itemVM.remindType = list.get(i).getIs_remind();
+                    itemVM.remindType = list.get(i).remindType;
 
-                    if (list.get(i).getType() == 0) { //如果是系统消息
+                    if (list.get(i).type == 0) { //如果是系统消息
                         itemVM.isSystemMsg.set(true);
                     }
 
 
-                    if (list.get(i).isRepeat == 1) {
+                    if (list.get(i).handleType == 2 && list.get(i).remindType == 1) {
                         itemVM.isTextRemind.set(true);
-                    } else {
+                        itemVM.rightText.set("未处理");
+                    } else if (list.get(i).handleType == 2 && list.get(i).remindType == 1) {
                         itemVM.isTextRemind.set(false);
+                        itemVM.rightText.set("已处理");
                     }
 
-                    if (list.get(i).getIs_remind() == 1) {
+
+                    if (list.get(i).remindType == 2) {
                         itemVM.rightText.set("稍后提醒");
-                    } else {
-                        itemVM.rightText.set("不在提醒");
                     }
+
+
 
 
                     vms.add(itemVM);

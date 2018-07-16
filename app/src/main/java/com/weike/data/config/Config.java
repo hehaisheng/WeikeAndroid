@@ -222,4 +222,22 @@ public final class Config {
      * 更换手机号码
      */
     public static final String CHANGE_PHONE_NUM = "wkzs-restful/user/editPhoneNumber";
+
+    /**
+     * 会员权益
+     */
+    public static final String GET_VIP_LICENCE = "wkzs-restful/user/rights";
+
+
+    /**
+     * 显示天数
+     */
+    public static final String GET_HANDLE_DISPLAY = "wkzs-restful/index/selectUpcomingDate";
+
+    /**
+     * 修改待办事项显
+     */
+    public static final String MODIFY_HANDLE_DISPLAY = "wkzs-restful/index/editUpcomingDate";
+
+
 }

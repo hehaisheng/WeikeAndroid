@@ -24,7 +24,7 @@ public class ModifyOneTodoReq extends BaseReq {
     /**
      * id啦
      */
-    public String id;
+    public String remindId;
 
     /**
      * 内容
