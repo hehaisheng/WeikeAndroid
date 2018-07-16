@@ -45,6 +45,13 @@ public class PickerUtil {
     }
 
     public static void  onYearMonthDayTimePicker(int year,int month , int day ,int hour , int min,DateTimePicker.OnYearMonthDayTimePickListener listener, Activity activity) {
+        if (hour == 0) {
+            hour =10;
+        }
+        if (min == 0) {
+            hour = 10;
+        }
+
         DateTimePicker picker = new DateTimePicker(activity, DateTimePicker.HOUR_24);
         picker.setActionButtonTop(false);
         picker.setDateRangeStart(1900, 1, 1);

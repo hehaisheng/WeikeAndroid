@@ -508,7 +508,7 @@ public class AddClientActivity extends BaseActivity {
         req.sonNum = clientBaseMsgVM.son.get(); //儿子
         req.daughterNum = clientBaseMsgVM.gril.get();//女儿
         req.birthday = clientBaseMsgVM.birthday.get();
-        req.birthdayJson = JsonUtil.GsonString(clientBaseMsgVM.birthDayTodo); //生日的东西
+       // req.birthdayJson = clientBaseMsgVM.birthDayTodo == null ? "" : JsonUtil.GsonString(clientBaseMsgVM.birthDayTodo); //生日的东西
         req.height = clientBaseMsgVM.clientHeight.get();
         req.weight = clientBaseMsgVM.clientWidght.get();
         req.clientId = clientId;
@@ -536,17 +536,16 @@ public class AddClientActivity extends BaseActivity {
 
         ArrayList<AnniversaryDay> anniversaryDays = new ArrayList<>();
 
+        LogUtil.d("AddClientActivity","-->" +clientBaseMsgFragment.anniDayVMS.size());
+
         for(int i = 0 ; i < clientBaseMsgFragment.anniDayVMS.size();i++) {
             AnniversariesItemVM vm = clientBaseMsgFragment.anniDayVMS.get(i);
-            if (TextUtils.isEmpty(vm.name.get()) || TextUtils.isEmpty(vm.id.get())){
-                continue;
-            } else {
-                AnniversaryDay day = new AnniversaryDay();
-                day.remind = vm.toDo;
-                day.anniversaryDate = vm.time.get();
-                day.anniversaryName = vm.name.get();
-                anniversaryDays.add(day);
-            }
+            if (i == 0)continue;
+            AnniversaryDay day = new AnniversaryDay();
+            day.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
+            day.anniversaryDate = vm.time.get();
+            day.anniversaryName = vm.name.get();
+            anniversaryDays.add(day);
         }
 
         req.anniversary = "" + JsonUtil.GsonString(anniversaryDays) + "";
@@ -561,6 +560,7 @@ public class AddClientActivity extends BaseActivity {
         req.car = clientServiceMsgVM.carType.get();
         req.liabilities = clientServiceMsgVM.liabilities.get();
         req.product = "" + serviceMsgFragment.getAllProduct() + "";
+
 
 
         LogUtil.d("addClientActivity",serviceMsgFragment.getAllProduct());

@@ -28,6 +28,7 @@ import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.TimeUtil;
+import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
@@ -80,12 +81,15 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
 
         adapter = new BaseDataBindingAdapter(getContext(),R.layout.widget_log_list_item,vms, BR.clientLogItemVM);
         TextView textView = view.findViewById(R.id.tv_add_log);
-        if (TextUtils.isEmpty(clientId)){
-            textView.setVisibility(View.GONE);
-        }
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (clientId == null) {
+                    ToastUtil.showToast("保存客户信息后才能添加日志");
+                    return;
+                }
+
                 ClientRelated clientRelated = new ClientRelated();
                 clientRelated.clientId =clientId;
                 clientRelated.name = ((AddClientActivity)getActivity()).vm.userName.get();

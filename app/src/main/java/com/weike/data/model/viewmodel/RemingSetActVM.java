@@ -39,7 +39,7 @@ public class RemingSetActVM extends BaseVM {
     /**
      * 时间
      */
-    public ObservableField<String> time = new ObservableField<>();
+    public ObservableField<String> time = new ObservableField<>("");
     /**
      * 内容
      */
@@ -49,12 +49,12 @@ public class RemingSetActVM extends BaseVM {
     /**
      * 是否重复文字
      */
-    public ObservableField<String>  repeatText = new ObservableField<>();
+    public ObservableField<String>  repeatText = new ObservableField<>("");
 
     /**
      * 提醒时间
      */
-    public ObservableField<String> remindTime = new ObservableField<>();
+    public ObservableField<String> remindTime = new ObservableField<>("");
 
 
     /**
@@ -127,7 +127,10 @@ public class RemingSetActVM extends BaseVM {
      * 时间Dialog
      */
     public void timeClick(){
-        if(TextUtils.isEmpty(time.get())) {
+
+
+
+        if(TextUtils.isEmpty(time.get()) || time.get().length() < 5) {
 
 
             ArrayList<Integer> tmp = TimeUtil.formatTimeClick(TimeUtil.getTimeFormat());
@@ -139,6 +142,8 @@ public class RemingSetActVM extends BaseVM {
                 }
             }, activity);
         } else {
+
+            LogUtil.d("acthome","fucking time:" + time.get());
             ArrayList<Integer> tmp = TimeUtil.formatTimeClick(time.get());
 
             PickerUtil.onYearMonthDayTimePicker(tmp.get(0),tmp.get(1),tmp.get(2),tmp.get(3),tmp.get(4), new DateTimePicker.OnYearMonthDayTimePickListener() {

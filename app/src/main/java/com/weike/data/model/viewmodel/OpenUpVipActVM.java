@@ -23,6 +23,7 @@ import com.weike.data.model.resp.WeChatPayDataResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.payment.alipay.PayResult;
 import com.weike.data.payment.wechat.WXRegister;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
@@ -67,7 +68,7 @@ public class OpenUpVipActVM extends BaseVM {
     public ObservableField<Boolean> threeCheck = new ObservableField<>(true);
 
 
-    public ObservableField<String> licencePic = new ObservableField<>();
+    public ObservableField<String> licencePic = new ObservableField<>("http://ja3.ssssgame.com/wkzs-photo/images/2018/6/4/44745bbc-cdcf-4487-8406-e6f5b83e770f.jpg");
 
     public OpenUpVipActVM(Activity activity) {
         this.activity = activity;
@@ -86,6 +87,8 @@ public class OpenUpVipActVM extends BaseVM {
                 })).subscribe(new BaseObserver<BaseResp<GetVipLicencePicResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetVipLicencePicResp> getPayDataRespBaseResp) throws Exception {
+                LogUtil.d("VipOpenUp","-->" + getPayDataRespBaseResp.getDatas().imgUrl);
+                //licencePic.set("http:\\/\\/ja3.ssssgame.com\\/wkzs-photo\\/file\\/2018\\/6\\/16\\/7004037d-f25c-446d-beb9-c1ca0fc4dce8.jpg");
                 licencePic.set(getPayDataRespBaseResp.getDatas().imgUrl);
 
             }

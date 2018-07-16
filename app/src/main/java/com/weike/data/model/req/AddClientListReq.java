@@ -10,7 +10,8 @@ import java.util.List;
 
 public class AddClientListReq extends BaseReq {
 
-    public List<ClientListAttr> clientAttr;
+
+    public String clientAttr;
 
 
     public static class ClientListAttr{

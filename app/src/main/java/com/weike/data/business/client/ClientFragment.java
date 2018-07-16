@@ -1,6 +1,7 @@
 package com.weike.data.business.client;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,6 +39,8 @@ import com.weike.data.view.citypicker.SideBar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import contactspicker.ContactActivity;
 
 /**
  * Created by LeoLu on 2018/5/21.
@@ -164,6 +167,12 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
     private View initHeadView() {
         View.OnClickListener headClick = new View.OnClickListener() {
             @Override
@@ -173,7 +182,7 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
                 } else if (view.getId() == R.id.ll_goto_client_tag) {
                     ActivitySkipUtil.skipAnotherAct((Activity) context, ClientTagActivity.class);
                 } else if (view.getId() == R.id.ll_goto_add_for_phone) {
-
+                    ActivitySkipUtil.skipAnotherAct(getActivity(), ContactActivity.class);
                 } else if (view.getId() == R.id.tv_search) {
                     ActivitySkipUtil.skipAnotherAct(getActivity(),SearchActivity.class);
                 }

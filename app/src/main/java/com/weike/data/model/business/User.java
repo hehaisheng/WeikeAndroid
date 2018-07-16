@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class User {
 
+    public boolean isOpenPush = true;
+
     /**
      * 手机号码
      */

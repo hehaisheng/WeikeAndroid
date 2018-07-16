@@ -136,6 +136,7 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
                 AttrItemVM vm = new AttrItemVM();
                 vm.isDisplayReduce.set(true);
                 vm.name.set(content);
+                vm.setListener(AttrManagerActivity.this);
                 vm.id.set(baseResp.getDatas().attributesId);
                 vms.add(vm);
                 adapter.notifyDataSetChanged();

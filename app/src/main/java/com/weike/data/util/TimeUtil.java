@@ -2,13 +2,17 @@ package com.weike.data.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TimeUtil {
 
     public static String getTimeFormat(){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        return format.format(System.currentTimeMillis());
+        String time = format.format(new Date());
+        LogUtil.d("TimeUtil","format:" + time);
+
+        return time;
     };
 
     public static String getTimeFormat(String f){
@@ -31,6 +35,11 @@ public class TimeUtil {
     }
 
     public static ArrayList<Integer> formatTimeClick(String time) {
+
+
+        ArrayList<Integer> tmp = new ArrayList<>();
+
+
         int year = Integer.parseInt(time.substring(0,4));
         int month = Integer.parseInt(time.substring(5,7));
         int day = Integer.parseInt(time.substring(8,10));
@@ -39,7 +48,12 @@ public class TimeUtil {
 
         int min = Integer.parseInt(time.substring(14,16));
 
-        ArrayList<Integer> tmp = new ArrayList<>();
+
+
+
+        if (min == 0) min = 1;
+
+
         tmp.add(year);
         tmp.add(month);
         tmp.add(day);

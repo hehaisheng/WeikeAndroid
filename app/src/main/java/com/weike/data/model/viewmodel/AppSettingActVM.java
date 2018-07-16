@@ -28,6 +28,7 @@ import com.weike.data.business.setting.ResetPwdActivity;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 
 import java.io.File;
@@ -36,10 +37,13 @@ public class AppSettingActVM extends BaseVM {
 
     public ObservableField<String> cacheSize = new ObservableField<>("");
 
+    public ObservableField<Boolean> isCheck = new ObservableField<>();
 
     public AppSettingActVM(FragmentActivity activity) {
         this.activity = activity;
         loadCache();
+
+        isCheck.set(SpUtil.getInstance().getUser().isOpenPush);
     }
 
     private void loadCache() {

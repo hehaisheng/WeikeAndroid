@@ -326,6 +326,7 @@ public class RemindSettingActivity extends BaseActivity {
             toDo.isRemind = 1;
         } else {
             toDo.isRemind = 2;
+            return toDo;
         }
 
         toDo.content = vm.content.get();

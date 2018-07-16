@@ -240,17 +240,22 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
                     }
 
 
-                    if (list.get(i).handleType == 2 && list.get(i).remindType == 1) {
+                    if (list.get(i).handleType == 2) { //按钮颜色
                         itemVM.isTextRemind.set(true);
-                        itemVM.rightText.set("未处理");
-                    } else if (list.get(i).handleType == 2 && list.get(i).remindType == 1) {
+                    } else {
                         itemVM.isTextRemind.set(false);
-                        itemVM.rightText.set("已处理");
                     }
+
 
 
                     if (list.get(i).remindType == 2) {
                         itemVM.rightText.set("稍后提醒");
+                    } else if (list.get(i).remindType == 1) {
+                        if(list.get(i).handleType == 2) {
+                            itemVM.rightText.set("处理");
+                        } else {
+                            itemVM.rightText.set("已处理");
+                        }
                     }
 
 
@@ -284,16 +289,18 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
 
     @Override
     public void onReduce(MsgDetailItemVM msgDetailItemVM) {
-        if (msgDetailItemVM.isTextRemind.get() == false) return;
-        PickerUtil.onOptionPicker(this, new OnItemPickListener() {
-            @Override
-            public void onItemPicked(int i, Object o) {
-                modifyRemind(msgDetailItemVM, i);
-            }
-        });
+        if (msgDetailItemVM.isTextRemind.get() == false) {
+            return;
+        }
+
 
         if (msgDetailItemVM.rightText.get().equals("稍后提醒")) {
-
+            PickerUtil.onOptionPicker(this, new OnItemPickListener() {
+                @Override
+                public void onItemPicked(int i, Object o) {
+                    modifyRemind(msgDetailItemVM, i,1);
+                }
+            });
         } else {
             DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "是否标记不再提醒", new View.OnClickListener() {
                 @Override
@@ -303,18 +310,18 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
             }, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    modifyRemind(msgDetailItemVM, -1);
+                    modifyRemind(msgDetailItemVM, -1,2);
                 }
             });
         }
     }
 
 
-    public void modifyRemind(MsgDetailItemVM msgDetailItemVM, int time) {
+    public void modifyRemind(MsgDetailItemVM msgDetailItemVM, int time,int type) {
         ModifyClientMsgRemindReq req = new ModifyClientMsgRemindReq();
         req.id = msgDetailItemVM.id;
         req.laterRemind = time;
-        req.remindType = msgDetailItemVM.remindType;
+        req.remindType = type;
         req.sign = SignUtil.signData(req);
         RetrofitFactory.getInstance().getService().postAnything(req, Config.MODIFY_CLIENT_MSG_REMIND)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<ModifyClientMsgRemindResp>>() {
@@ -322,8 +329,9 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
                 })).subscribe(new BaseObserver<BaseResp<ModifyClientMsgRemindResp>>() {
             @Override
             protected void onSuccess(BaseResp<ModifyClientMsgRemindResp> getClientMsgDetailListRespBaseResp) throws Exception {
-                if (msgDetailItemVM.remindType != 1) {
+                if (type == 2) {
                     msgDetailItemVM.isTextRemind.set(false);
+                    ToastUtil.showToast("处理成功");
                 } else {
                     ToastUtil.showToast("修改提醒成功");
                 }

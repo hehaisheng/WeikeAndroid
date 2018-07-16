@@ -9,5 +9,5 @@ public class AnniversaryDay {
 
     public String anniversaryDate;
 
-    public ToDo remind;
+    public String remind;
 }

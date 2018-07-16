@@ -20,7 +20,15 @@ public class ForcePwdActivity extends BaseActivity {
     ForcePwdActVM vm;
 
 
+    @Override
+    public void onLeftClick() {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

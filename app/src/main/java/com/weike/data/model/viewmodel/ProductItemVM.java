@@ -3,7 +3,9 @@ package com.weike.data.model.viewmodel;
 import android.databinding.ObservableField;
 
 import com.weike.data.R;
+import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseVM;
+import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.listener.OnReduceListener;
 import com.weike.data.model.business.ToDo;
 
@@ -27,24 +29,34 @@ public class ProductItemVM extends BaseVM {
 
     public String productId;
 
-    public ToDo toDo = new ToDo();
+    public ToDo toDo = null;
 
+    private BaseFragment fragment;
 
-    public OnReduceListener<ProductItemVM> listener;
+    public ProductItemVM(BaseFragment fragment) {
+        this.fragment = fragment;
+    }
+
+    public OnProductListener listener;
+
+    public interface OnProductListener{
+        void onClick(ProductItemVM vm , int type);
+    }
 
     public void goToDodo(){
+        listener.onClick(this,3);
 
     }
 
-    public void setListener(OnReduceListener<ProductItemVM> listener) {
+    public void setListener(OnProductListener listener) {
         this.listener = listener;
     }
 
     public void onAdd(){
-        listener.onAdd(this);
+        listener.onClick(this,1);
     }
 
     public void onReduce(){
-        listener.onReduce(this);
+        listener.onClick(this,2);
     }
 }

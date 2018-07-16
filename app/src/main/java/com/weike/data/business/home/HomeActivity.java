@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
+import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
@@ -20,22 +21,29 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.business.client.ClientFragment;
 import com.weike.data.business.msg.MsgFragment;
 import com.weike.data.business.myself.MySelfFragment;
+import com.weike.data.business.setting.ForcePwdDialogActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.AnotherAttributes;
 import com.weike.data.model.business.TabEntity;
 import com.weike.data.model.business.User;
+import com.weike.data.model.req.CheckNeedPwdReq;
 import com.weike.data.model.req.GetAttrListReq;
 import com.weike.data.model.req.GetClientListReq;
 import com.weike.data.model.req.GetClientTagListReq;
 import com.weike.data.model.req.MainPageDataReq;
+import com.weike.data.model.req.UpdatePushReq;
+import com.weike.data.model.resp.CheckNeedPwdResp;
 import com.weike.data.model.resp.GetAttrListResp;
 import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.model.resp.GetClientTagListResp;
+import com.weike.data.model.resp.LoginByCodeResp;
 import com.weike.data.model.resp.MainPageDataResp;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.ClientTagComparator;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
+import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 import com.weike.data.view.BottomBarLayout;
 
@@ -46,6 +54,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by LeoLu on 2018/5/21.
@@ -180,6 +189,58 @@ public class HomeActivity extends BaseActivity {
     }
 
 
+    private void initPush(){
+        User user = SpUtil.getInstance().getUser();
+        boolean isOpenPush = user.isOpenPush;
+        String igNo = "";
+        if (isOpenPush) {
+            igNo = JPushInterface.getRegistrationID(WKBaseApplication.getInstance());
+        }
+        UpdatePushReq req = new UpdatePushReq();
+        req.jgNo = igNo;
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.UPDATE_PUSH)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
+
+                })).subscribe(new BaseObserver<BaseResp>() {
+            @Override
+            protected void onSuccess(BaseResp loginByPwdResp) throws Exception {
+
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
+
+
+    public void checkForcePwd(){
+        CheckNeedPwdReq req = new CheckNeedPwdReq();
+        req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.CHECK_NEED_PWD)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<CheckNeedPwdResp>>() {
+
+                })).subscribe(new BaseObserver<BaseResp<CheckNeedPwdResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<CheckNeedPwdResp> loginByPwdResp) throws Exception {
+                if (loginByPwdResp.getDatas().userPassword) {
+                    ActivitySkipUtil.skipAnotherAct(HomeActivity.this, ForcePwdDialogActivity.class);
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
 
 
     @Override
@@ -227,7 +288,11 @@ public class HomeActivity extends BaseActivity {
 
         getClientList();
 
+        checkForcePwd();
+
         initLabel();
+
+        initPush();//初始化push
 
         new Handler().postAtTime(new Runnable() {
             @Override

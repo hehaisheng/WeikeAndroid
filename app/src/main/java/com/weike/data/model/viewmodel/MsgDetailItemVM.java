@@ -22,6 +22,8 @@ public class MsgDetailItemVM extends BaseVM {
 
     public int remindType;
 
+    public int handleType;
+
 
     public ObservableField<String> rightText = new ObservableField<>("稍后提醒");
 

@@ -268,6 +268,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_client_base_msg,container,false);
         clientBaseMsgVM = new ClientBaseMsgVM(this);
+        clientBaseMsgVM.activity = getActivity();
         clientBaseMsgVM.isModify.set(isModify);
 
         binding.setClientBaseVM(clientBaseMsgVM);

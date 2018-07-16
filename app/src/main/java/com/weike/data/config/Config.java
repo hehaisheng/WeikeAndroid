@@ -239,5 +239,21 @@ public final class Config {
      */
     public static final String MODIFY_HANDLE_DISPLAY = "wkzs-restful/index/editUpcomingDate";
 
+    /**
+     * 发送关闭或者打开push
+     */
+    public static final String UPDATE_PUSH = "wkzs-restful/user/closePush";
+
+
+    /**
+     * 密码强制检查
+     */
+    public static final String CHECK_NEED_PWD = "wkzs-restful/user/forcePassword";
+
+    /**
+     * 强制改密码
+     */
+    public static final String ADD_PWD_FORCE = "wkzs-restful/user/addforcePassword";
+
 
 }

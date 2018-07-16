@@ -10,6 +10,7 @@ import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
 import com.weike.data.config.Config;
+import com.weike.data.model.req.ForceModifyPwdReq;
 import com.weike.data.model.req.ResetPwdReq;
 import com.weike.data.model.resp.ResetPwdResp;
 import com.weike.data.network.RetrofitFactory;
@@ -53,29 +54,23 @@ public class ForcePwdActVM extends BaseVM {
 
 
     public void submit(){
-        if (TextUtils.isEmpty(vCode.get()) || TextUtils.isEmpty(pwd.get())
-                ||TextUtils.isEmpty(pwd2.get())){
-            ToastUtil.showToast("重要参数不能为空");
-            return;
-        }
         if (!pwd.get().equals(pwd2.get())) {
             ToastUtil.showToast("两次输入的密码不一致");
             return;
         }
 
-        ResetPwdReq req = new ResetPwdReq();
+        ForceModifyPwdReq req = new ForceModifyPwdReq();
         req.token = SpUtil.getInstance().getCurrentToken();
-        req.code = vCode.get();
-        req.password = pwd.get();
+        req.userPassword = pwd.get();
         req.sign = SignUtil.signData(req);
 
 
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.RESET_PWD)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<ResetPwdResp>>(){
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_PWD_FORCE)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>(){
 
-                })).subscribe(new BaseObserver<BaseResp<ResetPwdResp>>() {
+                })).subscribe(new BaseObserver<BaseResp>() {
             @Override
-            protected void onSuccess(BaseResp<ResetPwdResp> resetPwdRespBaseResp) throws Exception {
+            protected void onSuccess(BaseResp resetPwdRespBaseResp) throws Exception {
                 if (Integer.parseInt(resetPwdRespBaseResp.getResult()) == 1){
                     ToastUtil.showToast("修改成功");
                     activity.finish();

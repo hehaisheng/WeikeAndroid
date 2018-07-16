@@ -12,7 +12,7 @@ public class ToDo implements Parcelable{
     /**
      * 是否提醒
      */
-    public int isRemind;
+    public int isRemind = 1;
 
     /**
      * 待办事时间

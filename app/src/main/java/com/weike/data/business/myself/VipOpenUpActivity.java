@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
 import com.weike.data.R;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.databinding.ActivityVipOpenupBinding;
@@ -26,6 +27,8 @@ public class VipOpenUpActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_vip_openup);
         OpenUpVipActVM vm = new OpenUpVipActVM(this);
         binding.setOpenUpActVM(vm);
+
+
 
 
         setCenterText("");

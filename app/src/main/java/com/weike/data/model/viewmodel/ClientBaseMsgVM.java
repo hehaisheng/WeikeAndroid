@@ -144,8 +144,6 @@ public class ClientBaseMsgVM extends BaseVM {
      */
     public void birthdayTimeClick(){
 
-
-
         if (TextUtils.isEmpty(birthday.get())){
             List<Integer> tmp = TimeUtil.formatDateClick(TimeUtil.getTimeFormat("yyyy-MM-dd"));
             PickerUtil.onYearMonthDayPicker(tmp.get(0),tmp.get(1),tmp.get(2),activity, new DatePicker.OnYearMonthDayPickListener() {

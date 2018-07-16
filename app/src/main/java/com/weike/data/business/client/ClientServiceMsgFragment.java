@@ -15,6 +15,7 @@ import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
+import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.databinding.FragmentClientServiceMsgBinding;
 import com.weike.data.listener.OnReduceListener;
 import com.weike.data.model.business.Product;
@@ -28,11 +29,13 @@ import com.weike.data.util.NoScrollLinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by LeoLu on 2018/6/4.
  * 客户服务信息Fragment
  */
-public class ClientServiceMsgFragment extends BaseFragment implements OnReduceListener<ProductItemVM> {
+public class ClientServiceMsgFragment extends BaseFragment implements ProductItemVM.OnProductListener{
 
     FragmentClientServiceMsgBinding binding;
 
@@ -41,6 +44,8 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
     private BaseDataBindingAdapter adapter;
 
     private List<ProductItemVM> itemVMS = new ArrayList<>();
+
+    private ProductItemVM lastProductVM;
 
     @Override
     protected int setUpLayoutId() {
@@ -91,7 +96,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
 
             Product product = new Product();
             ProductItemVM vm = itemVMS.get(i);
-            product.remind = vm.toDo;
+            product.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
             product.productName = vm.content.get();
             product.id = vm.productId;
 
@@ -104,7 +109,16 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
+            ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
+            lastProductVM.toDo = toDo;
+            if (toDo.isRemind == 1) {
+                lastProductVM.remindIcon.set(R.mipmap.ic_remind);
+            } else {
+                lastProductVM.remindIcon.set(R.mipmap.ic_remind_dis);
+            }
 
+        }
 
     }
 
@@ -158,7 +172,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
         itemVMS.clear();
 
         for (int i = 0; i < product.size(); i++) {
-            ProductItemVM productItemVM = new ProductItemVM();
+            ProductItemVM productItemVM = new ProductItemVM(this);
             productItemVM.isModify.set(false);
             productItemVM.isShowContent.set(true);
             productItemVM.isFirst.set(false);
@@ -192,7 +206,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
     }
 
     private void initHead() {
-        ProductItemVM itemVM = new ProductItemVM();
+        ProductItemVM itemVM = new ProductItemVM(this);
         itemVM.isFirst.set(true);
         itemVM.isModify.set(false);
         itemVM.setListener(this);
@@ -218,21 +232,22 @@ public class ClientServiceMsgFragment extends BaseFragment implements OnReduceLi
     }
 
 
-    @Override
-    public void onReduce(ProductItemVM productItemVM) {
-        itemVMS.remove(productItemVM);
-        adapter.notifyDataSetChanged();
-    }
 
     @Override
-    public void onAdd(ProductItemVM productItemVM) {
-        ProductItemVM vm = new ProductItemVM();
-        ToDo toDo = new ToDo();
-        vm.toDo = toDo;
-        vm.isModify.set(true);
-        vm.setListener(this);
-        itemVMS.add(vm);
-        adapter.notifyDataSetChanged();
+    public void onClick(ProductItemVM productItemVM, int type) {
+        if (type ==1) { //add
+            ProductItemVM vm = new ProductItemVM(this);
+            vm.isModify.set(true);
+            vm.setListener(this);
+            itemVMS.add(vm);
+            adapter.notifyDataSetChanged();
+        } else if (type == 2) { // reduce
+            itemVMS.remove(productItemVM);
+            adapter.notifyDataSetChanged();
+        } else if (type == 3) { //remind
+            lastProductVM = productItemVM;
 
+            RemindSettingActivity.startActivity(this,productItemVM.toDo);
+        }
     }
 }
