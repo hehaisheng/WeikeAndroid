@@ -78,6 +78,7 @@
             android:layout_marginRight="10dp"
            android:layout_width="wrap_content"
            android:button="@drawable/selector_notice_switch"
+           android:checked="@={appSettingVM.isCheck}"
            android:layout_height="wrap_content" />
 
     </RelativeLayout>
