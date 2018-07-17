@@ -7,4 +7,11 @@ import com.weike.data.base.BaseReq;
  */
 
 public class ModifyLogTodoReq extends BaseReq {
+    public String logId;
+
+    public String content;
+
+    public String logDate;
+
+    public String remind;
 }

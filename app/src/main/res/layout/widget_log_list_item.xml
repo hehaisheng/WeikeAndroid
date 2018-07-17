@@ -105,6 +105,7 @@
                     android:visibility="@{clientLogItemVM.isModify?View.VISIBLE : View.GONE}"
                     android:layout_marginRight="20dp"
                     android:layout_alignParentRight="true"
+                    loadImageId="@{clientLogItemVM.remindIcon}"
                     android:onClick="@{()->clientLogItemVM.remind()}"
                     android:background="@color/color_touming"
                     />

@@ -157,8 +157,6 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
     private void addLog(){
 
 
-
-
         List<ClientRelateForNet> subs = new ArrayList<>();
         for(int  i = 0 ; i < clientRelateVMS.size();i++) {
             ClientRelateForNet related = new ClientRelateForNet();

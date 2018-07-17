@@ -7,5 +7,5 @@ import com.weike.data.base.BaseReq;
  */
 
 public class DeleteLogReq extends BaseReq {
-
+    public String logId;
 }

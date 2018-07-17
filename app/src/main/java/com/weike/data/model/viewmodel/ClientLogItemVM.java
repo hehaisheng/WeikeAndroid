@@ -4,6 +4,7 @@ import android.databinding.ObservableField;
 
 import com.weike.data.base.BaseVM;
 import com.weike.data.listener.OnReduceListener;
+import com.weike.data.model.business.ToDo;
 
 /**
  * Created by LeoLu on 2018/6/27.
@@ -20,6 +21,15 @@ public class ClientLogItemVM extends BaseVM {
     public ObservableField<Boolean> isModify = new ObservableField<>();
 
     public ObservableField<Boolean> isRemind = new ObservableField<>();
+
+    /**
+     * 提醒
+     */
+    public ObservableField<Integer> remindIcon = new ObservableField<>();
+
+    public String id;
+
+    public ToDo toDo;
 
     /**
      *

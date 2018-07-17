@@ -18,9 +18,11 @@ import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.AddLogActivity;
+import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
 import com.weike.data.listener.OnReduceListener;
 import com.weike.data.model.business.ClientRelated;
+import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.DeleteLogReq;
 import com.weike.data.model.req.GetClientLogByIdReq;
 import com.weike.data.model.req.ModifyLogTodoReq;
@@ -58,6 +60,8 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
 
     private String clientId;
 
+
+
     @SuppressLint("ValidFragment")
     public ClientLogFragment(String clientId) {
         this.clientId = clientId;
@@ -86,6 +90,9 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
 
         if (requestCode == 400 && resultCode == RESULT_OK){
             loadData(false,1);
+        } else if (requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
+            ToDo toDo = data.getParcelableExtra("data");
+
         }
     }
 
@@ -151,6 +158,13 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
                 for(int i = 0 ; i < getClientLogByIdRespBaseResp.getDatas().getLogList().size();i++){
                     GetClientLogByIdResp.LogListBean bean = getClientLogByIdRespBaseResp.getDatas().getLogList().get(i);
                     ClientLogItemVM vm = new ClientLogItemVM();
+                    if (bean.isRemind == 1) {
+                        vm.remindIcon.set(R.mipmap.ic_remind);
+                    } else {
+                        vm.remindIcon.set(R.mipmap.ic_remind_dis);
+                    }
+
+                    vm.id = bean.getId() + "";
                     vm.content.set(bean.getContent());
                     vm.time.set(bean.getLogDate());
                     vm.isModify.set(isModify);
@@ -200,6 +214,9 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
 
     private void delete(ClientLogItemVM del){
         DeleteLogReq req = new DeleteLogReq();
+        req.logId = del.id;
+        req.sign = SignUtil.signData(req);
+
         RetrofitFactory.getInstance().getService().postAnything(req, Config.DELETE_LOG)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetClientLogByIdResp>>(){
 
@@ -219,7 +236,13 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
 
     private void modify(ClientLogItemVM modify){
         ModifyLogTodoReq req = new ModifyLogTodoReq();
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.DELETE_LOG)
+        req.content = modify.content.get();
+        req.logDate = modify.time.get();
+        req.logId = modify.id;
+
+
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.MODIFY_LOG_TODO)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<ModifyLogTodoResp>>(){
 
                 })).subscribe(new BaseObserver<BaseResp<ModifyLogTodoResp>>() {
@@ -237,7 +260,18 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onAdd(ClientLogItemVM clientLogItemVM) {
-            modify(clientLogItemVM);
+        DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否修改该事项?", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               RemindSettingActivity.startActivity(ClientLogFragment.this,0,clientLogItemVM.id);
+            }
+        });
+
     }
 
     @Override

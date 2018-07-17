@@ -1,6 +1,5 @@
 package com.weike.data.model.resp;
 
-import com.google.gson.annotations.SerializedName;
 import com.weike.data.base.BaseResp;
 
 import java.util.List;
@@ -32,6 +31,8 @@ public class GetClientLogByIdResp extends BaseResp {
         private int id;
         private String logDate;
         private String content;
+
+        public int isRemind;
 
         public int getId() {
             return id;

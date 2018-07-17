@@ -257,7 +257,10 @@ public final class Config {
     /**
      * 删除日志
      */
-    public static final String DELETE_LOG = "";
+    public static final String DELETE_LOG = "wkzs-restful/log/deletelog";
 
-    public static final String MODIFY_LOG_TODO ="";
+    /**
+     * 修改日志事项
+     */
+    public static final String MODIFY_LOG_TODO ="wkzs-restful/log/editLogToDo";
 }

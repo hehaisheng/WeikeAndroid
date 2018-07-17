@@ -305,7 +305,7 @@ public class AddClientActivity extends BaseActivity {
                     clientServiceMsgVM.fixedAssets.set(data.getFixedAssets());
 
 
-                    serviceMsgFragment.updateProductList(data.getProduct());
+                    //serviceMsgFragment.updateProductList(data.getProduct());
                     //服务信息
 
 
@@ -579,7 +579,7 @@ public class AddClientActivity extends BaseActivity {
         req.fixedAssets = clientServiceMsgVM.fixedAssets.get();
         req.car = clientServiceMsgVM.carType.get();
         req.liabilities = clientServiceMsgVM.liabilities.get();
-        req.product = "" + serviceMsgFragment.getAllProduct() + "";
+        //req.product = "" + serviceMsgFragment.getAllProduct() + "";
 
 
 
