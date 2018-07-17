@@ -41,6 +41,8 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class LoginActVM extends BaseVM {
 
+    //120c83f76074f8684e2
+
     /**
      * 是否用密码登录
      */
