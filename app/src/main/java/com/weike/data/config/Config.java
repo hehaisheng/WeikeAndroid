@@ -254,6 +254,10 @@ public final class Config {
      * 强制改密码
      */
     public static final String ADD_PWD_FORCE = "wkzs-restful/user/addforcePassword";
+    /**
+     * 删除日志
+     */
+    public static final String DELETE_LOG = "";
 
-
+    public static final String MODIFY_LOG_TODO ="";
 }

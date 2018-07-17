@@ -93,7 +93,8 @@
                     android:src="@mipmap/ic_redue"
                     android:layout_marginRight="20dp"
                     android:layout_alignParentRight="true"
-                    android:visibility="@{clientLogItemVM.isModify?View.GONE : View.VISIBLE}"
+                    android:visibility="@{clientLogItemVM.isModify?View.VISIBLE : View.GONE}"
+                    android:onClick="@{()->clientLogItemVM.delete()}"
                     android:background="@color/color_touming"
                     />
 
@@ -104,6 +105,7 @@
                     android:visibility="@{clientLogItemVM.isModify?View.VISIBLE : View.GONE}"
                     android:layout_marginRight="20dp"
                     android:layout_alignParentRight="true"
+                    android:onClick="@{()->clientLogItemVM.remind()}"
                     android:background="@color/color_touming"
                     />
 

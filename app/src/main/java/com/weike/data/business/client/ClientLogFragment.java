@@ -1,16 +1,16 @@
 package com.weike.data.business.client;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
@@ -19,27 +19,32 @@ import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.config.Config;
+import com.weike.data.listener.OnReduceListener;
 import com.weike.data.model.business.ClientRelated;
+import com.weike.data.model.req.DeleteLogReq;
 import com.weike.data.model.req.GetClientLogByIdReq;
+import com.weike.data.model.req.ModifyLogTodoReq;
 import com.weike.data.model.resp.GetClientLogByIdResp;
+import com.weike.data.model.resp.ModifyLogTodoResp;
 import com.weike.data.model.viewmodel.ClientLogItemVM;
 import com.weike.data.network.RetrofitFactory;
-import com.weike.data.util.ActivitySkipUtil;
+import com.weike.data.util.DialogUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
-import com.weike.data.util.TimeUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by LeoLu on 2018/6/7.
  */
 
 @SuppressLint("ValidFragment")
-public class ClientLogFragment extends BaseFragment implements View.OnClickListener {
+public class ClientLogFragment extends BaseFragment implements View.OnClickListener ,OnReduceListener<ClientLogItemVM>,OnRefreshLoadmoreListener {
 
     private RecyclerView recyclerView;
 
@@ -49,7 +54,7 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
 
     private SmartRefreshLayout smartRefreshLayout;
 
-
+    private int page = 1;
 
     private String clientId;
 
@@ -68,10 +73,20 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
     public void onRightClick(boolean status) {
         super.onRightClick(status);
 
+        LogUtil.d("LogFragment","--->" + status);
         for(int i  = 0 ; i < vms.size();i++) {
             vms.get(i).isModify.set(status);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 400 && resultCode == RESULT_OK){
+            loadData(false,1);
+        }
     }
 
     @Override
@@ -93,11 +108,12 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
                 ClientRelated clientRelated = new ClientRelated();
                 clientRelated.clientId =clientId;
                 clientRelated.name = ((AddClientActivity)getActivity()).vm.userName.get();
-                AddLogActivity.startActivity(clientRelated,getActivity());
+                AddLogActivity.startActivity(clientRelated,ClientLogFragment.this);
             }
         });
         recyclerView = view.findViewById(R.id.recycler_log_list);
         smartRefreshLayout = view.findViewById(R.id.smartrefreshlayout);
+        smartRefreshLayout.setOnRefreshLoadmoreListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -118,12 +134,27 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
                 })).subscribe(new BaseObserver<BaseResp<GetClientLogByIdResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetClientLogByIdResp> getClientLogByIdRespBaseResp) throws Exception {
+
+                smartRefreshLayout.finishLoadmore();
+                smartRefreshLayout.finishRefresh();
+                if (page == 1) {
+                    vms.clear();
+                } else if (page > 1 && getClientLogByIdRespBaseResp.getDatas().getLogList().size() > 0)  {
+                    vms.get(vms.size()-1).isShowLine.set(true);
+                } else if (page > 1 && getClientLogByIdRespBaseResp.getDatas().getLogList().size() == 0) {
+                    ToastUtil.showToast("暂无更多");
+                    ClientLogFragment.this.page = ClientLogFragment.this.page - 1;//恢复页码
+                    return;
+                }
+
+
                 for(int i = 0 ; i < getClientLogByIdRespBaseResp.getDatas().getLogList().size();i++){
                     GetClientLogByIdResp.LogListBean bean = getClientLogByIdRespBaseResp.getDatas().getLogList().get(i);
                     ClientLogItemVM vm = new ClientLogItemVM();
                     vm.content.set(bean.getContent());
                     vm.time.set(bean.getLogDate());
-                    vm.isModify.set(false);
+                    vm.isModify.set(isModify);
+                    vm.setListener(ClientLogFragment.this);
                     if(i == getClientLogByIdRespBaseResp.getDatas().getLogList().size() - 1) {
                         vm.isShowLine.set(false);
                     } else {
@@ -146,5 +177,78 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
+    }
+
+    @Override
+    public void onReduce(ClientLogItemVM clientLogItemVM) {
+        DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否删除该日志", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delete(clientLogItemVM);
+
+
+            }
+        });
+    }
+
+
+
+    private void delete(ClientLogItemVM del){
+        DeleteLogReq req = new DeleteLogReq();
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.DELETE_LOG)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetClientLogByIdResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<GetClientLogByIdResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetClientLogByIdResp> getClientLogByIdRespBaseResp) throws Exception {
+                vms.remove(del);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
+
+    private void modify(ClientLogItemVM modify){
+        ModifyLogTodoReq req = new ModifyLogTodoReq();
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.DELETE_LOG)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<ModifyLogTodoResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<ModifyLogTodoResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<ModifyLogTodoResp> getClientLogByIdRespBaseResp) throws Exception {
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
+
+    @Override
+    public void onAdd(ClientLogItemVM clientLogItemVM) {
+            modify(clientLogItemVM);
+    }
+
+    @Override
+    public void onLoadmore(RefreshLayout refreshlayout) {
+
+        page++;
+        loadData(false,page);
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        loadData(true,page);
     }
 }

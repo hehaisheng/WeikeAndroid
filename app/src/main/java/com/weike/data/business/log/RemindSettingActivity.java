@@ -39,9 +39,10 @@ public class RemindSettingActivity extends BaseActivity {
 
     public static final String KEY_OF_TODO = "com.RemindSettingActivity.KEY_OF_TODO";
     public static final String KEY_OF_ID = "com.RemindSettingActivity.KEY_OF_ID";
+    public static final String KEY_LOG_ID = "com.RemindSettingActivity.KEY_LOG_ID";
 
     public static final int CODE_OF_REQUEST = 500;
-
+    private String logId;
     private String id;
     private ToDo toDo;
 
@@ -64,6 +65,37 @@ public class RemindSettingActivity extends BaseActivity {
         fragment.startActivityForResult(intent,CODE_OF_REQUEST);
     }
 
+    /**
+     * 通过日志ID获取
+     * @param fragment
+     * @param test
+     * @param logid
+     */
+    public static void startActivity(BaseFragment fragment, int test ,String logid){
+        Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(KEY_LOG_ID , logid);
+        fragment.startActivityForResult(intent,CODE_OF_REQUEST);
+    }
+
+    /**
+     * 直接传一个todo 用于 生日的那种
+     * @param fragment
+     * @param toDo
+     * @param requestCode
+     */
+    public static void startActivity(BaseFragment fragment, ToDo toDo,int requestCode){
+        Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(KEY_OF_TODO , toDo);
+        fragment.startActivityForResult(intent,requestCode);
+    }
+
+    /**
+     * 直接获取详情 通过ID
+     * @param fragment
+     * @param id
+     */
     public static void startActivity(BaseFragment fragment, String id){
         Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -80,7 +112,7 @@ public class RemindSettingActivity extends BaseActivity {
 
         toDo = getIntent().getParcelableExtra(KEY_OF_TODO);
         id = getIntent().getStringExtra(KEY_OF_ID);
-
+        logId = getIntent().getStringExtra(KEY_LOG_ID);
 
         if (toDo != null) {
             initCurrentTodo();
@@ -90,11 +122,19 @@ public class RemindSettingActivity extends BaseActivity {
             initCurrentTodoByNet();
         }
 
+        if (logId != null){
+            initCurrentTodoByLog();
+        }
+
         binding.setRemindSettingVM(vm);
         setRightText("保存");
         setLeftText("设置提醒");
         setCenterText("");
 
+
+    }
+
+    private void initCurrentTodoByLog(){
 
     }
 
@@ -267,6 +307,14 @@ public class RemindSettingActivity extends BaseActivity {
 
         toDo = compass();
         LogUtil.d("addlog","bef:" + JsonUtil.GsonString(toDo));
+
+        if (logId != null) { //通过日志获取
+            Intent intent = new Intent();
+            intent.putExtra(KEY_LOG_ID,toDo);
+            setResult(RESULT_OK,intent);
+            finish();
+            return;
+        }
 
         if (id != null) { //如果ID 不为空 那么就是修改
             modifyOneTodo();
