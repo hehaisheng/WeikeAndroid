@@ -256,13 +256,14 @@ public class AddClientActivity extends BaseActivity {
                     vm.photoUrl.set(data.getPhotoUrl());
                     vm.userName.set(data.getUserName());
                     vm.remarks.set(data.getRemark());
-                    vm.label.set(TextUtils.isEmpty(data.getClientLabelName()) ? data.getClientLabelName() : "未分组");
+                    vm.label.set(TextUtils.isEmpty(data.getClientLabelName()) ? "未分组" : data.getClientLabelName());
 
                     //基本信息
                     ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
                     ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
                     ClientBaseMsgVM clientBaseMsgVM = clientBaseMsgFragment.clientBaseMsgVM;
                     ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.serviceMsgVM;
+
 
                     String[] phone = new String[5];
                     phone[0] = data.getOnePhoneNumber();
@@ -272,6 +273,7 @@ public class AddClientActivity extends BaseActivity {
                     phone[4] = data.getFivePhoneNumber();
                     clientBaseMsgFragment.setPhoneNum(phone); //电话号码
 
+                    clientBaseMsgFragment.updateClientRelate(data.getClientRelatedList());
                     clientBaseMsgVM.email.set(data.getEmail());
                     clientBaseMsgVM.companyName.set(data.getCompany());
                     clientBaseMsgVM.companyLocation.set(data.getCompanyDetailAddress());
@@ -293,9 +295,32 @@ public class AddClientActivity extends BaseActivity {
                     clientBaseMsgVM.gril.set(data.getDaughterNum());
                     clientBaseMsgVM.clientHeight.set(data.getHeight());
                     clientBaseMsgVM.clientWidght.set(data.getWeight());
-                    ToDo toDo = new ToDo();
-                    clientBaseMsgFragment.updateAnnaDay(data.getAnniversaryList());
-                    clientBaseMsgVM.birthDayTodo = toDo;
+
+
+                    LogUtil.d("ActHomeAddClient","-->" + data.getBirthdayjson() );
+                    if(data.getBirthdayjson() != null && TextUtils.isEmpty(data.getBirthdayjson().id) == false) {
+                        //生日提醒
+                        ToDo birthdayRemind = new ToDo();
+                        birthdayRemind.isRemind = data.getBirthdayjson().isRemind;
+                        birthdayRemind.id = data.getBirthdayjson().id;
+                        birthdayRemind.isRepeat = data.getBirthdayjson().isRepeat;
+                        birthdayRemind.repeatDateType = data.getBirthdayjson().repeatDateType;
+                        birthdayRemind.repeatInterval = data.getBirthdayjson().repeatInterval;
+                        birthdayRemind.isAdvance = data.getBirthdayjson().isAdvance;
+                        birthdayRemind.advanceDateType = data.getBirthdayjson().advanceDateType;
+                        birthdayRemind.advanceInterval = data.getBirthdayjson().advanceInterval;
+                        birthdayRemind.birthdaydate = data.getBirthdayjson().remindDate;
+                        birthdayRemind.content = data.getBirthdayjson().content;
+                        if (birthdayRemind.isRemind == 1) {
+                            clientBaseMsgFragment.clientBaseMsgVM.birthdayRemindIcon.set(R.mipmap.ic_remind);
+                        } else {
+                            clientBaseMsgFragment.clientBaseMsgVM.birthdayRemindIcon.set(R.mipmap.ic_remind_dis);
+                        }
+
+                        clientBaseMsgVM.birthDayTodo = birthdayRemind;
+                    }
+
+                    clientBaseMsgFragment.updateAnnaDay(data.getAnniversaryList()); //纪念日
 
                     clientServiceMsgVM.liabilities.set(data.getLiabilities());
                     clientServiceMsgVM.moneyIn.set(data.getIncome());
@@ -305,7 +330,7 @@ public class AddClientActivity extends BaseActivity {
                     clientServiceMsgVM.fixedAssets.set(data.getFixedAssets());
 
 
-                    //serviceMsgFragment.updateProductList(data.getProduct());
+                    serviceMsgFragment.updateProductList(data.getProduct());
                     //服务信息
 
 
@@ -579,11 +604,8 @@ public class AddClientActivity extends BaseActivity {
         req.fixedAssets = clientServiceMsgVM.fixedAssets.get();
         req.car = clientServiceMsgVM.carType.get();
         req.liabilities = clientServiceMsgVM.liabilities.get();
-        //req.product = "" + serviceMsgFragment.getAllProduct() + "";
 
-
-
-        LogUtil.d("addClientActivity",serviceMsgFragment.getAllProduct());
+        req.product = TextUtils.isEmpty( serviceMsgFragment.getAllProduct() ) ? "" : "" + serviceMsgFragment.getAllProduct() + "";
 
         req.sign = SignUtil.signData(req);
 

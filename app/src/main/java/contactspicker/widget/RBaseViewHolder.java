@@ -87,12 +87,12 @@ public class RBaseViewHolder extends RecyclerView.ViewHolder {
         return v(resId);
     }
 
-    public com.angcyo.contactspicker.widget.RRecyclerView reV(@IdRes int resId) {
-        return (com.angcyo.contactspicker.widget.RRecyclerView) v(resId);
+    public  contactspicker.widget.RRecyclerView reV(@IdRes int resId) {
+        return ( contactspicker.widget.RRecyclerView) v(resId);
     }
 
-    public com.angcyo.contactspicker.widget.RRecyclerView reV(String idName) {
-        return (com.angcyo.contactspicker.widget.RRecyclerView) viewByName(idName);
+    public  contactspicker.widget.RRecyclerView reV(String idName) {
+        return ( contactspicker.widget.RRecyclerView) viewByName(idName);
     }
 
     /**

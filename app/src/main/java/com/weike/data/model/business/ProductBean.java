@@ -1,7 +1,5 @@
 package com.weike.data.model.business;
 
-import com.weike.data.model.resp.GetClientDetailMsgResp;
-
 public class ProductBean {
     public int id;
     public String productName;
@@ -11,34 +9,48 @@ public class ProductBean {
 
     public static class RemindBean {
         /**
-         * id : 65
-         * isRemind : 1
-         * content : 测试2
-         * remindDate : 1999-05-02 20:20
-         * beforeRemindDay : 3
-         * repeatIntervalHour : 1
-         * priority : 1
-         * isRepeat : 1
-         * dateType : 2
+         * 是否提醒
          */
+        public int isRemind = 1;
 
-        public int id;
-        public String isRemind = "";
-        public String content = "";
-        public String remindDate = "";
-        public String beforeRemindDay = "";
-        public String repeatIntervalHour = "";
-        public String priority = "";
-        public String isRepeat = "";
-        public String dateType = "";
+        /**
+         * 待办事时间
+         */
+        public String remindDate;
 
-        /*public int getId() {
-            return id;
-        }
+        /**
+         * 是否提前提醒
+         */
+        public int isAdvance;  // 1是 2 否
 
-        public void setId(int id) {
-            this.id = id;
-        }*/
+        public int advanceDateType; //提前提醒时间类型
+
+        public int advanceInterval; // 提醒时间间隔
+
+
+        /**
+         * id啦
+         */
+        public String id;
+
+        /**
+         * 内容
+         */
+        public String content;
+
+        /**
+         * 优先级 1 == 高 2 == 中 3== 低
+         */
+        public int priority = 1;
+
+        /*
+         * 是否重复提醒
+         */
+        public int isRepeat = 1; // 是 2 否
+
+        public int repeatInterval;//重复提醒时间间隔
+
+        public int repeatDateType; //重复提醒时间类型
 
     }
 }

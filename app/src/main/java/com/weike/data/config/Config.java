@@ -263,4 +263,19 @@ public final class Config {
      * 修改日志事项
      */
     public static final String MODIFY_LOG_TODO ="wkzs-restful/log/editLogToDo";
+
+    /**
+     * 删除纪念日
+     */
+    public static final String DEL_ANIDAY= "wkzs-restful/client/deleteAnniversary";
+
+    /**
+     * 删除产品
+     */
+    public static final String DEL_PRODUCT = "wkzs-restful/client/deleteProduct";
+
+    /**
+     * 批量添加客户
+     */
+    public static final String ADD_CLIENT_LIST = "wkzs-restful/client/addClientList";
 }

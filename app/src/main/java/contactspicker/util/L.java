@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package com.angcyo.contactspicker.util;
+package contactspicker.util;
 
 import android.text.TextUtils;
 import android.util.Log;

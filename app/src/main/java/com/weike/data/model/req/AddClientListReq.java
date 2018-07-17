@@ -2,8 +2,6 @@ package com.weike.data.model.req;
 
 import com.weike.data.base.BaseReq;
 
-import java.util.List;
-
 /**
  * ${huneng} on 2018/7/13 14:16
  */
@@ -11,7 +9,7 @@ import java.util.List;
 public class AddClientListReq extends BaseReq {
 
 
-    public String clientAttr;
+    public String clientArr;
 
 
     public static class ClientListAttr{

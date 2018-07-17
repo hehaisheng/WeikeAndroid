@@ -164,6 +164,8 @@ public class RemindSettingActivity extends BaseActivity {
                 vm.repeatDateType = getHandleWorkListRespBaseResp.getDatas().repeatDateType;
                 vm.repeatInterval = getHandleWorkListRespBaseResp.getDatas().repeatInterval;
 
+                vm.priority = getHandleWorkListRespBaseResp.getDatas().priority;
+
 
                 if (getHandleWorkListRespBaseResp.getDatas().isRepeat == 1) { //重复
                     if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_DAY){
@@ -244,6 +246,7 @@ public class RemindSettingActivity extends BaseActivity {
                 vm.isRepeat = getHandleWorkListRespBaseResp.getDatas().isRepeat;
                 vm.repeatDateType = getHandleWorkListRespBaseResp.getDatas().repeatDateType;
                 vm.repeatInterval = getHandleWorkListRespBaseResp.getDatas().repeatInterval;
+                vm.priority = getHandleWorkListRespBaseResp.getDatas().priority;
 
 
                 if (getHandleWorkListRespBaseResp.getDatas().isRepeat == 1) { //重复
@@ -313,6 +316,7 @@ public class RemindSettingActivity extends BaseActivity {
         vm.isRepeat = toDo.isRepeat;
         vm.repeatDateType = toDo.repeatDateType;
         vm.repeatInterval = toDo.repeatInterval;
+        vm.priority = toDo.priority;
 
         //
 

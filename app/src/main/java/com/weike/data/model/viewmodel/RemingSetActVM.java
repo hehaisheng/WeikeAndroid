@@ -36,6 +36,8 @@ public class RemingSetActVM extends BaseVM {
 
     public int repeatDateType; //重复提醒时间类型
 
+    public int priority;
+
     /**
      * 时间
      */
@@ -61,6 +63,7 @@ public class RemingSetActVM extends BaseVM {
      * 设置提醒
      */
     public ObservableField<Boolean> isRemind = new ObservableField<>(true);
+
 
 
 

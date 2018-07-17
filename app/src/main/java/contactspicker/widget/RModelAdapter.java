@@ -7,14 +7,14 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.CompoundButton;
 
-import com.angcyo.contactspicker.util.Reflect;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+
+import contactspicker.util.Reflect;
 
 /**
  * 支持单选, 多选的Adapter
@@ -83,7 +83,7 @@ public abstract class RModelAdapter<T> extends contactspicker.widget.RBaseAdapte
     /**
      * 在执行 {@link #onUnselectorPosition(List)}后, 调用此方法, 可以便捷的取消 CompoundButton 的状态
      */
-    public void unselector(@NonNull List<Integer> list, @NonNull com.angcyo.contactspicker.widget.RRecyclerView recyclerView, @NonNull String viewTag) {
+    public void unselector(@NonNull List<Integer> list, @NonNull contactspicker.widget.RRecyclerView recyclerView, @NonNull String viewTag) {
         for (Integer pos : list) {
             RBaseViewHolder vh = (RBaseViewHolder) recyclerView.findViewHolderForAdapterPosition(pos);
             if (vh != null) {
@@ -98,7 +98,7 @@ public abstract class RModelAdapter<T> extends contactspicker.widget.RBaseAdapte
     /**
      * 在执行 {@link #onUnselectorPosition(List)}后, 调用此方法, 可以便捷的取消 CompoundButton 的状态
      */
-    public void unselector(@NonNull List<Integer> list, @NonNull com.angcyo.contactspicker.widget.RRecyclerView recyclerView, @IdRes int viewId) {
+    public void unselector(@NonNull List<Integer> list, @NonNull   contactspicker.widget.RRecyclerView recyclerView, @IdRes int viewId) {
         for (Integer pos : list) {
             RBaseViewHolder vh = (RBaseViewHolder) recyclerView.findViewHolderForAdapterPosition(pos);
             if (vh != null) {
@@ -113,7 +113,7 @@ public abstract class RModelAdapter<T> extends contactspicker.widget.RBaseAdapte
     /**
      * 取消所有选择
      */
-    public void unselectorAll(@NonNull com.angcyo.contactspicker.widget.RRecyclerView recyclerView, @IdRes int viewId) {
+    public void unselectorAll(@NonNull   contactspicker.widget.RRecyclerView recyclerView, @IdRes int viewId) {
         for (Integer pos : getAllSelectorList()) {
             RBaseViewHolder vh = (RBaseViewHolder) recyclerView.findViewHolderForAdapterPosition(pos);
             if (vh != null) {
@@ -141,7 +141,7 @@ public abstract class RModelAdapter<T> extends contactspicker.widget.RBaseAdapte
     /**
      * 取消所有选择
      */
-    public void unselectorAll(@NonNull com.angcyo.contactspicker.widget.RRecyclerView recyclerView, @NonNull String viewTag) {
+    public void unselectorAll(@NonNull   contactspicker.widget.RRecyclerView recyclerView, @NonNull String viewTag) {
         for (Integer pos : getAllSelectorList()) {
             RBaseViewHolder vh = (RBaseViewHolder) recyclerView.findViewHolderForAdapterPosition(pos);
             if (vh != null) {
@@ -166,7 +166,7 @@ public abstract class RModelAdapter<T> extends contactspicker.widget.RBaseAdapte
     /**
      * 选中所有
      */
-    public void setSelectorAll(@NonNull com.angcyo.contactspicker.widget.RRecyclerView recyclerView, @NonNull String viewTag) {
+    public void setSelectorAll(@NonNull   contactspicker.widget.RRecyclerView recyclerView, @NonNull String viewTag) {
         if (mModel != MODEL_MULTI) {
             return;
         }
@@ -191,7 +191,7 @@ public abstract class RModelAdapter<T> extends contactspicker.widget.RBaseAdapte
     /**
      * 选中所有
      */
-    public void setSelectorAll(@NonNull com.angcyo.contactspicker.widget.RRecyclerView recyclerView, @IdRes int viewId) {
+    public void setSelectorAll(@NonNull   contactspicker.widget.RRecyclerView recyclerView, @IdRes int viewId) {
         if (mModel != MODEL_MULTI) {
             return;
         }

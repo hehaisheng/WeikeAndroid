@@ -56,20 +56,7 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
     @BindView(R.id.layout_moidfy_msg)
     public View bottomLayout;
 
-    @OnClick(R.id.tv_all_handle)
-    public void handle(View view) {
-        DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "是否处理消息?", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteOrHandleMsg(2);
-            }
-        });
-    }
 
     @OnClick(R.id.tv_delete_msg)
     public void delete(View view) {

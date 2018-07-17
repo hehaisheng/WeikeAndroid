@@ -1,4 +1,4 @@
-package com.angcyo.contactspicker.util;
+package contactspicker.util;
 
 import android.text.TextUtils;
 

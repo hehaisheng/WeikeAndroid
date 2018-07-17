@@ -10,24 +10,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.reflect.TypeToken;
 import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
+import com.weike.data.base.BaseObserver;
+import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.business.setting.AttrManagerActivity;
+import com.weike.data.config.Config;
 import com.weike.data.databinding.FragmentClientBaseMsgBinding;
 import com.weike.data.model.business.ClientRelated;
 import com.weike.data.model.business.ToDo;
+import com.weike.data.model.req.DelAniDayReq;
 import com.weike.data.model.resp.GetClientDetailMsgResp;
 import com.weike.data.model.viewmodel.AddClientRelateItemVM;
 import com.weike.data.model.viewmodel.AddPhoneVM;
 import com.weike.data.model.viewmodel.AnniversariesItemVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
+import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.NoScrollLinearLayoutManager;
+import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
+import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +89,42 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
      * 纪念日集合
      */
     public void updateAnnaDay(List<GetClientDetailMsgResp.AnniversaryListBean> list){
+        anniDayVMS.clear();
+        initAniDayHead();
+        anniDayVMS.remove(1);
+        for(int i = 0 ; i < list.size();i++) {
+            AnniversariesItemVM vm = new AnniversariesItemVM(getActivity());
+            vm.id.set(list.get(i).getId() + "");
+
+            if (list.get(i).getRemind() != null && TextUtils.isEmpty(list.get(i).getRemind().content) == false) {
+
+                ToDo toDo = new ToDo();
+                toDo.content = list.get(i).getRemind().content;
+                toDo.id = list.get(i).getRemind().id;
+                toDo.isAdvance = list.get(i).getRemind().isAdvance;
+                toDo.advanceInterval = list.get(i).getRemind().advanceInterval;
+                toDo.advanceDateType = list.get(i).getRemind().advanceDateType;
+                toDo.repeatInterval = list.get(i).getRemind().repeatInterval;
+                toDo.repeatDateType = list.get(i).getRemind().repeatDateType;
+                toDo.isRepeat = list.get(i).getRemind().isRepeat;
+                toDo.birthdaydate = list.get(i).getRemind().remindDate;
+                if (toDo.isRemind == 1) {
+                    vm.remindIcon.set(R.mipmap.ic_remind);
+                } else {
+                    vm.remindIcon.set(R.mipmap.ic_remind_dis);
+                }
+                vm.toDo = toDo;
+            }
+
+            vm.isModify.set(true);
+            vm.isFirst.set(false);
+
+            vm.setListener(this);
+            vm.name.set(list.get(i).getAnniversaryName());
+            vm.time.set(list.get(i).getAnniversaryDate());
+            anniDayVMS.add(vm);
+        }
+        anniDayAdapter.notifyDataSetChanged();
 
     }
 
@@ -90,6 +134,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
      */
     public void setPhoneNum(String[] phoneNum) {
         addPhoneVMS.clear();
+        boolean isEmpty = true;
 
         for(int i = 0 ; i < phoneNum.length ; i++) {
 
@@ -105,10 +150,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             addPhoneVM.isModify.set(false);
             addPhoneVM.setListener(this);
             addPhoneVMS.add(addPhoneVM);
-
+            isEmpty = false;
         }
 
-        if (phoneNum.length == 0) {
+        if (isEmpty) {
             binding.addPhoneNum.setVisibility(View.GONE);
         }else {
             binding.addPhoneNum.setVisibility(View.VISIBLE);
@@ -185,6 +230,38 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         initAniDayHead();
 
         anniDayAdapter.notifyDataSetChanged();
+    }
+
+    public void updateClientRelate(List<GetClientDetailMsgResp.ClientRelateBean> list){
+
+        clientRelateItemVMS.clear();
+
+
+
+        for(int i = 0 ; i < list.size();i++){
+            AddClientRelateItemVM vm = new AddClientRelateItemVM();
+            if (i == 0) {
+                vm.isFirst.set(true);
+                vm.isModify.set(false);
+            } else {
+                vm.isFirst.set(false);
+                vm.isModify.set(false);
+            }
+            vm.clientId = list.get(i).relatedClientId;
+            vm.clientName.set(list.get(i).relatedUserName);
+            vm.setAddClientRelateItemListener(this);
+            clientRelateItemVMS.add(vm);
+        }
+        if (list.size() == 0) {
+            AddClientRelateItemVM vm = new AddClientRelateItemVM();
+            vm.isFirst.set(true);
+            vm.isModify.set(false);
+            vm.setAddClientRelateItemListener(this);
+            clientRelateItemVMS.add(vm);
+        }
+
+        clientRelateAdapter.notifyDataSetChanged();
+
     }
 
     private void initAniDayHead(){
@@ -402,13 +479,37 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             }, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    anniDayVMS.remove(item);
-                    anniDayAdapter.notifyDataSetChanged();
+                    removeAniDay(item);
+
                 }
             });
         } else {
             lastAnniversariesItemVM = item;
             RemindSettingActivity.startActivity(this,lastAnniversariesItemVM.toDo,REQUEST_ANNIDAY_CODE);
         }
+    }
+
+    private void removeAniDay(AnniversariesItemVM item){
+
+        DelAniDayReq req = new DelAniDayReq();
+        req.id = item.id.get();
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.DEL_ANIDAY)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>(){
+
+                })).subscribe(new BaseObserver<BaseResp>() {
+            @Override
+            protected void onSuccess(BaseResp baseResp) throws Exception {
+                anniDayVMS.remove(item);
+                anniDayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+
     }
 }
