@@ -14,6 +14,9 @@ import android.text.TextUtils;
 import com.orhanobut.logger.Logger;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
+import com.weike.data.business.msg.MsgDetailActivity;
+import com.weike.data.model.business.JpushModel;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.ToastUtil;
 
@@ -56,7 +59,13 @@ public class    JPushReceiver extends BroadcastReceiver {
 
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
-
+                String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+                JpushModel model = JsonUtil.GsonToBean(extras,JpushModel.class);
+                Intent i = new Intent(context,MsgDetailActivity.class);
+                i.putExtra("name","");
+                i.putExtra("id",model.clientId + "");
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
 
                 /*//打开自定义的Activity
                 Intent i = new Intent(context, TestActivity.class);
