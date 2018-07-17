@@ -84,6 +84,7 @@
                 android:paddingBottom="15dp"
                 android:paddingTop="15dp"
                 android:hint="请输入"
+                android:maxLength="5"
                 android:text="@={anniverVM.name}"
                 android:clickable="@{anniverVM.isModify}"
                 android:textSize="15sp"
@@ -128,6 +129,8 @@
                 android:layout_height="match_parent"
                 android:src="@mipmap/ic_remind_dis"
                 android:layout_marginRight="10dp"
+                loadImageId="@{anniverVM.remindIcon}"
+                android:onClick="@{()->anniverVM.remind()}"
                 android:layout_gravity="center|right"
 
                 />

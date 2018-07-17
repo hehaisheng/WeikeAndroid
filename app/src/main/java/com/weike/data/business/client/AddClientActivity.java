@@ -133,8 +133,6 @@ public class AddClientActivity extends BaseActivity {
     }
 
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -307,7 +305,7 @@ public class AddClientActivity extends BaseActivity {
                     clientServiceMsgVM.fixedAssets.set(data.getFixedAssets());
 
 
-                    serviceMsgFragment.updateProductList(data.getProduct());
+                    //serviceMsgFragment.updateProductList(data.getProduct());
                     //服务信息
 
 
@@ -345,6 +343,7 @@ public class AddClientActivity extends BaseActivity {
         } else if (clientId != null && isModify == true) {
           fragments.get(0).onRightClick(isModify);
           fragments.get(1).onRightClick(isModify);
+          fragments.get(2).onRightClick(isModify);
           setLeftText("编辑客户");
         } else if (isModify == false && submitClient() == false){ //恢复状态
             LogUtil.d("AddClientActivity","false");
@@ -411,12 +410,16 @@ public class AddClientActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 恢复状态
+     */
     private void resetRight(){
         vm.isModify.set(false); //恢复状态
         setRightText("编辑");
         setModify(false);
         fragments.get(0).onRightClick(false);
         fragments.get(1).onRightClick(false);
+        fragments.get(2).onRightClick(false);
     }
 
 
@@ -442,6 +445,12 @@ public class AddClientActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     /**
@@ -508,7 +517,7 @@ public class AddClientActivity extends BaseActivity {
         req.sonNum = clientBaseMsgVM.son.get(); //儿子
         req.daughterNum = clientBaseMsgVM.gril.get();//女儿
         req.birthday = clientBaseMsgVM.birthday.get();
-       // req.birthdayJson = clientBaseMsgVM.birthDayTodo == null ? "" : JsonUtil.GsonString(clientBaseMsgVM.birthDayTodo); //生日的东西
+        req.birthdayJson = clientBaseMsgVM.birthDayTodo == null ? "" : JsonUtil.GsonString(clientBaseMsgVM.birthDayTodo); //生日的东西
         req.height = clientBaseMsgVM.clientHeight.get();
         req.weight = clientBaseMsgVM.clientWidght.get();
         req.clientId = clientId;
@@ -536,19 +545,30 @@ public class AddClientActivity extends BaseActivity {
 
         ArrayList<AnniversaryDay> anniversaryDays = new ArrayList<>();
 
-        LogUtil.d("AddClientActivity","-->" +clientBaseMsgFragment.anniDayVMS.size());
+        LogUtil.d("ActHomeAddClientActivity","-->" +clientBaseMsgFragment.anniDayVMS.size());
 
         for(int i = 0 ; i < clientBaseMsgFragment.anniDayVMS.size();i++) {
             AnniversariesItemVM vm = clientBaseMsgFragment.anniDayVMS.get(i);
-            if (i == 0)continue;
-            AnniversaryDay day = new AnniversaryDay();
-            day.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
-            day.anniversaryDate = vm.time.get();
-            day.anniversaryName = vm.name.get();
-            anniversaryDays.add(day);
+
+            if (i == 0){
+                continue;
+            }
+
+            if (TextUtils.isEmpty(vm.name.get()) || TextUtils.isEmpty(vm.time.get())){
+
+                continue;
+            } else {
+
+                AnniversaryDay day = new AnniversaryDay();
+                day.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
+                day.anniversaryDate = vm.time.get();
+                day.anniversaryName = vm.name.get();
+                anniversaryDays.add(day);
+            }
         }
 
-        req.anniversary = "" + JsonUtil.GsonString(anniversaryDays) + "";
+        if (anniversaryDays.size() > 0)
+            req.anniversary = "" + JsonUtil.GsonString(anniversaryDays) + "";
 
 
 
@@ -559,7 +579,7 @@ public class AddClientActivity extends BaseActivity {
         req.fixedAssets = clientServiceMsgVM.fixedAssets.get();
         req.car = clientServiceMsgVM.carType.get();
         req.liabilities = clientServiceMsgVM.liabilities.get();
-        req.product = "" + serviceMsgFragment.getAllProduct() + "";
+        //req.product = "" + serviceMsgFragment.getAllProduct() + "";
 
 
 

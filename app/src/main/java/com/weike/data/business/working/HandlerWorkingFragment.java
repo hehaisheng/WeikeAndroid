@@ -353,17 +353,6 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         if (type == TYPE_OF_CHECK) {
 
 
-            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否把该事项标记为已处理?", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    read(handleWorkItemVM);
-                }
-            });
 
 
         } else if (type == TYPE_OF_MODIFY) {

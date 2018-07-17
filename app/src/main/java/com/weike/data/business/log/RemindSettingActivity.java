@@ -18,6 +18,7 @@ import com.weike.data.config.DataConfig;
 import com.weike.data.databinding.ActivityRemindSettingBinding;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.GetOneTodoStatusReq;
+import com.weike.data.model.req.GetTodoByLogReq;
 import com.weike.data.model.req.ModifyOneTodoReq;
 import com.weike.data.model.resp.GetOneTodoStatusResp;
 import com.weike.data.model.viewmodel.RemingSetActVM;
@@ -39,9 +40,10 @@ public class RemindSettingActivity extends BaseActivity {
 
     public static final String KEY_OF_TODO = "com.RemindSettingActivity.KEY_OF_TODO";
     public static final String KEY_OF_ID = "com.RemindSettingActivity.KEY_OF_ID";
+    public static final String KEY_LOG_ID = "com.RemindSettingActivity.KEY_LOG_ID";
 
     public static final int CODE_OF_REQUEST = 500;
-
+    private String logId;
     private String id;
     private ToDo toDo;
 
@@ -64,6 +66,37 @@ public class RemindSettingActivity extends BaseActivity {
         fragment.startActivityForResult(intent,CODE_OF_REQUEST);
     }
 
+    /**
+     * 通过日志ID获取
+     * @param fragment
+     * @param test
+     * @param logid
+     */
+    public static void startActivity(BaseFragment fragment, int test ,String logid){
+        Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(KEY_LOG_ID , logid);
+        fragment.startActivityForResult(intent,CODE_OF_REQUEST);
+    }
+
+    /**
+     * 直接传一个todo 用于 生日的那种
+     * @param fragment
+     * @param toDo
+     * @param requestCode
+     */
+    public static void startActivity(BaseFragment fragment, ToDo toDo,int requestCode){
+        Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(KEY_OF_TODO , toDo);
+        fragment.startActivityForResult(intent,requestCode);
+    }
+
+    /**
+     * 直接获取详情 通过ID
+     * @param fragment
+     * @param id
+     */
     public static void startActivity(BaseFragment fragment, String id){
         Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -80,7 +113,7 @@ public class RemindSettingActivity extends BaseActivity {
 
         toDo = getIntent().getParcelableExtra(KEY_OF_TODO);
         id = getIntent().getStringExtra(KEY_OF_ID);
-
+        logId = getIntent().getStringExtra(KEY_LOG_ID);
 
         if (toDo != null) {
             initCurrentTodo();
@@ -90,12 +123,97 @@ public class RemindSettingActivity extends BaseActivity {
             initCurrentTodoByNet();
         }
 
+        if (logId != null){
+            initCurrentTodoByLog();
+        }
+
         binding.setRemindSettingVM(vm);
         setRightText("保存");
         setLeftText("设置提醒");
         setCenterText("");
 
 
+    }
+
+    private void initCurrentTodoByLog(){
+        GetTodoByLogReq req = new GetTodoByLogReq();
+        req.id = logId;
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_TODO_BY_LOG)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetOneTodoStatusResp>>() {
+
+                })).subscribe(new BaseObserver<BaseResp<GetOneTodoStatusResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetOneTodoStatusResp> getHandleWorkListRespBaseResp) throws Exception {
+                vm.isRemind.set(getHandleWorkListRespBaseResp.getDatas().isRemind == 1  ? true : false); //是否是提醒 和 不提醒
+                vm.isUnRemind.set(getHandleWorkListRespBaseResp.getDatas().isRemind == 2  ? true : false);
+
+
+                vm.content.set(getHandleWorkListRespBaseResp.getDatas().content); //内容
+                vm.heightCheck.set(getHandleWorkListRespBaseResp.getDatas().priority == 1 ? true : false);
+                vm.midCheck.set(getHandleWorkListRespBaseResp.getDatas().priority == 2 ? true : false);
+                vm.lowCheck.set(getHandleWorkListRespBaseResp.getDatas().priority == 3 ? true :false);
+                vm.time.set(getHandleWorkListRespBaseResp.getDatas().birthdaydate);
+
+                vm.advanceDateType = getHandleWorkListRespBaseResp.getDatas().advanceDateType;
+                vm.advanceInterval = getHandleWorkListRespBaseResp.getDatas().advanceInterval;
+                vm.isAdvance = getHandleWorkListRespBaseResp.getDatas().isAdvance;
+
+                vm.isRepeat = getHandleWorkListRespBaseResp.getDatas().isRepeat;
+                vm.repeatDateType = getHandleWorkListRespBaseResp.getDatas().repeatDateType;
+                vm.repeatInterval = getHandleWorkListRespBaseResp.getDatas().repeatInterval;
+
+
+                if (getHandleWorkListRespBaseResp.getDatas().isRepeat == 1) { //重复
+                    if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_DAY){
+                        //天
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "天");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_WEEK) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "周");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_MONTH) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "月");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "年");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_MIN) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "分钟");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_HOUR) {
+                        vm.repeatText.set("" + getHandleWorkListRespBaseResp.getDatas().repeatInterval + "小时");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == 0) {
+                        vm.repeatText.set("不重复");
+                    }
+                } else {
+                    vm.repeatText.set("不重复");
+                }
+
+                if (getHandleWorkListRespBaseResp.getDatas().isAdvance == 1) { //重复
+                    if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_DAY){
+                        //天
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "天");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_WEEK) {
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "周");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_MONTH) {
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "月");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_YEAR) {
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "年");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_MIN) {
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "分钟");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == DataConfig.RemindDateType.TYPE_OF_HOUR) {
+                        vm.remindTime.set("提前" + getHandleWorkListRespBaseResp.getDatas().advanceInterval + "小时");
+                    } else if (getHandleWorkListRespBaseResp.getDatas().advanceDateType == 0) {
+                        vm.remindTime.set("不提前");
+                    }
+                } else {
+                    vm.remindTime.set("不提前");
+                }
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
     }
 
     private void initCurrentTodoByNet(){
@@ -267,6 +385,14 @@ public class RemindSettingActivity extends BaseActivity {
 
         toDo = compass();
         LogUtil.d("addlog","bef:" + JsonUtil.GsonString(toDo));
+
+        if (logId != null) { //通过日志获取
+            Intent intent = new Intent();
+            intent.putExtra(KEY_LOG_ID,toDo);
+            setResult(RESULT_OK,intent);
+            finish();
+            return;
+        }
 
         if (id != null) { //如果ID 不为空 那么就是修改
             modifyOneTodo();

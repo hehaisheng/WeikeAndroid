@@ -3,6 +3,8 @@ package com.weike.data.model.viewmodel;
 import android.databinding.ObservableField;
 
 import com.weike.data.base.BaseVM;
+import com.weike.data.listener.OnReduceListener;
+import com.weike.data.model.business.ToDo;
 
 /**
  * Created by LeoLu on 2018/6/27.
@@ -21,18 +23,31 @@ public class ClientLogItemVM extends BaseVM {
     public ObservableField<Boolean> isRemind = new ObservableField<>();
 
     /**
+     * 提醒
+     */
+    public ObservableField<Integer> remindIcon = new ObservableField<>();
+
+    public String id;
+
+    public ToDo toDo;
+
+    /**
      *
      */
     public ObservableField<Boolean> isShowLine = new ObservableField<>(true);
 
+    public OnReduceListener<ClientLogItemVM> listener;
 
-
-    public void modify(ClientLogItemVM vm){
-
+    public void setListener(OnReduceListener<ClientLogItemVM> listener){
+        this.listener = listener;
     }
 
-    public void delete(ClientLogItemVM vm){
+    public void remind(){
+        listener.onAdd(this);
+    }
 
+    public void delete(){
+        listener.onReduce(this);
     }
 
 

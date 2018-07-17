@@ -1,6 +1,5 @@
 package com.weike.data.business.log;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.adapter.CheckedAdapter;
 import com.weike.data.base.BaseActivity;
+import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.client.RelateClientActivity;
@@ -126,10 +126,10 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
 
     }
 
-    public static void startActivity(ClientRelated clientRelated,Activity activity){
-        Intent intent = new Intent(activity,AddLogActivity.class);
+    public static void startActivity(ClientRelated clientRelated,BaseFragment fragment){
+        Intent intent = new Intent(fragment.getContext(),AddLogActivity.class);
         intent.putExtra("clientRelate",clientRelated);
-        activity.startActivity(intent);
+        fragment.startActivityForResult(intent,400);
     }
 
     @Override
@@ -155,8 +155,6 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
     }
 
     private void addLog(){
-
-
 
 
         List<ClientRelateForNet> subs = new ArrayList<>();
@@ -198,6 +196,7 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
             @Override
             protected void onSuccess(BaseResp baseResp) throws Exception {
                 dialogFragment.dismiss();
+                setResult(RESULT_OK);
                 finish();
                 ToastUtil.showToast("添加成功");
             }

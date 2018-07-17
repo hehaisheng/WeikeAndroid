@@ -41,6 +41,10 @@ import static android.app.Activity.RESULT_OK;
 
 public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickListener,AddPhoneVM.OnPhoneClickListener,AddClientRelateItemVM.AddClientRelateItemListener,AnniversariesItemVM.AnniversariseDayClickListener {
 
+    /**
+     * 纪念日专用
+     */
+    public static int REQUEST_ANNIDAY_CODE = 1000;
 
     /**
      * 添加号码适配器
@@ -61,13 +65,16 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     public List<AnniversariesItemVM> anniDayVMS = new ArrayList<>();
     BaseDataBindingAdapter anniDayAdapter;
 
-
+    /**
+     * 上一次点击使用
+     */
     private AddClientRelateItemVM lastRelateClientVM;
 
     public ClientBaseMsgVM clientBaseMsgVM;
 
     public FragmentClientBaseMsgBinding binding;
 
+    private AnniversariesItemVM lastAnniversariesItemVM;
 
 
     /**
@@ -132,6 +139,15 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         } else if (requestCode == AttrManagerActivity.CONTEXT_INCLUDE_CODE) {
 
+        } else if (requestCode == REQUEST_ANNIDAY_CODE && resultCode == RESULT_OK && data != null){
+
+            ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
+            lastAnniversariesItemVM.toDo = toDo;
+            if (toDo.isRemind == 1) {
+                lastAnniversariesItemVM.remindIcon.set(R.mipmap.ic_remind);
+            } else {
+                lastAnniversariesItemVM.remindIcon.set(R.mipmap.ic_remind_dis);
+            }
         }
     }
 
@@ -391,7 +407,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 }
             });
         } else {
-
+            lastAnniversariesItemVM = item;
+            RemindSettingActivity.startActivity(this,lastAnniversariesItemVM.toDo,REQUEST_ANNIDAY_CODE);
         }
     }
 }

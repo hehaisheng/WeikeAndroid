@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.databinding.ObservableField;
 import android.text.TextUtils;
 
+import com.weike.data.R;
 import com.weike.data.base.BaseVM;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.util.PickerUtil;
@@ -24,7 +25,7 @@ public class AnniversariesItemVM extends BaseVM {
 
     public ObservableField<String> time = new ObservableField<>();
 
-    public ObservableField<Integer> remindIcon = new ObservableField<>();
+    public ObservableField<Integer> remindIcon = new ObservableField<>(R.mipmap.ic_remind_dis);
 
     public AnniversariseDayClickListener listener;
 
