@@ -20,6 +20,7 @@ public class HandleWorkItemVM extends BaseVM {
 
     public ObservableField<Boolean> readVisibility = new ObservableField<>(true);
 
+    public int type = 1 ;
 
     public ObservableField<Integer> readClickBg = new ObservableField<>(R.mipmap.ic_right_yellow);
 

@@ -86,7 +86,6 @@
                 android:hint="请输入"
                 android:maxLength="5"
                 android:text="@={anniverVM.name}"
-                android:clickable="@{anniverVM.isModify}"
                 android:textSize="15sp"
                 android:background="@color/color_touming"
                 android:singleLine="true"
@@ -132,7 +131,6 @@
                 loadImageId="@{anniverVM.remindIcon}"
                 android:onClick="@{()->anniverVM.remind()}"
                 android:layout_gravity="center|right"
-
                 />
 
         </LinearLayout>

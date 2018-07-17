@@ -11,20 +11,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.reflect.TypeToken;
 import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
+import com.weike.data.base.BaseObserver;
+import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.RemindSettingActivity;
+import com.weike.data.config.Config;
 import com.weike.data.databinding.FragmentClientServiceMsgBinding;
-import com.weike.data.listener.OnReduceListener;
 import com.weike.data.model.business.Product;
 import com.weike.data.model.business.ProductBean;
 import com.weike.data.model.business.ToDo;
+import com.weike.data.model.req.DelAniDayReq;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.model.viewmodel.ProductItemVM;
+import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.NoScrollLinearLayoutManager;
+import com.weike.data.util.SignUtil;
+import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +72,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         serviceMsgVM.clickable.set(status);
 
         if (status) {//如果是编辑
+            binding.productCardView.setVisibility(View.VISIBLE);
             binding.recyclerProductMsgList.setVisibility(View.VISIBLE);
 
             for(int i = 0 ; i< itemVMS.size();i++){
@@ -76,6 +86,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
             if (itemVMS.size() == 0) {
                 binding.recyclerProductMsgList.setVisibility(View.GONE);
+                binding.productCardView.setVisibility(View.GONE);
                 return;
             }
             for(int i = 0 ; i < itemVMS.size() ; i++) {
@@ -98,9 +109,13 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             ProductItemVM vm = itemVMS.get(i);
             product.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
             product.productName = vm.content.get();
-            product.id = vm.productId;
+            product.id = TextUtils.isEmpty(vm.productId) ? "" : vm.productId;
 
             products.add(product);
+        }
+
+        if (products.size() == 0) {
+            return "";
         }
 
         return "" + JsonUtil.GsonString(products) + "";
@@ -139,36 +154,28 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
     private ToDo compass(ProductBean.RemindBean remindBean) {
         ToDo toDo = new ToDo();
-        /*if (TextUtils.isEmpty(remindBean.isRemind) == false) {
-            toDo.isAdvance = Integer.parseInt(remindBean.isRemind);
-        }
-        if (TextUtils.isEmpty(remindBean.remindDate) == false) {
-            toDo.birthdaydate = remindBean.remindDate;
-        }
-        if (TextUtils.isEmpty(remindBean.repeatIntervalHour) == false) {
-            toDo.repeatIntervalHour = Integer.parseInt(remindBean.repeatIntervalHour);
-        }
-        if (TextUtils.isEmpty(remindBean.isRepeat) == false)
-            toDo.isRepeat = Integer.parseInt(remindBean.isRepeat);
-
-        if (TextUtils.isEmpty(remindBean.priority) == false )
-            toDo.priority = Integer.parseInt(remindBean.priority);
-
-        if (TextUtils.isEmpty(remindBean.beforeRemindDay) == false)
-            toDo.beforeRemindDay = Integer.parseInt(remindBean.beforeRemindDay);
-
-        if (TextUtils.isEmpty(remindBean.dateType) == false)
-            toDo.dateType = Integer.parseInt(remindBean.dateType);
-*/
+        toDo.isRemind = remindBean.isRemind;
+        toDo.isRepeat = remindBean.isRepeat;
+        toDo.isAdvance = remindBean.isAdvance;
+        toDo.birthdaydate = remindBean.remindDate;
         toDo.content = remindBean.content;
+        toDo.advanceDateType = remindBean.advanceDateType;
+        toDo.advanceInterval = remindBean.advanceInterval;
+        toDo.repeatDateType = remindBean.repeatDateType;
+        toDo.repeatInterval = remindBean.repeatInterval;
+
         return toDo;
     }
 
     public void updateProductList(List<ProductBean> product) {
+        LogUtil.d("acthome","-->" + product.size());
         if (product.size() == 0) {
+            binding.productCardView.setVisibility(View.GONE);
             binding.recyclerProductMsgList.setVisibility(View.GONE);
             return;
         }
+        binding.productCardView.setVisibility(View.VISIBLE);
+        binding.recyclerProductMsgList.setVisibility(View.GONE);
         itemVMS.clear();
 
         for (int i = 0; i < product.size(); i++) {
@@ -179,17 +186,12 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             productItemVM.content.set(product.get(i).productName);
             productItemVM.productId = product.get(i).id + "";
             productItemVM.setListener(this);
-            if (product.get(i).remind != null) {
+            if (product.get(i).remind != null && TextUtils.isEmpty(product.get(i).remind.content)) {
 
                 productItemVM.toDo = compass(product.get(i).remind);
 
 
-                int remind = 1;
-                if (TextUtils.isEmpty(product.get(i).remind.isRemind) == false) {
-                    remind = Integer.parseInt(product.get(i).remind.isRemind);
-                }
-
-                if (remind == 1) {
+                if (productItemVM.toDo.isRemind == 1) {
                     productItemVM.remindIcon.set(R.mipmap.ic_remind);
                 } else {
                     productItemVM.remindIcon.set(R.mipmap.ic_remind_dis);
@@ -227,11 +229,6 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
     }
 
 
-    public void updateProduct() {
-
-    }
-
-
 
     @Override
     public void onClick(ProductItemVM productItemVM, int type) {
@@ -242,12 +239,48 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             itemVMS.add(vm);
             adapter.notifyDataSetChanged();
         } else if (type == 2) { // reduce
-            itemVMS.remove(productItemVM);
-            adapter.notifyDataSetChanged();
+            DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否移除该产品", new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    removeProduct(productItemVM);
+
+                }
+            });
+
         } else if (type == 3) { //remind
             lastProductVM = productItemVM;
 
             RemindSettingActivity.startActivity(this,productItemVM.toDo);
         }
+    }
+
+    private void removeProduct(ProductItemVM item){
+
+        DelAniDayReq req = new DelAniDayReq();
+        req.id = item.productId;
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.DEL_PRODUCT)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>(){
+
+                })).subscribe(new BaseObserver<BaseResp>() {
+            @Override
+            protected void onSuccess(BaseResp baseResp) throws Exception {
+                itemVMS.remove(item);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+
     }
 }

@@ -1,8 +1,6 @@
 package com.weike.data.model.resp;
 
-import com.google.gson.annotations.SerializedName;
 import com.weike.data.base.BaseResp;
-import com.weike.data.model.business.Product;
 import com.weike.data.model.business.ProductBean;
 
 import java.util.List;
@@ -27,7 +25,7 @@ public class GetClientDetailMsgResp extends BaseResp {
 
     private List<ProductBean> product;
 
-    private List<?> clientRelatedList;
+    private List<ClientRelateBean> clientRelatedList;
     private List<AnniversaryListBean> anniversaryList;
     private List<?> userAttributesList;
     private String userName;
@@ -383,11 +381,11 @@ public class GetClientDetailMsgResp extends BaseResp {
     }
 
 
-    public List<?> getClientRelatedList() {
+    public List<ClientRelateBean> getClientRelatedList() {
         return clientRelatedList;
     }
 
-    public void setClientRelatedList(List<?> clientRelatedList) {
+    public void setClientRelatedList(List<ClientRelateBean> clientRelatedList) {
         this.clientRelatedList = clientRelatedList;
     }
 
@@ -405,6 +403,15 @@ public class GetClientDetailMsgResp extends BaseResp {
 
     public void setUserAttributesList(List<?> userAttributesList) {
         this.userAttributesList = userAttributesList;
+    }
+
+
+    public static class ClientRelateBean{
+        public int id;
+
+        public String relatedClientId;
+
+        public String relatedUserName;
     }
 
     public static class ClientBean {
@@ -445,98 +452,48 @@ public class GetClientDetailMsgResp extends BaseResp {
 
     public static class BirthdayjsonBean {
         /**
-         * id : 63
-         * isRemind : 1
-         * content : 生日快乐
-         * remindDate : 1999-05-02 20:20
-         * beforeRemindDay : 5
-         * repeatIntervalHour : 3
-         * priority : 1
-         * isRepeat : 1
-         * dateType : 1
+         * 是否提醒
          */
+        public int isRemind = 1;
 
-        private int id;
-        private int isRemind;
-        private String content;
-        private String remindDate;
-        private int beforeRemindDay;
-        private int repeatIntervalHour;
-        private int priority;
-        private int isRepeat;
-        private int dateType;
+        /**
+         * 待办事时间
+         */
+        public String remindDate;
 
-        public int getId() {
-            return id;
-        }
+        /**
+         * 是否提前提醒
+         */
+        public int isAdvance;  // 1是 2 否
 
-        public void setId(int id) {
-            this.id = id;
-        }
+        public int advanceDateType; //提前提醒时间类型
 
-        public int getIsRemind() {
-            return isRemind;
-        }
+        public int advanceInterval; // 提醒时间间隔
 
-        public void setIsRemind(int isRemind) {
-            this.isRemind = isRemind;
-        }
 
-        public String getContent() {
-            return content;
-        }
+        /**
+         * id啦
+         */
+        public String id;
 
-        public void setContent(String content) {
-            this.content = content;
-        }
+        /**
+         * 内容
+         */
+        public String content;
 
-        public String getRemindDate() {
-            return remindDate;
-        }
+        /**
+         * 优先级 1 == 高 2 == 中 3== 低
+         */
+        public int priority = 1;
 
-        public void setRemindDate(String remindDate) {
-            this.remindDate = remindDate;
-        }
+        /*
+         * 是否重复提醒
+         */
+        public int isRepeat = 1; // 是 2 否
 
-        public int getBeforeRemindDay() {
-            return beforeRemindDay;
-        }
+        public int repeatInterval;//重复提醒时间间隔
 
-        public void setBeforeRemindDay(int beforeRemindDay) {
-            this.beforeRemindDay = beforeRemindDay;
-        }
-
-        public int getRepeatIntervalHour() {
-            return repeatIntervalHour;
-        }
-
-        public void setRepeatIntervalHour(int repeatIntervalHour) {
-            this.repeatIntervalHour = repeatIntervalHour;
-        }
-
-        public int getPriority() {
-            return priority;
-        }
-
-        public void setPriority(int priority) {
-            this.priority = priority;
-        }
-
-        public int getIsRepeat() {
-            return isRepeat;
-        }
-
-        public void setIsRepeat(int isRepeat) {
-            this.isRepeat = isRepeat;
-        }
-
-        public int getDateType() {
-            return dateType;
-        }
-
-        public void setDateType(int dateType) {
-            this.dateType = dateType;
-        }
+        public int repeatDateType; //重复提醒时间类型
     }
 
 
@@ -588,98 +545,48 @@ public class GetClientDetailMsgResp extends BaseResp {
 
         public static class RemindBeanX {
             /**
-             * id : 64
-             * isRemind : 1
-             * content : 测试
-             * remindDate : 1999-05-02 20:20
-             * beforeRemindDay : 3
-             * repeatIntervalHour : 1
-             * priority : 1
-             * isRepeat : 1
-             * dateType : 2
+             * 是否提醒
              */
+            public int isRemind = 1;
 
-            private int id;
-            private int isRemind;
-            private String content;
-            private String remindDate;
-            private int beforeRemindDay;
-            private int repeatIntervalHour;
-            private int priority;
-            private int isRepeat;
-            private int dateType;
+            /**
+             * 待办事时间
+             */
+            public String remindDate;
 
-            public int getId() {
-                return id;
-            }
+            /**
+             * 是否提前提醒
+             */
+            public int isAdvance;  // 1是 2 否
 
-            public void setId(int id) {
-                this.id = id;
-            }
+            public int advanceDateType; //提前提醒时间类型
 
-            public int getIsRemind() {
-                return isRemind;
-            }
+            public int advanceInterval; // 提醒时间间隔
 
-            public void setIsRemind(int isRemind) {
-                this.isRemind = isRemind;
-            }
 
-            public String getContent() {
-                return content;
-            }
+            /**
+             * id啦
+             */
+            public String id;
 
-            public void setContent(String content) {
-                this.content = content;
-            }
+            /**
+             * 内容
+             */
+            public String content;
 
-            public String getRemindDate() {
-                return remindDate;
-            }
+            /**
+             * 优先级 1 == 高 2 == 中 3== 低
+             */
+            public int priority = 1;
 
-            public void setRemindDate(String remindDate) {
-                this.remindDate = remindDate;
-            }
+            /*
+             * 是否重复提醒
+             */
+            public int isRepeat = 1; // 是 2 否
 
-            public int getBeforeRemindDay() {
-                return beforeRemindDay;
-            }
+            public int repeatInterval;//重复提醒时间间隔
 
-            public void setBeforeRemindDay(int beforeRemindDay) {
-                this.beforeRemindDay = beforeRemindDay;
-            }
-
-            public int getRepeatIntervalHour() {
-                return repeatIntervalHour;
-            }
-
-            public void setRepeatIntervalHour(int repeatIntervalHour) {
-                this.repeatIntervalHour = repeatIntervalHour;
-            }
-
-            public int getPriority() {
-                return priority;
-            }
-
-            public void setPriority(int priority) {
-                this.priority = priority;
-            }
-
-            public int getIsRepeat() {
-                return isRepeat;
-            }
-
-            public void setIsRepeat(int isRepeat) {
-                this.isRepeat = isRepeat;
-            }
-
-            public int getDateType() {
-                return dateType;
-            }
-
-            public void setDateType(int dateType) {
-                this.dateType = dateType;
-            }
+            public int repeatDateType; //重复提醒时间类型
         }
     }
 }

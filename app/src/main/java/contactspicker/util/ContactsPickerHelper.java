@@ -1,4 +1,4 @@
-package com.angcyo.contactspicker.util;
+package contactspicker.util;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -224,7 +224,7 @@ public class ContactsPickerHelper {
                         }
                     } while (cursor.moveToNext());
                 }
-                L.e("------------------------end---------------------");
+
             }
             cursor.close();
         }

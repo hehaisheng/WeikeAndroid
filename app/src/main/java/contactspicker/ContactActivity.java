@@ -9,28 +9,34 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 
-import com.angcyo.contactspicker.util.ContactsPickerHelper;
-import com.angcyo.contactspicker.util.L;
-
-import com.angcyo.contactspicker.widget.RRecyclerView;
 import com.bumptech.glide.Glide;
+import com.google.gson.reflect.TypeToken;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.weike.data.R;
 import com.weike.data.base.BaseActivity;
+import com.weike.data.base.BaseObserver;
+import com.weike.data.base.BaseResp;
+import com.weike.data.config.Config;
+import com.weike.data.model.req.AddClientListReq;
+import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.DialogUtil;
+import com.weike.data.util.JsonUtil;
+import com.weike.data.util.SignUtil;
+import com.weike.data.util.ToastUtil;
+import com.weike.data.util.TransformerUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import contactspicker.util.T2;
+import contactspicker.util.L;
 import contactspicker.widget.RBaseViewHolder;
 import contactspicker.widget.RGroupItemDecoration;
 import contactspicker.widget.RModelAdapter;
@@ -41,13 +47,13 @@ import rx.schedulers.Schedulers;
 
 public class ContactActivity extends BaseActivity {
 
-    private RRecyclerView mRecyclerView;
-    private RModelAdapter<ContactsPickerHelper.ContactsInfo> mModelAdapter;
+    private   contactspicker.widget.RRecyclerView mRecyclerView;
+    private RModelAdapter<contactspicker.util.ContactsPickerHelper.ContactsInfo> mModelAdapter;
 
-    private static List<ContactsPickerHelper.ContactsInfo> sort(List<ContactsPickerHelper.ContactsInfo> list) {
-        Collections.sort(list, new Comparator<ContactsPickerHelper.ContactsInfo>() {
+    private static List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> sort(List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> list) {
+        Collections.sort(list, new Comparator<  contactspicker.util.ContactsPickerHelper.ContactsInfo>() {
             @Override
-            public int compare(ContactsPickerHelper.ContactsInfo o1, ContactsPickerHelper.ContactsInfo o2) {
+            public int compare(  contactspicker.util.ContactsPickerHelper.ContactsInfo o1,   contactspicker.util.ContactsPickerHelper.ContactsInfo o2) {
                 return o1.letter.compareTo(o2.letter);
             }
         });
@@ -73,7 +79,7 @@ public class ContactActivity extends BaseActivity {
 
 //                startLoading();
 
-                final List<ContactsPickerHelper.ContactsInfo> selectorData = mModelAdapter.getSelectorData();
+                final List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> selectorData = mModelAdapter.getSelectorData();
                 L.w("共选中:" + selectorData.size());
                 for (int i = 0; i < selectorData.size(); i++) {
                     L.w(i + "-->" + selectorData.get(i).toString());
@@ -88,6 +94,59 @@ public class ContactActivity extends BaseActivity {
     public void onRightClick() {
         super.onRightClick();
 
+        DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "是否添加如下客户?", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> selectorData = mModelAdapter.getSelectorData();
+                if (selectorData.size() == 0) {
+                    ToastUtil.showToast("您没有选中联系人");
+                    return;
+                } else {
+                    addClientList(selectorData);
+                }
+            }
+        });
+
+
+    }
+
+    private void addClientList(List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> selectorData){
+
+        List<AddClientListReq.ClientListAttr> attrs = new ArrayList<>();
+
+        for(int i =0;i < selectorData.size();i++){
+            AddClientListReq.ClientListAttr attr = new AddClientListReq.ClientListAttr();
+            attr.phoneNumber = selectorData.get(i).phone;
+            attr.userName = selectorData.get(i).name;
+            attrs.add(attr);
+        }
+
+        AddClientListReq req = new AddClientListReq();
+        req.clientArr = "" + JsonUtil.GsonString(attrs) + "";
+        req.sign = SignUtil.signData(req);
+
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_CLIENT_LIST)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
+
+                })).subscribe(new BaseObserver<BaseResp>() {
+            @Override
+            protected void onSuccess(BaseResp getClientMsgDetailListRespBaseResp) throws Exception {
+                ToastUtil.showToast("添加成功");
+                finish();
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
     }
 
     private void scrollToLetter(String letter) {
@@ -104,8 +163,8 @@ public class ContactActivity extends BaseActivity {
     }
 
     private void initView() {
-        mRecyclerView = (RRecyclerView) findViewById(R.id.recycler_view);
-        mModelAdapter = new RModelAdapter<ContactsPickerHelper.ContactsInfo>(this) {
+        mRecyclerView = (  contactspicker.widget.RRecyclerView) findViewById(R.id.recycler_view);
+        mModelAdapter = new RModelAdapter<  contactspicker.util.ContactsPickerHelper.ContactsInfo>(this) {
 
             @Override
             protected int getItemLayoutId(int viewType) {
@@ -113,7 +172,7 @@ public class ContactActivity extends BaseActivity {
             }
 
             @Override
-            protected void onBindCommonView(final RBaseViewHolder holder, final int position, final ContactsPickerHelper.ContactsInfo bean) {
+            protected void onBindCommonView(final RBaseViewHolder holder, final int position, final   contactspicker.util.ContactsPickerHelper.ContactsInfo bean) {
                 holder.fillView(bean);
                 holder.v(R.id.item_layout).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -128,10 +187,9 @@ public class ContactActivity extends BaseActivity {
                     }
                 });
                 Glide.with(ContactActivity.this)
-                        .load(ContactsPickerHelper.getPhotoByte(ContactActivity.this, bean.contactId))
+                        .load(  contactspicker.util.ContactsPickerHelper.getPhotoByte(ContactActivity.this, bean.contactId))
 //                        .load(ContactsPickerHelper.getPhoto(getContentResolver(), bean.contactId))
-                        .transform(new com.angcyo.contactspicker.widget.GlideCircleTransform(ContactActivity.this))
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.mipmap.icon_normal_3)
                         .into(holder.imgV(R.id.image_view));
 
 //                Observable.just("")
@@ -152,12 +210,12 @@ public class ContactActivity extends BaseActivity {
             }
 
             @Override
-            protected void onBindModelView(int model, boolean isSelector, RBaseViewHolder holder, int position, ContactsPickerHelper.ContactsInfo bean) {
+            protected void onBindModelView(int model, boolean isSelector, RBaseViewHolder holder, int position,   contactspicker.util.ContactsPickerHelper.ContactsInfo bean) {
                 ((CompoundButton) holder.v(R.id.checkbox)).setChecked(isSelector);
             }
 
             @Override
-            protected void onBindNormalView(RBaseViewHolder holder, int position, ContactsPickerHelper.ContactsInfo bean) {
+            protected void onBindNormalView(RBaseViewHolder holder, int position,   contactspicker.util.ContactsPickerHelper.ContactsInfo bean) {
 
             }
         };
@@ -262,11 +320,11 @@ public class ContactActivity extends BaseActivity {
                             //imageView.setImageBitmap(getPhoto(getContentResolver(), "517"));
 //                                    Glide.with(ContactActivity.this).load(getPhotoByte(getContentResolver(), "518"));
 
-                            ContactsPickerHelper
+                              contactspicker.util.ContactsPickerHelper
                                     .getContactsListObservable(ContactActivity.this)
                                     .subscribeOn(Schedulers.computation())
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new Subscriber<List<ContactsPickerHelper.ContactsInfo>>() {
+                                    .subscribe(new Subscriber<List<  contactspicker.util.ContactsPickerHelper.ContactsInfo>>() {
 
                                         @Override
                                         public void onStart() {
@@ -284,7 +342,7 @@ public class ContactActivity extends BaseActivity {
                                         }
 
                                         @Override
-                                        public void onNext(List<ContactsPickerHelper.ContactsInfo> contactsInfos) {
+                                        public void onNext(List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> contactsInfos) {
                                             mModelAdapter.resetData(sort(contactsInfos));
                                        //     T2.show(ContactActivity.this, "扫描完成:共" + contactsInfos.size() + "个联系人");
                                         }

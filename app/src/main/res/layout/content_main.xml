@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_main">
 
-    <com.angcyo.contactspicker.widget.RRecyclerView
+    <contactspicker.widget.RRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:tag="V"

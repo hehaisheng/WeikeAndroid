@@ -1,4 +1,4 @@
-package com.angcyo.contactspicker.widget;
+package contactspicker.widget;
 
 import android.content.Context;
 import android.content.res.Resources;

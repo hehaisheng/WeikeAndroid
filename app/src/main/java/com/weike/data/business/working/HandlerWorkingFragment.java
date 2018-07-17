@@ -94,6 +94,8 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
     private ToDo toDo;
 
+    private int groupPosition;
+
     private int page;
 
     DialogFragment dialogFragment;
@@ -105,9 +107,17 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
-            lastModifyVM.time.set(toDo.birthdaydate);
-            lastModifyVM.content.set(toDo.content);
-            recycleAdapter.notifyDataSetChanged();
+
+            if (lastModifyVM.type == 1) {
+                lastModifyVM.time.set(toDo.birthdaydate);
+                lastModifyVM.content.set(toDo.content);
+                recycleAdapter.notifyDataSetChanged();
+            } else {
+                lastModifyVM.time.set(toDo.birthdaydate);
+                lastModifyVM.content.set(toDo.content);
+                expandableListView.collapseGroup(groupPosition);
+                expandableListView.expandGroup(groupPosition);
+            }
 
         }
     }
@@ -121,7 +131,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
-
+                HandlerWorkingFragment.this.groupPosition = groupPosition;
 
                 if ( expandableListView.isGroupExpanded(groupPosition) ) {
                     expandableListView.collapseGroup(groupPosition);
@@ -192,7 +202,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
     private void getLabelToDo(int groupPosition ,String labelId){
         GetToDoByTagReq req = new GetToDoByTagReq();
-        req.labelId = labelId;
+        req.lableId = labelId;
         req.page = 1;
         req.sign = SignUtil.signData(req);
 
@@ -204,10 +214,34 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             protected void onSuccess(BaseResp<GetTodoByTagResp> getClientTagListRespBaseResp) throws Exception {
                 dialogFragment.dismiss();
                 List<HandleWorkItemVM>  cs = childVMs.get(groupPosition);
-                for(int i = 0 ; i < 3 ; i++){
-                    HandleWorkItemVM h = new HandleWorkItemVM();
-                    cs.add(h);
+                cs.clear();
+
+                for (int i = 0; i < getClientTagListRespBaseResp.getDatas().toDoList.size(); i++) {
+                    HandleWorkItemVM vm = new HandleWorkItemVM();
+                    vm.userName.set(getClientTagListRespBaseResp.getDatas().toDoList.get(i).clientName);
+                    vm.time.set(getClientTagListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
+                    vm.content.set(getClientTagListRespBaseResp.getDatas().toDoList.get(i).content);
+                    vm.id.set(getClientTagListRespBaseResp.getDatas().toDoList.get(i).id);
+                    vm.setListener(HandlerWorkingFragment.this);
+                    vm.type = 2;
+
+                    int pro = getClientTagListRespBaseResp.getDatas().toDoList.get(i).priority;
+                    if (pro == DataConfig.RemindLevel.TYPE_OF_HEIGHT) {
+                        vm.readClickBg.set(R.mipmap.ic_right_blue);
+                    } else if (pro == DataConfig.RemindLevel.TYPE_OF_MID) {
+                        vm.readClickBg.set(R.mipmap.ic_right_yellow);
+                    } else if (pro == DataConfig.RemindLevel.TYPE_OF_LOAD) {
+                        vm.readClickBg.set(R.mipmap.ic_finish_gray);
+                    }
+                    cs.add(vm);
                 }
+
+                if (cs.size() == 0) {
+                    ToastUtil.showToast("暂无数据");
+                    expandableListView.collapseGroup(groupPosition);
+                    return;
+                }
+
                 expandableListView.expandGroup(groupPosition, true);
 
 
@@ -412,14 +446,20 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             @Override
             protected void onSuccess(BaseResp<EditAndDeleteTodoResp> editAndDeleteTodoRespBaseResp) throws Exception {
 
-                if(type == 2){
-                    vms.remove(vm);
-                    recycleAdapter.notifyDataSetChanged();
-                 } else if(type == 4) {
-                    vms.remove(vm);
-                    recycleAdapter.notifyDataSetChanged();
-                }  else {
-                    ToastUtil.showToast("修改成功");
+                if (vm.type == 1) {
+                    if (type == 2) {
+                        vms.remove(vm);
+                        recycleAdapter.notifyDataSetChanged();
+                    } else if (type == 4) {
+                        vms.remove(vm);
+                        recycleAdapter.notifyDataSetChanged();
+                    } else {
+                        ToastUtil.showToast("修改成功");
+                    }
+                } else {
+                    childVMs.get(groupPosition).remove(vm);
+                    expandableListView.collapseGroup(groupPosition);
+                    expandableListView.expandGroup(groupPosition);
                 }
 
 

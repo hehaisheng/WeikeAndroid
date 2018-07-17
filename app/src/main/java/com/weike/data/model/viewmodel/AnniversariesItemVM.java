@@ -29,6 +29,7 @@ public class AnniversariesItemVM extends BaseVM {
 
     public AnniversariseDayClickListener listener;
 
+
     public ToDo toDo;
 
     public void add(){
