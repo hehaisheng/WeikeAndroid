@@ -87,6 +87,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="15dp"
                         android:text="时间"
+                        android:minWidth="60dp"
                         android:textColor="@color/color_content" />
 
                     <TextView
@@ -94,6 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="30dp"
+                        android:hint="请选择时间发生的时间"
                         android:text="@{addLogVM.time}" />
 
                     <ImageView
@@ -136,7 +138,7 @@
                         android:background="@drawable/shape_main_page_search"
                         android:hint="请输入日志内容"
                         android:gravity="top"
-                        android:minHeight="200dp"
+                        android:minHeight="50dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
                         android:text="@={addLogVM.content}" />
@@ -164,12 +166,14 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="15dp"
                         android:text="提醒设置"
+                        android:minWidth="60dp"
                         android:textColor="@color/color_content" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:hint="设置提醒时间"
                         android:layout_marginLeft="30dp" />
 
                     <ImageView

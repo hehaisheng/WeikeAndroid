@@ -86,7 +86,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 .setCanceledOnTouchOutside(false)
                 .setCancelable(true)
                 .setInputManualClose(true)
-                .setTitle("添加客户")
+                .setTitle("添加客户标签")
                 .setInputHint("请输入")
                 .configInput(new ConfigInput() {
                     @Override
@@ -128,6 +128,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
             @Override
             protected void onSuccess(BaseResp<GetLabelNumResp> getLabelNumRespBaseResp) throws Exception {
                     currentLabelTagArray = getLabelNumRespBaseResp.getDatas().labelSort;
+                    initLabel();
             }
 
             @Override
@@ -160,21 +161,6 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
             @Override
             protected void onSuccess(BaseResp<AddLabelResp> getClientTagListRespBaseResp) throws Exception {
 
-                if (TextUtils.isEmpty(id)) {
-                    TagSettingVM vm = new TagSettingVM();
-                    vm.setListener(ClientTagSettingActivity.this);
-                    vm.tagId.set(getClientTagListRespBaseResp.getDatas().id + "");
-                    vm.name.set(req.sort);
-                    vm.isModify.set(true);
-                    vm.content.set(content);
-                    vms.add(vm);
-                    adapter.notifyDataSetChanged();
-
-                } else {
-                    vm.content.set(content);
-                    adapter.notifyDataSetChanged();
-                    ToastUtil.showToast("修改成功");
-                }
                 // 本地保存
 
                 checkLabelNum();
@@ -185,6 +171,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 tagSub.sort = req.sort;
                 user.labelList.add(tagSub);
                 SpUtil.getInstance().saveNewsUser(user); //保存本地
+                ToastUtil.showToast("修改成功");
 
             }
 
@@ -210,7 +197,6 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
         setRightText("");
 
         initView();
-        initLabel();
 
     }
 

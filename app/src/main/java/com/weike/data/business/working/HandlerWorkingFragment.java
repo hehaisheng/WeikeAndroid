@@ -227,11 +227,11 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
                     int pro = getClientTagListRespBaseResp.getDatas().toDoList.get(i).priority;
                     if (pro == DataConfig.RemindLevel.TYPE_OF_HEIGHT) {
-                        vm.readClickBg.set(R.mipmap.ic_right_blue);
+                        vm.readClickBg.set(R.mipmap.ic_finish_red);
                     } else if (pro == DataConfig.RemindLevel.TYPE_OF_MID) {
                         vm.readClickBg.set(R.mipmap.ic_right_yellow);
                     } else if (pro == DataConfig.RemindLevel.TYPE_OF_LOAD) {
-                        vm.readClickBg.set(R.mipmap.ic_finish_gray);
+                        vm.readClickBg.set(R.mipmap.ic_right_blue);
                     }
                     cs.add(vm);
                 }
@@ -341,11 +341,11 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                     vm.setListener(HandlerWorkingFragment.this);
                     int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
                     if (pro == DataConfig.RemindLevel.TYPE_OF_HEIGHT) {
-                        vm.readClickBg.set(R.mipmap.ic_right_blue);
+                        vm.readClickBg.set(R.mipmap.ic_finish_red);
                     } else if (pro == DataConfig.RemindLevel.TYPE_OF_MID) {
                         vm.readClickBg.set(R.mipmap.ic_right_yellow);
                     } else if (pro == DataConfig.RemindLevel.TYPE_OF_LOAD) {
-                        vm.readClickBg.set(R.mipmap.ic_finish_gray);
+                        vm.readClickBg.set(R.mipmap.ic_right_blue);
                     }
                     vms.add(vm);
                 }
@@ -386,7 +386,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     public void onClick(int type, HandleWorkItemVM handleWorkItemVM) {
         if (type == TYPE_OF_CHECK) {
 
-
+            read(handleWorkItemVM);
 
 
         } else if (type == TYPE_OF_MODIFY) {
@@ -446,7 +446,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             @Override
             protected void onSuccess(BaseResp<EditAndDeleteTodoResp> editAndDeleteTodoRespBaseResp) throws Exception {
 
-                if (vm.type == 1) {
+                if (vm.type == 1) { //这是
                     if (type == 2) {
                         vms.remove(vm);
                         recycleAdapter.notifyDataSetChanged();

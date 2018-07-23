@@ -48,6 +48,16 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:visibility="@{clientRelateForAddVM.isFirst ? View.VISIBLE :View.GONE}"
+            android:src="@mipmap/ic_del_2"
+            android:onClick="@{()->clientRelateForAddVM.cancelFirst()}"
+            android:layout_gravity="center"
+
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"

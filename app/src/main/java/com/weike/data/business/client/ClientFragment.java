@@ -1,7 +1,10 @@
 package com.weike.data.business.client;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -55,6 +58,8 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
     private SortAdapter adapter;
     private List<ClientSortModel> datas = new ArrayList<>();
 
+    public static final String ACTION_UPDATE_CLIENT = "com.weike.data.ACTION_UPDATE_CLIENT";
+
     @Override
     protected int setUpLayoutId() {
         return R.layout.fragment_client_list;
@@ -77,6 +82,8 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
         sideBar = view.findViewById(R.id.sidrbar);
         clientList.addHeaderView(initHeadView());
 
+
+        getActivity().registerReceiver(clientUpdateBr,new IntentFilter(ACTION_UPDATE_CLIENT));
 
         adapter = new SortAdapter(context,datas);
         clientList.setAdapter(adapter);
@@ -131,6 +138,15 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
             }
         });
     }
+
+
+
+    public BroadcastReceiver clientUpdateBr = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            fresh(true);
+        }
+    };
 
     /**
      * 排序你的title

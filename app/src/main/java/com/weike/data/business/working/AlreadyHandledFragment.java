@@ -180,7 +180,6 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
                 for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
                     HandleWorkItemVM vm = new HandleWorkItemVM();
-                    vm.readClickBg.set(R.mipmap.ic_right_blue);
                     vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
                     vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
                     vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
@@ -189,11 +188,11 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
                     int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
                     if (pro == DataConfig.RemindLevel.TYPE_OF_HEIGHT) {
-                        vm.readClickBg.set(R.mipmap.ic_right_blue);
+                        vm.readClickBg.set(R.mipmap.ic_finish_red);
                     } else if (pro == DataConfig.RemindLevel.TYPE_OF_MID) {
                         vm.readClickBg.set(R.mipmap.ic_right_yellow);
                     } else if (pro == DataConfig.RemindLevel.TYPE_OF_LOAD) {
-                        vm.readClickBg.set(R.mipmap.ic_finish_gray);
+                        vm.readClickBg.set(R.mipmap.ic_right_blue);
                     }
                     vms.add(vm);
                 }
@@ -212,7 +211,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
     @Override
     public void onClick(int type, HandleWorkItemVM handleWorkItemVM) {
         if (type == TYPE_OF_CHECK) {
-
+            read(handleWorkItemVM);
 
         } else if (type == TYPE_OF_MODIFY) {
 

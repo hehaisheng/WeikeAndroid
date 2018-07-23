@@ -14,10 +14,28 @@
         layout="@layout/widget_action_bar"
         />
 
-    <include layout="@layout/content_main"
-        android:layout_height="match_parent"
+
+    <FrameLayout
         android:layout_width="match_parent"
-        />
+        android:layout_height="match_parent">
+
+        <include layout="@layout/content_main"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            />
+
+        <com.weike.data.view.citypicker.SideBar
+            android:id="@+id/sidrbar"
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center"
+            android:layout_marginBottom="60dp"
+            android:layout_marginTop="60dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" />
+
+    </FrameLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

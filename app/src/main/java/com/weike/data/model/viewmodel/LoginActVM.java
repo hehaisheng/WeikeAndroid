@@ -59,7 +59,7 @@ public class LoginActVM extends BaseVM {
     /**
      * 登录密码类型
      */
-    public ObservableField<String> typeText = new ObservableField<>("使用验证码登录");
+    public ObservableField<String> typeText = new ObservableField<>("新用户请使用验证码登录");
 
     /*
      *密码

@@ -94,7 +94,7 @@ public class MySelfFragment extends BaseFragment {
                 binding.swipeRefreshLayout.setRefreshing(false);
                 if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0) {
                     vm.nickName.set(getUserInfoRespBaseResp.getDatas().userName);
-                    vm.phoneNum.set("电话号码：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
+                    vm.phoneNum.set("绑定手机：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
                     vm.photoUrl.set(getUserInfoRespBaseResp.getDatas().photoUrl);
                     vm.integral.set(getUserInfoRespBaseResp.getDatas().currentIntegral);
                     if(getUserInfoRespBaseResp.getDatas().memberLevel == 1) {

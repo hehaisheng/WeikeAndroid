@@ -1,6 +1,7 @@
 package contactspicker;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +10,7 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -22,6 +24,7 @@ import com.weike.data.R;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.client.ClientFragment;
 import com.weike.data.config.Config;
 import com.weike.data.model.req.AddClientListReq;
 import com.weike.data.network.RetrofitFactory;
@@ -30,6 +33,7 @@ import com.weike.data.util.JsonUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
+import com.weike.data.view.citypicker.SideBar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,6 +54,9 @@ public class ContactActivity extends BaseActivity {
     private   contactspicker.widget.RRecyclerView mRecyclerView;
     private RModelAdapter<contactspicker.util.ContactsPickerHelper.ContactsInfo> mModelAdapter;
 
+    private DialogFragment dialog;
+    private SideBar sideBar;
+
     private static List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> sort(List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> list) {
         Collections.sort(list, new Comparator<  contactspicker.util.ContactsPickerHelper.ContactsInfo>() {
             @Override
@@ -64,10 +71,20 @@ public class ContactActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_data);
+        sideBar = findViewById(R.id.sidrbar);
+        sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+            @Override
+            public void onTouchingLetterChanged(String s) {
+                scrollToLetter(s);
+            }
+        });
+
 
         setCenterText("");
         setLeftText("联系人");
         setRightText("完成");
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +157,8 @@ public class ContactActivity extends BaseActivity {
             protected void onSuccess(BaseResp getClientMsgDetailListRespBaseResp) throws Exception {
                 ToastUtil.showToast("添加成功");
                 finish();
+                sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
+
             }
 
             @Override
@@ -163,6 +182,7 @@ public class ContactActivity extends BaseActivity {
     }
 
     private void initView() {
+        dialog = DialogUtil.showLoadingDialog(getSupportFragmentManager(),"正在加载..");
         mRecyclerView = (  contactspicker.widget.RRecyclerView) findViewById(R.id.recycler_view);
         mModelAdapter = new RModelAdapter<  contactspicker.util.ContactsPickerHelper.ContactsInfo>(this) {
 
@@ -219,6 +239,7 @@ public class ContactActivity extends BaseActivity {
 
             }
         };
+
         mModelAdapter.setModel(RModelAdapter.MODEL_MULTI);//多选模式
         mRecyclerView.setAdapter(mModelAdapter);
 
@@ -237,18 +258,13 @@ public class ContactActivity extends BaseActivity {
             @Override
             public String getGroupText(int position) {
                 //空分组测试
-//                if (position == 0 || position == 1) {
-//                    return "";
-//                }
-//                if (position > 5 && position < 200) {
-//                    return "";
-//                }
+
                 return mModelAdapter.getAllDatas().get(position).letter;
             }
 
             @Override
             public void onGroupDraw(Canvas canvas, View view, int position) {
-                paint.setColor(Color.parseColor("#969696"));
+                paint.setColor(Color.parseColor("#f5f5f5"));
 
                 if (isHorizontal()) {
                     rectF.set(view.getLeft() - getGroupHeight(), view.getTop(), view.getLeft(), view.getBottom());
@@ -257,7 +273,7 @@ public class ContactActivity extends BaseActivity {
                 }
 
                 canvas.drawRoundRect(rectF, dp2px(2), dp2px(2), paint);
-                paint.setColor(Color.WHITE);
+                paint.setColor(Color.parseColor("#bebebe"));
 
                 final String letter = mModelAdapter.getAllDatas().get(position).letter;
                 paint.getTextBounds(letter, 0, letter.length(), rect);
@@ -271,7 +287,7 @@ public class ContactActivity extends BaseActivity {
 
             @Override
             public void onGroupOverDraw(Canvas canvas, View view, int position, int offset) {
-                paint.setColor(Color.parseColor("#969696"));
+                paint.setColor(Color.parseColor("#f5f5f5"));
 
                 if (isHorizontal()) {
                     rectF.set(-offset, view.getTop(), getGroupHeight() - offset, view.getBottom());
@@ -280,7 +296,7 @@ public class ContactActivity extends BaseActivity {
                 }
 
                 canvas.drawRoundRect(rectF, dp2px(2), dp2px(2), paint);
-                paint.setColor(Color.WHITE);
+                paint.setColor(Color.parseColor("#bebebe"));
 
                 final String letter = mModelAdapter.getAllDatas().get(position).letter;
                 paint.getTextBounds(letter, 0, letter.length(), rect);
@@ -343,6 +359,7 @@ public class ContactActivity extends BaseActivity {
 
                                         @Override
                                         public void onNext(List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> contactsInfos) {
+                                            dialog.dismiss();
                                             mModelAdapter.resetData(sort(contactsInfos));
                                        //     T2.show(ContactActivity.this, "扫描完成:共" + contactsInfos.size() + "个联系人");
                                         }

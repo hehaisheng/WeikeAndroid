@@ -70,6 +70,11 @@ public class ClientTagActivity extends BaseActivity {
     @BindView(R.id.recyclerview_client_content)
     public RecyclerView recycle_client_list;
 
+    @OnClick(R.id.tv_add_client)
+    public void addClient(View view){
+        AddClientActivity.startActivity(this,null);
+    }
+
     @BindView(R.id.ll_nothing_view)
     public View nothingView;
 
@@ -151,7 +156,7 @@ public class ClientTagActivity extends BaseActivity {
                         params.backgroundColorPress = Color.CYAN;
                     }
                 })
-                .setTitle("请选择您要关联的客户")
+                .setTitle("请选择客户标签")
                 .setItems(checkedAdapter, new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

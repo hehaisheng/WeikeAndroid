@@ -164,11 +164,6 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
             subs.add(related);
         }
 
-        if (toDo == null) {
-            dialogFragment.dismiss();
-            ToastUtil.showToast("请设置您的提醒");
-            return;
-        }
 
         if (subs.size() == 0) { //没有关联客户
             ToastUtil.showToast("至少关联一个客户");
@@ -186,7 +181,7 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
         addLogReq.logDate =  logActVM.time.get();
         addLogReq.content = logActVM.content.get();
         addLogReq.clientArr = "" + JsonUtil.GsonString(subs) + "";
-        addLogReq.toDo = JsonUtil.GsonString(toDo);
+        addLogReq.toDo = toDo == null ? "" : JsonUtil.GsonString(toDo);
         addLogReq.sign = SignUtil.signData(addLogReq);
 
         RetrofitFactory.getInstance().getService().postAnything(addLogReq, Config.ADD_LOG)
