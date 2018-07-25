@@ -93,6 +93,7 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
     }
 
 
+    private ArrayList<CheckBox> views = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,7 +119,15 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
             radio_custom.setChecked(true);
         }*/
 
+       views.add(radio_week);
+        views.add(radio_custom);
+        views.add(radio_month);
+        views.add(radio_quarter);
+        views.add(radio_week);
+
+
         loadDefault();
+
 
 
 
@@ -128,19 +137,21 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
 
 
                 if (b && compoundButton.equals(radio_week)) {
-
+                    updateCheckStatus(radio_week);
                     user.handleWorkingType = TYPE_OF_WEEK;
                 } else if (b && compoundButton.equals(radio_month)) {
-
+                    updateCheckStatus(radio_month);
                     user.handleWorkingType = TYPE_OF_MONTH;
                 } else if (b && compoundButton.equals(radio_quarter)) {
-
+                    updateCheckStatus(radio_quarter);
                     user.handleWorkingType = TYPE_OF_QUARTER;
                 } else if (b && compoundButton.equals(radio_year)) {
-
+                    updateCheckStatus(radio_year);
                     user.handleWorkingType = TYPE_OF_YEAR;
                 } else if (b && compoundButton.equals(radio_custom)) {
                     user.handleWorkingType = TYPE_OF_CUSTOM;
+                    updateCheckStatus(radio_custom);
+
 
 
                     ArrayList<String> data = new ArrayList<>();
@@ -157,36 +168,27 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
 
                             time = Integer.parseInt((String) o);
                             tv_customer_day.setText(o + "小时");
-
-                            radio_custom.setChecked(true);
-                            radio_year.setChecked(false);
-                            radio_week.setChecked(false);
-                            radio_quarter.setChecked(false);
-                            radio_month.setChecked(false);
+                            updateCheckStatus(radio_custom);
                         }
                     }, new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialogInterface) {
 
-                            radio_custom.setChecked(true);
-                            radio_year.setChecked(false);
-                            radio_week.setChecked(false);
-                            radio_quarter.setChecked(false);
-                            radio_month.setChecked(false);
+                            updateCheckStatus(radio_custom);
 
                         }
                     });
                 }
             }
         };
-/*
+
 
         radio_quarter.setOnCheckedChangeListener(listener);
         radio_week.setOnCheckedChangeListener(listener);
         radio_year.setOnCheckedChangeListener(listener);
         radio_custom.setOnCheckedChangeListener(listener);
         radio_month.setOnCheckedChangeListener(listener);
-*/
+
 
         /*radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -207,15 +209,14 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
 
     }
 
-    private void updateCheckStatus(int checkId){
-        for(int i = 0 ; i < ids.length ; i ++){
-            CheckBox checkBox = findViewById(checkId);
-            if (checkId == ids[i]) {
-                checkBox.setChecked(true);
-            } else {
-                checkBox.setChecked(false);
-            }
-        }
+    private void updateCheckStatus(CheckBox checkId){
+       for(int i = 0 ; i < views.size();i++){
+           if (!views.get(i).equals(checkId)){
+               views.get(i).setChecked(false);
+           } else {
+               views.get(i).setChecked(true);
+           }
+       }
     }
 
     private void loadDefault(){
