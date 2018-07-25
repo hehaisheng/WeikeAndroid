@@ -128,6 +128,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
             @Override
             protected void onSuccess(BaseResp<GetLabelNumResp> getLabelNumRespBaseResp) throws Exception {
                     currentLabelTagArray = getLabelNumRespBaseResp.getDatas().labelSort;
+                    initLabel();
             }
 
             @Override
@@ -160,7 +161,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
             @Override
             protected void onSuccess(BaseResp<AddLabelResp> getClientTagListRespBaseResp) throws Exception {
 
-                if (TextUtils.isEmpty(id)) {
+               /* if (TextUtils.isEmpty(id)) {
                     TagSettingVM vm = new TagSettingVM();
                     vm.setListener(ClientTagSettingActivity.this);
                     vm.tagId.set(getClientTagListRespBaseResp.getDatas().id + "");
@@ -184,7 +185,9 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 tagSub.labelName = content;
                 tagSub.sort = req.sort;
                 user.labelList.add(tagSub);
-                SpUtil.getInstance().saveNewsUser(user); //保存本地
+                SpUtil.getInstance().saveNewsUser(user); //保存本地*/
+               checkLabelNum();
+
 
             }
 
@@ -210,7 +213,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
         setRightText("");
 
         initView();
-        initLabel();
+        //initLabel();
 
     }
 
@@ -337,7 +340,6 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
             protected void onSuccess(BaseResp<GetClientTagListResp> getClientTagListRespBaseResp) throws Exception {
                 List<GetClientTagListResp.TagSub> list = getClientTagListRespBaseResp.getDatas().clientLabelList;
                 Collections.sort(list,new ClientTagComparator());
-
                 for(int i = 0 ; i < list.size() ; i++) {
                     TagSettingVM vm = new TagSettingVM();
                     vm.content.set(list.get(i).labelName);
@@ -349,6 +351,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                     }
                     vm.setListener(ClientTagSettingActivity.this);
                     vm.name.set(list.get(i).sort);
+                    vm.isShow.set(true);
                     vms.add(vm);
                 }
 
@@ -356,6 +359,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 vm.content.set("未分组客户");
                 vm.setListener(ClientTagSettingActivity.this);
                 vm.tagId.set("");
+                vm.isShow.set(false);
                 vm.isModify.set(false);
                 vms.add(0,vm);
 
