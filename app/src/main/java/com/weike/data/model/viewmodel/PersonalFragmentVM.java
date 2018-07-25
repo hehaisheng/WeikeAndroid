@@ -47,7 +47,7 @@ public class PersonalFragmentVM extends BaseVM {
 
     public ObservableField<String> photoUrl = new ObservableField<>();
 
-    public ObservableField<String> nickName = new ObservableField<>("未知用户");
+    public ObservableField<String> nickName = new ObservableField<>("请输入姓名");
 
     public ObservableField<String> integral = new ObservableField<>("0.00");
 

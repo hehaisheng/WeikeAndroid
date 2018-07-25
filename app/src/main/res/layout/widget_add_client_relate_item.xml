@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:text="关联客户"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textColor="@color/color_content"
 
             />
@@ -40,7 +40,7 @@
             android:background="@drawable/shape_main_page_search"
             android:gravity="center|left"
             android:hint="请选择"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:onClick="@{()->clientRelateForAddVM.addRelate()}"
             android:text="@{clientRelateForAddVM.clientName}"
             android:paddingLeft="10dp" />

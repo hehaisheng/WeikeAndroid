@@ -17,6 +17,7 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
 import com.weike.data.business.home.HomeActivity;
 import com.weike.data.config.Config;
+import com.weike.data.model.business.User;
 import com.weike.data.model.req.GetVerificationCodeReq;
 import com.weike.data.model.req.LoginByCodeReq;
 import com.weike.data.model.req.LoginByPwdReq;
@@ -91,6 +92,8 @@ public class LoginActVM extends BaseVM {
     public LoginActVM(Activity activity){
         super(activity);
         this.activity = activity;
+
+        pwd.set(SpUtil.getInstance().getUser().userPwd);
     }
 
     public void showPwd(){
@@ -258,6 +261,11 @@ public class LoginActVM extends BaseVM {
                 if (Integer.parseInt(loginByPwdResp.getResult()) == 1) {
                     String token = loginByPwdResp.getDatas().token;
                     SpUtil.getInstance().saveCurrentToken(token); //登录保存令牌
+                   User u  = SpUtil.getInstance().getUser();
+                   u.userPwd = pwd.get();
+                   SpUtil.getInstance().saveNewsUser(u);
+
+
                     ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class, true);
                 } else {
                     ToastUtil.showToast(loginByPwdResp.getMessage());

@@ -63,7 +63,7 @@ public class    JPushReceiver extends BroadcastReceiver {
                 JpushModel model = JsonUtil.GsonToBean(extras,JpushModel.class);
                 Intent i = new Intent(context,MsgDetailActivity.class);
                 i.putExtra("name","");
-                i.putExtra("id",model.clientId + "");
+                i.putExtra("id",model.wkzs.clientId + "");
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
 

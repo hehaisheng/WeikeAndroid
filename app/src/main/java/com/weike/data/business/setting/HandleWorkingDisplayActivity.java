@@ -162,7 +162,7 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
                             time = Integer.parseInt((String) o);
                             tv_customer_day.setText(o + "小时");
                         }
-                    });
+                    },"天");
                 }
             }
         };

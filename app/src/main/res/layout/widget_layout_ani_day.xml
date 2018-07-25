@@ -52,7 +52,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:text="添加纪念日"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
 
@@ -86,7 +86,7 @@
                 android:hint="请输入"
                 android:maxLength="5"
                 android:text="@={anniverVM.name}"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:background="@color/color_touming"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -115,7 +115,7 @@
                 android:layout_gravity="center"
                 android:clickable="@{anniverVM.isModify}"
                 android:layout_marginLeft="10dp"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:layout_weight="1"
                 android:background="@color/color_touming"
                 android:hint="请选择时间"

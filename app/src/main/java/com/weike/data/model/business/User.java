@@ -61,5 +61,7 @@ public class User {
      */
     public int handleWorkingType;
 
+    public String userPwd;
+
     public List<AnotherAttributes> anotherAttributes = new ArrayList<>();
 }

@@ -39,4 +39,6 @@ public class ClientServiceMsgVM {
      * 负债
      */
     public ObservableField<String> liabilities = new ObservableField<>();
+
+    public ObservableField<Boolean> isModify = new ObservableField<>();
 }

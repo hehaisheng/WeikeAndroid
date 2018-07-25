@@ -60,7 +60,8 @@
                     android:layout_below="@+id/iv_user_icon"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
-                    android:text="@{personalVM.nickName,default=未知用户}"
+                    android:onClick="@{()-> personalVM.modifyPersonalData()}"
+                    android:text="@{personalVM.nickName}"
                     android:textColor="@color/color_white" />
 
                 <TextView
