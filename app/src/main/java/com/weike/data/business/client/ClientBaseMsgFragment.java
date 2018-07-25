@@ -3,6 +3,7 @@ package com.weike.data.business.client;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -84,6 +85,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     private AnniversariesItemVM lastAnniversariesItemVM;
 
+
+    private void clearFource(){
+
+    }
 
     /**
      * 纪念日集合
@@ -381,6 +386,15 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             }
         });
 
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AddClientActivity act = (AddClientActivity) getActivity();
+                act.addFource();
+            }
+        },500);
+
         return binding.getRoot();
     }
 
@@ -405,7 +419,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             addPhoneVM.isShowModify.set(false);
             addPhoneVM.isModify.set(true);
             addPhoneVM.setListener(this);
-            addPhoneVMS.add(addPhoneVM);
+            addPhoneVMS.add(0,addPhoneVM);
             addPhoneAdapter.notifyDataSetChanged();
         } else {
             DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否删除电话?", new View.OnClickListener() {
@@ -456,6 +470,21 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 }
             });
 
+        } else if (type == AddClientRelateItemVM.AddClientRelateItemListener.CANCEL_FIRST){
+            DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否删除关联客户", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   vm.clientId = null;
+                   vm.clientName.set("请选择");
+                    clientRelateAdapter.notifyDataSetChanged();
+
+                }
+            });
         }
 
     }
@@ -467,7 +496,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             news.isFirst.set(false);
             news.isModify.set(true);
             news.setListener(this);
-            anniDayVMS.add(news);
+            anniDayVMS.add(0,news);
             anniDayAdapter.notifyDataSetChanged();
         } else if (type == 2) { //reduce
             DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否移除该纪念日", new View.OnClickListener() {

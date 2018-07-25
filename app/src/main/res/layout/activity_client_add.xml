@@ -52,11 +52,14 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/ed_client_name"
                     android:singleLine="true"
                     android:layout_width="wrap_content"
                     android:layout_weight="1"

@@ -85,7 +85,7 @@ public class PersonalFragmentVM extends BaseVM {
             protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
                 if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0) {
                     nickName.set(getUserInfoRespBaseResp.getDatas().userName);
-                    phoneNum.set("电话号码：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
+                    phoneNum.set("绑定手机：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
                     photoUrl.set(getUserInfoRespBaseResp.getDatas().photoUrl);
                     integral.set(getUserInfoRespBaseResp.getDatas().currentIntegral);
                     if(getUserInfoRespBaseResp.getDatas().memberLevel == 1) {

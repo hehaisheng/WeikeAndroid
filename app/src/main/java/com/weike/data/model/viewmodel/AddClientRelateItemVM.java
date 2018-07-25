@@ -24,6 +24,7 @@ public class AddClientRelateItemVM {
         int ADD_ITEM  = 1;
         int ADD_RELATE = 2;
         int REDUCE =3;
+        int CANCEL_FIRST = 4;
         void onRelateItemClick(AddClientRelateItemVM vm , int type);
     }
 
@@ -33,6 +34,9 @@ public class AddClientRelateItemVM {
         this.listener = listener;
     }
 
+    public void cancelFirst(){
+        listener.onRelateItemClick(this,AddClientRelateItemListener.CANCEL_FIRST);
+    }
 
     public void reduce() {
         listener.onRelateItemClick(this,AddClientRelateItemListener.REDUCE);

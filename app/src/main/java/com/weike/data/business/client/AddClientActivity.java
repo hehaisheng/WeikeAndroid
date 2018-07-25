@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
 
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.gson.reflect.TypeToken;
@@ -139,15 +141,22 @@ public class AddClientActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_client_add);
         vm = new AddClientActVM(this);
         binding.setAddClientVM(vm);
-
         setCenterText("");
-        addFragment();
+
+
+
+
+
 
         initPhotoSel();
+        addFragment();
         initMsg();
-
         initClickStatus();
+
+
     }
+
+
 
     /**
      * 状态初始化
@@ -162,6 +171,7 @@ public class AddClientActivity extends BaseActivity {
             setLeftText("添加客户");
             status = true;
             setRightText("完成");
+
         }
         isModify = status;
         vm.isModify.set(isModify);
@@ -190,7 +200,13 @@ public class AddClientActivity extends BaseActivity {
 
     }
 
-
+    public void addFource(){
+        if (clientId == null ) {
+            EditText cliientName = findViewById(R.id.ed_client_name);
+            cliientName.setFocusableInTouchMode(true);
+            cliientName.requestFocus();
+        }
+    }
 
 
     private void addFragment() {
@@ -324,7 +340,7 @@ public class AddClientActivity extends BaseActivity {
 
                     clientServiceMsgVM.liabilities.set(data.getLiabilities());
                     clientServiceMsgVM.moneyIn.set(data.getIncome());
-                    clientServiceMsgVM.financialAssets.set(data.getFixedAssets());
+                    clientServiceMsgVM.financialAssets.set(data.getMonetaryAssets());
                     clientServiceMsgVM.carType.set(data.getCar());
                     clientServiceMsgVM.moneyOut.set(data.getExpenditure());
                     clientServiceMsgVM.fixedAssets.set(data.getFixedAssets());
@@ -369,6 +385,7 @@ public class AddClientActivity extends BaseActivity {
           fragments.get(0).onRightClick(isModify);
           fragments.get(1).onRightClick(isModify);
           fragments.get(2).onRightClick(isModify);
+            vm.isModify.set(isModify);
           setLeftText("编辑客户");
         } else if (isModify == false && submitClient() == false){ //恢复状态
             LogUtil.d("AddClientActivity","false");
@@ -425,6 +442,7 @@ public class AddClientActivity extends BaseActivity {
                 ToastUtil.showToast("修改成功");
                 setLeftText("客户信息");
                 resetRight();
+                sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
 
             }
 
@@ -445,6 +463,7 @@ public class AddClientActivity extends BaseActivity {
         fragments.get(0).onRightClick(false);
         fragments.get(1).onRightClick(false);
         fragments.get(2).onRightClick(false);
+        vm.isModify.set(false);
     }
 
 
@@ -462,6 +481,8 @@ public class AddClientActivity extends BaseActivity {
                 resetRight();
 
                 initMsg();
+
+                sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
 
             }
 

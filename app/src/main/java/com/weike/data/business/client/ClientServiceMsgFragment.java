@@ -204,7 +204,6 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         linearLayoutManager.setScrollEnabled(false);
         binding.recyclerProductMsgList.setLayoutManager(linearLayoutManager);
         binding.recyclerProductMsgList.setAdapter(adapter);
-
     }
 
     private void initHead() {
@@ -236,7 +235,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             ProductItemVM vm = new ProductItemVM(this);
             vm.isModify.set(true);
             vm.setListener(this);
-            itemVMS.add(vm);
+            itemVMS.add(0,vm);
             adapter.notifyDataSetChanged();
         } else if (type == 2) { // reduce
             DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否移除该产品", new View.OnClickListener() {
@@ -268,8 +267,8 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.DEL_PRODUCT)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>(){
-
                 })).subscribe(new BaseObserver<BaseResp>() {
+
             @Override
             protected void onSuccess(BaseResp baseResp) throws Exception {
                 itemVMS.remove(item);

@@ -71,7 +71,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="维客助手1年1折"
+                                android:text="维客助手1年5折"
                                 android:textColor="@color/color_content" />
 
                             <ImageView
@@ -108,7 +108,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="维客助手2年2折"
+                                android:text="维客助手2年4.36折"
 
 
                                 android:textColor="@color/color_content" />
@@ -150,7 +150,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="维客助手3年3折"
+                                android:text="维客助手3年3.7折"
                                 android:textColor="@color/color_content" />
 
                             <ImageView

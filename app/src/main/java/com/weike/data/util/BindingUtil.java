@@ -41,7 +41,6 @@ public class BindingUtil {
             editText.setFocusableInTouchMode(false);
         } else {
             editText.setFocusableInTouchMode(true);
-
             editText.setFocusable(true);
 
             editText.requestFocus();

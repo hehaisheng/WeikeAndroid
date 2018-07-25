@@ -1,12 +1,12 @@
 package com.weike.data.business.setting;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -58,24 +58,24 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
     public static final int TYPE_OF_CUSTOM = 5;
 
 
+    private int[] ids = {R.id.radiobutton_recent_week,R.id.radiobutton_recent_month,R.id.radiobutton_recent_quarter,R.id.radiobutton_recent_year,R.id.radiobutton_custom};
 
-    @BindView(R.id.radiobutton_selector)
-    public RadioGroup radioGroup;
+
 
     @BindView(R.id.radiobutton_recent_week)
-    public RadioButton radio_week;
+    public CheckBox radio_week;
 
     @BindView(R.id.radiobutton_recent_month)
-    public RadioButton radio_month;
+    public CheckBox radio_month;
 
     @BindView(R.id.radiobutton_recent_quarter)
-    public RadioButton radio_quarter;
+    public CheckBox radio_quarter;
 
     @BindView(R.id.radiobutton_recent_year)
-    public RadioButton radio_year;
+    public CheckBox radio_year;
 
     @BindView(R.id.radiobutton_custom)
-    public RadioButton radio_custom;
+    public CheckBox radio_custom;
 
     @BindView(R.id.tv_customer_day)
     public TextView tv_customer_day;
@@ -125,28 +125,23 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
         CompoundButton.OnCheckedChangeListener listener  = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+
                 if (b && compoundButton.equals(radio_week)) {
-                    radio_custom.setChecked(false);
+
                     user.handleWorkingType = TYPE_OF_WEEK;
                 } else if (b && compoundButton.equals(radio_month)) {
-                    radio_custom.setChecked(false);
+
                     user.handleWorkingType = TYPE_OF_MONTH;
                 } else if (b && compoundButton.equals(radio_quarter)) {
-                    radio_custom.setChecked(false);
+
                     user.handleWorkingType = TYPE_OF_QUARTER;
                 } else if (b && compoundButton.equals(radio_year)) {
-                    radio_custom.setChecked(false);
+
                     user.handleWorkingType = TYPE_OF_YEAR;
                 } else if (b && compoundButton.equals(radio_custom)) {
                     user.handleWorkingType = TYPE_OF_CUSTOM;
 
-                    radio_year.setChecked(false);
-                    radio_week.setChecked(false);
-                    radio_quarter.setChecked(false);
-                    radio_month.setChecked(false);
-
-
-                    if (isFirst)return;
 
                     ArrayList<String> data = new ArrayList<>();
                     for(int i = 1 ; i < 15;i ++) {
@@ -159,19 +154,39 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
                     PickerUtil.onOptionPicker(data, HandleWorkingDisplayActivity.this, new OnItemPickListener() {
                         @Override
                         public void onItemPicked(int i, Object o) {
+
                             time = Integer.parseInt((String) o);
                             tv_customer_day.setText(o + "小时");
+
+                            radio_custom.setChecked(true);
+                            radio_year.setChecked(false);
+                            radio_week.setChecked(false);
+                            radio_quarter.setChecked(false);
+                            radio_month.setChecked(false);
+                        }
+                    }, new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+
+                            radio_custom.setChecked(true);
+                            radio_year.setChecked(false);
+                            radio_week.setChecked(false);
+                            radio_quarter.setChecked(false);
+                            radio_month.setChecked(false);
+
                         }
                     });
                 }
             }
         };
+/*
 
         radio_quarter.setOnCheckedChangeListener(listener);
         radio_week.setOnCheckedChangeListener(listener);
         radio_year.setOnCheckedChangeListener(listener);
         radio_custom.setOnCheckedChangeListener(listener);
         radio_month.setOnCheckedChangeListener(listener);
+*/
 
         /*radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -192,7 +207,16 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
 
     }
 
-
+    private void updateCheckStatus(int checkId){
+        for(int i = 0 ; i < ids.length ; i ++){
+            CheckBox checkBox = findViewById(checkId);
+            if (checkId == ids[i]) {
+                checkBox.setChecked(true);
+            } else {
+                checkBox.setChecked(false);
+            }
+        }
+    }
 
     private void loadDefault(){
         GetHandleDisplayReq req = new GetHandleDisplayReq();

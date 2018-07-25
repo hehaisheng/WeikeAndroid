@@ -36,6 +36,18 @@
 
         </android.support.v7.widget.RecyclerView>
 
+
+        <TextView
+            android:id="@+id/tv_add_client"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_height="wrap_content"
+            android:text="添加客户 >"
+            />
+
         <TextView
             android:id="@+id/tv_manager_label"
             android:layout_marginBottom="10dp"
