@@ -235,7 +235,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             ProductItemVM vm = new ProductItemVM(this);
             vm.isModify.set(true);
             vm.setListener(this);
-            itemVMS.add(vm);
+            itemVMS.add(0,vm);
             adapter.notifyDataSetChanged();
         } else if (type == 2) { // reduce
             DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否移除该产品", new View.OnClickListener() {

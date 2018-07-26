@@ -1,6 +1,5 @@
 package com.weike.data.business.client;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -420,7 +419,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             addPhoneVM.isShowModify.set(false);
             addPhoneVM.isModify.set(true);
             addPhoneVM.setListener(this);
-            addPhoneVMS.add(addPhoneVM);
+            addPhoneVMS.add(0,addPhoneVM);
             addPhoneAdapter.notifyDataSetChanged();
         } else {
             DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否删除电话?", new View.OnClickListener() {
@@ -497,7 +496,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             news.isFirst.set(false);
             news.isModify.set(true);
             news.setListener(this);
-            anniDayVMS.add(news);
+            anniDayVMS.add(0,news);
             anniDayAdapter.notifyDataSetChanged();
         } else if (type == 2) { //reduce
             DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否移除该纪念日", new View.OnClickListener() {

@@ -133,7 +133,7 @@ public class ContactActivity extends BaseActivity {
 
     }
 
-    private void addClientList(List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> selectorData){
+    private void addClientList(List< contactspicker.util.ContactsPickerHelper.ContactsInfo> selectorData){
 
         List<AddClientListReq.ClientListAttr> attrs = new ArrayList<>();
 

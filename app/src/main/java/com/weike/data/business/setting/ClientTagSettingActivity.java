@@ -161,6 +161,23 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
             @Override
             protected void onSuccess(BaseResp<AddLabelResp> getClientTagListRespBaseResp) throws Exception {
 
+
+                /*if (TextUtils.isEmpty(id)) {
+                    TagSettingVM vm = new TagSettingVM();
+                    vm.setListener(ClientTagSettingActivity.this);
+                    vm.tagId.set(getClientTagListRespBaseResp.getDatas().id + "");
+                    vm.name.set(req.sort);
+                    vm.isModify.set(true);
+                    vm.content.set(content);
+                    vms.add(vm);
+                    adapter.notifyDataSetChanged();
+
+                } else {
+                    vm.content.set(content);
+                    adapter.notifyDataSetChanged();
+                    ToastUtil.showToast("修改成功");
+                }
+
                 // 本地保存
 
                 checkLabelNum();
@@ -170,8 +187,23 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 tagSub.labelName = content;
                 tagSub.sort = req.sort;
                 user.labelList.add(tagSub);
+
+                SpUtil.getInstance().saveNewsUser(user); //保存本地*/
+
+
+                User user = SpUtil.getInstance().getUser();
+                GetClientTagListResp.TagSub tagSub = new GetClientTagListResp.TagSub();
+                tagSub.id = getClientTagListRespBaseResp.getDatas().id + "";
+                tagSub.labelName = content;
+                tagSub.sort = req.sort;
+                user.labelList.add(tagSub);
+
+                checkLabelNum();
+
+
                 SpUtil.getInstance().saveNewsUser(user); //保存本地
                 ToastUtil.showToast("修改成功");
+
 
             }
 
@@ -197,6 +229,9 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
         setRightText("");
 
         initView();
+
+        //initLabel();
+
 
     }
 
@@ -323,7 +358,6 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
             protected void onSuccess(BaseResp<GetClientTagListResp> getClientTagListRespBaseResp) throws Exception {
                 List<GetClientTagListResp.TagSub> list = getClientTagListRespBaseResp.getDatas().clientLabelList;
                 Collections.sort(list,new ClientTagComparator());
-
                 for(int i = 0 ; i < list.size() ; i++) {
                     TagSettingVM vm = new TagSettingVM();
                     vm.content.set(list.get(i).labelName);
@@ -335,6 +369,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                     }
                     vm.setListener(ClientTagSettingActivity.this);
                     vm.name.set(list.get(i).sort);
+                    vm.isShow.set(true);
                     vms.add(vm);
                 }
 
@@ -342,6 +377,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 vm.content.set("未分组客户");
                 vm.setListener(ClientTagSettingActivity.this);
                 vm.tagId.set("");
+                vm.isShow.set(false);
                 vm.isModify.set(false);
                 vms.add(0,vm);
 

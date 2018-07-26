@@ -16,6 +16,8 @@ public class TagSettingVM extends BaseVM {
 
      public ObservableField<Boolean> isModify = new ObservableField<>();
 
+     public ObservableField<Boolean> isShow = new ObservableField<>();
+
      public String sort;
 
      public TagSettingVM.OnReduceListener listener;

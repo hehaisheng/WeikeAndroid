@@ -1,114 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:background="@color/color_white"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
-    <include
-        layout="@layout/widget_action_bar"
-        />
+    <include layout="@layout/widget_action_bar" />
 
-    <RadioGroup
-        android:id="@+id/radiobutton_selector"
+
+    <CheckBox
+        android:id="@+id/radiobutton_recent_week"
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:button="@drawable/selector_checkbox_low"
+        android:padding="16dp"
+        android:text="最近一周"
+        android:textColor="@color/color_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_line" />
+
+
+    <CheckBox
+        android:id="@+id/radiobutton_recent_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:button="@drawable/selector_checkbox_low"
+        android:padding="16dp"
+        android:paddingLeft="16dp"
+        android:text="最近一个月"
+        android:textColor="@color/color_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_line" />
+
+
+    <CheckBox
+        android:id="@+id/radiobutton_recent_quarter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:button="@drawable/selector_checkbox_low"
+        android:padding="16dp"
+        android:paddingLeft="16dp"
+        android:text="最近一个季度"
+        android:textColor="@color/color_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_line" />
+
+
+    <CheckBox
+        android:id="@+id/radiobutton_recent_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:button="@drawable/selector_checkbox_low"
+        android:padding="16dp"
+        android:paddingLeft="16dp"
+        android:text="最近一年"
+        android:textColor="@color/color_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_line" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+
         android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/radiobutton_recent_week"
+        <CheckBox
+            android:id="@+id/radiobutton_custom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@drawable/selector_checkbox_low"
             android:layout_marginLeft="16dp"
-            android:text="最近一周"
+            android:button="@drawable/selector_checkbox_low"
             android:padding="16dp"
-            android:textColor="@color/color_content"
+            android:paddingLeft="16dp"
+            android:text="自定义"
+
+            android:textColor="@color/color_content" />
+
+        <TextView
+            android:id="@+id/tv_customer_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+            android:textColor="@color/color_bebebe"
+
             />
-        <View
-        android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_line" />
 
+    </FrameLayout>
 
-        <RadioButton
-            android:id="@+id/radiobutton_recent_month"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:button="@drawable/selector_checkbox_low"
-            android:text="最近一个月"
-            android:layout_marginLeft="16dp"
-            android:textColor="@color/color_content"
-            android:paddingLeft="16dp" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_line" />
-
-
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_marginLeft="16dp"
-            android:button="@drawable/selector_checkbox_low"
-            android:text="最近一个季度"
-            android:id="@+id/radiobutton_recent_quarter"
-            android:textColor="@color/color_content"
-            android:paddingLeft="16dp" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_line" />
-
-
-        <RadioButton
-            android:id="@+id/radiobutton_recent_year"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:button="@drawable/selector_checkbox_low"
-            android:layout_marginLeft="16dp"
-            android:text="最近一年"
-            android:textColor="@color/color_content"
-            android:paddingLeft="16dp" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_line" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content">
-            <RadioButton
-                android:id="@+id/radiobutton_custom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:layout_marginLeft="16dp"
-                android:button="@drawable/selector_checkbox_low"
-                android:text="自定义"
-                android:textColor="@color/color_content"
-                android:paddingLeft="16dp" />
-
-            <TextView
-                android:id="@+id/tv_customer_day"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-
-                android:textColor="@color/color_bebebe"
-                android:layout_height="wrap_content"
-
-                />
-
-        </FrameLayout>
-
-
-
-
-
-    </RadioGroup>
 
 </LinearLayout>

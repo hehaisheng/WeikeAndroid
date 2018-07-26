@@ -278,4 +278,9 @@ public final class Config {
      * 批量添加客户
      */
     public static final String ADD_CLIENT_LIST = "wkzs-restful/client/addClientList";
+
+    /**
+     * 删除客户
+     */
+    public static final String DELETE_CLIENT = "wkzs-restful/client/deleteClient";
 }

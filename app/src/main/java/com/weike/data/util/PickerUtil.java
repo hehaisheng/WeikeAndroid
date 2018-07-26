@@ -146,7 +146,9 @@ public class PickerUtil {
         picker.show();
     }
 
-    public static void onOptionPicker(List<String> data ,Activity activity,OnItemPickListener listener,String title) {
+
+    public static void onOptionPicker(List<String> data ,String title , Activity activity, OnItemPickListener listener, DialogInterface.OnDismissListener listener2) {
+
 
 
 //        String[] ss = (String[]) list.toArray();
@@ -160,9 +162,15 @@ public class PickerUtil {
         //启用权重 setWeightWidth 才起作用
         picker.setSelectedTextColor(WKBaseApplication.getInstance().getResources().getColor(R.color.color_41BCF6));
         picker.setUnSelectedTextColor(WKBaseApplication.getInstance().getResources().getColor(R.color.color_bebebe));
+
         picker.setLabel(title);
         picker.setWeightEnable(true);
         picker.setWeightWidth(1);
+
+
+        picker.setWeightEnable(true);
+        picker.setWeightWidth(1);
+        picker.setOnDismissListener(listener2);
 
         picker.setOnItemPickListener(listener);
         picker.show();
