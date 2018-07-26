@@ -56,6 +56,10 @@ public class AddLogActVM extends BaseVM {
             PickerUtil.onYearMonthDayTimePicker(tmp.get(0),tmp.get(1),tmp.get(2),tmp.get(3),tmp.get(4), new DateTimePicker.OnYearMonthDayTimePickListener() {
                 @Override
                 public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
+
+
+
+
                     time.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
                 }
             }, activity);

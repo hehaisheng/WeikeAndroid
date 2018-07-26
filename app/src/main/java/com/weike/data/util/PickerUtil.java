@@ -157,7 +157,8 @@ public class PickerUtil {
         picker.setLineVisible(true);
         picker.setTitleText("设置你的提醒时间");
         picker.setTextSize(18);
-        picker.setSelectedIndex(8);
+        picker.setSelectedIndex(1);
+
         picker.setWheelModeEnable(false);
         //启用权重 setWeightWidth 才起作用
         picker.setSelectedTextColor(WKBaseApplication.getInstance().getResources().getColor(R.color.color_41BCF6));

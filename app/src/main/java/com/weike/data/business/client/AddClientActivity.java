@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.EditText;
 
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -302,6 +301,8 @@ public class AddClientActivity extends BaseActivity {
                         clientBaseMsgVM.marry.set("未婚");
                     } else if (marry == 3) {
                         clientBaseMsgVM.marry.set("离异");
+                    } else if (marry == -1) {
+                        clientBaseMsgVM.marry.set("");
                     }
 
                     clientBaseMsgVM.idCard.set(data.getIdCard());
@@ -559,7 +560,21 @@ public class AddClientActivity extends BaseActivity {
         req.companyDetailAddress = clientBaseMsgVM.companyLocation.get();//公司地址
         req.homeDetailAddress = clientBaseMsgVM.houseLocation.get();
         req.sex = clientBaseMsgVM.sex.get().contains("男") ?  1 :2; //
-        req.marriage = clientBaseMsgVM.sex.get().contains("未婚") ? 1: 2; //婚姻
+
+
+        if (clientBaseMsgVM.marry.get().contains("未婚")){
+            req.marriage = 1;
+        } else if (clientBaseMsgVM.marry.get().contains("已婚")){
+            req.marriage = 2;
+        } else if (clientBaseMsgVM.marry.get().contains("离异")){
+            req.marriage = 3;
+        } else if (TextUtils.isEmpty(clientBaseMsgVM.marry.get())){
+            req.marriage = -1;
+        }
+
+
+
+
         req.sonNum = clientBaseMsgVM.son.get(); //儿子
         req.daughterNum = clientBaseMsgVM.gril.get();//女儿
         req.birthday = clientBaseMsgVM.birthday.get();

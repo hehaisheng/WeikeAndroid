@@ -289,7 +289,7 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
                 }
             });
         } else {
-            DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "是否标记不再提醒", new View.OnClickListener() {
+            DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "确定已处理吗?", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 

@@ -1,34 +1,19 @@
 package com.weike.data.business.working;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
-import com.mylhyl.circledialog.CircleDialog;
-import com.mylhyl.circledialog.callback.ConfigButton;
-import com.mylhyl.circledialog.callback.ConfigDialog;
-import com.mylhyl.circledialog.callback.ConfigText;
-import com.mylhyl.circledialog.callback.ConfigTitle;
-import com.mylhyl.circledialog.params.ButtonParams;
-import com.mylhyl.circledialog.params.DialogParams;
-import com.mylhyl.circledialog.params.TextParams;
-import com.mylhyl.circledialog.params.TitleParams;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.weike.data.BR;
 import com.weike.data.R;
-import com.weike.data.WKBaseApplication;
 import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
@@ -36,7 +21,6 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
-import com.weike.data.config.DataConfig;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.EditAndDeleteTodoReq;
 import com.weike.data.model.req.GetHandleWorkListReq;
@@ -46,7 +30,6 @@ import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.DialogUtil;
-import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
@@ -54,9 +37,6 @@ import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -187,13 +167,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
                     vm.setListener(AlreadyHandledFragment.this);
 
                     int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
-                    if (pro == DataConfig.RemindLevel.TYPE_OF_HEIGHT) {
-                        vm.readClickBg.set(R.mipmap.ic_finish_red);
-                    } else if (pro == DataConfig.RemindLevel.TYPE_OF_MID) {
-                        vm.readClickBg.set(R.mipmap.ic_right_yellow);
-                    } else if (pro == DataConfig.RemindLevel.TYPE_OF_LOAD) {
-                        vm.readClickBg.set(R.mipmap.ic_right_blue);
-                    }
+                    vm.readClickBg.set(R.mipmap.ic_finish_gray);
                     vms.add(vm);
                 }
                 recycleAdapter.notifyDataSetChanged();
@@ -211,7 +185,9 @@ public class AlreadyHandledFragment extends BaseFragment implements
     @Override
     public void onClick(int type, HandleWorkItemVM handleWorkItemVM) {
         if (type == TYPE_OF_CHECK) {
-            read(handleWorkItemVM);
+
+
+           // read(handleWorkItemVM);
 
         } else if (type == TYPE_OF_MODIFY) {
 

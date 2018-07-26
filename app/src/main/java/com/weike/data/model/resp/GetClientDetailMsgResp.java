@@ -50,7 +50,7 @@ public class GetClientDetailMsgResp extends BaseResp {
     private String homeDetailAddress;
     private String sex;
     private String idCard;
-    private String marriage;
+    private String marriage = "-1";
     private String sonNum;
     private String daughterNum;
     private String height;

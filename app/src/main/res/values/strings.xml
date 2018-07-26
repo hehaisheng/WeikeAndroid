@@ -3,7 +3,7 @@
     
     <string name="login_title_name">维客助手</string>
     <string name="login_use_pwd">使用密码登录</string>
-    <string name="login_use_code">使用验证码登录</string>
+    <string name="login_use_code">新用户请使用验证码登录</string>
     <string name="vip_description">11231223321321321321321321321321321321
     \n\n撒打算大所大所大所大所多撒
     </string>

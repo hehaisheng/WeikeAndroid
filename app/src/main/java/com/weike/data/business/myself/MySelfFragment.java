@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,7 +94,14 @@ public class MySelfFragment extends BaseFragment {
             protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
                 binding.swipeRefreshLayout.setRefreshing(false);
                 if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0) {
-                    vm.nickName.set(getUserInfoRespBaseResp.getDatas().userName);
+
+                    if (TextUtils.isEmpty(getUserInfoRespBaseResp.getDatas().userName)) {
+                        vm.nickName.set("请输入姓名");
+                    } else {
+                        vm.nickName.set(getUserInfoRespBaseResp.getDatas().userName);
+                    }
+
+
                     vm.phoneNum.set("绑定手机：" + getUserInfoRespBaseResp.getDatas().phoneNumber );
                     vm.photoUrl.set(getUserInfoRespBaseResp.getDatas().photoUrl);
                     vm.integral.set(getUserInfoRespBaseResp.getDatas().currentIntegral);

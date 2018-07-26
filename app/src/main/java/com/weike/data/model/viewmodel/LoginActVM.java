@@ -1,7 +1,6 @@
 package com.weike.data.model.viewmodel;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.text.TextUtils;
@@ -94,6 +93,7 @@ public class LoginActVM extends BaseVM {
         this.activity = activity;
 
         pwd.set(SpUtil.getInstance().getUser().userPwd);
+        phoneNum.set(SpUtil.getInstance().getUser().account);
     }
 
     public void showPwd(){
@@ -263,6 +263,7 @@ public class LoginActVM extends BaseVM {
                     SpUtil.getInstance().saveCurrentToken(token); //登录保存令牌
                    User u  = SpUtil.getInstance().getUser();
                    u.userPwd = pwd.get();
+                   u.account = phoneNum.get();
                    SpUtil.getInstance().saveNewsUser(u);
 
 

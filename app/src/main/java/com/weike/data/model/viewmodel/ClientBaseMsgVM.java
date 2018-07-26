@@ -1,6 +1,7 @@
 package com.weike.data.model.viewmodel;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.ObservableField;
 import android.text.TextUtils;
@@ -169,6 +170,12 @@ public class ClientBaseMsgVM extends BaseVM {
     public void sexClick(){
         SinglePicker<String> picker = new SinglePicker<String>(baseFragment.getActivity(),new String[]{"男","女"});
 
+        picker.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+
+            }
+        });
         PickerUtil.onConstellationPicker(null, picker, new OnItemPickListener<String>() {
             @Override
             public void onItemPicked(int i, String s) {
@@ -177,16 +184,30 @@ public class ClientBaseMsgVM extends BaseVM {
         });
     }
 
+    private boolean isHasContent = false;
+
     /**
      * 婚姻选择
      */
     public void marryClick(){
         SinglePicker<String> picker = new SinglePicker<String>(baseFragment.getActivity(),new String[]{"已婚","未婚","离异"});
 
+        picker.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if (isHasContent == false) {
+                    marry.set("");
+                }
+                isHasContent = false;
+
+            }
+        });
+
         PickerUtil.onConstellationPicker(null, picker, new OnItemPickListener<String>() {
             @Override
             public void onItemPicked(int i, String s) {
                 marry.set(s);
+                isHasContent = true;
             }
         });
     }

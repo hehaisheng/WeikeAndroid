@@ -386,8 +386,17 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     public void onClick(int type, HandleWorkItemVM handleWorkItemVM) {
         if (type == TYPE_OF_CHECK) {
 
-            read(handleWorkItemVM);
+            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "事情是否已办?", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    read(handleWorkItemVM);
+                }
+            });
 
         } else if (type == TYPE_OF_MODIFY) {
 

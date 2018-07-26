@@ -66,7 +66,7 @@
                 android:layout_toEndOf="@+id/btn_delete"
 
                 android:background="@null"
-                android:src="@mipmap/ic_modify_data" />
+                android:src="@mipmap/ic_edit_gray_2" />
 
 
 

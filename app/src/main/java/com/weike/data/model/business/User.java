@@ -63,5 +63,7 @@ public class User {
 
     public String userPwd;
 
+    public String account;
+
     public List<AnotherAttributes> anotherAttributes = new ArrayList<>();
 }

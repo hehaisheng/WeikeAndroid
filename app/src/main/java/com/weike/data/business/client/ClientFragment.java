@@ -27,10 +27,12 @@ import com.weike.data.business.search.SearchActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.ClientSortModel;
 import com.weike.data.model.business.User;
+import com.weike.data.model.req.DeleteClientReq;
 import com.weike.data.model.req.GetClientListReq;
 import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
+import com.weike.data.util.DialogUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -93,6 +95,25 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
                 AddClientActivity.startActivity(getActivity(),datas.get(i-1).getClientId());
             }
         });
+        clientList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否删除:" + datas.get(i - 1).getName(), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        deleteClient(i - 1);
+                    }
+                });
+
+
+                return true;
+            }
+        });
 
 
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
@@ -106,6 +127,27 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
         });
 
        fresh(true);
+    }
+
+    private void deleteClient(int position){
+        DeleteClientReq req = new DeleteClientReq();
+        req.clientId = datas.get(position).getClientId();
+        req.sign = SignUtil.signData(req);
+        RetrofitFactory.getInstance().getService().postAnything(req,Config.DELETE_CLIENT)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>(){
+
+                })).subscribe(new BaseObserver<BaseResp>() {
+            @Override
+            protected void onSuccess(BaseResp baseResp) throws Exception {
+                datas.remove(position);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
     }
 
     private void fresh(boolean isFresh){

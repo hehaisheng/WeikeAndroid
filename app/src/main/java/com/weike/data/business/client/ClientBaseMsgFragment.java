@@ -237,6 +237,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         anniDayAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 更新客户关联列表
+     * @param list
+     */
     public void updateClientRelate(List<GetClientDetailMsgResp.ClientRelateBean> list){
 
         clientRelateItemVMS.clear();
@@ -272,16 +276,19 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     private void initAniDayHead(){
         for(int i = 0 ; i < 2;i++) {
             AnniversariesItemVM vm = new AnniversariesItemVM(getActivity());
+            vm.setListener(this);
             if (i == 0) {
                 vm.isModify.set(false);
                 vm.isFirst.set(true);
+                anniDayVMS.add(vm);
             } else {
                 vm.isModify.set(true);
                 vm.isFirst.set(false);
+                anniDayVMS.add(0,vm);
             }
-            vm.setListener(this);
 
-            anniDayVMS.add(vm);
+
+
 
         }
 
@@ -293,7 +300,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         addPhoneVM.isModify.set(false);
         addPhoneVM.isShowModify.set(false);
         addPhoneVM.setListener(this);
-        addPhoneVMS.add(0,addPhoneVM);
+        addPhoneVMS.add(addPhoneVM);
     }
 
     /**

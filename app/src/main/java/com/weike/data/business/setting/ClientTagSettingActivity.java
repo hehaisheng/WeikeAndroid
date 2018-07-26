@@ -87,12 +87,13 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 .setCancelable(true)
                 .setInputManualClose(true)
                 .setTitle("添加客户标签")
-                .setInputHint("请输入")
+                .setInputHint("请输入(最长限制6个字符)")
                 .configInput(new ConfigInput() {
                     @Override
                     public void onConfig(InputParams params) {
                         params.padding = new int[]{20, 20, 20, 20};
                         params.inputType = InputType.TYPE_CLASS_TEXT;
+
                     }
                 })
                 .setNegative("取消", null)
@@ -104,14 +105,16 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                             return;
                         }
 
+                        if (text.length() > 6){
+                            text = text.substring(0,6);
+                        }
+
                         addLabel(text,null,null);
 
                         dialogFragment.dismiss();
                     }
                 })
                 .show(getSupportFragmentManager());
-
-
 
 
     }
@@ -225,7 +228,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
 
         checkLabelNum(); //获取剩余的标签
         setCenterText("");
-        setLeftText("标签管理");
+        setLeftText("客户标签设置");
         setRightText("");
 
         initView();
