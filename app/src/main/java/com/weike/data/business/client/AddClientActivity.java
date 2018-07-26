@@ -190,6 +190,7 @@ public class AddClientActivity extends BaseActivity {
             @Override
             public void onFinish(File outputFile, Uri outputUri) {
                 // 4、当拍照或从图库选取图片成功后回调
+                vm.photoUrl.set("");
                 vm.photoUrl.set(outputUri.getPath());
                 isUpdatePic = true;
 

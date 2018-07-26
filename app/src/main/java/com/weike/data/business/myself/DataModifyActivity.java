@@ -21,6 +21,7 @@ import com.weike.data.model.resp.UpLoadFileResp;
 import com.weike.data.model.viewmodel.DataModifyActVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.LQRPhotoSelectUtils;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
@@ -63,8 +64,10 @@ public class DataModifyActivity extends BaseActivity {
         utils = new LQRPhotoSelectUtils(this, new LQRPhotoSelectUtils.PhotoSelectListener() {
             @Override
             public void onFinish(File outputFile, Uri outputUri) {
-                vm.photoUrl.set(outputUri.getPath());
+                LogUtil.d("ActhomeDataModifyActivity","path->" + outputUri.getPath());
+
                 currentPath = outputFile.getPath();
+                vm.photoUrl.set(currentPath);
                 isUpload = true;
 
             }
