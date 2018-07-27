@@ -40,6 +40,12 @@ public class GetClientListResp extends BaseResp{
          */
         public String photoUrl;
 
+        /**
+         * 手机号码
+         */
+        public String[] phoneNumber;
+
+
     }
 
 

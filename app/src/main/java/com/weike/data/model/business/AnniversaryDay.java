@@ -10,4 +10,6 @@ public class AnniversaryDay {
     public String anniversaryDate;
 
     public String remind;
+
+    public String id;
 }

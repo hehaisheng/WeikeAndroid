@@ -27,10 +27,12 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.business.client.ClientFragment;
 import com.weike.data.config.Config;
 import com.weike.data.model.req.AddClientListReq;
+import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.SignUtil;
+import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 import com.weike.data.view.citypicker.SideBar;
@@ -111,7 +113,29 @@ public class ContactActivity extends BaseActivity {
     public void onRightClick() {
         super.onRightClick();
 
-        DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "是否添加如下客户?", new View.OnClickListener() {
+        StringBuffer name = new StringBuffer();
+        List<GetClientListResp.ClientListSub> clientList = SpUtil.getInstance().getUser().clietList;
+
+
+
+        final List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> selectorData = mModelAdapter.getSelectorData();
+        if (selectorData.size() == 0) {
+            ToastUtil.showToast("您没有选中联系人");
+            return;
+        } else {
+
+
+
+        }
+
+       /* if(TextUtils.isEmpty(name.toString())) {
+            name.append("是否导入以下客户?");
+        } else {
+            name.append(name.toString() + "包含同样的电话号码,是否导入?");
+        }
+
+
+        DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", name.toString(), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -128,7 +152,7 @@ public class ContactActivity extends BaseActivity {
                     addClientList(selectorData);
                 }
             }
-        });
+        });*/
 
 
     }

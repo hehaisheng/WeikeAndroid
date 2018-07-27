@@ -87,6 +87,7 @@
                         android:minWidth="70dp"
                         android:textSize="14sp"
                         android:text="电子邮箱"
+                        android:visibility="@{clientBaseVM.emailDisplay ? View.VISIBLE:View.GONE}"
                         android:textColor="@color/color_content" />
 
                     <EditText
@@ -101,7 +102,7 @@
                         android:layout_toRightOf="@+id/tv_email_title"
                         android:singleLine="true"
                         android:focusable="true"
-
+                        android:visibility="@{clientBaseVM.emailDisplay ? View.VISIBLE:View.GONE}"
                         android:focusableInTouchMode="true"
                         android:background="@color/color_touming"
                         android:hint="请输入邮箱"
@@ -112,6 +113,7 @@
                         android:id="@+id/view_line_1"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:visibility="@{clientBaseVM.emailDisplay ? View.VISIBLE:View.GONE}"
                         android:layout_below="@+id/tv_email_title"
                         android:background="@color/color_line" />
 
@@ -122,10 +124,12 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/view_line_1"
                         android:textSize="14sp"
+
                         android:layout_marginBottom="15dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
+                        android:visibility="@{clientBaseVM.companyDisplay ? View.VISIBLE : View.GONE}"
                         android:text="公司"
                         android:textColor="@color/color_content" />
 
@@ -137,6 +141,7 @@
                         android:textSize="14sp"
                         android:layout_alignBottom="@+id/tv_company"
                         android:layout_marginLeft="20dp"
+                        android:visibility="@{clientBaseVM.companyDisplay ? View.VISIBLE : View.GONE}"
                         android:layout_marginRight="20dp"
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@+id/tv_company"
@@ -150,6 +155,7 @@
                         android:id="@+id/view_line_2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:visibility="@{clientBaseVM.companyDisplay ? View.VISIBLE : View.GONE}"
                         android:layout_below="@+id/tv_company"
                         android:background="@color/color_line" />
 
@@ -162,6 +168,7 @@
                         android:layout_marginBottom="15dp"
                         android:layout_marginLeft="15dp"
                         android:textSize="14sp"
+                        android:visibility="@{clientBaseVM.jobDisplay ? View.VISIBLE : View.GONE}"
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
                         android:text="职位"
@@ -176,6 +183,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_marginTop="15dp"
+                        android:visibility="@{clientBaseVM.jobDisplay ? View.VISIBLE : View.GONE}"
                         android:layout_toRightOf="@+id/tv_job"
                         android:background="@color/color_touming"
                         android:hint="请输入职位"
@@ -188,6 +196,7 @@
 
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:visibility="@{clientBaseVM.jobDisplay ? View.VISIBLE : View.GONE}"
                         android:layout_below="@+id/tv_job"
                         android:background="@color/color_line" />
 
@@ -201,6 +210,7 @@
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
                         android:textSize="14sp"
+                        android:visibility="@{clientBaseVM.companyLocDisplay ? View.VISIBLE : View.GONE}"
                         android:text="公司地址"
                         android:textColor="@color/color_content" />
 
@@ -214,9 +224,9 @@
                         android:layout_marginRight="20dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
+                        android:visibility="@{clientBaseVM.companyLocDisplay ? View.VISIBLE : View.GONE}"
                         android:layout_toRightOf="@+id/tv_email_title"
                         android:maxLines="2"
-
                         android:layout_alignTop="@+id/view_line_3"
                         android:background="@color/color_touming"
                         android:hint="请输入地址"
@@ -231,6 +241,7 @@
 
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:visibility="@{clientBaseVM.companyLocDisplay ? View.VISIBLE : View.GONE}"
                         android:layout_below="@+id/tv_company_location"
                         android:background="@color/color_line" />
 
@@ -242,7 +253,7 @@
                         android:layout_below="@+id/view_line_4"
                         android:layout_marginBottom="15dp"
                         android:layout_marginLeft="15dp"
-
+                        android:visibility="@{clientBaseVM.houseLocDisplay ? View.VISIBLE : View.GONE}"
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
                         android:text="家庭地址"
@@ -260,6 +271,7 @@
                         android:layout_toRightOf="@+id/tv_email_title"
                         android:background="@color/color_touming"
                         android:hint="请输入地址"
+                        android:visibility="@{clientBaseVM.houseLocDisplay ? View.VISIBLE : View.GONE}"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:singleLine="true"
@@ -293,6 +305,7 @@
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
                         android:text="性别"
+                        android:visibility="@{clientBaseVM.sexDisplay ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
                         android:textColor="@color/color_content" />
 
@@ -308,6 +321,7 @@
                         android:background="@color/color_touming"
                         android:clickable="@{clientBaseVM.isModify}"
                         android:hint="请选择"
+                        android:visibility="@{clientBaseVM.sexDisplay ? View.VISIBLE:View.GONE}"
                         android:onClick="@{()->clientBaseVM.sexClick()}"
                         android:text="@={clientBaseVM.sex}"
                         android:textSize="14sp"/>
@@ -316,6 +330,7 @@
                         android:id="@+id/view_br2_line_1"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:visibility="@{clientBaseVM.sexDisplay ? View.VISIBLE:View.GONE}"
                         android:layout_below="@+id/tv_sex"
                         android:background="@color/color_line" />
 
@@ -330,6 +345,7 @@
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
                         android:text="出生日期"
+                        android:visibility="@{clientBaseVM.birthdayDisplay ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
                         android:textColor="@color/color_content" />
 
@@ -346,13 +362,14 @@
                         android:hint="请选择"
                         android:onClick="@{()->clientBaseVM.birthdayTimeClick()}"
                         android:paddingTop="15dp"
+                        android:visibility="@{clientBaseVM.birthdayDisplay ? View.VISIBLE:View.GONE}"
                         android:text="@={clientBaseVM.birthday}"
                         android:textSize="14sp" />
 
                     <ImageView
                         android:id="@+id/iv_birthday_remind"
                         loadImageId="@{clientBaseVM.birthdayRemindIcon}"
-
+                        android:visibility="@{clientBaseVM.birthdayDisplay ? View.VISIBLE:View.GONE}"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignBottom="@+id/tv_birthday"
@@ -369,7 +386,7 @@
                         android:id="@+id/view_br2_line_2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-
+                        android:visibility="@{clientBaseVM.birthdayDisplay ? View.VISIBLE:View.GONE}"
                         android:layout_below="@+id/tv_birthday"
                         android:background="@color/color_line" />
 
@@ -384,6 +401,7 @@
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
                         android:text="身份证号"
+                        android:visibility="@{clientBaseVM.idCardDisplay ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
                         android:textColor="@color/color_content" />
 
@@ -400,6 +418,7 @@
                         android:background="@color/color_touming"
                         android:hint="请输入"
                         android:paddingTop="15dp"
+                        android:visibility="@{clientBaseVM.idCardDisplay ? View.VISIBLE:View.GONE}"
                         android:text="@={clientBaseVM.idCard}"
                         android:textSize="14sp"/>
 
@@ -408,7 +427,7 @@
                         android:id="@+id/view_br2_line_3"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-
+                        android:visibility="@{clientBaseVM.idCardDisplay ? View.VISIBLE:View.GONE}"
                         android:layout_below="@+id/tv_id_card_num"
                         android:background="@color/color_line" />
 
@@ -423,6 +442,8 @@
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
                         android:text="婚姻"
+
+                        android:visibility="@{clientBaseVM.marryDisplay ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
                         android:textColor="@color/color_content" />
 
@@ -437,6 +458,7 @@
                         android:background="@color/color_touming"
                         android:clickable="@{clientBaseVM.isModify}"
                         android:hint="请选择"
+                        android:visibility="@{clientBaseVM.marryDisplay ? View.VISIBLE:View.GONE}"
                         android:onClick="@{()->clientBaseVM.marryClick()}"
                         android:paddingTop="15dp"
                         android:text="@={clientBaseVM.marry}"
@@ -447,7 +469,7 @@
                         android:id="@+id/view_br2_line_4"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-
+                        android:visibility="@{clientBaseVM.marryDisplay ? View.VISIBLE:View.GONE}"
                         android:layout_below="@+id/tv_marry"
                         android:background="@color/color_line" />
 
@@ -463,6 +485,7 @@
                         android:minWidth="70dp"
                         android:text="生育"
                         android:textSize="14sp"
+                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
                         android:textColor="@color/color_content" />
 
                     <EditText
@@ -480,6 +503,7 @@
                         android:hint="请输入"
                         android:maxLength="3"
                         android:minWidth="50dp"
+                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
                         android:text="@={clientBaseVM.son}"
                         android:textSize="14sp" />
 
@@ -491,6 +515,7 @@
                         android:layout_toRightOf="@+id/ed_birth_son"
                         android:text="子"
                         android:textSize="12sp"
+                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
                         android:textColor="@color/color_content" />
 
 
@@ -509,6 +534,7 @@
                         android:hint="请输入"
                         android:maxLength="3"
                         android:minWidth="50dp"
+                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
                         android:text="@={clientBaseVM.gril}"
                         android:textSize="14sp" />
 
@@ -518,6 +544,7 @@
                         android:layout_alignBottom="@+id/ed_birth_girl"
                         android:layout_toRightOf="@+id/ed_birth_girl"
                         android:text="女"
+                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
                         android:textColor="@color/color_content" />
 
@@ -526,7 +553,7 @@
                         android:id="@+id/view_br2_line_5"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-
+                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
                         android:layout_below="@+id/tv_birth"
                         android:background="@color/color_line" />
 
@@ -541,6 +568,7 @@
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
                         android:text="身高"
+                        android:visibility="@{clientBaseVM.heightDisplay ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
                         android:textColor="@color/color_content" />
 
@@ -557,6 +585,7 @@
                         android:layout_toRightOf="@+id/tv_height"
                         android:background="@color/color_touming"
                         android:hint="请输入"
+                        android:visibility="@{clientBaseVM.heightDisplay ? View.VISIBLE:View.GONE}"
                         android:maxLength="3"
                         android:minWidth="50dp"
                         android:text="@={clientBaseVM.clientHeight}"
@@ -571,6 +600,7 @@
                         android:gravity="right"
                         android:paddingRight="20dp"
                         android:text="CM"
+                        android:visibility="@{clientBaseVM.heightDisplay ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
                         android:textColor="@color/color_content" />
 
@@ -579,7 +609,7 @@
                         android:id="@+id/view_br2_line_6"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-
+                        android:visibility="@{clientBaseVM.heightDisplay ? View.VISIBLE:View.GONE}"
                         android:layout_below="@+id/tv_height"
                         android:background="@color/color_line" />
 
@@ -594,6 +624,7 @@
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
                         android:text="体重"
+                        android:visibility="@{clientBaseVM.widgetDispaly ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
                         android:textColor="@color/color_content" />
 
@@ -611,7 +642,7 @@
                         android:background="@color/color_touming"
                         android:hint="请输入"
                         android:maxLength="3"
-
+                        android:visibility="@{clientBaseVM.widgetDispaly ? View.VISIBLE:View.GONE}"
                         android:minWidth="50dp"
                         android:text="@={clientBaseVM.clientWidght}"
                         android:textSize="14sp"/>
@@ -625,13 +656,14 @@
                         android:gravity="right"
                         android:paddingRight="20dp"
                         android:text="KG"
+                        android:visibility="@{clientBaseVM.widgetDispaly ? View.VISIBLE:View.GONE}"
                         android:textColor="@color/color_content" />
 
                     <View
                         android:id="@+id/view_br2_line_7"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-
+                        android:visibility="@{clientBaseVM.widgetDispaly ? View.VISIBLE:View.GONE}"
                         android:layout_below="@+id/tv_weight"
                         android:background="@color/color_line" />
 
@@ -639,6 +671,7 @@
                         android:id="@+id/recycle_anniday_list"
                         android:layout_below="@+id/view_br2_line_7"
                         android:layout_width="match_parent"
+                        android:visibility="@{clientBaseVM.anniDisplay ? View.VISIBLE:View.GONE}"
                         android:layout_height="wrap_content">
 
 

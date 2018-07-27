@@ -157,7 +157,7 @@ public class PickerUtil {
         picker.setLineVisible(true);
         picker.setTitleText("设置你的提醒时间");
         picker.setTextSize(18);
-        picker.setSelectedIndex(1);
+        picker.setSelectedIndex(0);
 
         picker.setWheelModeEnable(false);
         //启用权重 setWeightWidth 才起作用
@@ -169,8 +169,7 @@ public class PickerUtil {
         picker.setWeightWidth(1);
 
 
-        picker.setWeightEnable(true);
-        picker.setWeightWidth(1);
+
         picker.setOnDismissListener(listener2);
 
         picker.setOnItemPickListener(listener);

@@ -22,7 +22,6 @@ import com.weike.data.config.Config;
 import com.weike.data.databinding.ActivityClientAddBinding;
 import com.weike.data.model.business.AnniversaryDay;
 import com.weike.data.model.business.ClientRelateForNet;
-import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.AddClientReq;
 import com.weike.data.model.req.GetClientDetailMsgReq;
 import com.weike.data.model.resp.AddClientResp;
@@ -209,6 +208,13 @@ public class AddClientActivity extends BaseActivity {
     }
 
 
+    /**
+     * 加载显示
+     */
+    private void ClientBaseFragmentDisplay(){
+
+    }
+
     private void addFragment() {
 
         clientId = getIntent().getStringExtra(TAG_CLIENT_ID);
@@ -277,78 +283,14 @@ public class AddClientActivity extends BaseActivity {
                     //基本信息
                     ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
                     ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
-                    ClientBaseMsgVM clientBaseMsgVM = clientBaseMsgFragment.clientBaseMsgVM;
+
                     ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.serviceMsgVM;
 
-
-                    String[] phone = new String[5];
-                    phone[0] = data.getOnePhoneNumber();
-                    phone[1] = data.getTwoPhoneNumber();
-                    phone[2] = data.getThreePhoneNumber();
-                    phone[3] = data.getFourPhoneNumber();
-                    phone[4] = data.getFivePhoneNumber();
-                    clientBaseMsgFragment.setPhoneNum(phone); //电话号码
-
-                    clientBaseMsgFragment.updateClientRelate(data.getClientRelatedList());
-                    clientBaseMsgVM.email.set(data.getEmail());
-                    clientBaseMsgVM.companyName.set(data.getCompany());
-                    clientBaseMsgVM.companyLocation.set(data.getCompanyDetailAddress());
-                    clientBaseMsgVM.sex.set( Integer.parseInt(data.getSex()) == 1 ? "男" : "女");
-                    clientBaseMsgVM.birthday.set(data.getBirthday());
-                    int marry = Integer.parseInt(data.getMarriage());
-                    if (marry == 1){
-                        clientBaseMsgVM.marry.set("已婚");
-                    } else if (marry == 2){
-                        clientBaseMsgVM.marry.set("未婚");
-                    } else if (marry == 3) {
-                        clientBaseMsgVM.marry.set("离异");
-                    } else if (marry == -1) {
-                        clientBaseMsgVM.marry.set("");
-                    }
-
-                    clientBaseMsgVM.idCard.set(data.getIdCard());
-                    clientBaseMsgVM.son.set(data.getSonNum());
-                    clientBaseMsgVM.job.set(data.getOffice());
-                    clientBaseMsgVM.houseLocation.set(data.getHomeDetailAddress());
-                    clientBaseMsgVM.gril.set(data.getDaughterNum());
-                    clientBaseMsgVM.clientHeight.set(data.getHeight());
-                    clientBaseMsgVM.clientWidght.set(data.getWeight());
+                    clientBaseMsgFragment.loadDefault(getClientDetailMsgRespBaseResp);
+                    serviceMsgFragment.loadDefault(getClientDetailMsgRespBaseResp);
 
 
-                    LogUtil.d("ActHomeAddClient","-->" + data.getBirthdayjson() );
-                    if(data.getBirthdayjson() != null && TextUtils.isEmpty(data.getBirthdayjson().id) == false) {
-                        //生日提醒
-                        ToDo birthdayRemind = new ToDo();
-                        birthdayRemind.isRemind = data.getBirthdayjson().isRemind;
-                        birthdayRemind.id = data.getBirthdayjson().id;
-                        birthdayRemind.isRepeat = data.getBirthdayjson().isRepeat;
-                        birthdayRemind.repeatDateType = data.getBirthdayjson().repeatDateType;
-                        birthdayRemind.repeatInterval = data.getBirthdayjson().repeatInterval;
-                        birthdayRemind.isAdvance = data.getBirthdayjson().isAdvance;
-                        birthdayRemind.advanceDateType = data.getBirthdayjson().advanceDateType;
-                        birthdayRemind.advanceInterval = data.getBirthdayjson().advanceInterval;
-                        birthdayRemind.birthdaydate = data.getBirthdayjson().remindDate;
-                        birthdayRemind.content = data.getBirthdayjson().content;
-                        if (birthdayRemind.isRemind == 1) {
-                            clientBaseMsgFragment.clientBaseMsgVM.birthdayRemindIcon.set(R.mipmap.ic_remind);
-                        } else {
-                            clientBaseMsgFragment.clientBaseMsgVM.birthdayRemindIcon.set(R.mipmap.ic_remind_dis);
-                        }
 
-                        clientBaseMsgVM.birthDayTodo = birthdayRemind;
-                    }
-
-                    clientBaseMsgFragment.updateAnnaDay(data.getAnniversaryList()); //纪念日
-
-                    clientServiceMsgVM.liabilities.set(data.getLiabilities());
-                    clientServiceMsgVM.moneyIn.set(data.getIncome());
-                    clientServiceMsgVM.financialAssets.set(data.getMonetaryAssets());
-                    clientServiceMsgVM.carType.set(data.getCar());
-                    clientServiceMsgVM.moneyOut.set(data.getExpenditure());
-                    clientServiceMsgVM.fixedAssets.set(data.getFixedAssets());
-
-
-                    serviceMsgFragment.updateProductList(data.getProduct());
                     //服务信息
 
 
@@ -387,7 +329,7 @@ public class AddClientActivity extends BaseActivity {
           fragments.get(0).onRightClick(isModify);
           fragments.get(1).onRightClick(isModify);
           fragments.get(2).onRightClick(isModify);
-            vm.isModify.set(isModify);
+          vm.isModify.set(isModify);
           setLeftText("编辑客户");
         } else if (isModify == false && submitClient() == false){ //恢复状态
             LogUtil.d("AddClientActivity","false");
@@ -444,7 +386,8 @@ public class AddClientActivity extends BaseActivity {
                 ToastUtil.showToast("修改成功");
                 setLeftText("客户信息");
                 resetRight();
-                sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
+                initMsg();
+                //sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
 
             }
 
@@ -607,14 +550,11 @@ public class AddClientActivity extends BaseActivity {
 
         ArrayList<AnniversaryDay> anniversaryDays = new ArrayList<>();
 
-        LogUtil.d("ActHomeAddClientActivity","-->" +clientBaseMsgFragment.anniDayVMS.size());
+
 
         for(int i = 0 ; i < clientBaseMsgFragment.anniDayVMS.size();i++) {
             AnniversariesItemVM vm = clientBaseMsgFragment.anniDayVMS.get(i);
 
-            if (i == 0){
-                continue;
-            }
 
             if (TextUtils.isEmpty(vm.name.get()) || TextUtils.isEmpty(vm.time.get())){
 
@@ -622,16 +562,16 @@ public class AddClientActivity extends BaseActivity {
             } else {
 
                 AnniversaryDay day = new AnniversaryDay();
-                day.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
+                //day.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
                 day.anniversaryDate = vm.time.get();
                 day.anniversaryName = vm.name.get();
+                day.id = vm.id.get();
                 anniversaryDays.add(day);
             }
         }
 
         if (anniversaryDays.size() > 0)
             req.anniversary = "" + JsonUtil.GsonString(anniversaryDays) + "";
-
 
 
         //服务信息
@@ -643,6 +583,7 @@ public class AddClientActivity extends BaseActivity {
         req.liabilities = clientServiceMsgVM.liabilities.get();
 
         req.product = TextUtils.isEmpty( serviceMsgFragment.getAllProduct() ) ? "" : "" + serviceMsgFragment.getAllProduct() + "";
+
 
         req.sign = SignUtil.signData(req);
 

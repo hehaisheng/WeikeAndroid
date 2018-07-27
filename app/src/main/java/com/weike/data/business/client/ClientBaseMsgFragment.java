@@ -74,6 +74,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     public List<AnniversariesItemVM> anniDayVMS = new ArrayList<>();
     BaseDataBindingAdapter anniDayAdapter;
 
+
+
     /**
      * 上一次点击使用
      */
@@ -86,8 +88,139 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     private AnniversariesItemVM lastAnniversariesItemVM;
 
 
-    private void clearFource(){
+    public void showDisplayContent( GetClientDetailMsgResp data ,boolean isMoidfy){
 
+        LogUtil.d("acthome","shoDisplay:" + isMoidfy + "," + data);
+
+        if (isMoidfy) {
+            clientBaseMsgVM.emailDisplay.set(true);
+            clientBaseMsgVM.companyDisplay.set(true);
+            clientBaseMsgVM.jobDisplay.set(true);
+            clientBaseMsgVM.companyLocDisplay.set(true);
+            clientBaseMsgVM.houseLocDisplay.set(true);
+            clientBaseMsgVM.sexDisplay.set(true);
+            clientBaseMsgVM.birthdayDisplay.set(true);
+            clientBaseMsgVM.idCardDisplay.set(true);
+            clientBaseMsgVM.marryDisplay.set(true);
+            clientBaseMsgVM.heightDisplay.set(true);
+            clientBaseMsgVM.widgetDispaly.set(true);
+            clientBaseMsgVM.anniDisplay.set(true);
+            clientBaseMsgVM.bearDisplay.set(true);
+            clientBaseMsgVM.clientRelateDisplay.set(true);
+        } else if (data != null) {
+
+            clientBaseMsgVM.emailDisplay.set(TextUtils.isEmpty(data.getEmail()) ? false : true);
+            clientBaseMsgVM.companyDisplay.set(TextUtils.isEmpty(data.getCompany()) ? false : true);
+            clientBaseMsgVM.companyLocDisplay.set(TextUtils.isEmpty(data.getCompanyDetailAddress()) ? false : true);
+            clientBaseMsgVM.jobDisplay.set(TextUtils.isEmpty(data.getOffice()) ? false : true);
+            clientBaseMsgVM.houseLocDisplay.set(TextUtils.isEmpty(data.getHomeDetailAddress())? false : true);
+            clientBaseMsgVM.birthdayDisplay.set(TextUtils.isEmpty(data.getBirthday()) ? false : true);
+            clientBaseMsgVM.idCardDisplay.set(TextUtils.isEmpty(data.getIdCard()) ? false : true);
+            clientBaseMsgVM.heightDisplay.set(TextUtils.isEmpty(data.getHeight()) ? false : true);
+            clientBaseMsgVM.widgetDispaly.set(TextUtils.isEmpty(data.getWeight()) ? false : true);
+
+            if (data.getClientRelatedList().size() == 0) {
+                clientBaseMsgVM.clientRelateDisplay.set(false);
+            } else {
+                clientBaseMsgVM.clientRelateDisplay.set(true);
+            }
+
+
+            if (TextUtils.isEmpty(data.getSonNum()) == false || TextUtils.isEmpty(data.getDaughterNum()) == false){
+                clientBaseMsgVM.bearDisplay.set(true);
+            } else {
+                clientBaseMsgVM.bearDisplay.set(false);
+            }
+
+            int marray = Integer.parseInt(data.getMarriage());
+
+
+            if (marray == -1) {
+                clientBaseMsgVM.marryDisplay.set(false);
+            } else {
+                clientBaseMsgVM.marryDisplay.set(true);
+            }
+
+          /*  if (data.getAnniversaryList().size() == 0) {
+                clientBaseMsgVM.anniDisplay.set(false);
+            } else {
+                clientBaseMsgVM.anniDisplay.set(true);
+            }*/
+
+            int sex = Integer.parseInt(data.getSex());
+
+            if (sex == -1) {
+                clientBaseMsgVM.sexDisplay.set(false);
+            } else {
+                clientBaseMsgVM.sexDisplay.set(true);
+            }
+
+
+        }
+
+    }
+
+    public void loadDefault(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp){
+        GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
+        showDisplayContent(data,false);
+        String[] phone = new String[5];
+        phone[0] = data.getOnePhoneNumber();
+        phone[1] = data.getTwoPhoneNumber();
+        phone[2] = data.getThreePhoneNumber();
+        phone[3] = data.getFourPhoneNumber();
+        phone[4] = data.getFivePhoneNumber();
+        setPhoneNum(phone); //电话号码
+
+        updateClientRelate(data.getClientRelatedList());
+        clientBaseMsgVM.email.set(data.getEmail());
+        clientBaseMsgVM.companyName.set(data.getCompany());
+        clientBaseMsgVM.companyLocation.set(data.getCompanyDetailAddress());
+        clientBaseMsgVM.sex.set( Integer.parseInt(data.getSex()) == 1 ? "男" : "女");
+        clientBaseMsgVM.birthday.set(data.getBirthday());
+        int marry = Integer.parseInt(data.getMarriage());
+        if (marry == 1){
+            clientBaseMsgVM.marry.set("已婚");
+        } else if (marry == 2){
+            clientBaseMsgVM.marry.set("未婚");
+        } else if (marry == 3) {
+            clientBaseMsgVM.marry.set("离异");
+        } else if (marry == -1) {
+            clientBaseMsgVM.marry.set("");
+        }
+
+        clientBaseMsgVM.idCard.set(data.getIdCard());
+        clientBaseMsgVM.son.set(data.getSonNum());
+        clientBaseMsgVM.job.set(data.getOffice());
+        clientBaseMsgVM.houseLocation.set(data.getHomeDetailAddress());
+        clientBaseMsgVM.gril.set(data.getDaughterNum());
+        clientBaseMsgVM.clientHeight.set(data.getHeight());
+        clientBaseMsgVM.clientWidght.set(data.getWeight());
+
+
+        LogUtil.d("ActHomeAddClient","-->" + data.getBirthdayjson() );
+        if(data.getBirthdayjson() != null && TextUtils.isEmpty(data.getBirthdayjson().id) == false) {
+            //生日提醒
+            ToDo birthdayRemind = new ToDo();
+            birthdayRemind.isRemind = data.getBirthdayjson().isRemind;
+            birthdayRemind.id = data.getBirthdayjson().id;
+            birthdayRemind.isRepeat = data.getBirthdayjson().isRepeat;
+            birthdayRemind.repeatDateType = data.getBirthdayjson().repeatDateType;
+            birthdayRemind.repeatInterval = data.getBirthdayjson().repeatInterval;
+            birthdayRemind.isAdvance = data.getBirthdayjson().isAdvance;
+            birthdayRemind.advanceDateType = data.getBirthdayjson().advanceDateType;
+            birthdayRemind.advanceInterval = data.getBirthdayjson().advanceInterval;
+            birthdayRemind.birthdaydate = data.getBirthdayjson().remindDate;
+            birthdayRemind.content = data.getBirthdayjson().content;
+            if (birthdayRemind.isRemind == 1) {
+                clientBaseMsgVM.birthdayRemindIcon.set(R.mipmap.ic_remind);
+            } else {
+                clientBaseMsgVM.birthdayRemindIcon.set(R.mipmap.ic_remind_dis);
+            }
+
+            clientBaseMsgVM.birthDayTodo = birthdayRemind;
+        }
+
+        updateAnnaDay(data.getAnniversaryList()); //纪念日
     }
 
     /**
@@ -96,9 +229,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     public void updateAnnaDay(List<GetClientDetailMsgResp.AnniversaryListBean> list){
         anniDayVMS.clear();
         initAniDayHead();
-        anniDayVMS.remove(1);
+        anniDayVMS.remove(0);
         for(int i = 0 ; i < list.size();i++) {
             AnniversariesItemVM vm = new AnniversariesItemVM(getActivity());
+            LogUtil.d("ClientBaseMsgFragment","aniId:" + list.get(i).getId());
             vm.id.set(list.get(i).getId() + "");
 
             if (list.get(i).getRemind() != null && TextUtils.isEmpty(list.get(i).getRemind().content) == false) {
@@ -106,12 +240,12 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 ToDo toDo = new ToDo();
                 toDo.content = list.get(i).getRemind().content;
                 toDo.id = list.get(i).getRemind().id;
-                toDo.isAdvance = list.get(i).getRemind().isAdvance;
+              /*  toDo.isAdvance = list.get(i).getRemind().isAdvance;
                 toDo.advanceInterval = list.get(i).getRemind().advanceInterval;
                 toDo.advanceDateType = list.get(i).getRemind().advanceDateType;
                 toDo.repeatInterval = list.get(i).getRemind().repeatInterval;
                 toDo.repeatDateType = list.get(i).getRemind().repeatDateType;
-                toDo.isRepeat = list.get(i).getRemind().isRepeat;
+                toDo.isRepeat = list.get(i).getRemind().isRepeat;*/
                 toDo.birthdaydate = list.get(i).getRemind().remindDate;
                 if (toDo.isRemind == 1) {
                     vm.remindIcon.set(R.mipmap.ic_remind);
@@ -130,6 +264,11 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             anniDayVMS.add(vm);
         }
         anniDayAdapter.notifyDataSetChanged();
+
+    }
+
+
+    public void updateAnotherAttr(){
 
     }
 
@@ -206,9 +345,11 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         super.onRightClick(status);
         clientBaseMsgVM.isModify.set(status);
 
+
+
         updateModify(status);
         if (status) {//编辑
-
+            showDisplayContent(null,true);
         } else { //完成
 
         }
@@ -401,6 +542,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 act.addFource();
             }
         },500);
+
+        showDisplayContent(null,true);
 
         return binding.getRoot();
     }

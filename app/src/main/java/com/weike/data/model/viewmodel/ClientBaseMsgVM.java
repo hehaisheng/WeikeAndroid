@@ -114,6 +114,22 @@ public class ClientBaseMsgVM extends BaseVM {
     public ObservableField<Boolean> isModify = new ObservableField<>(false);
 
 
+    public ObservableField<Boolean> emailDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> companyDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> jobDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> companyLocDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> houseLocDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> sexDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> birthdayDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> idCardDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> marryDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> heightDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> widgetDispaly = new ObservableField<>(false);
+    public ObservableField<Boolean> anniDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> bearDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> clientRelateDisplay = new ObservableField<>(false);
+
+
 
     public BaseFragment baseFragment;
 

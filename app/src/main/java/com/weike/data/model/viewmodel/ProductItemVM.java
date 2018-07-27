@@ -5,8 +5,6 @@ import android.databinding.ObservableField;
 import com.weike.data.R;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseVM;
-import com.weike.data.business.log.RemindSettingActivity;
-import com.weike.data.listener.OnReduceListener;
 import com.weike.data.model.business.ToDo;
 
 /**
@@ -21,7 +19,7 @@ public class ProductItemVM extends BaseVM {
 
     public ObservableField<Boolean> isShowContent = new ObservableField<>();
 
-    public ObservableField<String> content = new ObservableField<>();
+    public ObservableField<String> content = new ObservableField<>("");
 
     public ObservableField<Boolean> isRemind = new ObservableField<>();
 
