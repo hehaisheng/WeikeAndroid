@@ -25,6 +25,7 @@ import com.weike.data.model.business.Product;
 import com.weike.data.model.business.ProductBean;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.DelAniDayReq;
+import com.weike.data.model.resp.GetClientDetailMsgResp;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.model.viewmodel.ProductItemVM;
 import com.weike.data.network.RetrofitFactory;
@@ -71,16 +72,23 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         super.onRightClick(status);
         serviceMsgVM.clickable.set(status);
 
+        if(status){
+            showDisplayContent(null,true);
+        }
+
+
         if (status) {//如果是编辑
             binding.productCardView.setVisibility(View.VISIBLE);
             binding.recyclerProductMsgList.setVisibility(View.VISIBLE);
+
 
             for(int i = 0 ; i< itemVMS.size();i++){
                 itemVMS.get(i).isShowContent.set(false);
                 itemVMS.get(i).isFirst.set(false);
                 itemVMS.get(i).isModify.set(true);
             }
-            initHead();
+            initHead(itemVMS.size());
+
         } else {
             itemVMS.remove(0);
 
@@ -98,12 +106,51 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         adapter.notifyDataSetChanged();
     }
 
+
+    public void showDisplayContent(GetClientDetailMsgResp data , boolean isMoidfy){
+
+        LogUtil.d("acthome","shoDisplay:" + isMoidfy + "," + data);
+
+        if (isMoidfy) {
+            serviceMsgVM.moneyInDisplay.set(true);
+            serviceMsgVM.moneyOutDisplay.set(true);
+            serviceMsgVM.fixedAssetsDisplay.set(true);
+            serviceMsgVM.financialAssetsDisplay.set(true);
+            serviceMsgVM.carTypeDisplay.set(true);
+            serviceMsgVM.liabilitiesDisplay.set(true);
+            serviceMsgVM.productDisplay.set(true);
+        } else if (data != null) {
+
+            serviceMsgVM.moneyInDisplay.set(TextUtils.isEmpty(data.getIncome()) ? false : true);
+            serviceMsgVM.moneyOutDisplay.set(TextUtils.isEmpty(data.getExpenditure()) ? false : true);
+            serviceMsgVM.fixedAssetsDisplay.set(TextUtils.isEmpty(data.getFixedAssets()) ? false : true);
+            serviceMsgVM.financialAssetsDisplay.set(TextUtils.isEmpty(data.getMonetaryAssets()) ? false : true);
+            serviceMsgVM.carTypeDisplay.set(TextUtils.isEmpty(data.getCar())? false : true);
+            serviceMsgVM.liabilitiesDisplay.set(TextUtils.isEmpty(data.getLiabilities()) ? false : true);
+
+
+            if (data.getProduct().size() == 0) {
+                serviceMsgVM.productDisplay.set(false);
+            } else {
+                serviceMsgVM.productDisplay.set(true);
+            }
+
+        }
+
+    }
+
     public String getAllProduct() {
         List<Product> products = new ArrayList<>();
 
-        for (int i = 1; i < itemVMS.size(); i++) {
+        LogUtil.d("ClientServiceMsgFragment","---->" + itemVMS.size());
+        for (int i = 0; i < itemVMS.size(); i++) {
 
-            if (TextUtils.isEmpty(itemVMS.get(i).content.get()))continue;
+            LogUtil.d("ClientServiceMsgFragment,","name: " + itemVMS.get(i).content.get());
+
+            if (TextUtils.isEmpty(itemVMS.get(i).content.get())){
+                LogUtil.d("ClientServiceMsgFragment","---->");
+                continue;
+            }
 
             Product product = new Product();
             ProductItemVM vm = itemVMS.get(i);
@@ -113,6 +160,9 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
             products.add(product);
         }
+
+
+        LogUtil.d("ClientServiceMsgFragment","final Sieze:" + products.size());
 
         if (products.size() == 0) {
             return "";
@@ -147,7 +197,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         binding.setClientServiceVM(serviceMsgVM);
         initProductRecycler();
 
-
+        showDisplayContent(null,true);
         return binding.getRoot();
     }
 
@@ -165,6 +215,25 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         toDo.repeatInterval = remindBean.repeatInterval;
 
         return toDo;
+    }
+
+    public void loadDefault(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp){
+        GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
+        showDisplayContent(data,false); //显示
+        serviceMsgVM.liabilities.set(data.getLiabilities());
+        serviceMsgVM.moneyIn.set(data.getIncome());
+        serviceMsgVM.financialAssets.set(data.getMonetaryAssets());
+        serviceMsgVM.carType.set(data.getCar());
+        serviceMsgVM.moneyOut.set(data.getExpenditure());
+        serviceMsgVM.fixedAssets.set(data.getFixedAssets());
+        if (data.getProduct().size() == 0) {
+            serviceMsgVM.productDisplay.set(false);
+        } else {
+            serviceMsgVM.productDisplay.set(true);
+        }
+
+
+       // updateProductList(data.getProduct());
     }
 
     public void updateProductList(List<ProductBean> product) {
@@ -206,18 +275,18 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         binding.recyclerProductMsgList.setAdapter(adapter);
     }
 
-    private void initHead() {
+    private void initHead(int postion) {
         ProductItemVM itemVM = new ProductItemVM(this);
         itemVM.isFirst.set(true);
         itemVM.isModify.set(false);
         itemVM.setListener(this);
-        itemVMS.add(0,itemVM);
+        itemVMS.add(postion,itemVM);
     }
 
     private void initProductRecycler() {
 
 
-        initHead();
+        initHead(0);
 
         adapter = new BaseDataBindingAdapter(getContext(), R.layout.widget_service_product_item, itemVMS, BR.productItemVM);
         binding.recyclerProductMsgList.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -1,5 +1,6 @@
 package com.weike.data.business.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,20 +31,20 @@ import com.weike.data.model.req.CheckNeedPwdReq;
 import com.weike.data.model.req.GetAttrListReq;
 import com.weike.data.model.req.GetClientListReq;
 import com.weike.data.model.req.GetClientTagListReq;
+import com.weike.data.model.req.GetUserInfoReq;
 import com.weike.data.model.req.MainPageDataReq;
 import com.weike.data.model.req.UpdatePushReq;
 import com.weike.data.model.resp.CheckNeedPwdResp;
 import com.weike.data.model.resp.GetAttrListResp;
 import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.model.resp.GetClientTagListResp;
-import com.weike.data.model.resp.LoginByCodeResp;
+import com.weike.data.model.resp.GetUserInfoResp;
 import com.weike.data.model.resp.MainPageDataResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.ClientTagComparator;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
-import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 import com.weike.data.view.BottomBarLayout;
 
@@ -145,6 +146,40 @@ public class HomeActivity extends BaseActivity {
         });
 
     }
+
+    private void checkVip(){
+        GetUserInfoReq req = new GetUserInfoReq();
+        req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.USER_INFO)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetUserInfoResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<GetUserInfoResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
+
+                if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0)
+                    if(getUserInfoRespBaseResp.getDatas().memberLevel == 1) {
+
+                        Intent intent = new Intent(HomeActivity.this,ForcePwdDialogActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+
+
+
+
+
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+            }
+        });
+    }
+
 
     @Override
     protected void onResume() {
@@ -399,6 +434,8 @@ public class HomeActivity extends BaseActivity {
                     }
                 });
     }
+
+
 
     private void initLabel(){
 

@@ -14,6 +14,7 @@ import com.mylhyl.circledialog.callback.ConfigTitle;
 import com.mylhyl.circledialog.params.DialogParams;
 import com.mylhyl.circledialog.params.TitleParams;
 import com.weike.data.base.BaseVM;
+import com.weike.data.business.client.BigPicActivity;
 import com.weike.data.model.business.User;
 import com.weike.data.model.resp.GetClientTagListResp;
 import com.weike.data.util.LQRPhotoSelectUtils;
@@ -81,42 +82,49 @@ public class AddClientActVM extends BaseVM {
 
 
     public void photoClick(){
-        final String[] items = {"拍照", "从相册选择"};
-        new CircleDialog.Builder()
-                .configDialog(new ConfigDialog() {
-                    @Override
-                    public void onConfig(DialogParams params) {
-                        params.backgroundColorPress = Color.CYAN;
-                        //增加弹出动画
-                    }
-                })
-                .setTitle("提示")
-                .configTitle(new ConfigTitle() {
-                    @Override
-                    public void onConfig(TitleParams params) {
-                    }
-                })
-                .setItems(items, new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int
-                            position, long id) {
-                        if (position == 0) {
-                            PermissionGen.with(activity)
-                                    .addRequestCode(LQRPhotoSelectUtils.REQ_TAKE_PHOTO)
-                                    .permissions(Manifest.permission.READ_EXTERNAL_STORAGE,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                            Manifest.permission.CAMERA
-                                    ).request();
-                        } else {
-                            PermissionGen.needPermission(activity,
-                                    LQRPhotoSelectUtils.REQ_SELECT_PHOTO,
-                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE}
-                            );
+
+        if (isModify.get() == false) {
+            BigPicActivity.startActivity(activity,photoUrl.get());
+        } else {
+
+
+            final String[] items = {"拍照", "从相册选择"};
+            new CircleDialog.Builder()
+                    .configDialog(new ConfigDialog() {
+                        @Override
+                        public void onConfig(DialogParams params) {
+                            params.backgroundColorPress = Color.CYAN;
+                            //增加弹出动画
                         }
-                    }
-                })
-                .setNegative("取消", null)
-                .show(((FragmentActivity)activity).getSupportFragmentManager());
+                    })
+                    .setTitle("提示")
+                    .configTitle(new ConfigTitle() {
+                        @Override
+                        public void onConfig(TitleParams params) {
+                        }
+                    })
+                    .setItems(items, new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int
+                                position, long id) {
+                            if (position == 0) {
+                                PermissionGen.with(activity)
+                                        .addRequestCode(LQRPhotoSelectUtils.REQ_TAKE_PHOTO)
+                                        .permissions(Manifest.permission.READ_EXTERNAL_STORAGE,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                Manifest.permission.CAMERA
+                                        ).request();
+                            } else {
+                                PermissionGen.needPermission(activity,
+                                        LQRPhotoSelectUtils.REQ_SELECT_PHOTO,
+                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE}
+                                );
+                            }
+                        }
+                    })
+                    .setNegative("取消", null)
+                    .show(((FragmentActivity) activity).getSupportFragmentManager());
+        }
     }
 }

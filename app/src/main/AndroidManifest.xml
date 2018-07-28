@@ -75,6 +75,7 @@
 
         </activity>
 
+        <activity android:name=".business.client.BigPicActivity"></activity>
 
         <activity android:name=".business.setting.ForcePwdDialogActivity"
             android:theme="@style/dialogstyle"

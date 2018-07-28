@@ -111,11 +111,12 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:padding="5dp"
-                android:text="您真的没有一点计划吗"
+                android:text="所有待办已完成"
                 android:textColor="@color/color_content" />
 
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_add_log"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

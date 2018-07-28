@@ -19,6 +19,23 @@
         layout="@layout/widget_action_bar"
         />
 
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:button="@drawable/selector_checkbox_low"
+        android:layout_marginTop="19dp"
+        android:text="不提醒"
+        android:padding="10dp"
+        android:onClick="@{()->remindSettingVM.unRemindCheckBoxClick()}"
+        android:checked="@={remindSettingVM.isUnRemind}"
+        android:minWidth="100dp"
+        android:paddingLeft="10dp"
+
+        android:textColor="@color/color_content"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:background="@{remindSettingVM.isUnRemind ? @color/color_all_bg:@color/color_white}"
@@ -279,20 +296,7 @@
         android:background="@color/color_line"
         />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:button="@drawable/selector_checkbox_low"
-        android:layout_marginTop="19dp"
-        android:text="不提醒"
-        android:padding="10dp"
-        android:onClick="@{()->remindSettingVM.unRemindCheckBoxClick()}"
-        android:checked="@={remindSettingVM.isUnRemind}"
-        android:minWidth="100dp"
-        android:paddingLeft="10dp"
-        android:textColor="@color/color_content"
-        />
+
 
 </LinearLayout>
 </layout>

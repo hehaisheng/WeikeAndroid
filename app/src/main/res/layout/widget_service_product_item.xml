@@ -17,34 +17,6 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:visibility="@{productItemVM.isFirst ? View.VISIBLE : View.GONE}"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="15dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="3dp"
-            android:paddingBottom="15dp"
-            android:onClick="@{()->productItemVM.onAdd()}"
-            android:src="@mipmap/ic_add_green"
-            />
-
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center"
-            android:text="产品"
-            android:textColor="@color/color_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:orientation="horizontal"
         android:visibility="@{productItemVM.isModify ? View.VISIBLE : View.GONE}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -64,6 +36,7 @@
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
             android:text="产品"
+            android:textSize="14sp"
             android:textColor="@color/color_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -74,6 +47,7 @@
             android:text="@={productItemVM.content}"
             android:layout_marginLeft="10dp"
             android:background="@color/color_white"
+            android:textSize="14sp"
             android:layout_height="match_parent" />
 
         <ImageView
@@ -92,6 +66,36 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:visibility="@{productItemVM.isFirst ? View.VISIBLE : View.GONE}"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="3dp"
+            android:paddingBottom="15dp"
+            android:onClick="@{()->productItemVM.onAdd()}"
+            android:src="@mipmap/ic_add_green"
+            />
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:text="产品"
+            android:textSize="14sp"
+            android:textColor="@color/color_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:visibility="@{productItemVM.isShowContent ? View.VISIBLE : View.GONE}"
         android:layout_height="wrap_content">
 
@@ -101,6 +105,8 @@
             android:layout_gravity="center"
             android:text="产品"
             android:textColor="@color/color_content"
+            android:textSize="14sp"
+
             android:layout_width="wrap_content"
             android:paddingTop="15dp"
             android:paddingLeft="10dp"
@@ -112,7 +118,8 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="@={productItemVM.content}"
+            android:text="@{productItemVM.content}"
+            android:textSize="14sp"
             android:layout_gravity="center"
             android:layout_height="wrap_content" />
 

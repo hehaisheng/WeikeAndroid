@@ -138,7 +138,7 @@
                         android:background="@drawable/shape_main_page_search"
                         android:hint="请输入日志内容"
                         android:gravity="top"
-                        android:minHeight="150dp"
+                        android:minHeight="70dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
                         android:text="@={addLogVM.content}" />

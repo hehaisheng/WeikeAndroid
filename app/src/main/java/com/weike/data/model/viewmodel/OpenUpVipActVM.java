@@ -115,6 +115,7 @@ public class OpenUpVipActVM extends BaseVM {
             year = year - 1;
             money = money - 199;
         }
+
         allYear.set(year + "");
         allMoney.set(money + "");
 
@@ -150,9 +151,12 @@ public class OpenUpVipActVM extends BaseVM {
             money = 418;
         }
 
+
+
         GetPayDataReq req = new GetPayDataReq();
         req.buyNum = Integer.parseInt(allYear.get());
-        req.money = money + "";
+        //req.money = money + "";
+        req.money = "0.1";
         req.orderNo = System.currentTimeMillis() + "";
         req.platform = "wxpay";
         req.sign = SignUtil.signData(req);
@@ -220,10 +224,12 @@ public class OpenUpVipActVM extends BaseVM {
 
         GetPayDataReq req = new GetPayDataReq();
         req.buyNum = Integer.parseInt(allYear.get());
-        req.money = money + "";
+       //req.money = money + "";
+        req.money = "0.1";
         req.orderNo = System.currentTimeMillis() + "";
         req.platform = "alipay";
         req.sign = SignUtil.signData(req);
+
 
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_PAY_DATA)

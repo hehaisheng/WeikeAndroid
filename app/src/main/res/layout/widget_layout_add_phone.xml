@@ -24,6 +24,48 @@
 
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="@{addPhoneVM.isModify ? View.VISIBLE :View.GONE}">
+
+            <ImageView
+                android:id="@+id/ic_widget_add_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:textSize="15sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:onClick="@{()->addPhoneVM.reduce()}"
+                android:src="@mipmap/ic_redue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="手机号码"
+                android:textSize="14sp"
+                android:textColor="@color/color_content" />
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:textSize="14sp"
+                android:background="@color/color_touming"
+                android:hint="请输入"
+
+                android:text="@={addPhoneVM.phoneNumber}" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/ll_fragment_client_add_phone"
             android:layout_width="match_parent"
             android:visibility="@{addPhoneVM.isFirst ?View.VISIBLE : View.GONE}"
@@ -115,46 +157,6 @@
         </RelativeLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="@{addPhoneVM.isModify ? View.VISIBLE :View.GONE}">
-
-            <ImageView
-                android:id="@+id/ic_widget_add_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:textSize="15sp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="10dp"
-                android:onClick="@{()->addPhoneVM.reduce()}"
-                android:src="@mipmap/ic_redue" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp"
-                android:text="手机号码"
-                android:textSize="14sp"
-                android:textColor="@color/color_content" />
-
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                android:background="@color/color_touming"
-                android:hint="请输入"
-
-                android:text="@={addPhoneVM.phoneNumber}" />
-
-        </LinearLayout>
 
     </LinearLayout>
 </layout>

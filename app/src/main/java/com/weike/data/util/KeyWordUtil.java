@@ -3,6 +3,7 @@ package com.weike.data.util;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 
 import java.util.regex.Matcher;
@@ -17,6 +18,7 @@ public class KeyWordUtil {
     public static final int KEY_WORD_COLOR = Color.RED;
 
     public static SpannableString setKeyWordColor(String content, String keyword){
+        if (TextUtils.isEmpty(content)) return null;
         SpannableString s = new SpannableString(content);
         Pattern p = Pattern.compile(keyword);
         Matcher m = p.matcher(s);

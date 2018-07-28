@@ -153,7 +153,7 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
                     user.handleWorkingType = TYPE_OF_CUSTOM;
                     updateCheckStatus(radio_custom);
 
-
+                    if(isFirst) return;
 
                     ArrayList<String> data = new ArrayList<>();
                     for(int i = 1 ; i < 15;i ++) {

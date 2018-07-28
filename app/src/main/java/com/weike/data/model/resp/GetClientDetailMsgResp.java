@@ -48,9 +48,9 @@ public class GetClientDetailMsgResp extends BaseResp {
     private String homeCityId;
     private String homeAreaId;
     private String homeDetailAddress;
-    private String sex;
+    private String sex = "-1";
     private String idCard;
-    private String marriage;
+    private String marriage = "-1";
     private String sonNum;
     private String daughterNum;
     private String height;
@@ -506,16 +506,16 @@ public class GetClientDetailMsgResp extends BaseResp {
          * remind : {"id":64,"isRemind":1,"content":"测试","remindDate":"1999-05-02 20:20","beforeRemindDay":3,"repeatIntervalHour":1,"priority":1,"isRepeat":1,"dateType":2}
          */
 
-        private int id;
+        private String id;
         private String anniversaryName;
         private String anniversaryDate;
         private RemindBeanX remind;
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -547,7 +547,7 @@ public class GetClientDetailMsgResp extends BaseResp {
             /**
              * 是否提醒
              */
-            public int isRemind = 1;
+            public String isRemind;
 
             /**
              * 待办事时间
@@ -557,11 +557,11 @@ public class GetClientDetailMsgResp extends BaseResp {
             /**
              * 是否提前提醒
              */
-            public int isAdvance;  // 1是 2 否
+            public String isAdvance;  // 1是 2 否
 
-            public int advanceDateType; //提前提醒时间类型
+            public String advanceDateType; //提前提醒时间类型
 
-            public int advanceInterval; // 提醒时间间隔
+            public String advanceInterval; // 提醒时间间隔
 
 
             /**
@@ -577,16 +577,16 @@ public class GetClientDetailMsgResp extends BaseResp {
             /**
              * 优先级 1 == 高 2 == 中 3== 低
              */
-            public int priority = 1;
+            public String priority="";
 
             /*
              * 是否重复提醒
              */
-            public int isRepeat = 1; // 是 2 否
+            public String isRepeat=""; // 是 2 否
 
-            public int repeatInterval;//重复提醒时间间隔
+            public String repeatInterval;//重复提醒时间间隔
 
-            public int repeatDateType; //重复提醒时间类型
+            public String repeatDateType; //重复提醒时间类型
         }
     }
 }
