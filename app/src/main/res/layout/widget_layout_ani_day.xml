@@ -23,40 +23,7 @@
         android:orientation="vertical">
 
 
-        <LinearLayout
-            android:id="@+id/ll_fragment_client_add_phone"
-            android:layout_width="match_parent"
-            android:visibility="@{anniverVM.isFirst ?View.VISIBLE : View.GONE}"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="3dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="50dp">
-
-                <ImageView
-                    android:id="@+id/ic_fragment_client_base_addphone"
-                    android:layout_width="16dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:minWidth="20dp"
-                    android:onClick="@{()->anniverVM.add()}"
-                    android:src="@mipmap/ic_add_green" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:text="添加纪念日"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
 
 
 
@@ -134,6 +101,43 @@
                 />
 
         </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_fragment_client_add_phone"
+            android:layout_width="match_parent"
+            android:visibility="@{anniverVM.isFirst ?View.VISIBLE : View.GONE}"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp">
+
+                <ImageView
+                    android:id="@+id/ic_fragment_client_base_addphone"
+                    android:layout_width="16dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:minWidth="20dp"
+                    android:onClick="@{()->anniverVM.add()}"
+                    android:src="@mipmap/ic_add_green" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="添加纪念日"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 </layout>

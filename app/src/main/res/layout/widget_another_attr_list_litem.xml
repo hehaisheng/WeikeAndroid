@@ -1,6 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-</LinearLayout>
+
+<layout>
+
+    <data>
+
+        <import type="android.view.View"></import>
+
+        <variable
+
+            name="anotherItemVM"
+            type="com.weike.data.model.viewmodel.AnotherAttrItemVM">
+
+        </variable>
+
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_fragment_client_add_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/color_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="@{anotherItemVM.name,default=131}"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@={anotherItemVM.value}"
+                    android:hint="请输入"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="50dp"
+                    android:textColor="@color/color_content"
+                    android:layout_marginRight="10dp"
+                    updateEditInput="@{anotherItemVM.isModify}"
+                    android:background="@color/color_touming"
+                    />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_bebebe"
+                />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

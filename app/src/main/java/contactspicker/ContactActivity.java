@@ -27,7 +27,9 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.business.client.ClientFragment;
 import com.weike.data.config.Config;
 import com.weike.data.model.req.AddClientListReq;
+import com.weike.data.model.req.SearchDifferentPhoneReq;
 import com.weike.data.model.resp.GetClientListResp;
+import com.weike.data.model.resp.SearchDifferentPhoneResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
@@ -125,6 +127,55 @@ public class ContactActivity extends BaseActivity {
         } else {
 
 
+            ArrayList<String> phoneNum = new ArrayList<>();
+
+            for(int i = 0 ; i < selectorData.size();i++){
+                phoneNum.add(selectorData.get(i).phone);
+            }
+
+            SearchDifferentPhoneReq req = new SearchDifferentPhoneReq();
+            //req.phoneNumber = JsonUtil.GsonString(phoneNum).replace("\"","").replace("[","").replace("]","");
+            req.phoneNumber = "" + JsonUtil.GsonString(phoneNum) + "";
+            req.sign = SignUtil.signData(req);
+
+
+
+
+            RetrofitFactory.getInstance().getService().postAnything(req, Config.INSPECT_DIFFERENT_CLIENT)
+                    .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<SearchDifferentPhoneResp>>() {
+
+                    })).subscribe(new BaseObserver<BaseResp<SearchDifferentPhoneResp>>() {
+                @Override
+                protected void onSuccess(BaseResp<SearchDifferentPhoneResp> searchDifferentPhoneResp) throws Exception {
+                        String dialogContent = "包含相同的客户:";
+                        if(searchDifferentPhoneResp.getDatas().userNameList.length > 0){
+                            for(int i = 0 ; i < searchDifferentPhoneResp.getDatas().userNameList.length;i++){
+                                dialogContent+= searchDifferentPhoneResp.getDatas().userNameList[i] + ",";
+
+                            }
+                            dialogContent+= "是否添加?";
+                        } else{
+                            dialogContent = "是否导入以下客户?";
+                        }
+
+                    DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", dialogContent, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            addClientList(selectorData);
+                        }
+                    });
+                }
+
+                @Override
+                protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+                }
+            });
 
         }
 
@@ -156,6 +207,8 @@ public class ContactActivity extends BaseActivity {
 
 
     }
+
+
 
     private void addClientList(List< contactspicker.util.ContactsPickerHelper.ContactsInfo> selectorData){
 

@@ -155,8 +155,8 @@ public class OpenUpVipActVM extends BaseVM {
 
         GetPayDataReq req = new GetPayDataReq();
         req.buyNum = Integer.parseInt(allYear.get());
-        //req.money = money + "";
-        req.money = "0.1";
+        req.money = money + "";
+
         req.orderNo = System.currentTimeMillis() + "";
         req.platform = "wxpay";
         req.sign = SignUtil.signData(req);
@@ -224,8 +224,8 @@ public class OpenUpVipActVM extends BaseVM {
 
         GetPayDataReq req = new GetPayDataReq();
         req.buyNum = Integer.parseInt(allYear.get());
-       //req.money = money + "";
-        req.money = "0.1";
+       req.money = money + "";
+       // req.money = "0.1";
         req.orderNo = System.currentTimeMillis() + "";
         req.platform = "alipay";
         req.sign = SignUtil.signData(req);

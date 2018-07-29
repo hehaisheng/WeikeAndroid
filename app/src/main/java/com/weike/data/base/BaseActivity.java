@@ -117,6 +117,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         finish();
     }
 
+
+
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.tv_actionbar_right) {

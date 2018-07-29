@@ -37,6 +37,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/add_relate_client"
                     android:layout_width="match_parent"
+                    android:visibility="@{clientBaseVM.clientRelateDisplay ?View.VISIBLE : View.GONE}"
                     android:layout_height="wrap_content"
                     android:minHeight="50dp">
 
@@ -225,15 +226,15 @@
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:visibility="@{clientBaseVM.companyLocDisplay ? View.VISIBLE : View.GONE}"
-                        android:layout_toRightOf="@+id/tv_email_title"
+                        android:layout_toRightOf="@+id/tv_company_location"
                         android:maxLines="2"
                         android:layout_alignTop="@+id/view_line_3"
                         android:background="@color/color_touming"
                         android:hint="请输入地址"
 
 
-                        android:text="@={clientBaseVM.companyLocation}"
-
+                        android:text="@={clientBaseVM.companyLocation,default=21321321}"
+                        android:gravity="left|center"
                         android:textSize="14sp"/>
 
                     <View
@@ -268,13 +269,14 @@
                         android:layout_alignTop="@+id/view_line_4"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:layout_toRightOf="@+id/tv_email_title"
+                        android:layout_toRightOf="@+id/tv_home_location"
                         android:background="@color/color_touming"
                         android:hint="请输入地址"
                         android:visibility="@{clientBaseVM.houseLocDisplay ? View.VISIBLE : View.GONE}"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:singleLine="true"
+                        android:gravity="left|center"
                         android:text="@={clientBaseVM.houseLocation}"
                         android:textSize="14sp"/>
 
@@ -692,25 +694,34 @@
                 app:cardCornerRadius="5dp"
                 app:cardElevation="5dp">
 
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
 
-                </android.support.v7.widget.RecyclerView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{()->clientBaseVM.goToManagerAttr()}"
-                    android:visibility="@{clientBaseVM.isModify ?View.VISIBLE:View.GONE}">
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                   >
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/anotherAttrRecycle"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
+
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_marginBottom="15dp"
-                        android:layout_marginLeft="15dp"
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
+                        android:gravity="left"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:onClick="@{()->clientBaseVM.goToManagerAttr()}"
+                        android:visibility="@{clientBaseVM.isModify ?View.VISIBLE:View.GONE}"
                         android:text="管理我的属性"
                         android:textColor="@color/color_content"
 

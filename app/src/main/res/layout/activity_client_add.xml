@@ -27,8 +27,7 @@
         android:layout_height="wrap_content">
 
 
-        <com.weike.data.view.CircleImageView
-            android:id="@+id/iv_add_client_usericon"
+        <FrameLayout
             android:layout_width="120dp"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -37,11 +36,35 @@
             android:scaleType="centerCrop"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:onClick="@{()->addClientVM.photoClick()}"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/icon_normal_3"
-            loadImage="@{addClientVM.photoUrl}"
-            />
+            android:layout_marginRight="10dp">
+
+            <com.weike.data.view.CircleImageView
+                android:id="@+id/iv_add_client_usericon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+
+                android:onClick="@{()->addClientVM.photoClick()}"
+
+                android:src="@mipmap/icon_normal_3"
+                loadImage="@{addClientVM.photoUrl}"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_user_icon"
+                android:layout_gravity="center"
+                android:visibility="@{addClientVM.isModify ? View.VISIBLE : View.GONE}"
+
+                />
+
+
+        </FrameLayout>
+
+
 
 
 

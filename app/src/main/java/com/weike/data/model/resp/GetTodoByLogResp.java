@@ -1,6 +1,7 @@
 package com.weike.data.model.resp;
 
 import com.weike.data.base.BaseReq;
+import com.weike.data.model.business.ProductBean;
 import com.weike.data.model.business.ToDo;
 
 /**
@@ -14,5 +15,5 @@ public class GetTodoByLogResp extends BaseReq {
 
     public String logContent;
 
-    public ToDo remind;
+    public ProductBean.RemindBean remind;
 }

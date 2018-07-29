@@ -1,5 +1,6 @@
 package com.weike.data.business.client;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -18,7 +19,7 @@ import butterknife.OnClick;
  * ${huneng} on 2018/7/27 11:07
  */
 
-public class ForceOpenVipDialogActivity extends BaseActivity {
+public class ForceOpenVipDialogActivity extends Activity {
     @OnClick(R.id.btn_dialog_apply_create_company_confirm_rightbutton)
     public void onClick(View view){
         ActivitySkipUtil.skipAnotherAct(this, VipOpenUpActivity.class);

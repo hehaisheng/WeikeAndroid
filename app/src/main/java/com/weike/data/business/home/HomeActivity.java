@@ -20,6 +20,7 @@ import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.client.ClientFragment;
+import com.weike.data.business.client.ForceOpenVipDialogActivity;
 import com.weike.data.business.msg.MsgFragment;
 import com.weike.data.business.myself.MySelfFragment;
 import com.weike.data.business.setting.ForcePwdDialogActivity;
@@ -45,6 +46,7 @@ import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.ClientTagComparator;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
+import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 import com.weike.data.view.BottomBarLayout;
 
@@ -159,15 +161,15 @@ public class HomeActivity extends BaseActivity {
             @Override
             protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
 
-                if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0)
-                    if(getUserInfoRespBaseResp.getDatas().memberLevel == 1) {
-
-                        Intent intent = new Intent(HomeActivity.this,ForcePwdDialogActivity.class);
+                if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0) {
+                    if (getUserInfoRespBaseResp.getDatas().memberLevel == 1) { //没有开通的话
+                        Intent intent = new Intent(HomeActivity.this,ForceOpenVipDialogActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+
                     }
 
-
+                }
 
 
 
@@ -184,6 +186,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        checkVip();//检查会员
     }
 
     public void replaceFragment(int position) {
@@ -329,6 +332,10 @@ public class HomeActivity extends BaseActivity {
 
         initPush();//初始化push
 
+        initAnotherType();//初始化其他属性
+
+
+
         new Handler().postAtTime(new Runnable() {
             @Override
             public void run() {
@@ -471,6 +478,8 @@ public class HomeActivity extends BaseActivity {
             }
         });
     }
+
+
 
     public void initAnotherType(){
         GetAttrListReq req = new GetAttrListReq();

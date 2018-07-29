@@ -1,5 +1,6 @@
 package com.weike.data.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,7 +8,7 @@ import java.util.Date;
 public class TimeUtil {
 
     public static String getTimeFormat(){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         String time = format.format(new Date());
         LogUtil.d("TimeUtil","format:" + time);
@@ -20,6 +21,27 @@ public class TimeUtil {
 
         return format.format(System.currentTimeMillis());
     };
+
+
+    public static boolean timeCoperay(String cur , String old){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        try {
+            long curTime = format.parse(cur).getTime();
+            long oldTime = format.parse(old).getTime();
+
+
+            LogUtil.d("acthome","--->" + curTime + ","+ oldTime);
+            if (curTime >= oldTime ){
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public static ArrayList<Integer> formatDateClick(String date){
         int year = Integer.parseInt(date.substring(0,4));

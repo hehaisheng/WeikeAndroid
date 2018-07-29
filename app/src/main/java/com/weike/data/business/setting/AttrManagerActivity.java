@@ -48,6 +48,7 @@ import com.weike.data.model.resp.AddAttrResp;
 import com.weike.data.model.resp.GetAttrListResp;
 import com.weike.data.model.viewmodel.AttrItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
@@ -86,7 +87,7 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
                 .setCancelable(true)
                 .setInputManualClose(true)
                 .setTitle("添加属性")
-                .setInputHint("请输入")
+                .setInputHint("请输入(最长限制6个字符)")
                 .setInputText("")
                 .configInput(new ConfigInput() {
                     @Override
@@ -101,6 +102,15 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
                 .setPositiveInput("确定", new OnInputClickListener() {
                     @Override
                     public void onClick(String text, View v) {
+                        if (TextUtils.isEmpty(text)) {
+                            ToastUtil.showToast("信息不能为空");
+                            return;
+                        }
+
+                        if (text.length() > 6){
+                            text = text.substring(0,6);
+                        }
+
                         addAttr(text);
 
                         dialogFragment.dismiss();
@@ -150,6 +160,12 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
     }
 
     @Override
+    public void onLeftClick() {
+        super.onLeftClick();
+        compass();
+    }
+
+    @Override
     public void onRightClick(boolean isModify) {
         super.onRightClick(isModify);
         if(isModify) {
@@ -168,23 +184,32 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
         }
     }
 
+
+
     @Override
     public void onBackPressed() {
+      compass();
+    }
+
+    private void compass(){
         User user = SpUtil.getInstance().getUser();
         List<AnotherAttributes> list = user.anotherAttributes;
         list.clear();
 
-        for(int i = vms.size() - 18 ; i < vms.size() ;i++){
+        for(int i = 18 ; i < vms.size() ;i++){
             AnotherAttributes anotherAttributes = new AnotherAttributes();
             anotherAttributes.attributesId = vms.get(i).id.get();
             anotherAttributes.attributesName = vms.get(i).name.get();
             list.add(anotherAttributes);
         }
+
+        LogUtil.d("AttrManager","size:" + list.size());
         SpUtil.getInstance().saveNewsUser(user);
 
         setResult(RESULT_OK);
         finish();
     }
+
 
     @Override
     protected void onDestroy() {

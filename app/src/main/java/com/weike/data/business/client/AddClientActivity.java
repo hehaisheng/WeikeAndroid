@@ -275,6 +275,8 @@ public class AddClientActivity extends BaseActivity {
             protected void onSuccess(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp) throws Exception {
                    GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
 
+                   LogUtil.d("AddClientActivityActhome",JsonUtil.GsonString(data));
+
                     vm.photoUrl.set(data.getPhotoUrl());
                     vm.userName.set(data.getUserName());
                     vm.remarks.set(data.getRemark());
@@ -319,7 +321,6 @@ public class AddClientActivity extends BaseActivity {
     @Override
     public void onRightClick(boolean isModify) {
         super.onRightClick(isModify);
-        LogUtil.d("AddClientActivity","------" +isModify);
 
 
 
@@ -332,7 +333,6 @@ public class AddClientActivity extends BaseActivity {
           vm.isModify.set(isModify);
           setLeftText("编辑客户");
         } else if (isModify == false && submitClient() == false){ //恢复状态
-            LogUtil.d("AddClientActivity","false");
             setRightText("完成");
             AddClientActivity.this.isModify = true;
             vm.isModify.set(true);
@@ -466,7 +466,6 @@ public class AddClientActivity extends BaseActivity {
         req.userName = vm.userName.get();
         req.clientLabelId = vm.labelId;//标签ID
         req.photoUrl = vm.photoUrl.get();
-        req.token = SpUtil.getInstance().getCurrentToken();
 
 
 
@@ -497,13 +496,23 @@ public class AddClientActivity extends BaseActivity {
         req.FivePhoneNumber = phoneNum[4]; //1 2 3 4 5个电话号码
 
 
+
         req.idCard = clientBaseMsgVM.idCard.get();//身份证
         req.email = clientBaseMsgVM.email.get();
         req.company = clientBaseMsgVM.companyName.get();
         req.office = clientBaseMsgVM.job.get();
         req.companyDetailAddress = clientBaseMsgVM.companyLocation.get();//公司地址
         req.homeDetailAddress = clientBaseMsgVM.houseLocation.get();
-        req.sex = clientBaseMsgVM.sex.get().contains("男") ?  1 :2; //
+
+
+
+        if (TextUtils.isEmpty(clientBaseMsgVM.sex.get())) {
+            req.sex = -1;
+        } else {
+            req.sex = clientBaseMsgVM.sex.get().contains("男") ? 1 : 2; //
+        }
+
+
 
 
         if (clientBaseMsgVM.marry.get().contains("未婚")){
@@ -515,6 +524,7 @@ public class AddClientActivity extends BaseActivity {
         } else if (TextUtils.isEmpty(clientBaseMsgVM.marry.get())){
             req.marriage = -1;
         }
+
 
 
 
@@ -581,8 +591,8 @@ public class AddClientActivity extends BaseActivity {
         req.fixedAssets = clientServiceMsgVM.fixedAssets.get();
         req.car = clientServiceMsgVM.carType.get();
         req.liabilities = clientServiceMsgVM.liabilities.get();
-
-        req.product = TextUtils.isEmpty( serviceMsgFragment.getAllProduct() ) ? "" : "" + serviceMsgFragment.getAllProduct() + "";
+        req.attributesValue = clientBaseMsgFragment.getAnotherAttr();
+       // req.product = TextUtils.isEmpty(serviceMsgFragment.getAllProduct()) ? "" : "" + serviceMsgFragment.getAllProduct() + "";
 
 
         req.sign = SignUtil.signData(req);

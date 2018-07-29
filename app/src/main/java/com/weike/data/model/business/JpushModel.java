@@ -21,5 +21,7 @@ public class JpushModel {
         public int type;
 
         public String clientId;
+
+        public String name;
     }
 }

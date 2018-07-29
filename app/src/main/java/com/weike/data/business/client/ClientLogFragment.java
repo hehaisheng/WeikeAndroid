@@ -31,6 +31,7 @@ import com.weike.data.model.resp.ModifyLogTodoResp;
 import com.weike.data.model.viewmodel.ClientLogItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
@@ -60,6 +61,7 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
 
     private String clientId;
 
+    private ClientLogItemVM lastLogVM;
 
 
     @SuppressLint("ValidFragment")
@@ -91,8 +93,14 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
         if (requestCode == 400 && resultCode == RESULT_OK){
             loadData(false,1);
         } else if (requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
-            ToDo toDo = data.getParcelableExtra("data");
+            ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_LOG_ID);
 
+            if (toDo.isRemind == 1) {
+                lastLogVM.remindIcon.set(R.mipmap.ic_remind);
+            } else {
+                lastLogVM.remindIcon.set(R.mipmap.ic_remind_dis);
+            }
+            modify(lastLogVM, "" +JsonUtil.GsonString(toDo) + "");
         }
     }
 
@@ -234,12 +242,12 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
         });
     }
 
-    private void modify(ClientLogItemVM modify){
+    private void modify(ClientLogItemVM modify,String todoStr){
         ModifyLogTodoReq req = new ModifyLogTodoReq();
         req.content = modify.content.get();
         req.logDate = modify.time.get();
         req.logId = modify.id;
-
+        req.remind = todoStr;
 
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.MODIFY_LOG_TODO)
@@ -248,7 +256,7 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
                 })).subscribe(new BaseObserver<BaseResp<ModifyLogTodoResp>>() {
             @Override
             protected void onSuccess(BaseResp<ModifyLogTodoResp> getClientLogByIdRespBaseResp) throws Exception {
-
+                    ToastUtil.showToast("修改成功");
             }
 
             @Override
@@ -268,6 +276,7 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
         }, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                lastLogVM = clientLogItemVM;
                RemindSettingActivity.startActivity(ClientLogFragment.this,0,clientLogItemVM.id);
             }
         });

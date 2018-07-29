@@ -160,6 +160,13 @@
         <activity android:name=".business.web.WebActivity"></activity>
         <activity android:name=".business.msg.MsgDetailActivity"></activity>
 
+        <activity android:name=".business.client.ForceOpenVipDialogActivity"
+            android:theme="@style/dialogstyle"
+            >
+
+
+        </activity>
+
         <activity android:name=".wxapi.WXEntryActivity"
             android:launchMode="singleTop"
             android:exported="true"/>

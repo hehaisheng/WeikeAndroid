@@ -283,4 +283,9 @@ public final class Config {
      * 删除客户
      */
     public static final String DELETE_CLIENT = "wkzs-restful/client/deleteClient";
+
+    /**
+     * 判断不同的用户
+     */
+    public static final String INSPECT_DIFFERENT_CLIENT = "wkzs-restful/client/inspectClient";
 }

@@ -68,7 +68,7 @@ public class    JPushReceiver extends BroadcastReceiver {
                 LogUtil.d("acthome","sub:" + sub.clientId);
 
                 Intent i = new Intent(context,MsgDetailActivity.class);
-                i.putExtra("name","");
+                i.putExtra("name",sub.name);
                 i.putExtra("id",sub.clientId + "");
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);

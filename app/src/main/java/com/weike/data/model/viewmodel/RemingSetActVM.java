@@ -10,6 +10,7 @@ import com.weike.data.config.DataConfig;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.PickerUtil;
 import com.weike.data.util.TimeUtil;
+import com.weike.data.util.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -141,7 +142,15 @@ public class RemingSetActVM extends BaseVM {
             PickerUtil.onYearMonthDayTimePicker(tmp.get(0),tmp.get(1),tmp.get(2),tmp.get(3),tmp.get(4), new DateTimePicker.OnYearMonthDayTimePickListener() {
                 @Override
                 public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
-                    time.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
+                    String pickTime = s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4 ;
+                    boolean result = TimeUtil.timeCoperay(TimeUtil.getTimeFormat(),pickTime);
+                    if(result == true) { //选择时间 大于当前时间 要处理提醒
+                        ToastUtil.showToast("提醒时间不能早于当前时间");
+                        return;
+                    } else {
+                        time.set(pickTime);
+                    }
+
                 }
             }, activity);
         } else {
@@ -152,7 +161,14 @@ public class RemingSetActVM extends BaseVM {
             PickerUtil.onYearMonthDayTimePicker(tmp.get(0),tmp.get(1),tmp.get(2),tmp.get(3),tmp.get(4), new DateTimePicker.OnYearMonthDayTimePickListener() {
                 @Override
                 public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
-                    time.set(s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4);
+                    String pickTime = s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4 ;
+                    boolean result = TimeUtil.timeCoperay(TimeUtil.getTimeFormat(),pickTime);
+                    if(result == true) { //选择时间 大于当前时间 要处理提醒
+                        ToastUtil.showToast("提醒时间不能早于当前时间");
+                        return;
+                    } else {
+                        time.set(pickTime);
+                    }
                 }
             }, activity);
         }

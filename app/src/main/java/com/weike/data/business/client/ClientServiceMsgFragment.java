@@ -109,7 +109,6 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
     public void showDisplayContent(GetClientDetailMsgResp data , boolean isMoidfy){
 
-        LogUtil.d("acthome","shoDisplay:" + isMoidfy + "," + data);
 
         if (isMoidfy) {
             serviceMsgVM.moneyInDisplay.set(true);
@@ -119,7 +118,9 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             serviceMsgVM.carTypeDisplay.set(true);
             serviceMsgVM.liabilitiesDisplay.set(true);
             serviceMsgVM.productDisplay.set(true);
-        } else if (data != null) {
+        } else  {
+
+            LogUtil.d("ClientServiceMsgFragment","cur-->" + data);
 
             serviceMsgVM.moneyInDisplay.set(TextUtils.isEmpty(data.getIncome()) ? false : true);
             serviceMsgVM.moneyOutDisplay.set(TextUtils.isEmpty(data.getExpenditure()) ? false : true);
@@ -129,8 +130,11 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             serviceMsgVM.liabilitiesDisplay.set(TextUtils.isEmpty(data.getLiabilities()) ? false : true);
 
 
-            if (data.getProduct().size() == 0) {
+
+            LogUtil.d("ClientServiceMsgFragment","-->" +data);
+            if (data.getProduct() == null || data.getProduct().size() == 0) {
                 serviceMsgVM.productDisplay.set(false);
+                LogUtil.d("ClientServiceMsgFragment","--> false");
             } else {
                 serviceMsgVM.productDisplay.set(true);
             }
@@ -142,13 +146,12 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
     public String getAllProduct() {
         List<Product> products = new ArrayList<>();
 
-        LogUtil.d("ClientServiceMsgFragment","---->" + itemVMS.size());
         for (int i = 0; i < itemVMS.size(); i++) {
 
-            LogUtil.d("ClientServiceMsgFragment,","name: " + itemVMS.get(i).content.get());
+
 
             if (TextUtils.isEmpty(itemVMS.get(i).content.get())){
-                LogUtil.d("ClientServiceMsgFragment","---->");
+
                 continue;
             }
 
@@ -219,6 +222,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
     public void loadDefault(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp){
         GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
+        LogUtil.d("ClientServiceMsgFragment","--------->" +getClientDetailMsgRespBaseResp.getDatas());
         showDisplayContent(data,false); //显示
         serviceMsgVM.liabilities.set(data.getLiabilities());
         serviceMsgVM.moneyIn.set(data.getIncome());
@@ -226,7 +230,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         serviceMsgVM.carType.set(data.getCar());
         serviceMsgVM.moneyOut.set(data.getExpenditure());
         serviceMsgVM.fixedAssets.set(data.getFixedAssets());
-        if (data.getProduct().size() == 0) {
+        if (data.getProduct() == null ||data.getProduct().size() == 0) {
             serviceMsgVM.productDisplay.set(false);
         } else {
             serviceMsgVM.productDisplay.set(true);

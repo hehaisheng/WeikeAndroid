@@ -27,7 +27,7 @@ public class GetClientDetailMsgResp extends BaseResp {
 
     private List<ClientRelateBean> clientRelatedList;
     private List<AnniversaryListBean> anniversaryList;
-    private List<?> userAttributesList;
+    private List<AnotherAttrBean> userAttributesList;
     private String userName;
     private String clientLabelId;
     private String clientLabelName;
@@ -57,8 +57,8 @@ public class GetClientDetailMsgResp extends BaseResp {
     private String weight;
     private String photoUrl;
     private String birthday;
-    private int id;
-    private int clentId;
+    private String id;
+    private String clentId;
     private String income;
     private String expenditure;
     private String monetaryAssets;
@@ -74,19 +74,19 @@ public class GetClientDetailMsgResp extends BaseResp {
         this.product = product;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getClentId() {
+    public String getClentId() {
         return clentId;
     }
 
-    public void setClentId(int clentId) {
+    public void setClentId(String clentId) {
         this.clentId = clentId;
     }
 
@@ -397,11 +397,11 @@ public class GetClientDetailMsgResp extends BaseResp {
         this.anniversaryList = anniversaryList;
     }
 
-    public List<?> getUserAttributesList() {
+    public List<AnotherAttrBean> getUserAttributesList() {
         return userAttributesList;
     }
 
-    public void setUserAttributesList(List<?> userAttributesList) {
+    public void setUserAttributesList(List<AnotherAttrBean> userAttributesList) {
         this.userAttributesList = userAttributesList;
     }
 
@@ -496,6 +496,13 @@ public class GetClientDetailMsgResp extends BaseResp {
         public int repeatDateType; //重复提醒时间类型
     }
 
+    public static class AnotherAttrBean{
+        public String id;
+
+        public String attributesName;
+
+        public String attributesValue;
+    }
 
 
     public static class AnniversaryListBean {
