@@ -70,6 +70,10 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
         LogUtil.d("acthome","id:" + clientId);
     }
 
+    public void setClientId(String clientId){
+        this.clientId = clientId;
+    }
+
     @Override
     protected int setUpLayoutId() {
         return R.layout.fragment_client_log;

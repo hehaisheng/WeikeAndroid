@@ -254,8 +254,14 @@ public class ClientTagActivity extends BaseActivity {
                 LabelOptionItemVM vm = new LabelOptionItemVM();
                 vm.text.set("未分组客户");
                 vm.id.set("");
-                vm.isClick.set(true);
+                vm.isClick.set(false);
                 optionItemVMS.add(0, vm);
+
+                LabelOptionItemVM vm2 = new LabelOptionItemVM();
+                vm2.text.set("所有客户");
+                vm2.id.set("-1");
+                vm2.isClick.set(true);
+                optionItemVMS.add(0, vm2);
 
                 clientTagOptionAdapter.notifyDataSetChanged();
                 refreshTagClient(0);

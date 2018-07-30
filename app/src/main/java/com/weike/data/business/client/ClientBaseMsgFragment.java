@@ -59,7 +59,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     /**
      * 纪念日专用
      */
-    public static int REQUEST_ANNIDAY_CODE = 1000;
+    public static final int REQUEST_ANNIDAY_CODE = 1000;
 
     /**
      * 添加号码适配器
@@ -388,6 +388,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 AnotherAttrItemVM vm = new AnotherAttrItemVM();
                 vm.name.set(local.get(i).attributesName);
                 vm.id = local.get(i).attributesId;
+                vm.lineShow.set(true);
 
                 if (tmp.get(local.get(i).attributesName) != null) {
                     vm.value.set(tmp.get(local.get(i).attributesName).attributesContent);
@@ -442,10 +443,24 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        LogUtil.d("ClientBaseFragment","-->" + requestCode + "," + resultCode);
+
         /**
          * 用于生日
          */
-        if (requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
+        if (requestCode == REQUEST_ANNIDAY_CODE && resultCode == RESULT_OK && data != null) {
+
+            ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
+
+            LogUtil.d("ClientBaseFragment","-->" + toDo);
+            lastAnniversariesItemVM.toDo = toDo;
+            if (toDo.isRemind == 1) {
+                lastAnniversariesItemVM.remindIcon.set(R.mipmap.ic_remind);
+            } else {
+                lastAnniversariesItemVM.remindIcon.set(R.mipmap.ic_remind_dis);
+            }
+        } else if (requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
             clientBaseMsgVM.onBirthdayRemindResult(toDo);
 
@@ -457,19 +472,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             clientRelateAdapter.notifyDataSetChanged();
 
 
-        } else if (requestCode == AttrManagerActivity.REQUEST_CODE) {
+        } else if (requestCode == AttrManagerActivity.REQUEST_CODE && resultCode == RESULT_OK) {
             anotherAttrItemVMS.clear();
             initAnotherAttr();
 
-        } else if (requestCode == REQUEST_ANNIDAY_CODE && resultCode == RESULT_OK && data != null) {
-
-            ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
-            lastAnniversariesItemVM.toDo = toDo;
-            if (toDo.isRemind == 1) {
-                lastAnniversariesItemVM.remindIcon.set(R.mipmap.ic_remind);
-            } else {
-                lastAnniversariesItemVM.remindIcon.set(R.mipmap.ic_remind_dis);
-            }
         }
     }
 
@@ -504,7 +510,9 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             }
         }
 
-        anotherAttrItemVMS.get(anniDayVMS.size() -1 ).lineShow.set(false);
+        if (anotherAttrItemVMS.size() > 0) {
+            anotherAttrItemVMS.get(anotherAttrItemVMS.size() - 1).lineShow.set(false);
+        }
 
         if (anotherAttrItemVMS.size() == 0) {
             clientBaseMsgVM.anotherAttrDisplay.set(false);

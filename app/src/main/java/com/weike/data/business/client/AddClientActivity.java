@@ -386,9 +386,11 @@ public class AddClientActivity extends BaseActivity {
             protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
                 ToastUtil.showToast("修改成功");
                 setLeftText("客户信息");
+
                 resetRight();
                 initMsg();
-                //sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
+
+                sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
 
             }
 
@@ -427,7 +429,7 @@ public class AddClientActivity extends BaseActivity {
                 resetRight();
 
                 initMsg();
-
+                ((ClientLogFragment)fragments.get(2)).setClientId(clientId);
                 sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
 
             }

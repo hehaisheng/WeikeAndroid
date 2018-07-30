@@ -46,7 +46,8 @@
                     android:layout_gravity="center"
                     android:textColor="@color/color_content"
                     android:layout_marginLeft="20dp"
-                    android:text="@{anotherItemVM.name,default=131}"
+                    android:minWidth="70dp"
+                    android:text="@{anotherItemVM.name}"
                     android:textSize="14sp" />
 
                 <EditText

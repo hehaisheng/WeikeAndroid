@@ -1,24 +1,15 @@
 package com.weike.data.util;
 
 import android.content.Intent;
-import android.databinding.BaseObservable;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseResp;
 import com.weike.data.broadcast.TokenFailedBroadcast;
-import com.weike.data.model.resp.LoginByPwdResp;
-
-import java.util.logging.Logger;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
-import io.reactivex.internal.operators.flowable.FlowableOnErrorReturn;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 

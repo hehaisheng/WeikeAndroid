@@ -92,6 +92,13 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onRightClick() {
+        super.onRightClick();
+        setRightText("保存");
+        onBackPressed();
+
+    }
 
     private ArrayList<CheckBox> views = new ArrayList<>();
 
@@ -104,6 +111,8 @@ public class HandleWorkingDisplayActivity extends BaseActivity {
         setLeftText("待办事项显示");
         setRightText("");
         ButterKnife.bind(this);
+
+        setRightText("保存");
 
         user = SpUtil.getInstance().getUser();
 
