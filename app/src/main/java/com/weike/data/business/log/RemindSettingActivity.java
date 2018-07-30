@@ -378,7 +378,12 @@ public class RemindSettingActivity extends BaseActivity {
     public void onRightClick() {
 
 
+        save();
 
+
+    }
+
+    private void save(){
         if (TextUtils.isEmpty(vm.content.get()) && vm.isRemind.get()){
             ToastUtil.showToast("内容不能为空");
             return;
@@ -420,9 +425,6 @@ public class RemindSettingActivity extends BaseActivity {
             setResult(RESULT_OK,intent);
             finish();
         }
-
-
-
     }
 
     private void modifyOneTodo(){
@@ -461,6 +463,11 @@ public class RemindSettingActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     private ToDo compass(){
 
         ToDo toDo = new ToDo();
@@ -470,7 +477,6 @@ public class RemindSettingActivity extends BaseActivity {
             toDo.isRemind = 1;
         } else {
             toDo.isRemind = 2;
-            return toDo;
         }
 
         toDo.content = vm.content.get();

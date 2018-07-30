@@ -14,6 +14,8 @@ public class AnotherAttrItemVM extends BaseVM{
 
     public String id;
 
-    public ObservableField<Boolean> isShow = new ObservableField<>();
+    public ObservableField<Boolean> lineShow = new ObservableField<>(true);
+
+
 
 }

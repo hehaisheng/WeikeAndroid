@@ -23,6 +23,69 @@
         android:orientation="vertical">
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="@{anniverVM.isShowContent ? View.VISIBLE :View.GONE}">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:hint="请输入"
+                android:layout_marginLeft="20dp"
+                android:maxLength="5"
+                android:text="@={anniverVM.name}"
+                android:textSize="14sp"
+                android:background="@color/color_touming"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/color_content" />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/icon_arrow_2" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/color_line"
+                android:layout_marginLeft="10dp"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clickable="@{anniverVM.isModify}"
+                android:layout_marginLeft="10dp"
+                android:textSize="14sp"
+                android:layout_weight="1"
+                android:background="@color/color_touming"
+
+                android:layout_marginRight="5dp"
+                android:text="@={anniverVM.time}" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@mipmap/ic_remind_dis"
+                android:layout_marginRight="10dp"
+                loadImageId="@{anniverVM.remindIcon}"
+                android:layout_gravity="center|right"
+                />
+
+        </LinearLayout>
 
 
 
@@ -41,6 +104,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="10dp"
+
                 android:onClick="@{()->anniverVM.reduce()}"
                 android:src="@mipmap/ic_redue" />
 

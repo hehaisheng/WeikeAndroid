@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.reflect.TypeToken;
-import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.weike.data.BR;
 import com.weike.data.R;
 import com.weike.data.adapter.BaseDataBindingAdapter;
@@ -22,6 +21,7 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.business.setting.AttrManagerActivity;
 import com.weike.data.config.Config;
+import com.weike.data.config.DataConfig;
 import com.weike.data.databinding.FragmentClientBaseMsgBinding;
 import com.weike.data.model.business.AnotherAttributes;
 import com.weike.data.model.business.ClientRelated;
@@ -44,6 +44,7 @@ import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -94,6 +95,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     private AnniversariesItemVM lastAnniversariesItemVM;
 
+    private HashMap<String,AnotherAttributes> tmpMap = new HashMap<>();
+
 
     public void showDisplayContent(GetClientDetailMsgResp data, boolean isMoidfy) {
 
@@ -125,6 +128,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             clientBaseMsgVM.idCardDisplay.set(TextUtils.isEmpty(data.getIdCard()) ? false : true);
             clientBaseMsgVM.heightDisplay.set(TextUtils.isEmpty(data.getHeight()) ? false : true);
             clientBaseMsgVM.widgetDispaly.set(TextUtils.isEmpty(data.getWeight()) ? false : true);
+
+
 
             if (data.getClientRelatedList().size() == 0) {
                 clientBaseMsgVM.clientRelateDisplay.set(false);
@@ -170,7 +175,11 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     }
 
+    /**
+     * 初始化
+     */
     public void initAnotherAttr() {
+        tmpMap.clear();
         anotherAttrItemVMS.clear();
         List<AnotherAttributes> list = SpUtil.getInstance().getUser().anotherAttributes;
         for (int i = 0; i < list.size(); i++) {
@@ -180,6 +189,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             vm.id = list.get(i).attributesId;
             vm.isModify.set(true);
             anotherAttrItemVMS.add(vm);
+
+            tmpMap.put(list.get(i).attributesName,list.get(i)); //把当前本地的数据 放到临时map
         }
 
         anotherAdapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_another_attr_list_litem, anotherAttrItemVMS, BR.anotherItemVM);
@@ -190,7 +201,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         binding.anotherAttrRecycle.setAdapter(anotherAdapter);
     }
 
-    private List<GetClientDetailMsgResp.AnotherAttrBean> lastAnotherAttr;
+
 
 
 
@@ -254,7 +265,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             birthdayRemind.advanceInterval = data.getBirthdayjson().advanceInterval;
             birthdayRemind.birthdaydate = data.getBirthdayjson().remindDate;
             birthdayRemind.content = data.getBirthdayjson().content;
-            if (birthdayRemind.isRemind == 1) {
+            if (birthdayRemind.isRemind == DataConfig.RemindType.TYPE_REMIND) {
                 clientBaseMsgVM.birthdayRemindIcon.set(R.mipmap.ic_remind);
             } else {
                 clientBaseMsgVM.birthdayRemindIcon.set(R.mipmap.ic_remind_dis);
@@ -268,12 +279,17 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         updateAnotherType(data.getUserAttributesList());
     }
 
+    /**
+     * 用于上传
+     * @return
+     */
     public String getAnotherAttr() {
 
         List<AnotherAttributes> list = new ArrayList<>();
 
         for (int i = 0; i < anotherAttrItemVMS.size(); i++) {
-            String value = anotherAttrItemVMS.get(i).value.get();
+
+            if (TextUtils.isEmpty(anotherAttrItemVMS.get(i).value.get())) continue;
 
             AnotherAttributes atr = new AnotherAttributes();
             atr.attributesName = anotherAttrItemVMS.get(i).name.get();
@@ -295,7 +311,6 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
      */
     public void updateAnnaDay(List<GetClientDetailMsgResp.AnniversaryListBean> list) {
         anniDayVMS.clear();
-        initAniDayHead();
         for (int i = 0; i < list.size(); i++) {
             AnniversariesItemVM vm = new AnniversariesItemVM(getActivity());
             LogUtil.d("ClientBaseMsgFragment", "aniId:" + list.get(i).getId());
@@ -321,8 +336,9 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 vm.toDo = toDo;
             }
 
-            vm.isModify.set(true);
+            vm.isModify.set(false);
             vm.isFirst.set(false);
+            vm.isShowContent.set(true);
 
             vm.setListener(this);
             vm.name.set(list.get(i).getAnniversaryName());
@@ -335,11 +351,16 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     public void updateAnnaDayStatus(boolean isModify) {
 
-        for (int i = 0; i < anniDayVMS.size(); i++) {
-            if (i == anniDayVMS.size() - 1) break;
-            anniDayVMS.get(i).isModify.set(isModify);
+        if (isModify ) {
+            for (int i = 0; i < anniDayVMS.size(); i++) {
+                anniDayVMS.get(i).isModify.set(true);
+                anniDayVMS.get(i).isShowContent.set(false);
+
+            }
+
+            initAniDayHead(anniDayVMS.size());
+            anniDayAdapter.notifyDataSetChanged();
         }
-        anniDayAdapter.notifyDataSetChanged();
 
     }
 
@@ -351,20 +372,30 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
 
         if (isModify) {
-            List<AnotherAttributes> tmp = SpUtil.getInstance().getUser().anotherAttributes;
+            HashMap<String,AnotherAttributes> tmp = new HashMap<>();
             for(int i = 0 ;i < anotherAttrItemVMS.size();i++){
                 AnotherAttributes atr = new AnotherAttributes();
                 atr.attributesId = anotherAttrItemVMS.get(i).id;
                 atr.attributesContent = anotherAttrItemVMS.get(i).value.get();
                 atr.attributesName = anotherAttrItemVMS.get(i).name.get();
-                tmp.add(atr);
+                tmp.put(atr.attributesName,atr);
             }
+
             anotherAttrItemVMS.clear();
-            for(int i = 0 ; i < tmp.size();i++) {
+            List<AnotherAttributes> local = SpUtil.getInstance().getUser().anotherAttributes;
+            for(int i = 0 ; i < local.size();i++) {
+
                 AnotherAttrItemVM vm = new AnotherAttrItemVM();
-                vm.value.set(tmp.get(i).attributesContent);
-                vm.name.set(tmp.get(i).attributesName);
-                vm.id = tmp.get(i).attributesId;
+                vm.name.set(local.get(i).attributesName);
+                vm.id = local.get(i).attributesId;
+
+                if (tmp.get(local.get(i).attributesName) != null) {
+                    vm.value.set(tmp.get(local.get(i).attributesName).attributesContent);
+                } else {
+                    vm.value.set("");
+                }
+                vm.lineShow.set(true);
+                vm.isModify.set(true);
                 anotherAttrItemVMS.add(vm);
             }
             anotherAdapter.notifyDataSetChanged();
@@ -460,14 +491,25 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     public void updateAnotherType(List<GetClientDetailMsgResp.AnotherAttrBean> attr) {
 
+        anotherAttrItemVMS.clear();
+        for(int i = 0 ; i < attr.size();i++){
+            AnotherAttributes tmp = tmpMap.get(attr.get(i).attributesName);
+            if (tmp != null && TextUtils.isEmpty(attr.get(i).attributesValue) == false) {//包含相同的名字
+                AnotherAttrItemVM vm = new AnotherAttrItemVM();
+                vm.name.set(attr.get(i).attributesName);
+                vm.id = attr.get(i).id;
+                vm.value.set(attr.get(i).attributesValue);
+                vm.isModify.set(false);
+                anotherAttrItemVMS.add(vm);
+            }
+        }
 
-        List<AnotherAttributes> local = SpUtil.getInstance().getUser().anotherAttributes;
+        anotherAttrItemVMS.get(anniDayVMS.size() -1 ).lineShow.set(false);
 
-        for (int i = 0; i < local.size(); i++) {
-           for(int j = 0 ; j < attr.size();j++){
-
-           }
-
+        if (anotherAttrItemVMS.size() == 0) {
+            clientBaseMsgVM.anotherAttrDisplay.set(false);
+        } else {
+            clientBaseMsgVM.anotherAttrDisplay.set(true);
         }
 
         anotherAdapter.notifyDataSetChanged();
@@ -492,8 +534,6 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         linearLayoutManager.setScrollEnabled(false);
         binding.recycleAnnidayList.setLayoutManager(linearLayoutManager);
         binding.recycleAnnidayList.setAdapter(anniDayAdapter);
-
-        initAniDayHead();
 
         anniDayAdapter.notifyDataSetChanged();
     }
@@ -534,14 +574,14 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     }
 
-    private void initAniDayHead() {
+    private void initAniDayHead(int position) {
 
         AnniversariesItemVM vm = new AnniversariesItemVM(getActivity());
         vm.setListener(this);
 
         vm.isModify.set(false);
         vm.isFirst.set(true);
-        anniDayVMS.add(vm);
+        anniDayVMS.add(position,vm);
 
 
     }
@@ -764,6 +804,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             AnniversariesItemVM news = new AnniversariesItemVM(getActivity());
             news.isFirst.set(false);
             news.isModify.set(true);
+            news.isShowContent.set(false);
             news.setListener(this);
             anniDayVMS.add(0, news);
             anniDayAdapter.notifyDataSetChanged();

@@ -37,7 +37,6 @@ import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LQRPhotoSelectUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
-import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
@@ -368,6 +367,8 @@ public class AddClientActivity extends BaseActivity {
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                ToastUtil.showToast("上传失败");
+                dialogFragment.dismiss();
 
             }
         });
@@ -572,7 +573,7 @@ public class AddClientActivity extends BaseActivity {
             } else {
 
                 AnniversaryDay day = new AnniversaryDay();
-                //day.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
+                day.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
                 day.anniversaryDate = vm.time.get();
                 day.anniversaryName = vm.name.get();
                 day.id = vm.id.get();
@@ -592,7 +593,7 @@ public class AddClientActivity extends BaseActivity {
         req.car = clientServiceMsgVM.carType.get();
         req.liabilities = clientServiceMsgVM.liabilities.get();
         req.attributesValue = clientBaseMsgFragment.getAnotherAttr();
-       // req.product = TextUtils.isEmpty(serviceMsgFragment.getAllProduct()) ? "" : "" + serviceMsgFragment.getAllProduct() + "";
+        req.product = TextUtils.isEmpty(serviceMsgFragment.getAllProduct()) ? "" : "" + serviceMsgFragment.getAllProduct() + "";
 
 
         req.sign = SignUtil.signData(req);

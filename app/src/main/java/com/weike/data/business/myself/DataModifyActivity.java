@@ -173,7 +173,8 @@ public class DataModifyActivity extends BaseActivity {
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-
+                ToastUtil.showToast("上传失败");
+                dialogFragment.dismiss();
             }
         });
     }

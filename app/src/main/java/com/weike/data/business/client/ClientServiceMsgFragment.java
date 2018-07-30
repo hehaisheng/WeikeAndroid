@@ -89,19 +89,6 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             }
             initHead(itemVMS.size());
 
-        } else {
-            itemVMS.remove(0);
-
-            if (itemVMS.size() == 0) {
-                binding.recyclerProductMsgList.setVisibility(View.GONE);
-                binding.productCardView.setVisibility(View.GONE);
-                return;
-            }
-            for(int i = 0 ; i < itemVMS.size() ; i++) {
-                itemVMS.get(i).isShowContent.set(true);
-                itemVMS.get(i).isFirst.set(false);
-                itemVMS.get(i).isModify.set(false);
-            }
         }
         adapter.notifyDataSetChanged();
     }
@@ -131,6 +118,8 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
 
 
+
+
             LogUtil.d("ClientServiceMsgFragment","-->" +data);
             if (data.getProduct() == null || data.getProduct().size() == 0) {
                 serviceMsgVM.productDisplay.set(false);
@@ -157,7 +146,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
             Product product = new Product();
             ProductItemVM vm = itemVMS.get(i);
-            product.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
+            product.remind = vm.toDo == null ? "" : "" + JsonUtil.GsonString(vm.toDo) + "";
             product.productName = vm.content.get();
             product.id = TextUtils.isEmpty(vm.productId) ? "" : vm.productId;
 
@@ -179,13 +168,14 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RemindSettingActivity.CODE_OF_REQUEST && resultCode == RESULT_OK && data != null) {
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
-            lastProductVM.toDo = toDo;
-            if (toDo.isRemind == 1) {
-                lastProductVM.remindIcon.set(R.mipmap.ic_remind);
-            } else {
-                lastProductVM.remindIcon.set(R.mipmap.ic_remind_dis);
+            if (data != null) {
+                if (toDo.isRemind == 1) {
+                    lastProductVM.remindIcon.set(R.mipmap.ic_remind);
+                } else {
+                    lastProductVM.remindIcon.set(R.mipmap.ic_remind_dis);
+                }
+                lastProductVM.toDo = toDo;
             }
-
         }
 
     }
@@ -217,6 +207,8 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         toDo.repeatDateType = remindBean.repeatDateType;
         toDo.repeatInterval = remindBean.repeatInterval;
 
+
+
         return toDo;
     }
 
@@ -237,18 +229,13 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         }
 
 
-       // updateProductList(data.getProduct());
+        updateProductList(data.getProduct());
     }
 
+    private static final String TAG = "ClientServiceMsgFragment";
+
     public void updateProductList(List<ProductBean> product) {
-        LogUtil.d("acthome","-->" + product.size());
-        if (product.size() == 0) {
-            binding.productCardView.setVisibility(View.GONE);
-            binding.recyclerProductMsgList.setVisibility(View.GONE);
-            return;
-        }
-        binding.productCardView.setVisibility(View.VISIBLE);
-        binding.recyclerProductMsgList.setVisibility(View.GONE);
+        LogUtil.d(TAG,"-->" + product.size());
         itemVMS.clear();
 
         for (int i = 0; i < product.size(); i++) {
@@ -259,9 +246,9 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             productItemVM.content.set(product.get(i).productName);
             productItemVM.productId = product.get(i).id + "";
             productItemVM.setListener(this);
-            if (product.get(i).remind != null && TextUtils.isEmpty(product.get(i).remind.content)) {
+            if (product.get(i).remind != null && TextUtils.isEmpty(product.get(i).remind.content) == false) {
 
-                productItemVM.toDo = compass(product.get(i).remind);
+                productItemVM.toDo = product.get(i).remind == null ? null : compass(product.get(i).remind);
 
 
                 if (productItemVM.toDo.isRemind == 1) {

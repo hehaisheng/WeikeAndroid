@@ -27,6 +27,8 @@ public class AnniversariesItemVM extends BaseVM {
 
     public ObservableField<Integer> remindIcon = new ObservableField<>(R.mipmap.ic_remind_dis);
 
+    public ObservableField<Boolean> isShowContent = new ObservableField<>();
+
     public AnniversariseDayClickListener listener;
 
 
