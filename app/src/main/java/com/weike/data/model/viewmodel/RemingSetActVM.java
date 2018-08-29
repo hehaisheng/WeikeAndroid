@@ -28,6 +28,8 @@ public class RemingSetActVM extends BaseVM {
 
     public int advanceInterval; // 提醒时间间隔
 
+    public  String  remindId;
+
     /*
      * 是否重复提醒
      */

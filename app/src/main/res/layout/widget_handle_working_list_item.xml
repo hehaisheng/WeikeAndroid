@@ -9,113 +9,167 @@
 
     </data>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:background="@color/color_all_bg"
-
-    android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:background="@color/color_all_bg"
+
         android:layout_height="wrap_content">
 
         <RelativeLayout
+
+
+            android:layout_marginTop="10dp"
+
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content">
 
-            <ImageButton
-               android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:id="@+id/btn_click_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/color_touming"
-                android:layout_alignParentLeft="true"
-                loadImageId="@{handleWorkItemVM.readClickBg}"
-                android:minWidth="50dp"
+            <RelativeLayout
+                android:id="@+id/top"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
 
-                android:visibility="@{handleWorkItemVM.readVisibility ? View.VISIBLE : View.GONE}"
+                <ImageButton
 
-                android:onClick="@{()->handleWorkItemVM.readMsg()}"
-                />
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:id="@+id/btn_click_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_touming"
+                    android:layout_alignParentLeft="true"
+                    loadImageId="@{handleWorkItemVM.readClickBg}"
+                    android:minWidth="50dp"
+                    android:visibility="@{handleWorkItemVM.readVisibility ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{()->handleWorkItemVM.readMsg()}"
+                    />
 
-            <ImageButton
-                android:id="@+id/btn_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:minWidth="50dp"
+                <ImageButton
+                    android:id="@+id/btn_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:minWidth="50dp"
 
-                android:layout_toEndOf="@+id/btn_click_right"
-                android:onClick="@{()->handleWorkItemVM.deleteMsg()}"
-                android:background="@null"
-                android:src="@mipmap/ic_del" />
+                    android:layout_toEndOf="@+id/btn_click_right"
+                    android:onClick="@{()->handleWorkItemVM.deleteMsg()}"
+                    android:background="@null"
+                    android:src="@mipmap/ic_del" />
 
-            <ImageButton
-                android:id="@+id/btn_modify"
-                android:layout_toRightOf="@+id/btn_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:onClick="@{()->handleWorkItemVM.modifyMsg()}"
-                android:layout_toEndOf="@+id/btn_delete"
+                <ImageButton
+                    android:id="@+id/btn_modify"
+                    android:layout_toRightOf="@+id/btn_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:onClick="@{()->handleWorkItemVM.modifyMsg()}"
+                    android:layout_toEndOf="@+id/btn_delete"
 
-                android:background="@null"
-                android:src="@mipmap/ic_edit_gray_2" />
+                    android:background="@null"
+                    android:src="@mipmap/ic_edit_gray_2" />
+
+
+
+                <TextView
+                    android:id="@+id/tv_handle_working_time"
+
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_bebebe"
+                    android:text="@{handleWorkItemVM.userName,default=12321312}"
+                    android:layout_marginRight="10dp"
+                    android:maxLength="5"
+                    android:ellipsize="end"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_handle_working_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_handle_working_time"
+                    android:layout_alignBottom="@+id/tv_handle_working_time"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/color_41BCF6"
+
+                    android:text="@{handleWorkItemVM.time,default=1231}"
+                    />
+
+            </RelativeLayout>
 
 
 
             <TextView
-                android:id="@+id/tv_handle_working_time"
-
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_below="@+id/top"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_bebebe"
-                android:text="@{handleWorkItemVM.userName,default=12321312}"
+                android:background="@drawable/shape_white"
+
+                android:layout_marginLeft="10dp"
+                android:maxLines="1"
+                android:layout_marginBottom="13dp"
                 android:layout_marginRight="10dp"
-                android:maxLength="5"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="20dp"
+                android:text="@{handleWorkItemVM.content}"
                 android:ellipsize="end"
-                android:layout_marginBottom="10dp"
                 />
 
             <TextView
-                android:id="@+id/tv_handle_working_user_name"
-                android:layout_width="wrap_content"
+                android:layout_below="@+id/top"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/tv_handle_working_time"
-                android:layout_alignBottom="@+id/tv_handle_working_time"
+                android:background="@drawable/shape_white"
+                android:text="@{handleWorkItemVM.content}"
+                android:layout_marginLeft="10dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="20dp"
+                android:layout_marginBottom="13dp"
                 android:layout_marginRight="10dp"
-                android:textColor="@color/color_41BCF6"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:ellipsize="end"
+                android:visibility="@{handleWorkItemVM.toBottom ? View.GONE : View.VISIBLE}"
 
-                android:text="@{handleWorkItemVM.time,default=1231}"
+                />
+            <ImageView
+                android:id="@+id/top_image"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:onClick="@{()->handleWorkItemVM.change()}"
+                android:src="@drawable/top"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/top"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/color_white"
+                android:visibility="@{handleWorkItemVM.toBottom ? View.GONE : View.VISIBLE}"
+
                 />
 
+            <ImageView
+                android:id="@+id/bottom_image"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:onClick="@{()->handleWorkItemVM.change()}"
+                android:src="@drawable/bottom"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/top"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/color_white"
+                android:visibility="@{handleWorkItemVM.toBottom ? View.VISIBLE : View.GONE}"
+
+
+                />
         </RelativeLayout>
 
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_white"
-            android:text="@{handleWorkItemVM.content}"
-            android:layout_marginLeft="10dp"
-            android:singleLine="true"
-            android:layout_marginBottom="13dp"
-            android:layout_marginRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            />
-
-    </LinearLayout>
-
-</LinearLayout>
+    </RelativeLayout>
 </layout>

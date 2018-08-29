@@ -1,5 +1,7 @@
 package com.weike.data.business.client;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -7,9 +9,13 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.BR;
@@ -27,6 +33,7 @@ import com.weike.data.model.business.AnotherAttributes;
 import com.weike.data.model.business.ClientRelated;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.DelAniDayReq;
+import com.weike.data.model.req.DeleteRelatedClientReq;
 import com.weike.data.model.resp.GetClientDetailMsgResp;
 import com.weike.data.model.viewmodel.AddClientRelateItemVM;
 import com.weike.data.model.viewmodel.AddPhoneVM;
@@ -46,15 +53,17 @@ import com.weike.data.util.TransformerUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 /**
  * Created by LeoLu on 2018/6/4.
  * 客户基本信息Fragment
  */
 
-public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickListener, AddPhoneVM.OnPhoneClickListener, AddClientRelateItemVM.AddClientRelateItemListener, AnniversariesItemVM.AnniversariseDayClickListener {
+public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickListener, AddPhoneVM.OnPhoneClickListener, AddClientRelateItemVM.AddClientRelateItemListener, AnniversariesItemVM.AnniversariseDayClickListener,View.OnLongClickListener {
 
     /**
      * 纪念日专用
@@ -96,6 +105,12 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     private AnniversariesItemVM lastAnniversariesItemVM;
 
     private HashMap<String,AnotherAttributes> tmpMap = new HashMap<>();
+
+
+    public  ClipboardManager  myClipboard;
+    public     ClipData     myClip;
+
+
 
 
     public void showDisplayContent(GetClientDetailMsgResp data, boolean isMoidfy) {
@@ -151,7 +166,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             }
 
 
-            if (TextUtils.isEmpty(data.getMarriage()) || Integer.parseInt(data.getSex()) == -1) {
+            if (TextUtils.isEmpty(data.getMarriage()) || Integer.parseInt(data.getMarriage()) == -1) {
                 clientBaseMsgVM.marryDisplay.set(false);
             } else {
                 clientBaseMsgVM.marryDisplay.set(true);
@@ -182,9 +197,12 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         tmpMap.clear();
         anotherAttrItemVMS.clear();
         List<AnotherAttributes> list = SpUtil.getInstance().getUser().anotherAttributes;
+        LogUtil.d("test","sp"+JsonUtil.GsonString(list));
         for (int i = 0; i < list.size(); i++) {
             AnotherAttrItemVM vm = new AnotherAttrItemVM();
             vm.name.set(list.get(i).attributesName);
+            LogUtil.d("test","sp获取的"+list.get(i).attributesValueId);
+            vm.attributesValueId=list.get(i).attributesValueId;
             vm.value.set("");
             vm.id = list.get(i).attributesId;
             vm.isModify.set(true);
@@ -206,6 +224,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
 
     public void loadDefault(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp) {
+
         GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
         showDisplayContent(data, false);
         String[] phone = new String[5];
@@ -228,6 +247,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         }
 
 
+
         clientBaseMsgVM.birthday.set(data.getBirthday());
         if (TextUtils.isEmpty(data.getMarriage()) == false) {
             int marry = Integer.parseInt(data.getMarriage());
@@ -243,10 +263,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         }
 
         clientBaseMsgVM.idCard.set(data.getIdCard());
-        clientBaseMsgVM.son.set(data.getSonNum());
+        clientBaseMsgVM.son.set(data.getSonNum()==""?"0":data.getSonNum());
         clientBaseMsgVM.job.set(data.getOffice());
         clientBaseMsgVM.houseLocation.set(data.getHomeDetailAddress());
-        clientBaseMsgVM.gril.set(data.getDaughterNum());
+        clientBaseMsgVM.gril.set(data.getDaughterNum()==""?"0":data.getDaughterNum());
         clientBaseMsgVM.clientHeight.set(data.getHeight());
         clientBaseMsgVM.clientWidght.set(data.getWeight());
 
@@ -276,6 +296,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         updateClientRelate(data.getClientRelatedList());
         updateAnnaDay(data.getAnniversaryList()); //纪念日
+
         updateAnotherType(data.getUserAttributesList());
     }
 
@@ -291,10 +312,13 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
             if (TextUtils.isEmpty(anotherAttrItemVMS.get(i).value.get())) continue;
 
+            LogUtil.d("test","属性"+anotherAttrItemVMS.get(i).attributesValueId);
             AnotherAttributes atr = new AnotherAttributes();
             atr.attributesName = anotherAttrItemVMS.get(i).name.get();
             atr.attributesContent = anotherAttrItemVMS.get(i).value.get();
             atr.attributesId = anotherAttrItemVMS.get(i).id;
+
+            atr.attributesValueId=anotherAttrItemVMS.get(i).attributesValueId;
             list.add(atr);
         }
 
@@ -367,38 +391,49 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     public void updateAnotherAttr(boolean isModify) {
 
-
-
-
-
+        HashMap<String,AnotherAttributes> tmp= new HashMap<>();
         if (isModify) {
-            HashMap<String,AnotherAttributes> tmp = new HashMap<>();
             for(int i = 0 ;i < anotherAttrItemVMS.size();i++){
+
+
                 AnotherAttributes atr = new AnotherAttributes();
                 atr.attributesId = anotherAttrItemVMS.get(i).id;
+
                 atr.attributesContent = anotherAttrItemVMS.get(i).value.get();
+
                 atr.attributesName = anotherAttrItemVMS.get(i).name.get();
+
+                atr.attributesValueId= anotherAttrItemVMS.get(i).attributesValueId;
+
                 tmp.put(atr.attributesName,atr);
+
+                LogUtil.d("test","名字列表"+JsonUtil.GsonString(tmp));
             }
 
             anotherAttrItemVMS.clear();
             List<AnotherAttributes> local = SpUtil.getInstance().getUser().anotherAttributes;
+
             for(int i = 0 ; i < local.size();i++) {
+
 
                 AnotherAttrItemVM vm = new AnotherAttrItemVM();
                 vm.name.set(local.get(i).attributesName);
                 vm.id = local.get(i).attributesId;
                 vm.lineShow.set(true);
 
+
+
                 if (tmp.get(local.get(i).attributesName) != null) {
                     vm.value.set(tmp.get(local.get(i).attributesName).attributesContent);
                 } else {
                     vm.value.set("");
                 }
-                vm.lineShow.set(true);
+
                 vm.isModify.set(true);
+                vm.attributesValueId=local.get(i).attributesValueId;
                 anotherAttrItemVMS.add(vm);
             }
+
             anotherAdapter.notifyDataSetChanged();
 
         }
@@ -416,7 +451,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         for (int i = 0; i < phoneNum.length; i++) {
 
-            LogUtil.d("phoneNum", "i:" + i + "," + phoneNum[i]);
+
             if (TextUtils.isEmpty(phoneNum[i])) {
                 continue;
             }
@@ -490,8 +525,9 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         updateAnotherAttr(status);
         if (status) {//编辑
             showDisplayContent(null, true);
+            LogUtil.d("test","编辑");
         } else { //完成
-
+           LogUtil.d("test","完成");
         }
     }
 
@@ -502,13 +538,17 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             AnotherAttributes tmp = tmpMap.get(attr.get(i).attributesName);
             if (tmp != null && TextUtils.isEmpty(attr.get(i).attributesValue) == false) {//包含相同的名字
                 AnotherAttrItemVM vm = new AnotherAttrItemVM();
+
                 vm.name.set(attr.get(i).attributesName);
+                vm.attributesValueId=attr.get(i).attributesValueId;
+
                 vm.id = attr.get(i).id;
                 vm.value.set(attr.get(i).attributesValue);
                 vm.isModify.set(false);
                 anotherAttrItemVMS.add(vm);
             }
         }
+
 
         if (anotherAttrItemVMS.size() > 0) {
             anotherAttrItemVMS.get(anotherAttrItemVMS.size() - 1).lineShow.set(false);
@@ -530,8 +570,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         return R.layout.fragment_client_base_msg;
     }
 
+
     @Override
     protected void loadFinish(View view) {
+
 
 
     }
@@ -566,7 +608,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 vm.isModify.set(false);
             }
             vm.clientId = list.get(i).relatedClientId;
+            vm.id=list.get(i).id+"";
             vm.clientName.set(list.get(i).relatedUserName);
+
+
             vm.setAddClientRelateItemListener(this);
             clientRelateItemVMS.add(vm);
         }
@@ -618,6 +663,38 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         binding.addPhoneNum.setLayoutManager(linearLayoutManager);
         binding.addPhoneNum.setAdapter(addPhoneAdapter);
         binding.addPhoneNum.setVisibility(View.GONE);
+        addPhoneAdapter.setOnRecyclerViewItemClickListener(new BaseDataBindingAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(int position, View view) {
+                LinearLayout linearLayout=(LinearLayout) binding.addPhoneNum.getChildAt(position);
+                TextView  phoneText=linearLayout.findViewById(R.id.ed_email_content);
+                String phoneContent=phoneText.getText().toString();
+                if(phoneContent.length()>0){
+                    DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否要复制", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            LogUtil.d("test","取消电话"+phoneContent);
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            myClip= ClipData.newPlainText("Simple test", phoneContent);
+                            //把clip对象放在剪贴板中
+                            myClipboard.setPrimaryClip(myClip);
+                            myClip = myClipboard .getPrimaryClip();
+                            //获取到内容
+                            ClipData.Item item = myClip.getItemAt(0);
+                            String text = item.getText().toString();
+                            LogUtil.d("test","复制"+text);
+                            LogUtil.d("test","电话"+phoneContent);
+                        }
+                    });
+
+                }
+            }
+        });
+
+
     }
 
     /**
@@ -649,6 +726,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             addHeadPhone();
         }
         addPhoneAdapter.notifyDataSetChanged();
+
     }
 
 
@@ -675,8 +753,16 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         clientBaseMsgVM = new ClientBaseMsgVM(this);
         clientBaseMsgVM.activity = getActivity();
         clientBaseMsgVM.isModify.set(isModify);
+        if(isModify){
+            LogUtil.d("test","编辑状态");
+        }else{
+            LogUtil.d("test","保存状态");
+        }
 
         binding.setClientBaseVM(clientBaseMsgVM);
+
+
+        LogUtil.d("test","开始进入");
 
         initPhoneRecycle();
         initClientRelateRecycle();
@@ -695,6 +781,15 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             }
         });
 
+        myClipboard=(ClipboardManager) Objects.requireNonNull(getActivity()).getSystemService(CLIPBOARD_SERVICE);
+
+
+        binding.edCompany.setOnLongClickListener(this);
+        binding.edEmailContent.setOnLongClickListener(this);
+        binding.edJob.setOnLongClickListener(this);
+        binding.edCompanyLocation.setOnLongClickListener(this);
+        binding.edHomeLocation.setOnLongClickListener(this);
+        binding.edIdCardNum.setOnLongClickListener(this);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -708,6 +803,9 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         return binding.getRoot();
     }
+
+
+
 
 
     private int phoneNumCount = 0;
@@ -757,6 +855,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     @Override
     public void onRelateItemClick(AddClientRelateItemVM vm, int type) {
+        LogUtil.d("test",type+"类型");
         if (type == AddClientRelateItemVM.AddClientRelateItemListener.ADD_ITEM) {
             AddClientRelateItemVM current = new AddClientRelateItemVM();
             current.isFirst.set(false);
@@ -778,12 +877,20 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 @Override
                 public void onClick(View v) {
 
+                    LogUtil.d("test","取消");
                 }
             }, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    LogUtil.d("test","删除");
+
                     clientRelateItemVMS.remove(vm);
                     clientRelateAdapter.notifyDataSetChanged();
+
+
+
+
+
                 }
             });
 
@@ -792,13 +899,38 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 @Override
                 public void onClick(View v) {
 
+                    LogUtil.d("test","取消删除");
                 }
             }, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    vm.clientId = null;
-                    vm.clientName.set("请选择");
-                    clientRelateAdapter.notifyDataSetChanged();
+
+                    DeleteRelatedClientReq deleteRelatedClientReq=new DeleteRelatedClientReq();
+                    deleteRelatedClientReq.id = vm.id;
+                    deleteRelatedClientReq.sign = SignUtil.signData(deleteRelatedClientReq);
+
+
+                    RetrofitFactory.getInstance().getService().postAnything(deleteRelatedClientReq, Config.DELETE_RELATED_CLIENT)
+                            .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
+
+                            })).subscribe(new BaseObserver<BaseResp>() {
+                        @Override
+                        protected void onSuccess(BaseResp baseResp) throws Exception {
+                            LogUtil.d("test","删除");
+
+
+                            vm.clientId = null;
+                            vm.clientName.set("请选择");
+                            clientRelateAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                            LogUtil.d("test","失败");
+                        }
+                    });
+
+
 
                 }
             });
@@ -858,5 +990,34 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             }
         });
 
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        String content=((EditText) view).getText().toString().trim();
+        if(content.length()>0){
+
+            DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否要复制", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LogUtil.d("test","取消"+content);
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myClip= ClipData.newPlainText("Simple test", content);
+                    //把clip对象放在剪贴板中
+                    myClipboard.setPrimaryClip(myClip);
+                    myClip = myClipboard .getPrimaryClip();
+                    //获取到内容
+                    ClipData.Item item = myClip.getItemAt(0);
+                    String text = item.getText().toString();
+                    LogUtil.d("test","复制"+text);
+
+                }
+            });
+
+         }
+        return false;
     }
 }

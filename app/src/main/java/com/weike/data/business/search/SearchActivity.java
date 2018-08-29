@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.BR;
 import com.weike.data.R;
-import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.adapter.SearchAdapter;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseObserver;
@@ -25,6 +22,7 @@ import com.weike.data.model.req.SearchReq;
 import com.weike.data.model.resp.SearchResp;
 import com.weike.data.model.viewmodel.SearchItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.DialogManager;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
@@ -57,6 +55,8 @@ public class SearchActivity extends BaseActivity {
     private SearchAdapter adapter;
 
 
+
+
     @OnTextChanged(R.id.ed_input_search)
     public void onTextChanger(CharSequence s, int start, int before, int count){
 
@@ -70,6 +70,7 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+
         setCenterText("");
         setRightText("");
         setLeftText("搜索");
@@ -125,54 +126,61 @@ public class SearchActivity extends BaseActivity {
             @Override
             protected void onSuccess(BaseResp<SearchResp> searchRespBaseResp) throws Exception {
                 loaddingView.setVisibility(View.GONE);
-                for(int i = 0 ; i < searchRespBaseResp.getDatas().nameList.size();i++) {
-                    SearchItemVM searchItemVM = new SearchItemVM(SearchActivity.this);
-                    searchItemVM.title.set(searchRespBaseResp.getDatas().nameList.get(i).userName);
-                    searchItemVM.content.set(searchRespBaseResp.getDatas().nameList.get(i).remark);
-                    searchItemVM.clientId.set(searchRespBaseResp.getDatas().nameList.get(i).userId);
-                    searchItemVM.iconUrl.set(searchRespBaseResp.getDatas().nameList.get(i).clienturl);
-                    if(i == 0) {
-                        searchItemVM.tagName.set("联系人");
-                        searchItemVM.isShowClientTag.set(true);
-                    } else {
-                        searchItemVM.isShowClientTag.set(false);
+
+                if(searchRespBaseResp.getDatas().nameList.size()>0||searchRespBaseResp.getDatas().remarkList.size()>0||searchRespBaseResp.getDatas().companyList.size()>0){
+                    for(int i = 0 ; i < searchRespBaseResp.getDatas().nameList.size();i++) {
+                        SearchItemVM searchItemVM = new SearchItemVM(SearchActivity.this);
+                        searchItemVM.title.set(searchRespBaseResp.getDatas().nameList.get(i).userName);
+                        searchItemVM.content.set(searchRespBaseResp.getDatas().nameList.get(i).remark);
+                        searchItemVM.clientId.set(searchRespBaseResp.getDatas().nameList.get(i).userId);
+                        searchItemVM.iconUrl.set(searchRespBaseResp.getDatas().nameList.get(i).clienturl);
+                        if(i == 0) {
+                            searchItemVM.tagName.set("联系人");
+                            searchItemVM.isShowClientTag.set(true);
+                        } else {
+                            searchItemVM.isShowClientTag.set(false);
+                        }
+                        searchItemVMS.add(searchItemVM);
                     }
-                    searchItemVMS.add(searchItemVM);
-                }
 
 
-                boolean  isShowTitle = false;
-                for(int i = 0 ; i < searchRespBaseResp.getDatas().remarkList.size() ; i++) {
-                    SearchItemVM searchItemVM = new SearchItemVM(SearchActivity.this);
-                    searchItemVM.title.set(searchRespBaseResp.getDatas().remarkList.get(i).userName);
-                    searchItemVM.content.set(searchRespBaseResp.getDatas().remarkList.get(i).remark);
-                    searchItemVM.clientId.set(searchRespBaseResp.getDatas().remarkList.get(i).userId);
-                    searchItemVM.iconUrl.set(searchRespBaseResp.getDatas().remarkList.get(i).clienturl);
-                    if(i == 0) {
-                        isShowTitle = true;
-                        searchItemVM.tagName.set("日志/公司");
-                        searchItemVM.isShowClientTag.set(true);
-                    } else {
-                        searchItemVM.isShowClientTag.set(false);
+                    boolean  isShowTitle = false;
+                    for(int i = 0 ; i < searchRespBaseResp.getDatas().remarkList.size() ; i++) {
+                        SearchItemVM searchItemVM = new SearchItemVM(SearchActivity.this);
+                        searchItemVM.title.set(searchRespBaseResp.getDatas().remarkList.get(i).userName);
+                        searchItemVM.content.set(searchRespBaseResp.getDatas().remarkList.get(i).remark);
+                        searchItemVM.clientId.set(searchRespBaseResp.getDatas().remarkList.get(i).userId);
+                        searchItemVM.iconUrl.set(searchRespBaseResp.getDatas().remarkList.get(i).clienturl);
+                        if(i == 0) {
+                            isShowTitle = true;
+                            searchItemVM.tagName.set("日志/公司");
+                            searchItemVM.isShowClientTag.set(true);
+                        } else {
+                            searchItemVM.isShowClientTag.set(false);
+                        }
+                        searchItemVMS.add(searchItemVM);
                     }
-                    searchItemVMS.add(searchItemVM);
+
+                    for(int i = 0 ; i < searchRespBaseResp.getDatas().companyList.size() ; i++) {
+                        SearchItemVM searchItemVM = new SearchItemVM(SearchActivity.this);
+                        searchItemVM.title.set(searchRespBaseResp.getDatas().companyList.get(i).userName);
+                        searchItemVM.content.set(searchRespBaseResp.getDatas().companyList.get(i).remark);
+                        searchItemVM.clientId.set(searchRespBaseResp.getDatas().companyList.get(i).userId);
+                        searchItemVM.iconUrl.set(searchRespBaseResp.getDatas().companyList.get(i).clienturl);
+                        if(i == 0) {
+                            if (isShowTitle) continue;
+                            searchItemVM.tagName.set("日志/公司");
+                            searchItemVM.isShowClientTag.set(true);
+                        } else {
+                            searchItemVM.isShowClientTag.set(false);
+                        }
+                        searchItemVMS.add(searchItemVM);
+                    }
+
+                }else{
+                    DialogManager.showDialogByContent(SearchActivity.this,"该关键词没有数据","确认","取消");
                 }
 
-                for(int i = 0 ; i < searchRespBaseResp.getDatas().companyList.size() ; i++) {
-                    SearchItemVM searchItemVM = new SearchItemVM(SearchActivity.this);
-                    searchItemVM.title.set(searchRespBaseResp.getDatas().companyList.get(i).userName);
-                    searchItemVM.content.set(searchRespBaseResp.getDatas().companyList.get(i).remark);
-                    searchItemVM.clientId.set(searchRespBaseResp.getDatas().companyList.get(i).userId);
-                    searchItemVM.iconUrl.set(searchRespBaseResp.getDatas().companyList.get(i).clienturl);
-                    if(i == 0) {
-                        if (isShowTitle) continue;
-                        searchItemVM.tagName.set("日志/公司");
-                        searchItemVM.isShowClientTag.set(true);
-                    } else {
-                        searchItemVM.isShowClientTag.set(false);
-                    }
-                    searchItemVMS.add(searchItemVM);
-                }
 
 
 

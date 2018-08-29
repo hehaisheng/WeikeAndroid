@@ -12,7 +12,9 @@ public class AnotherAttrItemVM extends BaseVM{
 
     public ObservableField<Boolean> isModify = new ObservableField<>();
 
-    public String id;
+    public  String id;
+
+    public  String attributesValueId;
 
     public ObservableField<Boolean> lineShow = new ObservableField<>(true);
 

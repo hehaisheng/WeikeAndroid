@@ -30,6 +30,7 @@ import com.weike.data.model.viewmodel.MsgDetailItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.PickerUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
@@ -243,12 +244,13 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
                         } else {
                             itemVM.rightText.set("已处理");
                         }
+                        vms.add(itemVM);
                     }
 
 
 
 
-                    vms.add(itemVM);
+
                 }
                 adapter.notifyDataSetChanged();
                 smartRefreshLayout.finishLoadmore();
@@ -307,9 +309,24 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
     public void modifyRemind(MsgDetailItemVM msgDetailItemVM, int time,int type) {
         ModifyClientMsgRemindReq req = new ModifyClientMsgRemindReq();
         req.id = msgDetailItemVM.id;
-        req.laterRemind = time;
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add("0.5");
+        list.add("1");
+        list.add("1.5");
+        list.add("2");
+        list.add("2.5");
+        list.add("3");
+        LogUtil.d("test","开始"+time);
+        if(time==-1){
+            req.laterRemind=time+"";
+        }else{
+            req.laterRemind  = list.get(time);
+        }
+
         req.remindType = type;
         req.sign = SignUtil.signData(req);
+        LogUtil.d("test","稍后提醒"+JsonUtil.GsonString(req));
         RetrofitFactory.getInstance().getService().postAnything(req, Config.MODIFY_CLIENT_MSG_REMIND)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<ModifyClientMsgRemindResp>>() {
 
@@ -318,8 +335,10 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
             protected void onSuccess(BaseResp<ModifyClientMsgRemindResp> getClientMsgDetailListRespBaseResp) throws Exception {
                 if (type == 2) {
                     msgDetailItemVM.isTextRemind.set(false);
+                    LogUtil.d("test","处理成功"+JsonUtil.GsonString(getClientMsgDetailListRespBaseResp));
                     ToastUtil.showToast("处理成功");
                 } else {
+                    LogUtil.d("test","修改成功"+JsonUtil.GsonString(getClientMsgDetailListRespBaseResp));
                     ToastUtil.showToast("修改提醒成功");
                 }
             }

@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ExpandableListView;
 
 import com.google.gson.reflect.TypeToken;
 import com.mylhyl.circledialog.CircleDialog;
@@ -34,7 +33,7 @@ import com.weike.data.model.req.GetMsgListReq;
 import com.weike.data.model.resp.GetMsgListResp;
 import com.weike.data.model.viewmodel.MessageItemVM;
 import com.weike.data.network.RetrofitFactory;
-import com.weike.data.util.ActivitySkipUtil;
+import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -105,7 +104,10 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
             vms.get(i).isSel.set(isSle);
             vms.get(i).isCheck.set(false);
         }
-        adapter.notifyDataSetChanged();
+        if(adapter!=null){
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
     private void initMsg(int page) {
@@ -176,44 +178,66 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
 
         ArrayList<String> ids = new ArrayList<>();
 
+        boolean hasServer=false;
 
-        for (int i = 0; i < vms.size(); i++) {
+        for (int i = 0; i < vms.size()&&!hasServer; i++) {
             if (vms.get(i).isCheck.get()) {
-                ids.add(vms.get(i).clientId);
+                if(vms.get(i).title.get().equals("系统消息")){
+                    hasServer=true;
+
+                }else{
+                    ids.add(vms.get(i).clientId);
+                }
+
             }
+        }
+        if(hasServer){
+            DialogUtil.showButtonDialog(getFragmentManager(), "提示", "系统消息不可删除", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }else{
+            DeleteHomeMsgReq req = new DeleteHomeMsgReq();
+            req.clientId = JsonUtil.GsonString(ids).replace("\"","").replace("[","").replace("]","");
+            req.sign = SignUtil.signData(req);
+
+
+            RetrofitFactory.getInstance().getService().postAnything(req, Config.DELETE_HOME_MSG)
+                    .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
+
+                    })).subscribe(new BaseObserver<BaseResp>() {
+
+                @Override
+                protected void onSuccess(BaseResp baseResp) throws Exception {
+                    for (Iterator<MessageItemVM> it = vms.iterator(); it.hasNext(); ) {
+                        MessageItemVM vm = it.next();
+                        if (vm.isCheck.get()) {
+                            it.remove();
+                        }
+                    }
+
+                    adapter.notifyDataSetChanged(); //刷新
+
+
+                }
+
+                @Override
+                protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+                }
+            });
         }
 
 
 
-        DeleteHomeMsgReq req = new DeleteHomeMsgReq();
-        req.clientId = JsonUtil.GsonString(ids).replace("\"","").replace("[","").replace("]","");
-        req.sign = SignUtil.signData(req);
 
-
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.DELETE_HOME_MSG)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
-
-                })).subscribe(new BaseObserver<BaseResp>() {
-
-            @Override
-            protected void onSuccess(BaseResp baseResp) throws Exception {
-                for (Iterator<MessageItemVM> it = vms.iterator(); it.hasNext(); ) {
-                    MessageItemVM vm = it.next();
-                    if (vm.isCheck.get()) {
-                        it.remove();
-                    }
-                }
-
-                adapter.notifyDataSetChanged(); //刷新
-
-
-            }
-
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-
-            }
-        });
 
     }
 

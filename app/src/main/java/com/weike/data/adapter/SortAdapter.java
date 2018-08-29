@@ -56,6 +56,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
             viewHolder.tvTitle = (TextView) view.findViewById(R.id.tv_city_name);
             viewHolder.tvLetter = (TextView) view.findViewById(R.id.tv_catagory);
             viewHolder.userIcon = view.findViewById(R.id.iv_user_icon);
+
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
@@ -73,6 +74,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
         Glide.with(view.getContext()).load(list.get(position).getPhotoUrl()).into(viewHolder.userIcon);
         viewHolder.tvTitle.setText(this.list.get(position).getName());
 
+
         return view;
 
     }
@@ -82,6 +84,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
         TextView tvLetter;
         TextView tvTitle;
         ImageView userIcon;
+
     }
 
     public int getSectionForPosition(int position) {

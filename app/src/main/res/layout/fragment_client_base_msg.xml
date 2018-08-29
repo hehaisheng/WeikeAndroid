@@ -19,7 +19,7 @@
         android:id="@+id/scrollView"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <com.zhy.android.percent.support.PercentLinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -107,6 +107,7 @@
                         android:focusableInTouchMode="true"
                         android:background="@color/color_touming"
                         android:hint="请输入邮箱"
+
                         android:text="@={clientBaseVM.email}"
                         android:textSize="14sp"/>
 
@@ -227,7 +228,7 @@
                         android:paddingBottom="10dp"
                         android:visibility="@{clientBaseVM.companyLocDisplay ? View.VISIBLE : View.GONE}"
                         android:layout_toRightOf="@+id/tv_company_location"
-                        android:maxLines="2"
+                        android:singleLine="true"
                         android:layout_alignTop="@+id/view_line_3"
                         android:background="@color/color_touming"
                         android:hint="请输入地址"
@@ -272,6 +273,7 @@
                         android:layout_toRightOf="@+id/tv_home_location"
                         android:background="@color/color_touming"
                         android:hint="请输入地址"
+
                         android:visibility="@{clientBaseVM.houseLocDisplay ? View.VISIBLE : View.GONE}"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
@@ -294,7 +296,7 @@
                 app:cardCornerRadius="5dp"
                 app:cardElevation="5dp">
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -378,8 +380,8 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@+id/tv_birthday"
                         android:onClick="@{()->clientBaseVM.goToBirthDayRemind()}"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
                         android:paddingTop="3dp"
                         android:src="@mipmap/ic_remind" />
 
@@ -415,10 +417,11 @@
                         android:layout_alignBottom="@+id/tv_id_card_num"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:layout_toRightOf="@+id/tv_sex"
+                        android:layout_toRightOf="@+id/tv_id_card_num"
                         android:singleLine="true"
                         android:background="@color/color_touming"
                         android:hint="请输入"
+
                         android:paddingTop="15dp"
                         android:visibility="@{clientBaseVM.idCardDisplay ? View.VISIBLE:View.GONE}"
                         android:text="@={clientBaseVM.idCard}"
@@ -485,6 +488,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
+                        android:gravity="center_vertical"
                         android:text="生育"
                         android:textSize="14sp"
                         android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
@@ -493,18 +497,19 @@
                     <EditText
                         android:id="@+id/ed_birth_son"
                         updateEditInput="@{clientBaseVM.isModify}"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        app:layout_widthPercent="24%"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/tv_birth"
                         android:singleLine="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@+id/tv_birth"
                         android:background="@color/color_touming"
                         android:hint="请输入"
                         android:maxLength="3"
-                        android:minWidth="50dp"
+
                         android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
                         android:text="@={clientBaseVM.son}"
                         android:textSize="14sp" />
@@ -516,7 +521,8 @@
                         android:layout_alignBottom="@+id/tv_birth"
                         android:layout_toRightOf="@+id/ed_birth_son"
                         android:text="子"
-                        android:textSize="12sp"
+
+                        android:textSize="14sp"
                         android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
                         android:textColor="@color/color_content" />
 
@@ -524,18 +530,21 @@
                     <EditText
                         android:id="@+id/ed_birth_girl"
                         updateEditInput="@{clientBaseVM.isModify}"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        app:layout_widthPercent="25%"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:layout_alignBottom="@+id/tv_birth"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+
+
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@+id/tv_son_title"
                         android:background="@color/color_touming"
                         android:hint="请输入"
                         android:maxLength="3"
-                        android:minWidth="50dp"
+                        android:gravity="center"
+
+
                         android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
                         android:text="@={clientBaseVM.gril}"
                         android:textSize="14sp" />
@@ -544,10 +553,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/ed_birth_girl"
-                        android:layout_toRightOf="@+id/ed_birth_girl"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/ed_birth_girl"
+                        android:gravity="center"
+
                         android:text="女"
+
                         android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
+                        android:minWidth="50dp"
                         android:textColor="@color/color_content" />
 
 
@@ -577,7 +591,8 @@
                     <EditText
                         android:id="@+id/ed_height"
                         updateEditInput="@{clientBaseVM.isModify}"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        app:layout_widthPercent="50%"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:layout_alignBottom="@+id/tv_height"
@@ -589,19 +604,20 @@
                         android:hint="请输入"
                         android:visibility="@{clientBaseVM.heightDisplay ? View.VISIBLE:View.GONE}"
                         android:maxLength="3"
-                        android:minWidth="50dp"
+
                         android:text="@={clientBaseVM.clientHeight}"
                         android:textSize="14sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/tv_height"
+                        android:layout_alignBottom="@+id/ed_height"
                         android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@+id/ed_birth_son"
-                        android:gravity="right"
-                        android:paddingRight="20dp"
+                        android:layout_alignTop="@+id/ed_height"
+                        android:gravity="center"
+                        android:minWidth="50dp"
                         android:text="CM"
+
                         android:visibility="@{clientBaseVM.heightDisplay ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
                         android:textColor="@color/color_content" />
@@ -625,6 +641,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="15dp"
                         android:minWidth="70dp"
+
                         android:text="体重"
                         android:visibility="@{clientBaseVM.widgetDispaly ? View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
@@ -634,7 +651,8 @@
                         android:id="@+id/ed_weight"
                         updateEditInput="@{clientBaseVM.isModify}"
                         android:singleLine="true"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        app:layout_widthPercent="50%"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/tv_weight"
                         android:layout_marginLeft="20dp"
@@ -645,7 +663,7 @@
                         android:hint="请输入"
                         android:maxLength="3"
                         android:visibility="@{clientBaseVM.widgetDispaly ? View.VISIBLE:View.GONE}"
-                        android:minWidth="50dp"
+
                         android:text="@={clientBaseVM.clientWidght}"
                         android:textSize="14sp"/>
 
@@ -654,9 +672,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/ed_weight"
                         android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@+id/ed_birth_son"
-                        android:gravity="right"
-                        android:paddingRight="20dp"
+                        android:layout_alignTop="@+id/ed_weight"
+                        android:gravity="center"
+                        android:minWidth="50dp"
                         android:text="KG"
                         android:visibility="@{clientBaseVM.widgetDispaly ? View.VISIBLE:View.GONE}"
                         android:textColor="@color/color_content" />
@@ -680,7 +698,7 @@
                     </android.support.v7.widget.RecyclerView>
 
 
-                </RelativeLayout>
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
             </android.support.v7.widget.CardView>
 
@@ -700,7 +718,7 @@
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_height="match_parent"
-                   >
+                    >
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/anotherAttrRecycle"
@@ -732,7 +750,7 @@
             </android.support.v7.widget.CardView>
 
 
-        </LinearLayout>
+        </com.zhy.android.percent.support.PercentLinearLayout>
 
     </ScrollView>
 </layout>

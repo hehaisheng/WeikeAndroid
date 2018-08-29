@@ -2,9 +2,12 @@ package com.weike.data.business.setting;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
@@ -18,14 +21,11 @@ import com.weike.data.model.business.User;
 import com.weike.data.model.req.UpdatePushReq;
 import com.weike.data.model.viewmodel.AppSettingActVM;
 import com.weike.data.network.RetrofitFactory;
-import com.weike.data.util.ActivitySkipUtil;
+import com.weike.data.util.DialogManager;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -37,12 +37,34 @@ public class AppSettingActivity extends BaseActivity {
     ActivityAppSettingBinding binding;
     AppSettingActVM vm;
 
+    LinearLayout  checkLayout;
+    RelativeLayout relativeLayout;
+    ProgressBar progressBar;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_app_setting);
         vm = new AppSettingActVM(this);
         binding.setAppSettingVM(vm);
+        checkLayout=findViewById(R.id.check_version);
+        relativeLayout=(RelativeLayout) findViewById(R.id.relative_layout);
+
+        checkLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                relativeLayout.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        relativeLayout.setVisibility(View.GONE);
+                        DialogManager.showDialog(AppSettingActivity.this,"现为最新版本");
+                    }
+                },800);
+            }
+        });
+
         setLeftText("应用设置");
         setCenterText("");
         setRightText("");

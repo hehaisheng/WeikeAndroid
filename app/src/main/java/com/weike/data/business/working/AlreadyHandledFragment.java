@@ -30,6 +30,7 @@ import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.DialogUtil;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
@@ -44,7 +45,7 @@ import static android.app.Activity.RESULT_OK;
  * 待办事
  */
 public class AlreadyHandledFragment extends BaseFragment implements
-        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,OnRefreshLoadmoreListener {
+        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,OnRefreshLoadmoreListener,HandleWorkItemVM.ChangeContentListener<HandleWorkItemVM> {
 
     public CheckBox cb_sort_date;
 
@@ -74,6 +75,8 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
     private ToDo toDo;
     private int page = 1;
+
+    public  boolean isFirst=true;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -118,10 +121,28 @@ public class AlreadyHandledFragment extends BaseFragment implements
         initRecycleView();
     }
 
+
     @Override
     public void onResume() {
+        LogUtil.d("test","可见");
         super.onResume();
+        if(!isFirst){
+            LogUtil.d("test","不是第一次");
+            loadDataOfList(2, 1, true);
 
+        }else{
+            LogUtil.d("test","第一次");
+            isFirst=false;
+        }
+
+
+
+    }
+
+    public void toRefresh(){
+        vms.clear();
+        loadDataOfList(2, 1, true);
+        initRecycleView();
     }
 
     private void initRecycleView() {
@@ -138,6 +159,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
     }
 
     public void loadDataOfList(int type, int page, boolean needFresh) {
+
         loadingView.setVisibility(View.VISIBLE);
         nothingView.setVisibility(View.GONE);
 
@@ -158,6 +180,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
                     return;
                 }
 
+                LogUtil.d("test","获取已办事项"+ JsonUtil.GsonString(getHandleWorkListRespBaseResp.getDatas()));
                 for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
                     HandleWorkItemVM vm = new HandleWorkItemVM();
                     vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
@@ -165,7 +188,8 @@ public class AlreadyHandledFragment extends BaseFragment implements
                     vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
                     vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
                     vm.setListener(AlreadyHandledFragment.this);
-
+                    vm.setChangeContentListener(AlreadyHandledFragment.this);
+                    vm.readVisibility.set(false);
                     int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
                     vm.readClickBg.set(R.mipmap.ic_finish_gray);
                     vms.add(vm);
@@ -277,5 +301,15 @@ public class AlreadyHandledFragment extends BaseFragment implements
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         loadDataOfList(2, page, true);
+    }
+
+    @Override
+    public void change(HandleWorkItemVM handleWorkItemVM) {
+        if(handleWorkItemVM.toBottom.get()){
+            handleWorkItemVM.toBottom.set(false);
+
+        }else{
+            handleWorkItemVM.toBottom.set(true);
+        }
     }
 }

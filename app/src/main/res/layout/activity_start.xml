@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@mipmap/bg_start"
+        android:src="@drawable/main_back"
         android:scaleType="centerCrop"
         />
 

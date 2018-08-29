@@ -1,6 +1,5 @@
 package com.weike.data.business.start;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -33,7 +32,7 @@ public class GuideActivity extends BaseActivity {
     private List<View>  viewData = new ArrayList<>();
 
     private static final int[] ids = {
-            R.mipmap.bg_opening_1,R.mipmap.bg_opening_2,R.mipmap.bg_opening_3,R.mipmap.bg_opening_4
+            R.drawable.five,R.drawable.six,R.drawable.seven,R.drawable.eight
     };
 
     private ViewPagerGuideAdapter guideAdapter;

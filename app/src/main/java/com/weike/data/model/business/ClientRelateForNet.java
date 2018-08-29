@@ -9,4 +9,7 @@ public class ClientRelateForNet {
     public String relatedClientId; // 添加客户用的
 
     public String clientId; //添加日志用的
+
+    //关联客户的
+    public String id;
 }

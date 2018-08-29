@@ -1,6 +1,6 @@
 package com.weike.data.model.business;
 
-import java.util.jar.Attributes;
+
 
 /**
  * 额外添加的属性
@@ -21,4 +21,6 @@ public class AnotherAttributes {
      * 标签内容
      */
     public String attributesContent;
+
+    public String attributesValueId;
 }

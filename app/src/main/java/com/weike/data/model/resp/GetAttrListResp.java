@@ -17,5 +17,7 @@ public class GetAttrListResp extends BaseResp {
         public String id;
 
         public String attributesName;
+
+
     }
 }

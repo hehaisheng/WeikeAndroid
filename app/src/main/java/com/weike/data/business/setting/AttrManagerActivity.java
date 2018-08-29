@@ -48,6 +48,7 @@ import com.weike.data.model.resp.AddAttrResp;
 import com.weike.data.model.resp.GetAttrListResp;
 import com.weike.data.model.viewmodel.AttrItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -192,21 +193,21 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
     }
 
     private void compass(){
-        User user = SpUtil.getInstance().getUser();
-        List<AnotherAttributes> list = user.anotherAttributes;
-        list.clear();
+//        User user = SpUtil.getInstance().getUser();
+//        List<AnotherAttributes> list = user.anotherAttributes;
+//        list.clear();
+//
+//        for(int i = 18 ; i < vms.size() ;i++){
+//            AnotherAttributes anotherAttributes = new AnotherAttributes();
+//            anotherAttributes.attributesId = vms.get(i).id.get();
+//            anotherAttributes.attributesName = vms.get(i).name.get();
+//            list.add(anotherAttributes);
+//        }
+//
+//        LogUtil.d("AttrManager","size:" + list.size());
+//        SpUtil.getInstance().saveNewsUser(user);
 
-        for(int i = 18 ; i < vms.size() ;i++){
-            AnotherAttributes anotherAttributes = new AnotherAttributes();
-            anotherAttributes.attributesId = vms.get(i).id.get();
-            anotherAttributes.attributesName = vms.get(i).name.get();
-            list.add(anotherAttributes);
-        }
-
-        LogUtil.d("AttrManager","size:" + list.size());
-        SpUtil.getInstance().saveNewsUser(user);
-
-        setResult(RESULT_OK);
+        //setResult(RESULT_OK);
         finish();
     }
 
@@ -242,6 +243,7 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
             @Override
             protected void onSuccess(BaseResp<GetAttrListResp> getAttrListRespBaseResp) throws Exception {
                     for(int i = 0 ; i < getAttrListRespBaseResp.getDatas().attributesValueList.size();i++) {
+                        LogUtil.d("test", JsonUtil.GsonString(getAttrListRespBaseResp));
                         AttrItemVM vm = new AttrItemVM();
                         vm.id.set(getAttrListRespBaseResp.getDatas().attributesValueList.get(i).id);
                         vm.name.set(getAttrListRespBaseResp.getDatas().attributesValueList.get(i).attributesName);

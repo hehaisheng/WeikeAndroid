@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.weike.data.R;
+import com.weike.data.WKBaseApplication;
 import com.weike.data.adapter.SortAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
@@ -33,6 +35,7 @@ import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.DialogUtil;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -165,6 +168,7 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
             @Override
             protected void onSuccess(BaseResp<GetClientListResp> getClientListRespBaseResp) throws Exception {
                 smartRefreshLayout.finishRefresh();
+                LogUtil.d("test", "刷新"+JsonUtil.GsonString(getClientListRespBaseResp.getDatas()));
                 datas = filledData(getClientListRespBaseResp.getDatas().allClientList);
                 Collections.sort(datas, new PinyinComparator());
                 adapter.updateListView(datas);
@@ -186,6 +190,36 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
     public BroadcastReceiver clientUpdateBr = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
+
+            if(WKBaseApplication.getInstance().isShow){
+                WKBaseApplication.getInstance().isShow=false;
+                android.support.v4.app.DialogFragment dialogFragment=DialogUtil.showButtonDialog(getFragmentManager(), "提示", "导入成功", new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+                    }
+                });
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogFragment.dismiss();
+                    }
+                },800);
+            }
+
+             LogUtil.d("test","收到广播");
+
+
+
             fresh(true);
         }
     };
@@ -206,6 +240,7 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
             sortModel.setName(date.get(i).userName);
             sortModel.setClientId(date.get(i).id);
             sortModel.setPhotoUrl(date.get(i).photoUrl);
+
             String pinyin = PinyinUtils.getPingYin(date.get(i).userName);
             String sortString = pinyin.substring(0, 1).toUpperCase();
             if (sortString.matches("[A-Z]")) {

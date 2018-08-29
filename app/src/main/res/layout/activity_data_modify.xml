@@ -33,18 +33,22 @@
             android:layout_marginLeft="10dp"
             android:text="头像"
             />
-
-
         <com.weike.data.view.CircleImageView
-            android:layout_alignParentRight="true"
+            android:id="@+id/iv_add_client_usericon"
             android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/icon_normal_2"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerCrop"
+
+            android:src="@mipmap/icon_normal_3"
             android:onClick="@{()->modifyDataVM.photoClick()}"
             loadImage="@{modifyDataVM.photoUrl}"
-            android:layout_height="50dp" />
+            />
+
+
 
     </RelativeLayout>
 

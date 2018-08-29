@@ -10,6 +10,8 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.business.client.AddClientActivity;
 import com.weike.data.business.client.ClientTagActivity;
 import com.weike.data.business.log.AddLogActivity;
+import com.weike.data.business.myself.MyQRCodeActivity;
+import com.weike.data.business.myself.VipOpenUpActivity;
 import com.weike.data.business.search.SearchActivity;
 import com.weike.data.business.working.HandleWorkingActivity;
 import com.weike.data.config.Config;
@@ -35,7 +37,7 @@ import java.util.List;
 
 public class HomeFragmentVM {
 
-    public Activity context;
+    public static  Activity context;
 
     public ObservableArrayList<String> banenrData = new ObservableArrayList<>();
 
@@ -89,6 +91,10 @@ public class HomeFragmentVM {
         ActivitySkipUtil.skipAnotherAct(context, AddClientActivity.class);
     }
 
+    public void goToActivity(){
+
+    }
+
     /**
      * 添加日志
      */
@@ -116,12 +122,17 @@ public class HomeFragmentVM {
         banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
         banner.setDelayTime(2000);
         banner.start();
-       /* banner.setOnBannerListener(new OnBannerListener() {
+        banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                links.get(position).
+                LogUtil.d("test","点击的小标"+position);
+                if(position==1){
+                    ActivitySkipUtil.skipAnotherAct(context, VipOpenUpActivity.class);
+                }else if(position==2){
+                    ActivitySkipUtil.skipAnotherAct(context, MyQRCodeActivity.class);
+                }
             }
-        });*/
+        });
     }
 
 }

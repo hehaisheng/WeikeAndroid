@@ -38,7 +38,7 @@
 
             <com.weike.data.view.citypicker.SideBar
                 android:id="@+id/sidrbar"
-                android:layout_width="24dp"
+                android:layout_width="35dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="right|center"
                 android:layout_marginBottom="60dp"

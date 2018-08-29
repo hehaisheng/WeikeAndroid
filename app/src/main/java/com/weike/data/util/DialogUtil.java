@@ -1,11 +1,8 @@
 package com.weike.data.util;
 
-import android.app.Dialog;
-
 import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.mylhyl.circledialog.CircleDialog;
@@ -74,4 +71,5 @@ public class DialogUtil {
                 })
                 .show(manager);
     }
+
 }

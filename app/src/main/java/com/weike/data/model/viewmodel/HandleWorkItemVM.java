@@ -20,6 +20,9 @@ public class HandleWorkItemVM extends BaseVM {
 
     public ObservableField<Boolean> readVisibility = new ObservableField<>(true);
 
+
+    public ObservableField<Boolean> toBottom= new ObservableField<>(true);
+
     public int type = 1 ;
 
     public ObservableField<Integer> readClickBg = new ObservableField<>(R.mipmap.ic_right_yellow);
@@ -42,6 +45,11 @@ public class HandleWorkItemVM extends BaseVM {
         listener.onClick(OnHandleWorkClickListener.TYPE_OF_MODIFY,this);
     }
 
+
+    public void change(){
+
+        changeContentListener.change(this);
+    }
     public OnHandleWorkClickListener listener;
     public void setListener(OnHandleWorkClickListener listener){
         this.listener = listener;
@@ -54,4 +62,12 @@ public class HandleWorkItemVM extends BaseVM {
 
         void onClick(int type  ,T t);
     }
+    public interface ChangeContentListener<T>{
+        void change(T t);
+    }
+    public ChangeContentListener changeContentListener;
+    public void setChangeContentListener(ChangeContentListener changeContentListener){
+        this.changeContentListener=changeContentListener;
+    }
+
 }

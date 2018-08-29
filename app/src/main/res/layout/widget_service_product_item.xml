@@ -48,6 +48,7 @@
             android:layout_marginLeft="10dp"
             android:background="@color/color_white"
             android:textSize="14sp"
+            android:hint="请输入产品信息"
             android:layout_height="match_parent" />
 
         <ImageView
@@ -64,6 +65,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:onClick="@{()->productItemVM.onAdd()}"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:visibility="@{productItemVM.isFirst ? View.VISIBLE : View.GONE}"
@@ -76,7 +78,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="3dp"
             android:paddingBottom="15dp"
-            android:onClick="@{()->productItemVM.onAdd()}"
+
             android:src="@mipmap/ic_add_green"
             />
 
@@ -85,6 +87,7 @@
             android:layout_gravity="center"
             android:text="产品"
             android:textSize="14sp"
+
             android:textColor="@color/color_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

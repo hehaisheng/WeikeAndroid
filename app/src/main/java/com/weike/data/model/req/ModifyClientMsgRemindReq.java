@@ -7,5 +7,5 @@ public class ModifyClientMsgRemindReq extends BaseReq {
 
     public int remindType;
 
-    public int laterRemind;
+    public String laterRemind;
 }

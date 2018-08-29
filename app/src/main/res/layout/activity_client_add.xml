@@ -45,9 +45,7 @@
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
-
                 android:onClick="@{()->addClientVM.photoClick()}"
-
                 android:src="@mipmap/icon_normal_3"
                 loadImage="@{addClientVM.photoUrl}"
                 />

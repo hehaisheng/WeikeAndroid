@@ -10,13 +10,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseObserver;
-import com.weike.data.base.BaseReq;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.web.WebActivity;
 import com.weike.data.config.Config;
@@ -50,7 +48,7 @@ public class CustomerCenterActivity extends BaseActivity {
 
     @OnClick(R.id.ll_goto_web)
     public void goToWeb(View view){
-        WebActivity.startActivity(this,"www.daoyutech.com");
+        WebActivity.startActivity(this,"www.duoqiandan.com");
     }
 
     @OnClick(R.id.btn_submit)

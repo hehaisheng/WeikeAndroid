@@ -71,6 +71,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
     public void onRightClick(boolean status) {
         super.onRightClick(status);
         serviceMsgVM.clickable.set(status);
+        LogUtil.d("test",String.valueOf(status)+"fragment");
 
         if(status){
             showDisplayContent(null,true);
@@ -82,6 +83,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             binding.recyclerProductMsgList.setVisibility(View.VISIBLE);
 
 
+            //编辑状态显示添加和删除的，非编辑状态是显示内容
             for(int i = 0 ; i< itemVMS.size();i++){
                 itemVMS.get(i).isShowContent.set(false);
                 itemVMS.get(i).isFirst.set(false);
@@ -89,7 +91,15 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             }
             initHead(itemVMS.size());
 
+        }else{
+            for(int i = 0 ; i< itemVMS.size();i++){
+                itemVMS.get(i).isShowContent.set(true);
+                itemVMS.get(i).isFirst.set(false);
+
+            }
+            initHead(itemVMS.size());
         }
+
         adapter.notifyDataSetChanged();
     }
 
@@ -107,7 +117,8 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             serviceMsgVM.productDisplay.set(true);
         } else  {
 
-            LogUtil.d("ClientServiceMsgFragment","cur-->" + data);
+            //不是编辑状态下，有数值才显示
+
 
             serviceMsgVM.moneyInDisplay.set(TextUtils.isEmpty(data.getIncome()) ? false : true);
             serviceMsgVM.moneyOutDisplay.set(TextUtils.isEmpty(data.getExpenditure()) ? false : true);
@@ -120,10 +131,11 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
 
 
-            LogUtil.d("ClientServiceMsgFragment","-->" +data);
+            //如果有产品
+
             if (data.getProduct() == null || data.getProduct().size() == 0) {
                 serviceMsgVM.productDisplay.set(false);
-                LogUtil.d("ClientServiceMsgFragment","--> false");
+
             } else {
                 serviceMsgVM.productDisplay.set(true);
             }
@@ -154,7 +166,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         }
 
 
-        LogUtil.d("ClientServiceMsgFragment","final Sieze:" + products.size());
+
 
         if (products.size() == 0) {
             return "";
@@ -188,6 +200,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         serviceMsgVM = new ClientServiceMsgVM();
         serviceMsgVM.clickable.set(isModify);
         binding.setClientServiceVM(serviceMsgVM);
+
         initProductRecycler();
 
         showDisplayContent(null,true);
@@ -214,7 +227,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
     public void loadDefault(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp){
         GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
-        LogUtil.d("ClientServiceMsgFragment","--------->" +getClientDetailMsgRespBaseResp.getDatas());
+
         showDisplayContent(data,false); //显示
         serviceMsgVM.liabilities.set(data.getLiabilities());
         serviceMsgVM.moneyIn.set(data.getIncome());
@@ -222,9 +235,11 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         serviceMsgVM.carType.set(data.getCar());
         serviceMsgVM.moneyOut.set(data.getExpenditure());
         serviceMsgVM.fixedAssets.set(data.getFixedAssets());
+        //如果产品没有的话，设置为不可见
         if (data.getProduct() == null ||data.getProduct().size() == 0) {
             serviceMsgVM.productDisplay.set(false);
         } else {
+            //列表可见
             serviceMsgVM.productDisplay.set(true);
         }
 
@@ -235,7 +250,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
     private static final String TAG = "ClientServiceMsgFragment";
 
     public void updateProductList(List<ProductBean> product) {
-        LogUtil.d(TAG,"-->" + product.size());
+
         itemVMS.clear();
 
         for (int i = 0; i < product.size(); i++) {
@@ -267,6 +282,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
     }
 
     private void initHead(int postion) {
+        //第一个产品item
         ProductItemVM itemVM = new ProductItemVM(this);
         itemVM.isFirst.set(true);
         itemVM.isModify.set(false);
@@ -296,6 +312,9 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             vm.isModify.set(true);
             vm.setListener(this);
             itemVMS.add(0,vm);
+            for(int i=0;i<itemVMS.size();i++){
+                LogUtil.d("test","点击添加产品"+itemVMS.get(i).content.get());
+            }
             adapter.notifyDataSetChanged();
         } else if (type == 2) { // reduce
             DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否移除该产品", new View.OnClickListener() {

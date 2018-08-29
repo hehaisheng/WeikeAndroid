@@ -9,180 +9,218 @@
 
     </data>
 
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@color/color_white"
-    android:layout_height="match_parent">
-
-    <include
-        layout="@layout/widget_action_bar"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:onClick="@{()->appSettingVM.setPwd()}"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/color_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="设置密码"
-            />
-
-        <ImageView
-            android:layout_centerVertical="true"
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:scaleType="fitEnd"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/icon_arrow_2"
-            android:layout_gravity="right|center"
-
-            />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_line"
-        />
-
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/color_content"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@color/color_white"
+            android:layout_height="match_parent">
 
-            android:layout_height="wrap_content"
-            android:text="消息通知"
-            />
+            <include
+                layout="@layout/widget_action_bar"
+                />
 
-       <CheckBox
-           android:layout_alignParentRight="true"
-           android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-           android:layout_width="wrap_content"
-           android:button="@drawable/selector_notice_switch"
-           android:checked="@={appSettingVM.isCheck}"
-           android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:onClick="@{()->appSettingVM.setPwd()}"
+                android:layout_height="wrap_content">
 
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/color_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置密码"
+                    />
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:scaleType="fitEnd"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/icon_arrow_2"
+                    android:layout_gravity="right|center"
+
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_line"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/color_content"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="消息通知"
+                    />
+
+                <CheckBox
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:button="@drawable/selector_notice_switch"
+                    android:checked="@={appSettingVM.isCheck}"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_line"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:onClick="@{()->appSettingVM.clearCash()}"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/color_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清除缓存"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:text="@{appSettingVM.cacheSize}"
+                    android:gravity="right"
+                    android:textColor="@color/color_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_line"
+                />
+
+            <LinearLayout
+                android:id="@+id/check_version"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/color_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="检查新版本"
+                    />
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:scaleType="fitEnd"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/icon_arrow_2"
+                    android:layout_gravity="right|center"
+
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_line"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:onClick="@{()->appSettingVM.outOfLogin()}"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/color_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="退出登录"
+                    />
+
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_line"
+                />
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/itemBackground"
+            android:visibility="gone"
+            >
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminateDuration="1000"
+                android:indeterminateDrawable="@anim/large_progressbar_animator"/>
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_common"
+                android:layout_below="@+id/progress"
+                android:text="检查中..."
+                android:layout_marginTop="10dp"
+                android:textSize="14sp"
+                android:gravity="center"
+
+                />
+
+
+        </RelativeLayout>
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_line"
-        />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:onClick="@{()->appSettingVM.clearCash()}"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/color_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="清除缓存"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:text="@{appSettingVM.cacheSize}"
-            android:gravity="right"
-            android:textColor="@color/color_content"
-            android:layout_marginRight="10dp"
-            android:layout_height="wrap_content"
-            />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_line"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:onClick="@{()->appSettingVM.checkVersion()}"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/color_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="检查新版本"
-            />
-
-        <ImageView
-            android:layout_centerVertical="true"
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:scaleType="fitEnd"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/icon_arrow_2"
-            android:layout_gravity="right|center"
-
-            />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_line"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:onClick="@{()->appSettingVM.outOfLogin()}"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/color_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="退出登录"
-            />
-
-
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_line"
-        />
-
-
-</LinearLayout>
 </layout>

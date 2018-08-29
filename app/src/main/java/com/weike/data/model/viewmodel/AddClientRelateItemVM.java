@@ -20,6 +20,8 @@ public class AddClientRelateItemVM {
 
     public String clientId;
 
+    public String id;
+
     public interface AddClientRelateItemListener{
         int ADD_ITEM  = 1;
         int ADD_RELATE = 2;

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.baidu.mobstat.StatService;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -12,11 +13,9 @@ import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
 import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
-import com.scwang.smartrefresh.layout.header.BezierRadarHeader;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.tencent.bugly.Bugly;
 import com.weike.data.payment.wechat.WXRegister;
 
 import java.text.SimpleDateFormat;
@@ -30,6 +29,8 @@ import cn.jpush.android.api.JPushInterface;
 public class WKBaseApplication extends Application {
 
     private static WKBaseApplication instance;
+    //clientFragment是否要显示提示
+    public boolean isShow=false;
 
     @Override
     public void onCreate() {
@@ -39,6 +40,8 @@ public class WKBaseApplication extends Application {
         Logger.addLogAdapter(new AndroidLogAdapter());
         JPushInterface.init(this);//初始化jPush
         JPushInterface.setDebugMode(true);
+        StatService.start(this);
+        Bugly.init(getApplicationContext(), "7806577de6", false);
         initSmartLayout();
     }
 

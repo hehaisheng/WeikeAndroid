@@ -196,6 +196,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:text="添加纪念日"
+                    android:minWidth="200dp"
+                    android:onClick="@{()->anniverVM.add()}"
                     android:textSize="14sp" />
             </LinearLayout>
 

@@ -66,6 +66,9 @@ public class GetClientDetailMsgResp extends BaseResp {
     private String car;
     private String liabilities;
 
+
+
+
     public List<ProductBean> getProduct() {
         return product;
     }
@@ -502,6 +505,11 @@ public class GetClientDetailMsgResp extends BaseResp {
         public String attributesName;
 
         public String attributesValue;
+
+        public String attributesValueId;
+
+
+
     }
 
 

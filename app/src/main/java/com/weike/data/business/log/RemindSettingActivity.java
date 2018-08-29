@@ -6,6 +6,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
@@ -25,6 +27,7 @@ import com.weike.data.model.resp.GetOneTodoStatusResp;
 import com.weike.data.model.resp.GetTodoByLogResp;
 import com.weike.data.model.viewmodel.RemingSetActVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -65,6 +68,7 @@ public class RemindSettingActivity extends BaseActivity {
         Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(KEY_OF_TODO , toDo);
+        LogUtil.d("test",JsonUtil.GsonString(toDo));
         fragment.startActivityForResult(intent,CODE_OF_REQUEST);
     }
 
@@ -103,6 +107,7 @@ public class RemindSettingActivity extends BaseActivity {
         Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(KEY_OF_ID , id);
+        LogUtil.d("test",id);
         fragment.startActivityForResult(intent,CODE_OF_REQUEST);
     }
 
@@ -118,14 +123,17 @@ public class RemindSettingActivity extends BaseActivity {
         logId = getIntent().getStringExtra(KEY_LOG_ID);
 
         if (toDo != null) {
+            LogUtil.d("test","initCurrentTodo()");
             initCurrentTodo();
         }
 
         if (id != null) {
+            LogUtil.d("test","initCurrentTodoByNet)");
             initCurrentTodoByNet();
         }
 
         if (logId != null){
+            LogUtil.d("test","initCurrentTodoByLog");
             initCurrentTodoByLog();
         }
 
@@ -158,6 +166,7 @@ public class RemindSettingActivity extends BaseActivity {
 
         vm.priority = getHandleWorkListRespBaseResp.getDatas().priority;
 
+          vm.remindId=getHandleWorkListRespBaseResp.getDatas().remindId;
 
         if (getHandleWorkListRespBaseResp.getDatas().isRepeat == 1) { //重复
             if (getHandleWorkListRespBaseResp.getDatas().repeatDateType == DataConfig.RemindDateType.TYPE_OF_DAY){
@@ -215,6 +224,7 @@ public class RemindSettingActivity extends BaseActivity {
                 })).subscribe(new BaseObserver<BaseResp<GetTodoByLogResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetTodoByLogResp> getHandleWorkListRespBaseResp) throws Exception {
+                LogUtil.d("test",""+JsonUtil.GsonString(getHandleWorkListRespBaseResp.getDatas()));
               setTodoByLogId(getHandleWorkListRespBaseResp.getDatas());
 
             }
@@ -304,6 +314,7 @@ public class RemindSettingActivity extends BaseActivity {
             @Override
             protected void onSuccess(BaseResp<GetOneTodoStatusResp> getHandleWorkListRespBaseResp) throws Exception {
 
+                LogUtil.d("test","从网络获取"+JsonUtil.GsonString(getHandleWorkListRespBaseResp.getDatas()));
                     setTodo(getHandleWorkListRespBaseResp);
             }
 
@@ -315,7 +326,7 @@ public class RemindSettingActivity extends BaseActivity {
     }
 
     private void initCurrentTodo(){
-        LogUtil.d("ActhomeRemindSetting","" + JsonUtil.GsonString(toDo));
+        LogUtil.d("test","" + "本地"+JsonUtil.GsonString(toDo));
 
         vm.isRemind.set(toDo.isRemind == 1  ? true : false);
         vm.isUnRemind.set(toDo.isRemind == 2  ? true : false);
@@ -407,7 +418,7 @@ public class RemindSettingActivity extends BaseActivity {
 
 
         toDo = compass();
-        LogUtil.d("addlog","bef:" + JsonUtil.GsonString(toDo));
+
 
         if (logId != null) { //通过日志获取
             Intent intent = new Intent();
@@ -431,7 +442,9 @@ public class RemindSettingActivity extends BaseActivity {
         ModifyOneTodoReq req  = new ModifyOneTodoReq();
         req.isRemind = toDo.isRemind;
         req.content = toDo.content;
-        req.remindId = id;
+//        req.toDoId = id;
+        req.remindId=vm.remindId;
+
         req.isRepeat = toDo.isRepeat;
         req.priority = toDo.priority;
         req.birthdaydate = toDo.birthdaydate;
@@ -443,24 +456,46 @@ public class RemindSettingActivity extends BaseActivity {
 
 
         req.sign = SignUtil.signData(req);
+        Log.d("test","修改前的数据"+JsonUtil.GsonString(req));
 
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.MODIFY_ONE_TODO_STATUS)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetOneTodoStatusResp>>() {
 
-                })).subscribe(new BaseObserver<BaseResp<GetOneTodoStatusResp>>() {
-            @Override
-            protected void onSuccess(BaseResp<GetOneTodoStatusResp> getHandleWorkListRespBaseResp) throws Exception {
-                Intent intent = new Intent();
-                intent.putExtra(KEY_OF_TODO,toDo);
-                setResult(RESULT_OK,intent);
-                finish();
-            }
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+        if( req.content.length()>=255){
 
-            }
-        });
+
+            DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "内容字符长度不能超过255", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }else{
+            RetrofitFactory.getInstance().getService().postAnything(req, Config.MODIFY_ONE_TODO_STATUS)
+                    .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetOneTodoStatusResp>>() {
+
+                    })).subscribe(new BaseObserver<BaseResp<GetOneTodoStatusResp>>() {
+                @Override
+                protected void onSuccess(BaseResp<GetOneTodoStatusResp> getHandleWorkListRespBaseResp) throws Exception {
+                    Log.d("test","修改后的数据"+JsonUtil.GsonString(getHandleWorkListRespBaseResp));
+                    Intent intent = new Intent();
+                    intent.putExtra(KEY_OF_TODO,toDo);
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }
+
+                @Override
+                protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+                }
+            });
+        }
+
+
     }
 
     @Override

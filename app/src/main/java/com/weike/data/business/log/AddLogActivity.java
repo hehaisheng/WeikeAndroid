@@ -32,6 +32,7 @@ import com.weike.data.model.req.AddLogReq;
 import com.weike.data.model.viewmodel.AddLogActVM;
 import com.weike.data.model.viewmodel.RelateCLientItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
@@ -184,23 +185,41 @@ public class AddLogActivity extends BaseActivity implements  OnReduceListener<Re
         addLogReq.toDo = toDo == null ? "" : JsonUtil.GsonString(toDo);
         addLogReq.sign = SignUtil.signData(addLogReq);
 
-        RetrofitFactory.getInstance().getService().postAnything(addLogReq, Config.ADD_LOG)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>(){
 
-                })).subscribe(new BaseObserver<BaseResp>() {
-            @Override
-            protected void onSuccess(BaseResp baseResp) throws Exception {
-                dialogFragment.dismiss();
-                setResult(RESULT_OK);
-                finish();
-                ToastUtil.showToast("添加成功");
-            }
+        if(addLogReq.content.length()>=255){
+            dialogFragment.dismiss();
+            DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "内容字符长度不能超过255", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                }
+            });
+        }else{
+            RetrofitFactory.getInstance().getService().postAnything(addLogReq, Config.ADD_LOG)
+                    .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>(){
+
+                    })).subscribe(new BaseObserver<BaseResp>() {
+                @Override
+                protected void onSuccess(BaseResp baseResp) throws Exception {
+                    dialogFragment.dismiss();
+                    setResult(RESULT_OK);
+                    finish();
+                    ToastUtil.showToast("添加成功");
+                }
+
+                @Override
+                protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+                }
+            });
+        }
+
+
     }
 
 

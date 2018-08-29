@@ -24,6 +24,9 @@ public class HandleWorkingActivity extends BaseActivity {
 
     String[] tagTitle = {"待办事项","已办事项","过期事项"};
 
+    public boolean toFetch=false;
+
+
     private ArrayList<BaseFragment> fragments = new ArrayList<>();
 
     @BindView(R.id.sliding_tab_layout)
@@ -31,6 +34,8 @@ public class HandleWorkingActivity extends BaseActivity {
 
     @BindView(R.id.viewpager_activity_handle_working)
     public NoScrollViewPager viewPager;
+
+    public  AlreadyHandledFragment alreadyHandledFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +48,7 @@ public class HandleWorkingActivity extends BaseActivity {
 
         HandlerWorkingFragment handlerWorkingFragment = new HandlerWorkingFragment();
 
-        AlreadyHandledFragment alreadyHandledFragment = new AlreadyHandledFragment();
+         alreadyHandledFragment = new AlreadyHandledFragment();
 
         ExpireWorkingFragment expireWorkingFragment = new ExpireWorkingFragment();
 

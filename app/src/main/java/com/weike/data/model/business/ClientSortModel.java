@@ -1,7 +1,5 @@
 package com.weike.data.model.business;
 
-import com.weike.data.config.Config;
-
 public class ClientSortModel {
 
     private String name;//显示的数据
@@ -9,6 +7,17 @@ public class ClientSortModel {
 
     private String clientId; //客户ID
     private String photoUrl ; //用户头像
+
+    public String getRemind() {
+        return remind;
+    }
+
+    public void setRemind(String remind) {
+        this.remind = remind;
+    }
+
+    public String remind;
+
 
     public String getClientId() {
         return clientId;

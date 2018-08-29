@@ -23,6 +23,7 @@ import com.weike.data.model.resp.WeChatPayDataResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.payment.alipay.PayResult;
 import com.weike.data.payment.wechat.WXRegister;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -87,7 +88,7 @@ public class OpenUpVipActVM extends BaseVM {
                 })).subscribe(new BaseObserver<BaseResp<GetVipLicencePicResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetVipLicencePicResp> getPayDataRespBaseResp) throws Exception {
-                LogUtil.d("VipOpenUp","-->" + getPayDataRespBaseResp.getDatas().imgUrl);
+                LogUtil.d("test","-->" + getPayDataRespBaseResp.getDatas().imgUrl+"链接");
                 //licencePic.set("http:\\/\\/ja3.ssssgame.com\\/wkzs-photo\\/file\\/2018\\/6\\/16\\/7004037d-f25c-446d-beb9-c1ca0fc4dce8.jpg");
                 licencePic.set(getPayDataRespBaseResp.getDatas().imgUrl);
 
@@ -161,6 +162,8 @@ public class OpenUpVipActVM extends BaseVM {
         req.platform = "wxpay";
         req.sign = SignUtil.signData(req);
 
+        LogUtil.d("test","威信"+ JsonUtil.GsonString(req));
+
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_PAY_DATA)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<WeChatPayDataResp>>(){
@@ -170,6 +173,7 @@ public class OpenUpVipActVM extends BaseVM {
             protected void onSuccess(BaseResp<WeChatPayDataResp> getPayDataRespBaseResp) throws Exception {
                 WeChatPayDataResp.WxPay orderInfo = getPayDataRespBaseResp.getDatas().wxpay;
 
+                LogUtil.d("test",JsonUtil.GsonString(getPayDataRespBaseResp));
                 new Thread(){
                     public void run(){
                         PayReq payReq = new PayReq();
@@ -231,7 +235,7 @@ public class OpenUpVipActVM extends BaseVM {
         req.sign = SignUtil.signData(req);
 
 
-
+        LogUtil.d("test","支付宝"+ JsonUtil.GsonString(req));
         RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_PAY_DATA)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetPayDataResp>>(){
 

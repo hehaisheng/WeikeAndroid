@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.File;
 
@@ -56,6 +57,7 @@ public class LQRPhotoSelectUtils {
         mShouldCrop = shouldCrop;
         AUTHORITIES = activity.getPackageName() + ".fileprovider";
         imgPath = generateImgePath();
+        LogUtil.d("test","LQR图片"+imgPath);
     }
 
     /**
@@ -131,6 +133,7 @@ public class LQRPhotoSelectUtils {
         }
 
 
+        LogUtil.d("test",imgUri.getPath()+"拍照路径");
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
         mActivity.startActivityForResult(intent, REQ_TAKE_PHOTO);
@@ -178,6 +181,7 @@ public class LQRPhotoSelectUtils {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case LQRPhotoSelectUtils.REQ_TAKE_PHOTO://拍照
+                    Log.d("test","返回"+imgPath);
                     mInputFile = new File(imgPath);
                     if (mShouldCrop) {//裁剪
                         mOutputFile = new File(generateImgePath());

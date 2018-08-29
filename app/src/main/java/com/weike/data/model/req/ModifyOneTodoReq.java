@@ -45,5 +45,7 @@ public class ModifyOneTodoReq extends BaseReq {
 
     public int repeatDateType; //重复提醒时间类型
 
+    public String  toDoId;
+
 
 }

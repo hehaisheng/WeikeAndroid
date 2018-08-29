@@ -23,13 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/buy_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -185,11 +186,13 @@
 
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/pay_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:minHeight="200dp">
+                    android:minHeight="200dp"
+                    android:layout_below="@+id/buy_time">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -311,6 +314,7 @@
                 </android.support.v7.widget.CardView>
 
                 <LinearLayout
+                    android:layout_below="@+id/pay_type"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -318,7 +322,7 @@
                     android:minHeight="200dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/color_white"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
 
                     <ImageView
@@ -327,9 +331,9 @@
                         android:layout_width="match_parent"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
-                        android:scaleType="centerCrop"
 
-                        android:layout_height="match_parent" />
+
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
@@ -337,7 +341,7 @@
 
 
 
-            </LinearLayout>
+            </RelativeLayout>
 
 
         </ScrollView>

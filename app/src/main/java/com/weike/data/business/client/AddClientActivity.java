@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -21,7 +22,9 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.config.Config;
 import com.weike.data.databinding.ActivityClientAddBinding;
 import com.weike.data.model.business.AnniversaryDay;
+import com.weike.data.model.business.AnotherAttributes;
 import com.weike.data.model.business.ClientRelateForNet;
+import com.weike.data.model.business.User;
 import com.weike.data.model.req.AddClientReq;
 import com.weike.data.model.req.GetClientDetailMsgReq;
 import com.weike.data.model.resp.AddClientResp;
@@ -32,16 +35,22 @@ import com.weike.data.model.viewmodel.AnniversariesItemVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.CompressBitmapManager;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LQRPhotoSelectUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
+import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import kr.co.namee.permissiongen.PermissionSuccess;
 import okhttp3.MediaType;
@@ -86,13 +95,14 @@ public class AddClientActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        LogUtil.d("AddClientActivity",requestCode + "," + resultCode  + "," + data );
+
         if (requestCode == KEY_OF_LABEL && resultCode == RESULT_OK && data != null) {
             String labelName = data.getStringExtra("labelName");
             String labelId = data.getStringExtra("labelId");
             vm.label.set(labelName);
             vm.labelId = labelId;
         }
+
 
         mLqrPhotoSelectUtils.attachToActivityForResult(requestCode, resultCode, data);
 
@@ -132,6 +142,9 @@ public class AddClientActivity extends BaseActivity {
     }
 
 
+    public int count=0;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,10 +158,10 @@ public class AddClientActivity extends BaseActivity {
 
 
 
-        initPhotoSel();
-        addFragment();
-        initMsg();
-        initClickStatus();
+      initPhotoSel();
+      addFragment();
+      initMsg();
+       initClickStatus();
 
 
     }
@@ -188,6 +201,7 @@ public class AddClientActivity extends BaseActivity {
             @Override
             public void onFinish(File outputFile, Uri outputUri) {
                 // 4、当拍照或从图库选取图片成功后回调
+
                 vm.photoUrl.set("");
                 vm.photoUrl.set(outputUri.getPath());
                 isUpdatePic = true;
@@ -264,7 +278,7 @@ public class AddClientActivity extends BaseActivity {
         GetClientDetailMsgReq req = new GetClientDetailMsgReq();
         req.clientId = clientId;
         req.sign = SignUtil.signData(req);
-
+        LogUtil.d("test","初始化"+JsonUtil.GsonString(req));
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.GET_CLIENT_DETAIL)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetClientDetailMsgResp>>(){
@@ -274,12 +288,34 @@ public class AddClientActivity extends BaseActivity {
             protected void onSuccess(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp) throws Exception {
                    GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
 
-                   LogUtil.d("AddClientActivityActhome",JsonUtil.GsonString(data));
+                 LogUtil.d("test","初始化返回值"+JsonUtil.GsonString(getClientDetailMsgRespBaseResp));
 
                     vm.photoUrl.set(data.getPhotoUrl());
                     vm.userName.set(data.getUserName());
                     vm.remarks.set(data.getRemark());
                     vm.label.set(TextUtils.isEmpty(data.getClientLabelName()) ? "未分组" : data.getClientLabelName());
+
+
+                    List<GetClientDetailMsgResp.AnotherAttrBean> anotherAttrBeans=data.getUserAttributesList();
+                    if(anotherAttrBeans.size()>0){
+                        List<AnotherAttributes> anotherAttributesList=new ArrayList<>();
+                        for(int i=0;i<anotherAttrBeans.size();i++){
+                            AnotherAttributes anotherAttribute=new AnotherAttributes();
+                            anotherAttribute.attributesId=anotherAttrBeans.get(i).id;
+                            anotherAttribute.attributesValueId=anotherAttrBeans.get(i).attributesValueId;
+                            anotherAttribute.attributesName=anotherAttrBeans.get(i).attributesName;
+                            anotherAttribute.attributesContent=anotherAttrBeans.get(i).attributesValue;
+                            anotherAttributesList.add(anotherAttribute);
+                        }
+                        User user=SpUtil.getInstance().getUser();
+                        user.anotherAttributes=anotherAttributesList;
+                        LogUtil.d("test","列表"+JsonUtil.GsonString(anotherAttributesList));
+                        SpUtil.getInstance().saveNewsUser(user);
+
+
+                    }
+
+
 
                     //基本信息
                     ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
@@ -287,15 +323,11 @@ public class AddClientActivity extends BaseActivity {
 
                     ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.serviceMsgVM;
 
+
                     clientBaseMsgFragment.loadDefault(getClientDetailMsgRespBaseResp);
                     serviceMsgFragment.loadDefault(getClientDetailMsgRespBaseResp);
 
-
-
                     //服务信息
-
-
-
 
             }
 
@@ -323,33 +355,91 @@ public class AddClientActivity extends BaseActivity {
 
 
 
+
         if (isUpdatePic) {
             uploadAvatar(vm.photoUrl.get());
-        } else if (clientId != null && isModify == true) {
-          fragments.get(0).onRightClick(isModify);
-          fragments.get(1).onRightClick(isModify);
-          fragments.get(2).onRightClick(isModify);
-          vm.isModify.set(isModify);
-          setLeftText("编辑客户");
-        } else if (isModify == false && submitClient() == false){ //恢复状态
-            setRightText("完成");
-            AddClientActivity.this.isModify = true;
-            vm.isModify.set(true);
-            vm.isModify.set(AddClientActivity.this.isModify);
-        } else if (isModify && clientId == null) { //添加客户
-            submitClient();
-            return;
+        } else{
+             if (clientId != null && isModify == true) {
+                fragments.get(0).onRightClick(isModify);
+                fragments.get(1).onRightClick(isModify);
+                fragments.get(2).onRightClick(isModify);
+                vm.isModify.set(isModify);
+                setLeftText("编辑客户");
+                //submitClient();
+
+            } else if (isModify == false && submitClient() == false){ //恢复状态
+                setRightText("完成");
+                AddClientActivity.this.isModify = true;
+                vm.isModify.set(true);
+                vm.isModify.set(AddClientActivity.this.isModify);
+
+            } else if (isModify && clientId == null) { //添加客户
+                submitClient();
+
+
+            }
         }
 
 
     }
 
+    @Override
+    public void onLeftClick() {
+
+        if(!TextUtils.isEmpty(vm.userName.get())&&clientId==null){
+            DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "是否保存数据", new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    submitClient();
+
+
+                }
+            });
+
+
+
+        }else{
+            finish();
+        }
+    }
 
     private void uploadAvatar(String path) {
 
         DialogFragment dialogFragment = DialogUtil.showLoadingDialog(getSupportFragmentManager(),"正在上传头像..");
 
+
         File file = new File(path);
+        long size = 0;
+        if (file.exists()) {
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(file);
+                try {
+                    size = fis.available();
+
+                    if(size>600000){
+                        boolean success= CompressBitmapManager.compressBitmap(path,500,path);
+                        size = fis.available();
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
         RetrofitFactory.getInstance().getService().uploadAvatar(part, Config.UPLOAD_FILE)
@@ -378,16 +468,23 @@ public class AddClientActivity extends BaseActivity {
      * 修改客户
      */
     private void modifyClient(AddClientReq req){
+
+        count=count+1;
+
+        LogUtil.d("test","上传的数据"+JsonUtil.GsonString(req));
+
+
         RetrofitFactory.getInstance().getService().postAnything(req, Config.MODIFY_CLIENT)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddClientResp>>(){
 
                 })).subscribe(new BaseObserver<BaseResp<AddClientResp>>() {
             @Override
             protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
-                ToastUtil.showToast("修改成功");
+               ToastUtil.showToast("修改成功");
                 setLeftText("客户信息");
-
+                LogUtil.d("test","修改上传后获取的数据"+JsonUtil.GsonString(addClientRespBaseResp));
                 resetRight();
+                LogUtil.d("test","修改成功，开始获取新的数据");
                 initMsg();
 
                 sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
@@ -416,6 +513,7 @@ public class AddClientActivity extends BaseActivity {
 
 
     private void addClient(AddClientReq req) {
+        LogUtil.d("test",JsonUtil.GsonString(req));
         RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_CLIENT)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddClientResp>>(){
 
@@ -519,9 +617,9 @@ public class AddClientActivity extends BaseActivity {
 
 
         if (clientBaseMsgVM.marry.get().contains("未婚")){
-            req.marriage = 1;
-        } else if (clientBaseMsgVM.marry.get().contains("已婚")){
             req.marriage = 2;
+        } else if (clientBaseMsgVM.marry.get().contains("已婚")){
+            req.marriage = 1;
         } else if (clientBaseMsgVM.marry.get().contains("离异")){
             req.marriage = 3;
         } else if (TextUtils.isEmpty(clientBaseMsgVM.marry.get())){
@@ -547,11 +645,14 @@ public class AddClientActivity extends BaseActivity {
         for(int i = 0 ; i < clientBaseMsgFragment.clientRelateItemVMS.size();i++){
             String name = clientBaseMsgFragment.clientRelateItemVMS.get(i).clientName.get();
             String id = clientBaseMsgFragment.clientRelateItemVMS.get(i).clientId;
+            String relateId=clientBaseMsgFragment.clientRelateItemVMS.get(i).id;
+
             if (TextUtils.isEmpty(name)) {
                 continue;
             } else {
                 ClientRelateForNet c = new ClientRelateForNet();
                 c.relatedClientId = id;
+                c.id=relateId;
                 clientRelateds.add(c);
             }
         }
@@ -595,6 +696,7 @@ public class AddClientActivity extends BaseActivity {
         req.car = clientServiceMsgVM.carType.get();
         req.liabilities = clientServiceMsgVM.liabilities.get();
         req.attributesValue = clientBaseMsgFragment.getAnotherAttr();
+        LogUtil.d("test","上传的属性"+JsonUtil.GsonString(req.attributesValue));
         req.product = TextUtils.isEmpty(serviceMsgFragment.getAllProduct()) ? "" : "" + serviceMsgFragment.getAllProduct() + "";
 
 

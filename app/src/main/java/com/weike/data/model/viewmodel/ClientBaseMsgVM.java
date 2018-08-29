@@ -81,7 +81,7 @@ public class ClientBaseMsgVM extends BaseVM {
     /**
      * 女孩数量
      */
-    public ObservableField<String> gril = new ObservableField<>("");
+    public ObservableField<String> gril= new ObservableField<>("");
 
     /**
      * 身份证号码
@@ -242,4 +242,8 @@ public class ClientBaseMsgVM extends BaseVM {
 
 
     }
+
+
+
+
 }

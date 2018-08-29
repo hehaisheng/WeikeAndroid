@@ -1,41 +1,25 @@
 package com.weike.data.business.working;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
-import com.mylhyl.circledialog.CircleDialog;
-import com.mylhyl.circledialog.callback.ConfigButton;
-import com.mylhyl.circledialog.callback.ConfigDialog;
-import com.mylhyl.circledialog.callback.ConfigText;
-import com.mylhyl.circledialog.callback.ConfigTitle;
-import com.mylhyl.circledialog.params.ButtonParams;
-import com.mylhyl.circledialog.params.DialogParams;
-import com.mylhyl.circledialog.params.TextParams;
-import com.mylhyl.circledialog.params.TitleParams;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.weike.data.BR;
 import com.weike.data.R;
-import com.weike.data.WKBaseApplication;
 import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
-import com.weike.data.business.msg.MsgDetailActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.EditAndDeleteTodoReq;
@@ -46,7 +30,6 @@ import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.DialogUtil;
-import com.weike.data.util.FileCacheUtils;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
@@ -55,16 +38,13 @@ import com.weike.data.util.TransformerUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import static android.app.Activity.RESULT_OK;
 
 /**
  * 待办事
  */
 public class ExpireWorkingFragment extends BaseFragment implements
-        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,OnRefreshLoadmoreListener{
+        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,OnRefreshLoadmoreListener,HandleWorkItemVM.ChangeContentListener<HandleWorkItemVM>{
 
     public CheckBox cb_sort_date;
 
@@ -197,9 +177,10 @@ public class ExpireWorkingFragment extends BaseFragment implements
                     vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
                     vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
                     vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
-                    vm.readVisibility.set(false);
+                    vm.readVisibility.set(true);
                     vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
                     vm.setListener(ExpireWorkingFragment.this);
+                    vm.setChangeContentListener(ExpireWorkingFragment.this);
 
 
                     vms.add(vm);
@@ -218,9 +199,11 @@ public class ExpireWorkingFragment extends BaseFragment implements
 
     @Override
     public void onClick(int type, HandleWorkItemVM handleWorkItemVM) {
+        LogUtil.d("test",type+"");
+
         if (type == TYPE_OF_MODIFY) {
 
-            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否修改该事项?", new View.OnClickListener() {
+            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否修改该事项吗?", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -235,7 +218,7 @@ public class ExpireWorkingFragment extends BaseFragment implements
 
         } else if (type == TYPE_OF_DELETE) {
 
-            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否确定删除该事项?", new View.OnClickListener() {
+            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "确定删除该事项吗?", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -247,6 +230,19 @@ public class ExpireWorkingFragment extends BaseFragment implements
                 }
             });
 
+
+        }else if(type==TYPE_OF_CHECK){
+            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否完成该事项?", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    read(handleWorkItemVM);
+                }
+            });
 
         }
     }
@@ -281,6 +277,8 @@ public class ExpireWorkingFragment extends BaseFragment implements
                     ToastUtil.showToast("修改事项成功");
                 } else if(type == 4){
                     vms.remove(vm);
+                }else if(type==2){
+                    vms.remove(vm);
                 }
 
                 recycleAdapter.notifyDataSetChanged();
@@ -307,5 +305,16 @@ public class ExpireWorkingFragment extends BaseFragment implements
     public void onRefresh(RefreshLayout refreshlayout) {
         page = 1;
         loadDataOfList(3, page, true);
+    }
+
+    @Override
+    public void change(HandleWorkItemVM handleWorkItemVM) {
+        if(handleWorkItemVM.toBottom.get()){
+            handleWorkItemVM.toBottom.set(false);
+
+        }else{
+            handleWorkItemVM.toBottom.set(true);
+        }
+
     }
 }

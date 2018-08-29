@@ -22,26 +22,22 @@
             android:layout_height="1dp"
             android:background="@color/color_line" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardview_message_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/cb_widget_message"
-            app:cardCornerRadius="10dp">
 
+            <com.weike.data.view.CircleImageView
+                android:id="@+id/cardview_message_icon"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/icon_normal_1"
                 loadImage="@{tagClientContentVM.photoUrl}"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/cb_widget_message"
                 />
 
-        </android.support.v7.widget.CardView>
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,7 +46,8 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/cardview_message_icon"
             android:text="@{tagClientContentVM.title}"
-            android:textSize="9sp" />
+            android:textSize="12sp" />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,7 +56,9 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/cardview_message_icon"
             android:text="@{tagClientContentVM.content}"
-            android:textSize="9sp" />
+            android:textSize="11sp"  />
+
+
 
 
         <CheckBox

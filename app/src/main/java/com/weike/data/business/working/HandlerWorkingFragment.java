@@ -43,6 +43,8 @@ import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.ClientTagComparator;
 import com.weike.data.util.DialogUtil;
+import com.weike.data.util.JsonUtil;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
@@ -58,7 +60,7 @@ import static android.app.Activity.RESULT_OK;
  * 待办事
  */
 public class HandlerWorkingFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener,
-        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,View.OnClickListener,OnRefreshLoadmoreListener{
+        HandleWorkItemVM.OnHandleWorkClickListener<HandleWorkItemVM> ,View.OnClickListener,OnRefreshLoadmoreListener,HandleWorkItemVM.ChangeContentListener<HandleWorkItemVM>{
 
     public CheckBox cb_sort_date;
 
@@ -212,6 +214,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                 })).subscribe(new BaseObserver<BaseResp<GetTodoByTagResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetTodoByTagResp> getClientTagListRespBaseResp) throws Exception {
+                LogUtil.d("test","返回的数据"+JsonUtil.GsonString(getClientTagListRespBaseResp));
                 dialogFragment.dismiss();
                 List<HandleWorkItemVM>  cs = childVMs.get(groupPosition);
                 cs.clear();
@@ -223,6 +226,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                     vm.content.set(getClientTagListRespBaseResp.getDatas().toDoList.get(i).content);
                     vm.id.set(getClientTagListRespBaseResp.getDatas().toDoList.get(i).id);
                     vm.setListener(HandlerWorkingFragment.this);
+                    vm.setChangeContentListener(HandlerWorkingFragment.this);
                     vm.type = 2;
 
                     int pro = getClientTagListRespBaseResp.getDatas().toDoList.get(i).priority;
@@ -322,6 +326,8 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                 })).subscribe(new BaseObserver<BaseResp<GetHandleWorkListResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
+
+                LogUtil.d("test",JsonUtil.GsonString(getHandleWorkListRespBaseResp)+"数据");
                 loadingView.setVisibility(View.GONE);
                 if(getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
                     nothing.setVisibility(View.VISIBLE);
@@ -331,6 +337,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                 if (page == 1) {
                     vms.clear();
                 }
+                LogUtil.d("test",JsonUtil.GsonString(getHandleWorkListRespBaseResp.getDatas()));
 
                 for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
                     HandleWorkItemVM vm = new HandleWorkItemVM();
@@ -339,6 +346,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                     vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
                     vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
                     vm.setListener(HandlerWorkingFragment.this);
+                    vm.setChangeContentListener(HandlerWorkingFragment.this);
                     int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
                     if (pro == DataConfig.RemindLevel.TYPE_OF_HEIGHT) {
                         vm.readClickBg.set(R.mipmap.ic_finish_red);
@@ -386,7 +394,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     public void onClick(int type, HandleWorkItemVM handleWorkItemVM) {
         if (type == TYPE_OF_CHECK) {
 
-            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "事情是否已办?", new View.OnClickListener() {
+            DialogUtil.showButtonDialog(getActivity().getSupportFragmentManager(), "提示", "是否完成该事项?", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -455,8 +463,13 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             @Override
             protected void onSuccess(BaseResp<EditAndDeleteTodoResp> editAndDeleteTodoRespBaseResp) throws Exception {
 
-                if (vm.type == 1) { //这是
+                LogUtil.d("test", JsonUtil.GsonString(editAndDeleteTodoRespBaseResp));
+                if (vm.type == 1) { //这是日期排序
                     if (type == 2) {
+                        if((getActivity())!=null){
+                            ((HandleWorkingActivity) getActivity()).alreadyHandledFragment.toRefresh();
+                        }
+
                         vms.remove(vm);
                         recycleAdapter.notifyDataSetChanged();
                     } else if (type == 4) {
@@ -498,5 +511,16 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
 
+    }
+
+
+    @Override
+    public void change(HandleWorkItemVM handleWorkItemVM) {
+        if(handleWorkItemVM.toBottom.get()){
+            handleWorkItemVM.toBottom.set(false);
+
+        }else{
+            handleWorkItemVM.toBottom.set(true);
+        }
     }
 }

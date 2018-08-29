@@ -46,6 +46,8 @@ public class GetOneTodoStatusResp extends BaseResp {
     public int repeatDateType; //重复提醒时间类型
 
 
+    public String remindId;
+
 
 
 

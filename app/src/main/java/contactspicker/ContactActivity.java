@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.reflect.TypeToken;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.weike.data.R;
+import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
@@ -33,6 +34,7 @@ import com.weike.data.model.resp.SearchDifferentPhoneResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
@@ -137,6 +139,8 @@ public class ContactActivity extends BaseActivity {
             //req.phoneNumber = JsonUtil.GsonString(phoneNum).replace("\"","").replace("[","").replace("]","");
             req.phoneNumber = "" + JsonUtil.GsonString(phoneNum) + "";
             req.sign = SignUtil.signData(req);
+            LogUtil.d("test","导入"+JsonUtil.GsonString(req));
+
 
 
 
@@ -224,25 +228,50 @@ public class ContactActivity extends BaseActivity {
         AddClientListReq req = new AddClientListReq();
         req.clientArr = "" + JsonUtil.GsonString(attrs) + "";
         req.sign = SignUtil.signData(req);
+        boolean  isToLong=false;
 
-
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_CLIENT_LIST)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
-
-                })).subscribe(new BaseObserver<BaseResp>() {
-            @Override
-            protected void onSuccess(BaseResp getClientMsgDetailListRespBaseResp) throws Exception {
-                ToastUtil.showToast("添加成功");
-                finish();
-                sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
-
+        for(int i=0;i<attrs.size()&&!isToLong;i++){
+            if(attrs.get(i).userName.length()>15){
+                isToLong=true;
             }
+        }
+        if(isToLong){
+            DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "联系人名字长度不能超过15", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-            }
-        });
+                }
+            });
+        }else{
+            RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_CLIENT_LIST)
+                    .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
+
+                    })).subscribe(new BaseObserver<BaseResp>() {
+                @Override
+                protected void onSuccess(BaseResp getClientMsgDetailListRespBaseResp) throws Exception {
+
+                    WKBaseApplication.getInstance().isShow=true;
+                    finish();
+                    sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
+
+                }
+
+                @Override
+                protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+                }
+            });
+        }
+
+
+
+
+
     }
 
     private void scrollToLetter(String letter) {
