@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.google.gson.reflect.TypeToken;
@@ -198,6 +199,7 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
             protected void onSuccess(BaseResp<GetClientMsgDetailListResp> getClientMsgDetailListRespBaseResp) throws Exception {
                 List<GetClientMsgDetailListResp.MessageListBean> list = getClientMsgDetailListRespBaseResp.getDatas().getMessageList();
 
+                LogUtil.d("test","消息"+JsonUtil.GsonString(list));
 
                 if (page > 1 && list.size() == 0) {
                     MsgDetailActivity.this.page = MsgDetailActivity.this.page - 1;//恢复页码
@@ -244,8 +246,9 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
                         } else {
                             itemVM.rightText.set("已处理");
                         }
-                        vms.add(itemVM);
+
                     }
+                    vms.add(itemVM);
 
 
 
