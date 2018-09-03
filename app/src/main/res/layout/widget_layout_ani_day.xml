@@ -187,6 +187,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="15dp"
                     android:minWidth="20dp"
+
                     android:onClick="@{()->anniverVM.add()}"
                     android:src="@mipmap/ic_add_green" />
 
@@ -196,7 +197,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:text="添加纪念日"
-                    android:minWidth="200dp"
+                    android:minWidth="300dp"
                     android:onClick="@{()->anniverVM.add()}"
                     android:textSize="14sp" />
             </LinearLayout>

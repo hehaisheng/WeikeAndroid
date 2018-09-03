@@ -32,6 +32,10 @@ public class WKBaseApplication extends Application {
     //clientFragment是否要显示提示
     public boolean isShow=false;
 
+    public boolean  hasNewLabel=false;
+    public boolean  hasNoClientId=false;
+
+
     @Override
     public void onCreate() {
         super.onCreate();

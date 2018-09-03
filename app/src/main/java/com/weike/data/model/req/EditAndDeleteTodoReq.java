@@ -8,6 +8,6 @@ import com.weike.data.base.BaseReq;
 public class EditAndDeleteTodoReq extends BaseReq {
     public String toDoId;
 
-    public int toDoType; // 1为代办 2为已办 3 过期  4 删除
+    public int toDoType; // 1为待办 2为已办 3 过期  4 删除
 
 }

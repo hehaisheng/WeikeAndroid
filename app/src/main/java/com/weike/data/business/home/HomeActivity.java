@@ -1,5 +1,6 @@
 package com.weike.data.business.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.business.client.ClientFragment;
+import com.weike.data.business.client.ForceOpenVipDialogActivity;
 import com.weike.data.business.msg.MsgFragment;
 import com.weike.data.business.myself.MySelfFragment;
 import com.weike.data.business.setting.ForcePwdDialogActivity;
@@ -162,9 +164,9 @@ public class HomeActivity extends BaseActivity {
 
                 if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0) {
                     if (getUserInfoRespBaseResp.getDatas().memberLevel == 1) { //没有开通的话
-//                        Intent intent = new Intent(HomeActivity.this,ForceOpenVipDialogActivity.class);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        startActivity(intent);
+                        Intent intent = new Intent(HomeActivity.this,ForceOpenVipDialogActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
 
                     }
 
@@ -426,7 +428,7 @@ public class HomeActivity extends BaseActivity {
 
                     @Override
                     protected void onSuccess(BaseResp<GetClientListResp> getClientListRespBaseResp) throws Exception {
-                        LogUtil.d("test","HomeActivity"+JsonUtil.GsonString(getClientListRespBaseResp));
+
                         List<GetClientListResp.ClientListSub> clientListSubs = getClientListRespBaseResp.getDatas().allClientList;
                         User user = SpUtil.getInstance().getUser();
                         user.clietList = clientListSubs;
@@ -494,7 +496,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             protected void onSuccess(BaseResp<GetAttrListResp> getAttrListRespBaseResp) throws Exception {
 
-                LogUtil.d("test","属性"+ JsonUtil.GsonString(getAttrListRespBaseResp));
+
                 User user = SpUtil.getInstance().getUser();
                 List<AnotherAttributes> list = user.anotherAttributes;
                 list.clear();

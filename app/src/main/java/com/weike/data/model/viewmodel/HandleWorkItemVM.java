@@ -32,6 +32,9 @@ public class HandleWorkItemVM extends BaseVM {
      */
     public ObservableField<String> id = new ObservableField<>();
 
+
+    public ObservableField<Long> clientId = new ObservableField<>();
+
     public void readMsg(){
         listener.onClick(OnHandleWorkClickListener.TYPE_OF_CHECK,this);
     }
@@ -40,6 +43,12 @@ public class HandleWorkItemVM extends BaseVM {
 
         listener.onClick(OnHandleWorkClickListener.TYPE_OF_DELETE,this);
     }
+
+    public void clickName(){
+
+        listener.onClick(OnHandleWorkClickListener.TYPE_OF_ACTIVITY,this);
+    }
+
 
     public void modifyMsg(){
         listener.onClick(OnHandleWorkClickListener.TYPE_OF_MODIFY,this);
@@ -59,6 +68,7 @@ public class HandleWorkItemVM extends BaseVM {
         int TYPE_OF_CHECK = 1;
         int TYPE_OF_MODIFY = 2;
         int TYPE_OF_DELETE = 3;
+        int TYPE_OF_ACTIVITY=4;
 
         void onClick(int type  ,T t);
     }

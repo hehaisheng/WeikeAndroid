@@ -40,4 +40,9 @@ public class ToDoResp {
     public int beforeRemindDay;
 
 
+    //客户id
+    public long clientId;
+
+
+
 }

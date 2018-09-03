@@ -7,172 +7,216 @@
             type="com.weike.data.model.viewmodel.AddClientActVM"/>
 
     </data>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@color/color_all_bg"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tl="http://schemas.android.com/apk/res-auto">
-
-    <include
-        layout="@layout/widget_action_bar"
-        />
-
-    <LinearLayout
-        android:background="@color/color_white"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-
-
-        <FrameLayout
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp">
-
-            <com.weike.data.view.CircleImageView
-                android:id="@+id/iv_add_client_usericon"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                android:onClick="@{()->addClientVM.photoClick()}"
-                android:src="@mipmap/icon_normal_3"
-                loadImage="@{addClientVM.photoUrl}"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/modify_user_icon"
-                android:layout_gravity="center"
-                android:visibility="@{addClientVM.isModify ? View.VISIBLE : View.GONE}"
-
-                />
-
-
-        </FrameLayout>
-
-
-
+        android:orientation="vertical"
+        android:background="@color/color_all_bg"
+        xmlns:tl="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent">
 
 
         <LinearLayout
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:background="@color/color_all_bg"
+            android:layout_height="match_parent"
+            >
+
+            <include
+                layout="@layout/widget_action_bar"
+                />
 
             <LinearLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
+                android:background="@color/color_white"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/ed_client_name"
-                    android:singleLine="true"
-                    android:layout_width="wrap_content"
+
+                <FrameLayout
+                    android:layout_width="120dp"
+                    android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:minHeight="40dp"
-                    android:hint="名字"
-                    android:textColor="@color/color_content"
-                    android:textSize="12sp"
-                    android:paddingLeft="10dp"
-                    updateEditInput="@{addClientVM.isModify}"
-                    android:text="@={addClientVM.userName}"
-                    android:background="@color/color_touming"
-                    android:layout_height="wrap_content" />
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp">
 
-                <TextView
-                    android:id="@+id/tv_label_add"
-                    android:text="@{addClientVM.label}"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="5dp"
-                    android:textColor="@color/color_content"
-                    android:layout_marginRight="10dp"
-                    android:onClick="@{()->addClientVM.labelClick()}"
-                    android:drawableLeft="@mipmap/ic_add_smail_label"
+                    <com.weike.data.view.CircleImageView
+                        android:id="@+id/iv_add_client_usericon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:onClick="@{()->addClientVM.photoClick()}"
+                        android:src="@mipmap/icon_normal_3"
+                        loadImage="@{addClientVM.photoUrl}"
+                        />
 
-                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/modify_user_icon"
+                        android:layout_gravity="center"
+                        android:visibility="@{addClientVM.isModify ? View.VISIBLE : View.GONE}"
+
+                        />
+
+
+                </FrameLayout>
+
+
+
+
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/ed_client_name"
+                            android:singleLine="true"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:minHeight="40dp"
+                            android:hint="名字"
+                            android:textColor="@color/color_content"
+                            android:textSize="12sp"
+                            android:paddingLeft="10dp"
+                            updateEditInput="@{addClientVM.isModify}"
+                            android:text="@={addClientVM.userName}"
+                            android:background="@color/color_touming"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/tv_label_add"
+                            android:text="@{addClientVM.label}"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="5dp"
+                            android:textColor="@color/color_content"
+                            android:layout_marginRight="10dp"
+                            android:onClick="@{()->addClientVM.labelClick()}"
+                            android:drawableLeft="@mipmap/ic_add_smail_label"
+
+                            />
+
+                    </LinearLayout>
+
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:visibility="@{addClientVM.isModify ? View.VISIBLE:View.GONE}"
+                        android:background="@color/color_line"
+                        />
+
+                    <EditText
+                        android:paddingLeft="10dp"
+                        android:background="@color/color_touming"
+                        android:minHeight="40dp"
+                        android:hint="添加备注"
+                        android:singleLine="true"
+                        updateEditInput="@{addClientVM.isModify}"
+                        android:textSize="12sp"
+                        android:text="@={addClientVM.remarks}"
+                        android:textColor="@color/color_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:visibility="@{addClientVM.isModify ? View.VISIBLE:View.GONE}"
+                        android:background="@color/color_line"
+                        android:layout_marginBottom="10dp"
+                        />
+
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
 
 
-            <View
+
+            <com.flyco.tablayout.SlidingTabLayout
+                android:id="@+id/sliding_tab_layout"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:visibility="@{addClientVM.isModify ? View.VISIBLE:View.GONE}"
-                android:background="@color/color_line"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                tl:tl_textSelectColor="@color/color_41BCF6"
+                tl:tl_textUnselectColor="@color/color_content"
+                tl:tl_underline_height="1dp"
+                tl:tl_underline_color="@color/color_white"
+                tl:tl_indicator_height="1dp"
+                tl:tl_tab_space_equal="true"
+                tl:tl_indicator_width_equal_title="true"
+                tl:tl_indicator_color="@color/color_41BCF6"
+                android:background="@color/color_white"
+                android:layout_centerHorizontal="true"
                 />
 
-            <EditText
-                android:paddingLeft="10dp"
-                android:background="@color/color_touming"
-                android:minHeight="40dp"
-                android:hint="添加备注"
-                android:singleLine="true"
-                updateEditInput="@{addClientVM.isModify}"
-                android:textSize="12sp"
-                android:text="@={addClientVM.remarks}"
-                android:textColor="@color/color_content"
+            <com.weike.data.view.NoScrollViewPager
+                android:id="@+id/viewpager_activity_client_add"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:visibility="@{addClientVM.isModify ? View.VISIBLE:View.GONE}"
-                android:background="@color/color_line"
-                android:layout_marginBottom="10dp"
-                />
 
+            </com.weike.data.view.NoScrollViewPager>
 
         </LinearLayout>
 
 
-    </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/itemBackground"
+            android:visibility="gone"
+            >
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminateDuration="1000"
+                android:indeterminateDrawable="@anim/large_progressbar_animator"/>
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_common"
+                android:layout_below="@+id/progress"
+                android:text="保存中..."
+                android:layout_marginTop="10dp"
+                android:textSize="14sp"
+                android:gravity="center"
+
+                />
+
+
+        </RelativeLayout>
 
 
 
 
-    <com.flyco.tablayout.SlidingTabLayout
-        android:id="@+id/sliding_tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        tl:tl_textSelectColor="@color/color_41BCF6"
-        tl:tl_textUnselectColor="@color/color_content"
-        tl:tl_underline_height="1dp"
-        tl:tl_underline_color="@color/color_white"
-        tl:tl_indicator_height="1dp"
-        tl:tl_tab_space_equal="true"
-        tl:tl_indicator_width_equal_title="true"
-        tl:tl_indicator_color="@color/color_41BCF6"
-        android:background="@color/color_white"
-        android:layout_centerHorizontal="true"
-        />
+    </RelativeLayout>
 
-    <com.weike.data.view.NoScrollViewPager
-        android:id="@+id/viewpager_activity_client_add"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-    </com.weike.data.view.NoScrollViewPager>
-
-</LinearLayout>
 </layout>

@@ -55,8 +55,8 @@ public class SpUtil {
         return JsonUtil.GsonToBean(userJson,User.class);
     }
 
-    public void saveNewsUser(User  user) {
-        if (user == null) return;
-        preferences.edit().putString(SpConfig.TAG_USER,JsonUtil.GsonString(user)).commit();
+    public boolean saveNewsUser(User  user) {
+        if (user == null) return false;
+         return preferences.edit().putString(SpConfig.TAG_USER,JsonUtil.GsonString(user)).commit();
     }
 }

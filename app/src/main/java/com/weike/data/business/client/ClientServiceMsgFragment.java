@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
     public void onRightClick(boolean status) {
         super.onRightClick(status);
         serviceMsgVM.clickable.set(status);
-        LogUtil.d("test",String.valueOf(status)+"fragment");
+
 
         if(status){
             showDisplayContent(null,true);
@@ -83,7 +84,6 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             binding.recyclerProductMsgList.setVisibility(View.VISIBLE);
 
 
-            //编辑状态显示添加和删除的，非编辑状态是显示内容
             for(int i = 0 ; i< itemVMS.size();i++){
                 itemVMS.get(i).isShowContent.set(false);
                 itemVMS.get(i).isFirst.set(false);
@@ -91,13 +91,19 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             }
             initHead(itemVMS.size());
 
-        }else{
-            for(int i = 0 ; i< itemVMS.size();i++){
+        } else {
+            itemVMS.remove(0);
+
+            if (itemVMS.size() == 0) {
+                binding.recyclerProductMsgList.setVisibility(View.GONE);
+                binding.productCardView.setVisibility(View.GONE);
+                return;
+            }
+            for(int i = 0 ; i < itemVMS.size() ; i++) {
                 itemVMS.get(i).isShowContent.set(true);
                 itemVMS.get(i).isFirst.set(false);
-
+                itemVMS.get(i).isModify.set(false);
             }
-            initHead(itemVMS.size());
         }
 
         adapter.notifyDataSetChanged();
@@ -160,7 +166,8 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             ProductItemVM vm = itemVMS.get(i);
             product.remind = vm.toDo == null ? "" : "" + JsonUtil.GsonString(vm.toDo) + "";
             product.productName = vm.content.get();
-            product.id = TextUtils.isEmpty(vm.productId) ? "" : vm.productId;
+
+            product.id =TextUtils.isEmpty(vm.productId) ? null : vm.productId;
 
             products.add(product);
         }
@@ -312,9 +319,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
             vm.isModify.set(true);
             vm.setListener(this);
             itemVMS.add(0,vm);
-            for(int i=0;i<itemVMS.size();i++){
-                LogUtil.d("test","点击添加产品"+itemVMS.get(i).content.get());
-            }
+
             adapter.notifyDataSetChanged();
         } else if (type == 2) { // reduce
             DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否移除该产品", new View.OnClickListener() {

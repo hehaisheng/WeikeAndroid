@@ -1,7 +1,7 @@
 package com.weike.data.model.business;
 
 public class ProductBean {
-    public int id;
+    public long id;
     public String productName;
     public RemindBean remind;
 

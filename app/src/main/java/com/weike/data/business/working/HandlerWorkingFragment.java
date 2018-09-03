@@ -2,11 +2,13 @@ package com.weike.data.business.working;
 
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.CheckBox;
@@ -24,6 +26,7 @@ import com.weike.data.adapter.ExpandableAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.client.AddClientActivity;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
@@ -182,7 +185,10 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                 display.getMetrics(displayMetrics);
                 int widthPixels = displayMetrics.widthPixels;
 
+
+
                 int width = getActivity().getWindowManager().getDefaultDisplay().getWidth();
+
 
                 for(int i = 0 ; i < groupVMS.size();i++) {
                     List<HandleWorkItemVM> vms = new ArrayList<>();
@@ -214,7 +220,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                 })).subscribe(new BaseObserver<BaseResp<GetTodoByTagResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetTodoByTagResp> getClientTagListRespBaseResp) throws Exception {
-                LogUtil.d("test","返回的数据"+JsonUtil.GsonString(getClientTagListRespBaseResp));
+
                 dialogFragment.dismiss();
                 List<HandleWorkItemVM>  cs = childVMs.get(groupPosition);
                 cs.clear();
@@ -292,6 +298,8 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
         cb_sort_date.setClickable(false);
         cb_sort_level.setClickable(true);
+
+
     }
 
     @Override
@@ -327,7 +335,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             @Override
             protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
 
-                LogUtil.d("test",JsonUtil.GsonString(getHandleWorkListRespBaseResp)+"数据");
+
                 loadingView.setVisibility(View.GONE);
                 if(getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
                     nothing.setVisibility(View.VISIBLE);
@@ -337,7 +345,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                 if (page == 1) {
                     vms.clear();
                 }
-                LogUtil.d("test",JsonUtil.GsonString(getHandleWorkListRespBaseResp.getDatas()));
+
 
                 for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
                     HandleWorkItemVM vm = new HandleWorkItemVM();
@@ -345,6 +353,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
                     vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
                     vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
                     vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
+                    vm.clientId.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientId);
                     vm.setListener(HandlerWorkingFragment.this);
                     vm.setChangeContentListener(HandlerWorkingFragment.this);
                     int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
@@ -436,6 +445,10 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             });
 
 
+        } else if (type == TYPE_OF_ACTIVITY){
+            AddClientActivity.startActivity(getActivity(),handleWorkItemVM.clientId.get()+"");
+
+
         }
     }
 
@@ -456,6 +469,8 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         req.toDoType = type ;
         req.sign = SignUtil.signData(req);
 
+        LogUtil.d("test","待办上传的数据"+JsonUtil.GsonString(req));
+
         RetrofitFactory.getInstance().getService().postAnything(req,Config.EDIT_AND_DEL_TODO_STATUS)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<EditAndDeleteTodoResp>>(){
 
@@ -463,8 +478,9 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
             @Override
             protected void onSuccess(BaseResp<EditAndDeleteTodoResp> editAndDeleteTodoRespBaseResp) throws Exception {
 
-                LogUtil.d("test", JsonUtil.GsonString(editAndDeleteTodoRespBaseResp));
-                if (vm.type == 1) { //这是日期排序
+
+                if (vm.type == 1) {
+                    //这是日期排序
                     if (type == 2) {
                         if((getActivity())!=null){
                             ((HandleWorkingActivity) getActivity()).alreadyHandledFragment.toRefresh();

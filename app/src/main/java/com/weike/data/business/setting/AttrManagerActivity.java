@@ -150,6 +150,9 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
                 vm.setListener(AttrManagerActivity.this);
                 vm.id.set(baseResp.getDatas().attributesId);
                 vms.add(vm);
+                WKBaseApplication.getInstance().hasNewLabel=true;
+
+
                 adapter.notifyDataSetChanged();
             }
 
@@ -162,8 +165,9 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
 
     @Override
     public void onLeftClick() {
-        super.onLeftClick();
+
         compass();
+        super.onLeftClick();
     }
 
     @Override
@@ -190,24 +194,13 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
     @Override
     public void onBackPressed() {
       compass();
+      super.onBackPressed();
     }
 
     private void compass(){
-//        User user = SpUtil.getInstance().getUser();
-//        List<AnotherAttributes> list = user.anotherAttributes;
-//        list.clear();
-//
-//        for(int i = 18 ; i < vms.size() ;i++){
-//            AnotherAttributes anotherAttributes = new AnotherAttributes();
-//            anotherAttributes.attributesId = vms.get(i).id.get();
-//            anotherAttributes.attributesName = vms.get(i).name.get();
-//            list.add(anotherAttributes);
-//        }
-//
-//        LogUtil.d("AttrManager","size:" + list.size());
-//        SpUtil.getInstance().saveNewsUser(user);
 
-        //setResult(RESULT_OK);
+
+        setResult(RESULT_OK);
         finish();
     }
 
@@ -242,8 +235,9 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
                 })).subscribe(new BaseObserver<BaseResp<GetAttrListResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetAttrListResp> getAttrListRespBaseResp) throws Exception {
+
                     for(int i = 0 ; i < getAttrListRespBaseResp.getDatas().attributesValueList.size();i++) {
-                        LogUtil.d("test", JsonUtil.GsonString(getAttrListRespBaseResp));
+
                         AttrItemVM vm = new AttrItemVM();
                         vm.id.set(getAttrListRespBaseResp.getDatas().attributesValueList.get(i).id);
                         vm.name.set(getAttrListRespBaseResp.getDatas().attributesValueList.get(i).attributesName);
@@ -272,6 +266,27 @@ public class AttrManagerActivity extends BaseActivity implements AttrItemVM.OnRe
             @Override
             protected void onSuccess(BaseResp  getAttrListRespBaseResp) throws Exception {
                 vms.remove(vm);
+                String name=vm.name.get();
+
+                User user = SpUtil.getInstance().getUser();
+
+                List<AnotherAttributes> tempList = new ArrayList<>();
+
+
+                List<AnotherAttributes> list = user.anotherAttributes;
+
+                for(int i=0;i<list.size();i++){
+
+                    if(name!=null){
+                        if(!name.equals(list.get(i).attributesName)){
+                            tempList.add(list.get(i));
+
+                        }
+                    }
+
+                }
+                user.anotherAttributes=tempList;
+                SpUtil.getInstance().saveNewsUser(user);
                 adapter.notifyDataSetChanged();
                 ToastUtil.showToast("删除成功");
             }

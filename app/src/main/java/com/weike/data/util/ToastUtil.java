@@ -25,7 +25,7 @@ public class ToastUtil {
 
         }
         mToast.setText(text);
-        mToast.setDuration(Toast.LENGTH_LONG);
+        mToast.setDuration(Toast.LENGTH_SHORT);
         mToast.show();
         return mToast;
     }

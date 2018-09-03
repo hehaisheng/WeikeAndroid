@@ -8,12 +8,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
+import com.weike.data.WKBaseApplication;
 import com.weike.data.adapter.FragmentBaseAdapter;
 import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseFragment;
@@ -145,13 +148,19 @@ public class AddClientActivity extends BaseActivity {
     public int count=0;
 
 
+
+    public RelativeLayout relativeLayout;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = DataBindingUtil.setContentView(this,R.layout.activity_client_add);
         vm = new AddClientActVM(this);
         binding.setAddClientVM(vm);
         setCenterText("");
+
+        relativeLayout=findViewById(R.id.relative_layout);
 
 
 
@@ -168,6 +177,8 @@ public class AddClientActivity extends BaseActivity {
 
 
 
+
+
     /**
      * 状态初始化
      */
@@ -177,10 +188,12 @@ public class AddClientActivity extends BaseActivity {
             setLeftText("客户信息");
             setRightText("编辑");
             status = false;
+            LogUtil.d("test","处于完成状态");
         } else {
             setLeftText("添加客户");
             status = true;
             setRightText("完成");
+            LogUtil.d("test","处于编辑状态");
 
         }
         isModify = status;
@@ -269,6 +282,14 @@ public class AddClientActivity extends BaseActivity {
      */
     private void initMsg(){
         if (clientId == null){
+            List<AnotherAttributes>  anotherAttributesList=new ArrayList<>();
+            WKBaseApplication.getInstance().hasNoClientId=true;
+            User user= SpUtil.getInstance().getUser();
+            user.anotherAttributes=anotherAttributesList;
+            SpUtil.getInstance().saveNewsUser(user);
+            ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
+            clientBaseMsgFragment.initAnotherAttr();
+
             return;
         }
 
@@ -278,7 +299,7 @@ public class AddClientActivity extends BaseActivity {
         GetClientDetailMsgReq req = new GetClientDetailMsgReq();
         req.clientId = clientId;
         req.sign = SignUtil.signData(req);
-        LogUtil.d("test","初始化"+JsonUtil.GsonString(req));
+
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.GET_CLIENT_DETAIL)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetClientDetailMsgResp>>(){
@@ -286,46 +307,40 @@ public class AddClientActivity extends BaseActivity {
                 })).subscribe(new BaseObserver<BaseResp<GetClientDetailMsgResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp) throws Exception {
+
+
+
+
+
                    GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
 
-                 LogUtil.d("test","初始化返回值"+JsonUtil.GsonString(getClientDetailMsgRespBaseResp));
-
-                    vm.photoUrl.set(data.getPhotoUrl());
-                    vm.userName.set(data.getUserName());
-                    vm.remarks.set(data.getRemark());
-                    vm.label.set(TextUtils.isEmpty(data.getClientLabelName()) ? "未分组" : data.getClientLabelName());
-
-
                     List<GetClientDetailMsgResp.AnotherAttrBean> anotherAttrBeans=data.getUserAttributesList();
-                    if(anotherAttrBeans.size()>0){
-                        List<AnotherAttributes> anotherAttributesList=new ArrayList<>();
-                        for(int i=0;i<anotherAttrBeans.size();i++){
-                            AnotherAttributes anotherAttribute=new AnotherAttributes();
-                            anotherAttribute.attributesId=anotherAttrBeans.get(i).id;
-                            anotherAttribute.attributesValueId=anotherAttrBeans.get(i).attributesValueId;
-                            anotherAttribute.attributesName=anotherAttrBeans.get(i).attributesName;
-                            anotherAttribute.attributesContent=anotherAttrBeans.get(i).attributesValue;
-                            anotherAttributesList.add(anotherAttribute);
-                        }
-                        User user=SpUtil.getInstance().getUser();
-                        user.anotherAttributes=anotherAttributesList;
-                        LogUtil.d("test","列表"+JsonUtil.GsonString(anotherAttributesList));
-                        SpUtil.getInstance().saveNewsUser(user);
+                    LogUtil.d("test","返回的属性"+JsonUtil.GsonString(anotherAttrBeans));
 
 
-                    }
+
+                vm.photoUrl.set(data.getPhotoUrl());
+                vm.userName.set(data.getUserName());
+                vm.remarks.set(data.getRemark());
+                vm.label.set(TextUtils.isEmpty(data.getClientLabelName()) ? "未分组" : data.getClientLabelName());
 
 
+
+
+
+
+                       ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
+                       clientBaseMsgFragment.loadDefault(getClientDetailMsgRespBaseResp);
 
                     //基本信息
-                    ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
+
                     ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
 
                     ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.serviceMsgVM;
 
 
-                    clientBaseMsgFragment.loadDefault(getClientDetailMsgRespBaseResp);
                     serviceMsgFragment.loadDefault(getClientDetailMsgRespBaseResp);
+
 
                     //服务信息
 
@@ -334,17 +349,53 @@ public class AddClientActivity extends BaseActivity {
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
 
+                LogUtil.d("test","失败");
             }
         });
     }
 
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //DialogUtil.showButtonDialog(getSupportFragmentManager(),"提示","是否保存信息")
+//    @Override
+//    public void onBackPressed() {
+//
+//        super.onBackPressed();
+//        //DialogUtil.showButtonDialog(getSupportFragmentManager(),"提示","是否保存信息")
+//
+//    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        WKBaseApplication.getInstance().hasNoClientId=false;
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+
+            if(!TextUtils.isEmpty(vm.userName.get())&&clientId==null){
+                DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "是否保存数据", new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        submitClient();
+
+
+                    }
+                });
+
+
+
+            }else{
+                finish();
+            }
+
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 
@@ -408,6 +459,8 @@ public class AddClientActivity extends BaseActivity {
         }else{
             finish();
         }
+
+
     }
 
     private void uploadAvatar(String path) {
@@ -471,7 +524,7 @@ public class AddClientActivity extends BaseActivity {
 
         count=count+1;
 
-        LogUtil.d("test","上传的数据"+JsonUtil.GsonString(req));
+
 
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.MODIFY_CLIENT)
@@ -482,9 +535,9 @@ public class AddClientActivity extends BaseActivity {
             protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
                ToastUtil.showToast("修改成功");
                 setLeftText("客户信息");
-                LogUtil.d("test","修改上传后获取的数据"+JsonUtil.GsonString(addClientRespBaseResp));
+                WKBaseApplication.getInstance().hasNoClientId=false;
                 resetRight();
-                LogUtil.d("test","修改成功，开始获取新的数据");
+
                 initMsg();
 
                 sendBroadcast(new Intent(ClientFragment.ACTION_UPDATE_CLIENT));
@@ -513,7 +566,7 @@ public class AddClientActivity extends BaseActivity {
 
 
     private void addClient(AddClientReq req) {
-        LogUtil.d("test",JsonUtil.GsonString(req));
+        LogUtil.d("test","添加的数据"+JsonUtil.GsonString(req));
         RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_CLIENT)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddClientResp>>(){
 
@@ -523,7 +576,7 @@ public class AddClientActivity extends BaseActivity {
                 clientId = addClientRespBaseResp.getDatas().clientId;
                 ToastUtil.showToast("添加成功");
                 isUpdatePic = false;
-
+                WKBaseApplication.getInstance().hasNoClientId=false;
                 resetRight();
 
                 initMsg();
@@ -696,7 +749,9 @@ public class AddClientActivity extends BaseActivity {
         req.car = clientServiceMsgVM.carType.get();
         req.liabilities = clientServiceMsgVM.liabilities.get();
         req.attributesValue = clientBaseMsgFragment.getAnotherAttr();
-        LogUtil.d("test","上传的属性"+JsonUtil.GsonString(req.attributesValue));
+
+
+
         req.product = TextUtils.isEmpty(serviceMsgFragment.getAllProduct()) ? "" : "" + serviceMsgFragment.getAllProduct() + "";
 
 

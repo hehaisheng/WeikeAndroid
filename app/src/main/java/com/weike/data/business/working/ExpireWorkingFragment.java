@@ -18,6 +18,7 @@ import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.client.AddClientActivity;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
@@ -30,6 +31,7 @@ import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.DialogUtil;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
@@ -154,6 +156,9 @@ public class ExpireWorkingFragment extends BaseFragment implements
                 })).subscribe(new BaseObserver<BaseResp<GetHandleWorkListResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
+
+
+                LogUtil.d("test","过期事项"+ JsonUtil.GsonString(getHandleWorkListRespBaseResp));
                 loadingView.setVisibility(View.GONE);
                 if (getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
                     nothingView.setVisibility(View.VISIBLE);
@@ -181,7 +186,7 @@ public class ExpireWorkingFragment extends BaseFragment implements
                     vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
                     vm.setListener(ExpireWorkingFragment.this);
                     vm.setChangeContentListener(ExpireWorkingFragment.this);
-
+                    vm.clientId.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientId);
 
                     vms.add(vm);
                 }
@@ -243,6 +248,10 @@ public class ExpireWorkingFragment extends BaseFragment implements
                     read(handleWorkItemVM);
                 }
             });
+
+        }else if (type == TYPE_OF_ACTIVITY){
+            AddClientActivity.startActivity(getActivity(),handleWorkItemVM.clientId.get()+"");
+
 
         }
     }

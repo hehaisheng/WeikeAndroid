@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="30dp"
-                        android:hint="请选择事件发生的时间"
+                        android:hint="日志记录时间"
                         android:text="@{addLogVM.time}" />
 
                     <ImageView

@@ -41,7 +41,7 @@ public class TransformerUtils {
                             com.orhanobut.logger.Logger.json(responseStr);
                             return Observable.just(t);
                         }catch (Exception e) {
-                            LogUtil.d("acthome",e.toString());
+
                             return Observable.error(new RuntimeException(e.getMessage()));
                         }
 

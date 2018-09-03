@@ -15,7 +15,7 @@ public class AnotherAttrItemVM extends BaseVM{
     public  String id;
 
     public  String attributesValueId;
-
+    public  boolean  toVisibility=true;
     public ObservableField<Boolean> lineShow = new ObservableField<>(true);
 
 

@@ -33,7 +33,7 @@ public class RetrofitFactory {
     public RetrofitFactory(){
 
         OkHttpClient.Builder client = new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)//设置超时时间
+                .connectTimeout(5000, TimeUnit.SECONDS)//设置超时时间
                 .retryOnConnectionFailure(true);
 
 

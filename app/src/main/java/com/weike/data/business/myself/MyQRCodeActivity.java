@@ -39,6 +39,7 @@ import com.weike.data.network.RetrofitFactory;
 import com.weike.data.payment.wechat.WXRegister;
 import com.weike.data.util.BitmapUtil;
 import com.weike.data.util.LQRPhotoSelectUtils;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
@@ -93,6 +94,7 @@ public class MyQRCodeActivity extends BaseActivity {
             public void onFinish(File outputFile, Uri outputUri) {
                 ImageView imageView = shareViews.get(1).findViewById(R.id.image_custom);
                 customUrl = outputUri;
+                LogUtil.d("test","二维码路径"+customUrl);
                 Glide.with(getApplicationContext()).load(outputUri).into(imageView);
 
             }
@@ -136,7 +138,7 @@ public class MyQRCodeActivity extends BaseActivity {
             @Override
             protected void onSuccess(BaseResp<GetSharePicResp> getSharePicRespBaseResp) throws Exception {
                 vm.iconUrl.set(getSharePicRespBaseResp.getDatas().sharePicturesUrl);
-
+                LogUtil.d("test","二维码背景路径"+getSharePicRespBaseResp.getDatas().sharePicturesUrl);
                 resetViewPager(customUrl,0);
 
 

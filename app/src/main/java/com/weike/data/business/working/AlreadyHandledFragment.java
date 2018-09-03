@@ -3,6 +3,7 @@ package com.weike.data.business.working;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -18,6 +19,7 @@ import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.client.AddClientActivity;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
@@ -40,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * 待办事
@@ -77,6 +80,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
     private int page = 1;
 
     public  boolean isFirst=true;
+    public  boolean isHasModify;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -85,7 +89,13 @@ public class AlreadyHandledFragment extends BaseFragment implements
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
             lastModifyVM.time.set(toDo.birthdaydate);
             lastModifyVM.content.set(toDo.content);
-            updateStatus(1,lastModifyVM);
+            if(isHasModify){
+                updateStatus(2,lastModifyVM);
+                isHasModify=false;
+            }else{
+                updateStatus(1,lastModifyVM);
+            }
+
             recycleAdapter.notifyDataSetChanged();
         }
     }
@@ -124,14 +134,14 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
     @Override
     public void onResume() {
-        LogUtil.d("test","可见");
+
         super.onResume();
         if(!isFirst){
-            LogUtil.d("test","不是第一次");
+            vms.clear();
             loadDataOfList(2, 1, true);
 
         }else{
-            LogUtil.d("test","第一次");
+
             isFirst=false;
         }
 
@@ -168,6 +178,10 @@ public class AlreadyHandledFragment extends BaseFragment implements
         req.toDoType = type;
         req.sign = SignUtil.signData(req);
 
+
+
+
+
         RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_TO_DO_LIST)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetHandleWorkListResp>>() {
 
@@ -175,18 +189,20 @@ public class AlreadyHandledFragment extends BaseFragment implements
             @Override
             protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
                 loadingView.setVisibility(View.GONE);
+                LogUtil.d("test","获取已办事项"+ JsonUtil.GsonString(getHandleWorkListRespBaseResp.getDatas()));
                 if (getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
                     nothingView.setVisibility(View.VISIBLE);
                     return;
                 }
 
-                LogUtil.d("test","获取已办事项"+ JsonUtil.GsonString(getHandleWorkListRespBaseResp.getDatas()));
+
                 for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
                     HandleWorkItemVM vm = new HandleWorkItemVM();
                     vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
                     vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
                     vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
                     vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
+                    vm.clientId.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientId);
                     vm.setListener(AlreadyHandledFragment.this);
                     vm.setChangeContentListener(AlreadyHandledFragment.this);
                     vm.readVisibility.set(false);
@@ -201,6 +217,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
 
+                LogUtil.d("test","获取已办事项失败");
             }
         });
     }
@@ -243,6 +260,11 @@ public class AlreadyHandledFragment extends BaseFragment implements
             });
 
 
+        }else if (type == TYPE_OF_ACTIVITY){
+
+            AddClientActivity.startActivity(getActivity(),handleWorkItemVM.clientId.get()+"");
+
+
         }
     }
 
@@ -250,6 +272,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
 
         RemindSettingActivity.startActivity(this,vm.id.get());
+        isHasModify=true;
         lastModifyVM = vm;
     }
 
@@ -258,11 +281,13 @@ public class AlreadyHandledFragment extends BaseFragment implements
     }
 
     private void updateStatus(int type , HandleWorkItemVM vm){
-        LogUtil.d("acthome","type:"  + type);
+
         EditAndDeleteTodoReq req = new EditAndDeleteTodoReq();
         req.toDoId = vm.id.get();
         req.toDoType = type;
         req.sign = SignUtil.signData(req);
+
+        LogUtil.d("test","已办上传的数据"+JsonUtil.GsonString(req));
 
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.EDIT_AND_DEL_TODO_STATUS)
@@ -271,6 +296,7 @@ public class AlreadyHandledFragment extends BaseFragment implements
                 })).subscribe(new BaseObserver<BaseResp<EditAndDeleteTodoResp>>() {
             @Override
             protected void onSuccess(BaseResp<EditAndDeleteTodoResp> editAndDeleteTodoRespBaseResp) throws Exception {
+                LogUtil.d("test","已办上传返回的数据"+JsonUtil.GsonString(editAndDeleteTodoRespBaseResp));
 
                 if(type == 4){ //删除
                     vms.remove(vm);

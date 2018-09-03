@@ -168,7 +168,7 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
             @Override
             protected void onSuccess(BaseResp<GetClientListResp> getClientListRespBaseResp) throws Exception {
                 smartRefreshLayout.finishRefresh();
-                LogUtil.d("test", "刷新"+JsonUtil.GsonString(getClientListRespBaseResp.getDatas()));
+
                 datas = filledData(getClientListRespBaseResp.getDatas().allClientList);
                 Collections.sort(datas, new PinyinComparator());
                 adapter.updateListView(datas);
@@ -216,7 +216,7 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
                 },800);
             }
 
-             LogUtil.d("test","收到广播");
+
 
 
 

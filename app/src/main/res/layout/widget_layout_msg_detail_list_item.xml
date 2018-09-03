@@ -69,13 +69,13 @@
                     android:layout_marginRight="10dp"
                     android:background="@color/color_line"
 
-                    android:visibility="@{messageDetailItemVM.isSystemMsg ? View.GONE:View.VISIBLE}" />
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="@{messageDetailItemVM.isSystemMsg ? View.GONE:View.VISIBLE}">
+                    android:visibility="gone">
 
 
                     <TextView

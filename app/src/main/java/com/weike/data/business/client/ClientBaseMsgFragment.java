@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.BR;
 import com.weike.data.R;
+import com.weike.data.WKBaseApplication;
 import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
@@ -32,13 +33,17 @@ import com.weike.data.databinding.FragmentClientBaseMsgBinding;
 import com.weike.data.model.business.AnotherAttributes;
 import com.weike.data.model.business.ClientRelated;
 import com.weike.data.model.business.ToDo;
+import com.weike.data.model.business.User;
 import com.weike.data.model.req.DelAniDayReq;
 import com.weike.data.model.req.DeleteRelatedClientReq;
+import com.weike.data.model.req.GetAttrListReq;
+import com.weike.data.model.resp.GetAttrListResp;
 import com.weike.data.model.resp.GetClientDetailMsgResp;
 import com.weike.data.model.viewmodel.AddClientRelateItemVM;
 import com.weike.data.model.viewmodel.AddPhoneVM;
 import com.weike.data.model.viewmodel.AnniversariesItemVM;
 import com.weike.data.model.viewmodel.AnotherAttrItemVM;
+import com.weike.data.model.viewmodel.AttrItemVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.DialogUtil;
@@ -57,6 +62,7 @@ import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * Created by LeoLu on 2018/6/4.
@@ -111,7 +117,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     public     ClipData     myClip;
 
 
-
+    List<AnotherAttributes>  fromNetList=new ArrayList<>();
 
     public void showDisplayContent(GetClientDetailMsgResp data, boolean isMoidfy) {
 
@@ -194,29 +200,126 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
      * 初始化
      */
     public void initAnotherAttr() {
-        tmpMap.clear();
-        anotherAttrItemVMS.clear();
-        List<AnotherAttributes> list = SpUtil.getInstance().getUser().anotherAttributes;
-        LogUtil.d("test","sp"+JsonUtil.GsonString(list));
-        for (int i = 0; i < list.size(); i++) {
-            AnotherAttrItemVM vm = new AnotherAttrItemVM();
-            vm.name.set(list.get(i).attributesName);
-            LogUtil.d("test","sp获取的"+list.get(i).attributesValueId);
-            vm.attributesValueId=list.get(i).attributesValueId;
-            vm.value.set("");
-            vm.id = list.get(i).attributesId;
-            vm.isModify.set(true);
-            anotherAttrItemVMS.add(vm);
-
-            tmpMap.put(list.get(i).attributesName,list.get(i)); //把当前本地的数据 放到临时map
-        }
 
         anotherAdapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_another_attr_list_litem, anotherAttrItemVMS, BR.anotherItemVM);
-        NoScrollLinearLayoutManager linearLayoutManager = new NoScrollLinearLayoutManager(getActivity());
-        linearLayoutManager.setScrollEnabled(false);
 
-        binding.anotherAttrRecycle.setLayoutManager(linearLayoutManager);
-        binding.anotherAttrRecycle.setAdapter(anotherAdapter);
+        LogUtil.d("test","fragment进入");
+
+        GetAttrListReq req = new GetAttrListReq();
+        req.token = SpUtil.getInstance().getCurrentToken();
+        req.sign = SignUtil.signData(req);
+
+        fromNetList.clear();
+        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_ATTR_LIST)
+                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetAttrListResp>>(){
+
+                })).subscribe(new BaseObserver<BaseResp<GetAttrListResp>>() {
+            @Override
+            protected void onSuccess(BaseResp<GetAttrListResp> getAttrListRespBaseResp) throws Exception {
+
+
+
+
+
+                fromNetList=new ArrayList<>();
+
+                LogUtil.d("test","fragment进入数据"+JsonUtil.GsonString(getAttrListRespBaseResp.getDatas().attributesValueList));
+                for(int i = 0; i < getAttrListRespBaseResp.getDatas().attributesValueList.size();i++) {
+
+                    AnotherAttributes anotherAttributes=new AnotherAttributes();
+                    anotherAttributes.attributesId=getAttrListRespBaseResp.getDatas().attributesValueList.get(i).id;
+                    anotherAttributes.attributesName=getAttrListRespBaseResp.getDatas().attributesValueList.get(i).attributesName;
+                    for(int j=0;j<anotherAttrItemVMS.size();j++){
+                        if(anotherAttributes.attributesName.equals(anotherAttrItemVMS.get(j).name.get())){
+                            anotherAttributes.attributesValueId=anotherAttrItemVMS.get(j).attributesValueId;
+                            anotherAttributes.attributesContent=anotherAttrItemVMS.get(j).value.get();
+                        }
+                    }
+                    fromNetList.add(anotherAttributes);
+
+                }
+                tmpMap.clear();
+                anotherAttrItemVMS.clear();
+                List<AnotherAttributes> list = SpUtil.getInstance().getUser().anotherAttributes;
+
+                if(list.size()==0){
+
+                    for(int j=0;j<fromNetList.size();j++){
+
+                        AnotherAttrItemVM vm = new AnotherAttrItemVM();
+                        vm.name.set(fromNetList.get(j).attributesName);
+
+                        vm.id = fromNetList.get(j).attributesId;
+                        vm.attributesValueId=fromNetList.get(j).attributesValueId;
+                        vm.value.set(fromNetList.get(j).attributesContent);
+//                        if(fromNetList.get(j).attributesContent==null||fromNetList.get(j).attributesContent.equals("")){
+//                            vm.toVisibility=false;
+//                        }
+                        vm.isModify.set(true);
+                        anotherAttrItemVMS.add(vm);
+
+
+                    }
+
+                }else{
+
+
+
+                    LogUtil.d("test","本地有数据");
+                    for(int j=0;j<list.size();j++){
+
+                        AnotherAttrItemVM vm = new AnotherAttrItemVM();
+                        vm.name.set(list.get(j).attributesName);
+
+                        vm.id = list.get(j).attributesId;
+                        vm.attributesValueId=list.get(j).attributesValueId;
+                        vm.value.set(list.get(j).attributesContent);
+//                        if(list.get(j).attributesContent==null||list.get(j).attributesContent.equals("")){
+//                            vm.toVisibility=false;
+//                        }
+                        vm.isModify.set(true);
+                        anotherAttrItemVMS.add(vm);
+
+
+                    }
+                    for(int k=0;k<fromNetList.size();k++){
+                        boolean isToAdd=true;
+                        for(int j=0;j<list.size()&&isToAdd;j++){
+                            if(list.get(j).attributesName.equals(fromNetList.get(k).attributesName)){
+                                isToAdd=false;
+                            }
+                        }
+                        if(isToAdd){
+                            AnotherAttrItemVM vm = new AnotherAttrItemVM();
+                            vm.name.set(fromNetList.get(k).attributesName);
+
+                            vm.id = fromNetList.get(k).attributesId;
+                            vm.attributesValueId=fromNetList.get(k).attributesValueId;
+                            vm.value.set(fromNetList.get(k).attributesContent);
+//                            if(fromNetList.get(k).attributesContent==null||fromNetList.get(k).attributesContent.equals("")){
+//                                vm.toVisibility=false;
+//                            }
+                            vm.isModify.set(true);
+                            anotherAttrItemVMS.add(vm);
+                        }
+                    }
+                }
+
+
+               // anotherAdapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_another_attr_list_litem, anotherAttrItemVMS, BR.anotherItemVM);
+                NoScrollLinearLayoutManager linearLayoutManager = new NoScrollLinearLayoutManager(getActivity());
+                linearLayoutManager.setScrollEnabled(false);
+                binding.anotherAttrRecycle.setLayoutManager(linearLayoutManager);
+                binding.anotherAttrRecycle.setAdapter(anotherAdapter);
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                LogUtil.d("test","fragment进入数据失败");
+            }
+        });
+
+
     }
 
 
@@ -224,6 +327,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
 
     public void loadDefault(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp) {
+
+
 
         GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
         showDisplayContent(data, false);
@@ -271,7 +376,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         clientBaseMsgVM.clientWidght.set(data.getWeight());
 
 
-        LogUtil.d("ActHomeAddClient", "-->" + data.getBirthdayjson());
+
         if (data.getBirthdayjson() != null && TextUtils.isEmpty(data.getBirthdayjson().id) == false) {
             //生日提醒
             ToDo birthdayRemind = new ToDo();
@@ -295,6 +400,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         }
 
         updateClientRelate(data.getClientRelatedList());
+        //纪念日相关
         updateAnnaDay(data.getAnniversaryList()); //纪念日
 
         updateAnotherType(data.getUserAttributesList());
@@ -310,18 +416,21 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         for (int i = 0; i < anotherAttrItemVMS.size(); i++) {
 
-            if (TextUtils.isEmpty(anotherAttrItemVMS.get(i).value.get())) continue;
+            if (TextUtils.isEmpty(anotherAttrItemVMS.get(i).value.get())&&TextUtils.isEmpty(anotherAttrItemVMS.get(i).attributesValueId)){
+                continue;
+            }
 
-            LogUtil.d("test","属性"+anotherAttrItemVMS.get(i).attributesValueId);
+
             AnotherAttributes atr = new AnotherAttributes();
             atr.attributesName = anotherAttrItemVMS.get(i).name.get();
-            atr.attributesContent = anotherAttrItemVMS.get(i).value.get();
+            atr.attributesContent = anotherAttrItemVMS.get(i).value.get()==null?"":anotherAttrItemVMS.get(i).value.get();
             atr.attributesId = anotherAttrItemVMS.get(i).id;
 
             atr.attributesValueId=anotherAttrItemVMS.get(i).attributesValueId;
             list.add(atr);
         }
 
+        LogUtil.d("test","上传的属性"+JsonUtil.GsonString(list));
         if (list.size() == 0) {
             return "";
         } else {
@@ -333,11 +442,12 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     /**
      * 纪念日集合
      */
+    //纪念日相关
     public void updateAnnaDay(List<GetClientDetailMsgResp.AnniversaryListBean> list) {
         anniDayVMS.clear();
         for (int i = 0; i < list.size(); i++) {
             AnniversariesItemVM vm = new AnniversariesItemVM(getActivity());
-            LogUtil.d("ClientBaseMsgFragment", "aniId:" + list.get(i).getId());
+            LogUtil.d("test", "aniId:" + list.get(i).getId());
             vm.id.set(list.get(i).getId() + "");
 
             if (list.get(i).getRemind() != null && TextUtils.isEmpty(list.get(i).getRemind().content) == false) {
@@ -373,6 +483,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     }
 
+    //纪念日相关
     public void updateAnnaDayStatus(boolean isModify) {
 
         if (isModify ) {
@@ -391,50 +502,135 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     public void updateAnotherAttr(boolean isModify) {
 
+        LogUtil.d("test","fragment更新状态");
         HashMap<String,AnotherAttributes> tmp= new HashMap<>();
         if (isModify) {
-            for(int i = 0 ;i < anotherAttrItemVMS.size();i++){
-
-
-                AnotherAttributes atr = new AnotherAttributes();
-                atr.attributesId = anotherAttrItemVMS.get(i).id;
-
-                atr.attributesContent = anotherAttrItemVMS.get(i).value.get();
-
-                atr.attributesName = anotherAttrItemVMS.get(i).name.get();
-
-                atr.attributesValueId= anotherAttrItemVMS.get(i).attributesValueId;
-
-                tmp.put(atr.attributesName,atr);
-
-                LogUtil.d("test","名字列表"+JsonUtil.GsonString(tmp));
-            }
-
-            anotherAttrItemVMS.clear();
-            List<AnotherAttributes> local = SpUtil.getInstance().getUser().anotherAttributes;
-
-            for(int i = 0 ; i < local.size();i++) {
-
-
-                AnotherAttrItemVM vm = new AnotherAttrItemVM();
-                vm.name.set(local.get(i).attributesName);
-                vm.id = local.get(i).attributesId;
-                vm.lineShow.set(true);
 
 
 
-                if (tmp.get(local.get(i).attributesName) != null) {
-                    vm.value.set(tmp.get(local.get(i).attributesName).attributesContent);
-                } else {
-                    vm.value.set("");
+            fromNetList.clear();
+            GetAttrListReq req = new GetAttrListReq();
+            req.token = SpUtil.getInstance().getCurrentToken();
+            req.sign = SignUtil.signData(req);
+
+
+            RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_ATTR_LIST)
+                    .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetAttrListResp>>(){
+
+                    })).subscribe(new BaseObserver<BaseResp<GetAttrListResp>>() {
+                @Override
+                protected void onSuccess(BaseResp<GetAttrListResp> getAttrListRespBaseResp) throws Exception {
+
+
+
+                    for(int i = 0 ; i < getAttrListRespBaseResp.getDatas().attributesValueList.size();i++) {
+
+                        AnotherAttributes anotherAttributes=new AnotherAttributes();
+                        anotherAttributes.attributesId=getAttrListRespBaseResp.getDatas().attributesValueList.get(i).id;
+                        anotherAttributes.attributesName=getAttrListRespBaseResp.getDatas().attributesValueList.get(i).attributesName;
+                        for(int j=0;j<anotherAttrItemVMS.size();j++){
+                            if(anotherAttributes.attributesName.equals(anotherAttrItemVMS.get(j).name.get())){
+                                anotherAttributes.attributesValueId=anotherAttrItemVMS.get(j).attributesValueId;
+                                anotherAttributes.attributesContent=anotherAttrItemVMS.get(j).value.get();
+                            }
+                        }
+                        fromNetList.add(anotherAttributes);
+
+
+
+                    }
+
+
+                    LogUtil.d("test","fragment进入数据"+JsonUtil.GsonString(getAttrListRespBaseResp.getDatas().attributesValueList));
+
+
+                    tmpMap.clear();
+                    anotherAttrItemVMS.clear();
+
+
+                    List<AnotherAttributes> list = SpUtil.getInstance().getUser().anotherAttributes;
+
+
+
+                    LogUtil.d("test","初始化属性长度"+fromNetList.size());
+
+
+                    if(list.size()==0){
+                        LogUtil.d("test","初始化本地沒有数据");
+                        for(int j=0;j<fromNetList.size();j++){
+
+                            AnotherAttrItemVM vm = new AnotherAttrItemVM();
+                            vm.name.set(fromNetList.get(j).attributesName);
+
+                            vm.id = fromNetList.get(j).attributesId;
+                            vm.attributesValueId=fromNetList.get(j).attributesValueId;
+                            vm.value.set(fromNetList.get(j).attributesContent);
+//                            if(fromNetList.get(j).attributesContent==null||fromNetList.get(j).attributesContent.equals("")){
+//                                vm.toVisibility=false;
+//                            }
+
+                            vm.isModify.set(true);
+                            anotherAttrItemVMS.add(vm);
+
+
+                        }
+
+                    }else{
+                        LogUtil.d("test","本地有数据");
+                        for(int j=0;j<list.size();j++){
+
+                            AnotherAttrItemVM vm = new AnotherAttrItemVM();
+                            vm.name.set(list.get(j).attributesName);
+
+                            vm.id = list.get(j).attributesId;
+                            vm.attributesValueId=list.get(j).attributesValueId;
+                            vm.value.set(list.get(j).attributesContent);
+//                            if(list.get(j).attributesContent==null||list.get(j).attributesContent.equals("")){
+//                                vm.toVisibility=false;
+//                            }
+
+                            vm.isModify.set(true);
+                            anotherAttrItemVMS.add(vm);
+
+
+                        }
+                        for(int k=0;k<fromNetList.size();k++){
+                            boolean isToAdd=true;
+                            for(int j=0;j<list.size()&&isToAdd;j++){
+                                if(list.get(j).attributesName.equals(fromNetList.get(k).attributesName)){
+                                    isToAdd=false;
+                                }
+                            }
+                            if(isToAdd){
+                                AnotherAttrItemVM vm = new AnotherAttrItemVM();
+                                vm.name.set(fromNetList.get(k).attributesName);
+
+                                vm.id = fromNetList.get(k).attributesId;
+                                vm.attributesValueId=fromNetList.get(k).attributesValueId;
+                                vm.value.set(fromNetList.get(k).attributesContent);
+//                                if(fromNetList.get(k).attributesContent==null||fromNetList.get(k).attributesContent.equals("")){
+//                                    vm.toVisibility=false;
+//                                }
+
+                                vm.isModify.set(true);
+                                anotherAttrItemVMS.add(vm);
+                            }
+                        }
+                    }
+                    anotherAdapter.notifyDataSetChanged();
                 }
 
-                vm.isModify.set(true);
-                vm.attributesValueId=local.get(i).attributesValueId;
-                anotherAttrItemVMS.add(vm);
-            }
+                @Override
+                protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
 
-            anotherAdapter.notifyDataSetChanged();
+                }
+            });
+
+
+
+
+
+
 
         }
 
@@ -475,11 +671,12 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     }
 
 
+    //ClientBaseMsgFragment返回
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        LogUtil.d("ClientBaseFragment","-->" + requestCode + "," + resultCode);
+
 
         /**
          * 用于生日
@@ -488,7 +685,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
             ToDo toDo = data.getParcelableExtra(RemindSettingActivity.KEY_OF_TODO);
 
-            LogUtil.d("ClientBaseFragment","-->" + toDo);
+
             lastAnniversariesItemVM.toDo = toDo;
             if (toDo.isRemind == 1) {
                 lastAnniversariesItemVM.remindIcon.set(R.mipmap.ic_remind);
@@ -508,6 +705,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
 
         } else if (requestCode == AttrManagerActivity.REQUEST_CODE && resultCode == RESULT_OK) {
+            LogUtil.d("test","添加属性后返回");
             anotherAttrItemVMS.clear();
             initAnotherAttr();
 
@@ -521,29 +719,51 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         updateAnnaDayStatus(status);
 
 
+
         updatePhoneStatus(status);
         updateAnotherAttr(status);
         if (status) {//编辑
             showDisplayContent(null, true);
+
             LogUtil.d("test","编辑");
+
         } else { //完成
-           LogUtil.d("test","完成");
+            LogUtil.d("test","完成");
+
         }
     }
 
-    public void updateAnotherType(List<GetClientDetailMsgResp.AnotherAttrBean> attr) {
+    public void updateAnotherType(List<GetClientDetailMsgResp.AnotherAttrBean> anotherAttrBeans) {
+
+        User user=SpUtil.getInstance().getUser();
+        List<AnotherAttributes>  anotherAttributesList=new ArrayList<>();
+
+        for(int i=0;i<anotherAttrBeans.size();i++){
+            AnotherAttributes anotherAttributes=new AnotherAttributes();
+            anotherAttributes.attributesName=anotherAttrBeans.get(i).attributesName;
+            anotherAttributes.attributesId=anotherAttrBeans.get(i).id;
+            anotherAttributes.attributesContent=anotherAttrBeans.get(i).attributesValue;
+            anotherAttributes.attributesValueId=anotherAttrBeans.get(i).attributesValueId;
+            anotherAttributesList.add(anotherAttributes);
+        }
+        user.anotherAttributes=anotherAttributesList;
+        LogUtil.d("test","返回插入数据"+JsonUtil.GsonString(user.anotherAttributes));
+        SpUtil.getInstance().saveNewsUser(user);
 
         anotherAttrItemVMS.clear();
-        for(int i = 0 ; i < attr.size();i++){
-            AnotherAttributes tmp = tmpMap.get(attr.get(i).attributesName);
-            if (tmp != null && TextUtils.isEmpty(attr.get(i).attributesValue) == false) {//包含相同的名字
+        for(int i = 0 ; i < anotherAttrBeans.size();i++){
+            //AnotherAttributes tmp = tmpMap.get(attr.get(i).attributesName);
+            if (TextUtils.isEmpty(anotherAttrBeans.get(i).attributesValue) == false) {//包含相同的名字
                 AnotherAttrItemVM vm = new AnotherAttrItemVM();
 
-                vm.name.set(attr.get(i).attributesName);
-                vm.attributesValueId=attr.get(i).attributesValueId;
+                vm.name.set(anotherAttrBeans.get(i).attributesName);
+                vm.attributesValueId=anotherAttrBeans.get(i).attributesValueId;
 
-                vm.id = attr.get(i).id;
-                vm.value.set(attr.get(i).attributesValue);
+                vm.value.set(anotherAttrBeans.get(i).attributesValue);
+
+
+                vm.id = anotherAttrBeans.get(i).id;
+
                 vm.isModify.set(false);
                 anotherAttrItemVMS.add(vm);
             }
@@ -578,6 +798,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     }
 
+    //纪念日相关
     private void initAniDay() {
         anniDayAdapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_layout_ani_day, anniDayVMS, BR.anniverVM);
         NoScrollLinearLayoutManager linearLayoutManager = new NoScrollLinearLayoutManager(getActivity());
@@ -627,6 +848,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     }
 
+
+    //纪念日相关
     private void initAniDayHead(int position) {
 
         AnniversariesItemVM vm = new AnniversariesItemVM(getActivity());
@@ -753,21 +976,21 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         clientBaseMsgVM = new ClientBaseMsgVM(this);
         clientBaseMsgVM.activity = getActivity();
         clientBaseMsgVM.isModify.set(isModify);
-        if(isModify){
-            LogUtil.d("test","编辑状态");
-        }else{
-            LogUtil.d("test","保存状态");
-        }
 
+        LogUtil.d("test","进入开始");
         binding.setClientBaseVM(clientBaseMsgVM);
 
 
-        LogUtil.d("test","开始进入");
+        anotherAdapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_another_attr_list_litem, anotherAttrItemVMS, BR.anotherItemVM);
+        NoScrollLinearLayoutManager linearLayoutManager = new NoScrollLinearLayoutManager(getActivity());
+        linearLayoutManager.setScrollEnabled(false);
+        binding.anotherAttrRecycle.setLayoutManager(linearLayoutManager);
+        binding.anotherAttrRecycle.setAdapter(anotherAdapter);
 
         initPhoneRecycle();
         initClientRelateRecycle();
         initAniDay();
-        initAnotherAttr();
+       // initAnotherAttr();
         updatePhoneStatus(clientBaseMsgVM.isModify.get());//更新一下电话的状态
         updateAnnaDayStatus(clientBaseMsgVM.isModify.get());
 
@@ -937,7 +1160,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         }
 
     }
-
+    //纪念日相关
     @Override
     public void anniDayClick(int type, AnniversariesItemVM item) {
         if (type == 1) { //add
@@ -968,6 +1191,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         }
     }
 
+
+    //纪念日相关
     private void removeAniDay(AnniversariesItemVM item) {
 
         DelAniDayReq req = new DelAniDayReq();

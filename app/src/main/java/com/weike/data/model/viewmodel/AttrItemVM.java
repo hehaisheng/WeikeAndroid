@@ -13,6 +13,9 @@ public class AttrItemVM {
 
     public ObservableField<String> id = new ObservableField<>("");
 
+    public String  attrContent;
+
+
     public ObservableField<Boolean> isDisplayReduce = new ObservableField<>(false);
 
     public OnReduceListener listener;
