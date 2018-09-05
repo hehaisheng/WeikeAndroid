@@ -747,7 +747,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             anotherAttributesList.add(anotherAttributes);
         }
         user.anotherAttributes=anotherAttributesList;
-        LogUtil.d("test","返回插入数据"+JsonUtil.GsonString(user.anotherAttributes));
+
         SpUtil.getInstance().saveNewsUser(user);
 
         anotherAttrItemVMS.clear();
@@ -977,7 +977,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         clientBaseMsgVM.activity = getActivity();
         clientBaseMsgVM.isModify.set(isModify);
 
-        LogUtil.d("test","进入开始");
+
         binding.setClientBaseVM(clientBaseMsgVM);
 
 
@@ -1096,6 +1096,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         } else if (type == AddClientRelateItemVM.AddClientRelateItemListener.REDUCE) {
 
+
+
             DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否删除关联客户", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1107,8 +1109,36 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 public void onClick(View v) {
                     LogUtil.d("test","删除");
 
-                    clientRelateItemVMS.remove(vm);
-                    clientRelateAdapter.notifyDataSetChanged();
+                    if(vm.id==null){
+                        clientRelateItemVMS.remove(vm);
+                        clientRelateAdapter.notifyDataSetChanged();
+                    }else{
+                        DeleteRelatedClientReq deleteRelatedClientReq=new DeleteRelatedClientReq();
+                        deleteRelatedClientReq.id = vm.id;
+                        deleteRelatedClientReq.sign = SignUtil.signData(deleteRelatedClientReq);
+
+
+                        RetrofitFactory.getInstance().getService().postAnything(deleteRelatedClientReq, Config.DELETE_RELATED_CLIENT)
+                                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
+
+                                })).subscribe(new BaseObserver<BaseResp>() {
+                            @Override
+                            protected void onSuccess(BaseResp baseResp) throws Exception {
+                                LogUtil.d("test","删除");
+
+
+                                vm.clientId = null;
+                                vm.clientName.set("请选择");
+                                clientRelateAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                                LogUtil.d("test","失败");
+                            }
+                        });
+                    }
+
 
 
 
@@ -1118,45 +1148,56 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             });
 
         } else if (type == AddClientRelateItemVM.AddClientRelateItemListener.CANCEL_FIRST) {
+
             DialogUtil.showButtonDialog(getFragmentManager(), "提示", "是否删除关联客户", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    LogUtil.d("test","取消删除");
+                    LogUtil.d("test","取消");
                 }
             }, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    LogUtil.d("test","删除");
 
-                    DeleteRelatedClientReq deleteRelatedClientReq=new DeleteRelatedClientReq();
-                    deleteRelatedClientReq.id = vm.id;
-                    deleteRelatedClientReq.sign = SignUtil.signData(deleteRelatedClientReq);
-
-
-                    RetrofitFactory.getInstance().getService().postAnything(deleteRelatedClientReq, Config.DELETE_RELATED_CLIENT)
-                            .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
-
-                            })).subscribe(new BaseObserver<BaseResp>() {
-                        @Override
-                        protected void onSuccess(BaseResp baseResp) throws Exception {
-                            LogUtil.d("test","删除");
+                    if(vm.id==null){
+                        clientRelateItemVMS.remove(vm);
+                        clientRelateAdapter.notifyDataSetChanged();
+                    }else{
+                        DeleteRelatedClientReq deleteRelatedClientReq=new DeleteRelatedClientReq();
+                        deleteRelatedClientReq.id = vm.id;
+                        deleteRelatedClientReq.sign = SignUtil.signData(deleteRelatedClientReq);
 
 
-                            vm.clientId = null;
-                            vm.clientName.set("请选择");
-                            clientRelateAdapter.notifyDataSetChanged();
-                        }
+                        RetrofitFactory.getInstance().getService().postAnything(deleteRelatedClientReq, Config.DELETE_RELATED_CLIENT)
+                                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>() {
 
-                        @Override
-                        protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                            LogUtil.d("test","失败");
-                        }
-                    });
+                                })).subscribe(new BaseObserver<BaseResp>() {
+                            @Override
+                            protected void onSuccess(BaseResp baseResp) throws Exception {
+                                LogUtil.d("test","删除");
+
+
+                                vm.clientId = null;
+                                vm.clientName.set("请选择");
+                                clientRelateAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                                LogUtil.d("test","失败");
+                            }
+                        });
+                    }
+
+
+
 
 
 
                 }
             });
+
         }
 
     }

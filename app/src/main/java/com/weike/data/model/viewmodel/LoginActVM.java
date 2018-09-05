@@ -110,7 +110,7 @@ public class LoginActVM extends BaseVM {
      * 获取验证码
      */
     public void getVerificationCode() {
-        //TODO  get 验证码 叼你老母
+        //TODO  get 验证码
 
         if (TextUtils.isEmpty(phoneNum.get())) {
             ToastUtil.showToast("手机号码不能为空");
@@ -246,38 +246,56 @@ public class LoginActVM extends BaseVM {
         LoginByPwdReq req = new LoginByPwdReq();
         req.phoneNumber = phoneNum.get();
         LogUtil.d("LoginActVm","" +JPushInterface.getRegistrationID(WKBaseApplication.getInstance()));
-        req.igNo = JPushInterface.getRegistrationID(WKBaseApplication.getInstance());;
-        req.password = pwd.get();
+        req.igNo = JPushInterface.getRegistrationID(WKBaseApplication.getInstance());
         req.sign = SignUtil.signData(req);
+        req.password = pwd.get();
+        if(req.password!=null){
+            if(req.password.length()<6){
+                ToastUtil.showToast("密码最短长度需为6");
+            }else{
+                String passwordString=req.password;
+                String regex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+                boolean result=passwordString.matches(regex);
+                result=true;
+                if(result){
+                    RetrofitFactory.getInstance().getService().postAnything(req, Config.LOGIN_FOR_ACCOUNT)
+                            .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<LoginByPwdResp>>() {
+
+                            })).subscribe(new BaseObserver<BaseResp<LoginByPwdResp>>() {
+                        @Override
+                        protected void onSuccess(BaseResp<LoginByPwdResp> loginByPwdResp) throws Exception {
+                            if (Integer.parseInt(loginByPwdResp.getResult()) == 1) {
+                                String token = loginByPwdResp.getDatas().token;
+                                SpUtil.getInstance().saveCurrentToken(token); //登录保存令牌
+                                User u  = SpUtil.getInstance().getUser();
+                                u.userPwd = pwd.get();
+                                u.account = phoneNum.get();
+                                SpUtil.getInstance().saveNewsUser(u);
 
 
+                                ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class, true);
+                            } else {
+                                ToastUtil.showToast(loginByPwdResp.getMessage());
+                            }
+                        }
 
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.LOGIN_FOR_ACCOUNT)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<LoginByPwdResp>>() {
+                        @Override
+                        protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
 
-                })).subscribe(new BaseObserver<BaseResp<LoginByPwdResp>>() {
-            @Override
-            protected void onSuccess(BaseResp<LoginByPwdResp> loginByPwdResp) throws Exception {
-                if (Integer.parseInt(loginByPwdResp.getResult()) == 1) {
-                    String token = loginByPwdResp.getDatas().token;
-                    SpUtil.getInstance().saveCurrentToken(token); //登录保存令牌
-                   User u  = SpUtil.getInstance().getUser();
-                   u.userPwd = pwd.get();
-                   u.account = phoneNum.get();
-                   SpUtil.getInstance().saveNewsUser(u);
-
-
-                    ActivitySkipUtil.skipAnotherAct(activity, HomeActivity.class, true);
-                } else {
-                    ToastUtil.showToast(loginByPwdResp.getMessage());
+                        }
+                    });
+                }else{
+                    ToastUtil.showToast("密码需由字母和数字组成");
                 }
             }
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+        }
 
-            }
-        });
+
+
+
+
+
     }
 
 }

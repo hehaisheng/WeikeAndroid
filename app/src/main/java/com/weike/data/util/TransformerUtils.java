@@ -1,17 +1,25 @@
 package com.weike.data.util;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseResp;
 import com.weike.data.broadcast.TokenFailedBroadcast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+
+import static java.util.Collections.*;
 
 /**
  * Created by LeoLu on 2018/5/23.
@@ -26,9 +34,10 @@ public class TransformerUtils {
                     .flatMap(responseBody -> {
                         try {
                             String responseStr = responseBody.string();
-
-
                             BaseResp baseResp = JsonUtil.GsonToBean(responseStr,BaseResp.class);
+
+
+
                             if ((baseResp.getResult() + "") .equals("100040")){
                                 WKBaseApplication.getInstance().getApplicationContext()
                                         .sendBroadcast(new Intent(TokenFailedBroadcast.TOKEN_FAILED));

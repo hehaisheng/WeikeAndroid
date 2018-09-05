@@ -101,7 +101,15 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
         isSle = isSle == true ? false : true;
 
         for (int i = 0; i < vms.size(); i++) {
-            vms.get(i).isSel.set(isSle);
+            if(vms.get(i).clientId!=null){
+                if(vms.get(i).clientId.equals("0")){
+                    vms.get(i).isSel.set(false);
+                }else{
+                    vms.get(i).isSel.set(isSle);
+                }
+
+            }
+
             vms.get(i).isCheck.set(false);
         }
         if(adapter!=null){
@@ -122,6 +130,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
                 })).subscribe(new BaseObserver<BaseResp<GetMsgListResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetMsgListResp> getMsgListRespBaseResp) throws Exception {
+
 
                 if (page> 1 && getMsgListRespBaseResp.getDatas().messageGroupVmList.size() == 0) {
                     ToastUtil.showToast("暂无更多");
@@ -146,6 +155,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
                     MessageItemVM vm = new MessageItemVM((FragmentActivity) context);
                     vm.clientId = getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientId;
                     vm.title.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientName);
+
                     vm.content.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).messageContent);
                     vm.iconUrl.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).photoUrl);
                     vm.msgId = getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).id;

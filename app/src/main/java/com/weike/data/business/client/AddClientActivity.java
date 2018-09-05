@@ -188,12 +188,12 @@ public class AddClientActivity extends BaseActivity {
             setLeftText("客户信息");
             setRightText("编辑");
             status = false;
-            LogUtil.d("test","处于完成状态");
+
         } else {
             setLeftText("添加客户");
             status = true;
             setRightText("完成");
-            LogUtil.d("test","处于编辑状态");
+
 
         }
         isModify = status;
@@ -315,7 +315,7 @@ public class AddClientActivity extends BaseActivity {
                    GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
 
                     List<GetClientDetailMsgResp.AnotherAttrBean> anotherAttrBeans=data.getUserAttributesList();
-                    LogUtil.d("test","返回的属性"+JsonUtil.GsonString(anotherAttrBeans));
+
 
 
 

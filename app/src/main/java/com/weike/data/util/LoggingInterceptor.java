@@ -13,6 +13,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import okio.Buffer;
 import okio.BufferedSource;
 
@@ -44,14 +45,8 @@ public class LoggingInterceptor implements Interceptor {
                 charset = contentType.charset(UTF8);
             }
             body = buffer.readString(charset);
+
         }
-
-
-
-        /*Logger.d("发送请求\nmethod：%s\nurl：%s\nheaders: %sbody：%s",
-                request.method(), request.url(), request.headers(), body);*/
-
-
 
 
         long startNs = System.nanoTime();
@@ -76,10 +71,18 @@ public class LoggingInterceptor implements Interceptor {
                 }
             }
             rBody = buffer.clone().readString(charset);
+
         }
 
-        Logger.e("收到响应 %s%s %ss\n请求url：%s\n请求body：%s\n响应body：%s",
-                response.code(), response.message(), tookMs, response.request().url(), body, rBody);
+
+
+
+
+
+        LogUtil.d("test","请求体"+body);
+        LogUtil.d("test","返回体"+rBody);
+
+
 
         return response;
     }
