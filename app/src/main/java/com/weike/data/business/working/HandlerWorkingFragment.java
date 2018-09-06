@@ -4,7 +4,9 @@ package com.weike.data.business.working;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -29,19 +31,23 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.business.client.AddClientActivity;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
+import com.weike.data.business.msg.MsgFragment;
 import com.weike.data.config.Config;
 import com.weike.data.config.DataConfig;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.EditAndDeleteTodoReq;
 import com.weike.data.model.req.GetClientTagListReq;
 import com.weike.data.model.req.GetHandleWorkListReq;
+import com.weike.data.model.req.GetMsgListReq;
 import com.weike.data.model.req.GetToDoByTagReq;
 import com.weike.data.model.resp.EditAndDeleteTodoResp;
 import com.weike.data.model.resp.GetClientTagListResp;
 import com.weike.data.model.resp.GetHandleWorkListResp;
+import com.weike.data.model.resp.GetMsgListResp;
 import com.weike.data.model.resp.GetTodoByTagResp;
 import com.weike.data.model.viewmodel.ExpandGroupVM;
 import com.weike.data.model.viewmodel.HandleWorkItemVM;
+import com.weike.data.model.viewmodel.MessageItemVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.ClientTagComparator;
@@ -103,6 +109,7 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
 
     private int page;
 
+   public boolean isFirst=true;
     DialogFragment dialogFragment;
     private List<List<HandleWorkItemVM>> childVMs = new ArrayList<>();
     private List<ExpandGroupVM> groupVMS = new ArrayList<>();
@@ -303,6 +310,24 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        LogUtil.d("test","可见");
+        if (isVisibleToUser) {
+            if(isFirst){
+                isFirst=false;
+
+            }else{
+                loadDataOfList(1, 1, true);
+            }
+
+
+        } else {
+
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -323,58 +348,69 @@ public class HandlerWorkingFragment extends BaseFragment implements CompoundButt
         loadingView.setVisibility(View.VISIBLE);
         nothing.setVisibility(View.GONE);
 
-        GetHandleWorkListReq req = new GetHandleWorkListReq();
-        req.page = page;
-        req.toDoType = type;
-        req.sign = SignUtil.signData(req);
 
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_TO_DO_LIST)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetHandleWorkListResp>>() {
 
-                })).subscribe(new BaseObserver<BaseResp<GetHandleWorkListResp>>() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
+            public void run() {
+                GetHandleWorkListReq req = new GetHandleWorkListReq();
+                req.page = page;
+                req.toDoType = type;
+                req.sign = SignUtil.signData(req);
+
+                RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_TO_DO_LIST)
+                        .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetHandleWorkListResp>>() {
+
+                        })).subscribe(new BaseObserver<BaseResp<GetHandleWorkListResp>>() {
+                    @Override
+                    protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
 
 
-                loadingView.setVisibility(View.GONE);
-                if(getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
-                    nothing.setVisibility(View.VISIBLE);
-                    return;
-                }
+                        loadingView.setVisibility(View.GONE);
+                        if (page == 1) {
+                            vms.clear();
+                        }
+                        if(getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
 
-                if (page == 1) {
-                    vms.clear();
-                }
+                            nothing.setVisibility(View.VISIBLE);
+                            return;
+                        }
 
 
-                for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
-                    HandleWorkItemVM vm = new HandleWorkItemVM();
-                    vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
-                    vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
-                    vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
-                    vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
-                    vm.clientId.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientId);
-                    vm.setListener(HandlerWorkingFragment.this);
-                    vm.setChangeContentListener(HandlerWorkingFragment.this);
-                    int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
-                    if (pro == DataConfig.RemindLevel.TYPE_OF_HEIGHT) {
-                        vm.readClickBg.set(R.mipmap.ic_finish_red);
-                    } else if (pro == DataConfig.RemindLevel.TYPE_OF_MID) {
-                        vm.readClickBg.set(R.mipmap.ic_right_yellow);
-                    } else if (pro == DataConfig.RemindLevel.TYPE_OF_LOAD) {
-                        vm.readClickBg.set(R.mipmap.ic_right_blue);
+
+
+                        for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
+                            HandleWorkItemVM vm = new HandleWorkItemVM();
+                            vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
+                            vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
+                            vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
+                            vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
+                            vm.clientId.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientId);
+                            vm.setListener(HandlerWorkingFragment.this);
+                            vm.setChangeContentListener(HandlerWorkingFragment.this);
+                            int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
+                            if (pro == DataConfig.RemindLevel.TYPE_OF_HEIGHT) {
+                                vm.readClickBg.set(R.mipmap.ic_finish_red);
+                            } else if (pro == DataConfig.RemindLevel.TYPE_OF_MID) {
+                                vm.readClickBg.set(R.mipmap.ic_right_yellow);
+                            } else if (pro == DataConfig.RemindLevel.TYPE_OF_LOAD) {
+                                vm.readClickBg.set(R.mipmap.ic_right_blue);
+                            }
+                            vms.add(vm);
+                        }
+                        recycleAdapter.notifyDataSetChanged();
+
                     }
-                    vms.add(vm);
-                }
-                recycleAdapter.notifyDataSetChanged();
 
+                    @Override
+                    protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                        nothing.setVisibility(View.VISIBLE);
+                    }
+                });
             }
+        },350);
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
 
-            }
-        });
     }
 
     @Override

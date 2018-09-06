@@ -199,7 +199,7 @@ public class MsgDetailActivity extends BaseActivity implements OnRefreshLoadmore
             protected void onSuccess(BaseResp<GetClientMsgDetailListResp> getClientMsgDetailListRespBaseResp) throws Exception {
                 List<GetClientMsgDetailListResp.MessageListBean> list = getClientMsgDetailListRespBaseResp.getDatas().getMessageList();
 
-                LogUtil.d("test","消息"+JsonUtil.GsonString(list));
+                // LogUtil.d("test","消息"+JsonUtil.GsonString(list));
 
                 if (page > 1 && list.size() == 0) {
                     MsgDetailActivity.this.page = MsgDetailActivity.this.page - 1;//恢复页码

@@ -55,6 +55,7 @@ public class AppSettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 relativeLayout.setVisibility(View.VISIBLE);
+                //因为一进入就会做更新操作,所以这里不做操作
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

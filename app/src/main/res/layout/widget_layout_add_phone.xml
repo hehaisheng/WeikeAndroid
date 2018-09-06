@@ -60,6 +60,8 @@
                 android:background="@color/color_touming"
                 android:hint="请输入"
                 android:minWidth="200dp"
+                android:inputType="number"
+                android:maxLength="15"
 
                 android:text="@={addPhoneVM.phoneNumber}" />
 

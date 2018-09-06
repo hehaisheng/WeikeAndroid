@@ -1,6 +1,7 @@
 package com.weike.data.business.working;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.weike.data.business.client.AddClientActivity;
 import com.weike.data.business.log.AddLogActivity;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.config.Config;
+import com.weike.data.config.DataConfig;
 import com.weike.data.model.business.ToDo;
 import com.weike.data.model.req.EditAndDeleteTodoReq;
 import com.weike.data.model.req.GetHandleWorkListReq;
@@ -149,6 +151,22 @@ public class AlreadyHandledFragment extends BaseFragment implements
 
     }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            LogUtil.d("test","可见");
+            loadDataOfList(2, 1, true);
+
+
+        } else {
+
+        }
+    }
+
+
+
     public void toRefresh(){
         vms.clear();
         loadDataOfList(2, 1, true);
@@ -173,53 +191,68 @@ public class AlreadyHandledFragment extends BaseFragment implements
         loadingView.setVisibility(View.VISIBLE);
         nothingView.setVisibility(View.GONE);
 
-        GetHandleWorkListReq req = new GetHandleWorkListReq();
-        req.page = page;
-        req.toDoType = type;
-        req.sign = SignUtil.signData(req);
 
-
-
-
-
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_TO_DO_LIST)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetHandleWorkListResp>>() {
-
-                })).subscribe(new BaseObserver<BaseResp<GetHandleWorkListResp>>() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
-                loadingView.setVisibility(View.GONE);
-                LogUtil.d("test","获取已办事项"+ JsonUtil.GsonString(getHandleWorkListRespBaseResp.getDatas()));
-                if (getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
-                    nothingView.setVisibility(View.VISIBLE);
-                    return;
-                }
+            public void run() {
+                GetHandleWorkListReq req = new GetHandleWorkListReq();
+                req.page = page;
+                req.toDoType = type;
+                req.sign = SignUtil.signData(req);
 
 
-                for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
-                    HandleWorkItemVM vm = new HandleWorkItemVM();
-                    vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
-                    vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
-                    vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
-                    vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
-                    vm.clientId.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientId);
-                    vm.setListener(AlreadyHandledFragment.this);
-                    vm.setChangeContentListener(AlreadyHandledFragment.this);
-                    vm.readVisibility.set(false);
-                    int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
-                    vm.readClickBg.set(R.mipmap.ic_finish_gray);
-                    vms.add(vm);
-                }
-                recycleAdapter.notifyDataSetChanged();
 
+
+
+                RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_TO_DO_LIST)
+                        .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetHandleWorkListResp>>() {
+
+                        })).subscribe(new BaseObserver<BaseResp<GetHandleWorkListResp>>() {
+                    @Override
+                    protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
+                        loadingView.setVisibility(View.GONE);
+                        LogUtil.d("test","获取已办事项"+ JsonUtil.GsonString(getHandleWorkListRespBaseResp.getDatas()));
+                        if (getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
+                            nothingView.setVisibility(View.VISIBLE);
+                            return;
+                        }
+
+                        if(page == 1) { //如果是第一页
+                            vms.clear();
+                        }
+
+
+                        for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
+                            HandleWorkItemVM vm = new HandleWorkItemVM();
+                            vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
+                            vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
+                            vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
+                            vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
+                            vm.clientId.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientId);
+                            vm.setListener(AlreadyHandledFragment.this);
+                            vm.setChangeContentListener(AlreadyHandledFragment.this);
+                            vm.readVisibility.set(false);
+                            int pro = getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).priority;
+                            vm.readClickBg.set(R.mipmap.ic_finish_gray);
+                            vms.add(vm);
+                        }
+                        recycleAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                        nothingView.setVisibility(View.VISIBLE);
+                        LogUtil.d("test","获取已办事项失败");
+                    }
+                });
             }
+        },350);
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
 
-                LogUtil.d("test","获取已办事项失败");
-            }
-        });
+
+
+
     }
 
 

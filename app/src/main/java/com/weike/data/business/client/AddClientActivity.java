@@ -170,7 +170,7 @@ public class AddClientActivity extends BaseActivity {
       initPhotoSel();
       addFragment();
       initMsg();
-       initClickStatus();
+      initClickStatus();
 
 
     }
@@ -244,6 +244,9 @@ public class AddClientActivity extends BaseActivity {
     private void addFragment() {
 
         clientId = getIntent().getStringExtra(TAG_CLIENT_ID);
+        if(clientId==null){
+            WKBaseApplication.getInstance().hasNoClientId=true;
+        }
 
         ClientBaseMsgFragment clientBaseMsgFragment = new ClientBaseMsgFragment();
         ClientServiceMsgFragment serviceMsgFragment = new ClientServiceMsgFragment();
@@ -298,7 +301,9 @@ public class AddClientActivity extends BaseActivity {
 
         GetClientDetailMsgReq req = new GetClientDetailMsgReq();
         req.clientId = clientId;
+
         req.sign = SignUtil.signData(req);
+        WKBaseApplication.getInstance().id=clientId;
 
 
         RetrofitFactory.getInstance().getService().postAnything(req,Config.GET_CLIENT_DETAIL)
@@ -310,7 +315,7 @@ public class AddClientActivity extends BaseActivity {
 
 
 
-
+                LogUtil.d("test","返回的数据"+JsonUtil.GsonString(getClientDetailMsgRespBaseResp));
 
                    GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
 
@@ -324,13 +329,8 @@ public class AddClientActivity extends BaseActivity {
                 vm.remarks.set(data.getRemark());
                 vm.label.set(TextUtils.isEmpty(data.getClientLabelName()) ? "未分组" : data.getClientLabelName());
 
-
-
-
-
-
-                       ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
-                       clientBaseMsgFragment.loadDefault(getClientDetailMsgRespBaseResp);
+                ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
+                clientBaseMsgFragment.loadDefault(getClientDetailMsgRespBaseResp);
 
                     //基本信息
 
@@ -756,6 +756,7 @@ public class AddClientActivity extends BaseActivity {
 
 
         req.sign = SignUtil.signData(req);
+        LogUtil.d("test","上传的数据"+JsonUtil.GsonString(req));
 
 
 

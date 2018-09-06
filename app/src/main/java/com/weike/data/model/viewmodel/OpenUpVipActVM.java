@@ -162,7 +162,7 @@ public class OpenUpVipActVM extends BaseVM {
         req.platform = "wxpay";
         req.sign = SignUtil.signData(req);
 
-        LogUtil.d("test","威信"+ JsonUtil.GsonString(req));
+        LogUtil.d("test","微信"+ JsonUtil.GsonString(req));
 
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_PAY_DATA)
@@ -228,7 +228,7 @@ public class OpenUpVipActVM extends BaseVM {
 
         GetPayDataReq req = new GetPayDataReq();
         req.buyNum = Integer.parseInt(allYear.get());
-       req.money = money + "";
+        req.money = money + "";
        // req.money = "0.1";
         req.orderNo = System.currentTimeMillis() + "";
         req.platform = "alipay";
@@ -243,7 +243,7 @@ public class OpenUpVipActVM extends BaseVM {
             @Override
             protected void onSuccess(BaseResp<GetPayDataResp> getPayDataRespBaseResp) throws Exception {
                 String orderInfo = getPayDataRespBaseResp.getDatas().alipay;
-
+                LogUtil.d("test","支付宝"+ orderInfo);
                 new Thread(){
                     public void run(){
                         PayTask alipay = new PayTask(activity);
@@ -257,7 +257,7 @@ public class OpenUpVipActVM extends BaseVM {
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-
+                LogUtil.d("test","支付宝失败");
             }
         });
     }

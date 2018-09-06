@@ -53,6 +53,7 @@ public class RemindSettingActivity extends BaseActivity {
     private ToDo toDo;
 
     public static void startActivity(Activity activity, ToDo toDo){
+        LogUtil.d("test","1");
         Intent intent = new Intent(activity,RemindSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(KEY_OF_TODO , toDo);
@@ -65,6 +66,7 @@ public class RemindSettingActivity extends BaseActivity {
      * @param toDo
      */
     public static void startActivity(BaseFragment fragment, ToDo toDo){
+        LogUtil.d("test","2");
         Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(KEY_OF_TODO , toDo);
@@ -79,6 +81,7 @@ public class RemindSettingActivity extends BaseActivity {
      * @param logid
      */
     public static void startActivity(BaseFragment fragment, int test ,String logid){
+        LogUtil.d("test","3");
         Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(KEY_LOG_ID , logid);
@@ -92,6 +95,7 @@ public class RemindSettingActivity extends BaseActivity {
      * @param requestCode
      */
     public static void startActivity(BaseFragment fragment, ToDo toDo,int requestCode){
+        LogUtil.d("test","4");
         Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(KEY_OF_TODO , toDo);
@@ -104,6 +108,7 @@ public class RemindSettingActivity extends BaseActivity {
      * @param id
      */
     public static void startActivity(BaseFragment fragment, String id){
+        LogUtil.d("test","5");
         Intent intent = new Intent(fragment.getContext(),RemindSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(KEY_OF_ID , id);
@@ -123,12 +128,12 @@ public class RemindSettingActivity extends BaseActivity {
         logId = getIntent().getStringExtra(KEY_LOG_ID);
 
         if (toDo != null) {
-            LogUtil.d("test","initCurrentTodo()");
+            LogUtil.d("test","initCurrentTodo");
             initCurrentTodo();
         }
 
         if (id != null) {
-            LogUtil.d("test","initCurrentTodoByNet)");
+            LogUtil.d("test","initCurrentTodoByNet");
             initCurrentTodoByNet();
         }
 
@@ -215,8 +220,6 @@ public class RemindSettingActivity extends BaseActivity {
         GetTodoByLogReq req = new GetTodoByLogReq();
         req.id = logId;
         req.sign = SignUtil.signData(req);
-
-
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_TODO_BY_LOG)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetTodoByLogResp>>() {
@@ -326,7 +329,7 @@ public class RemindSettingActivity extends BaseActivity {
     }
 
     private void initCurrentTodo(){
-        LogUtil.d("test","" + "本地"+JsonUtil.GsonString(toDo));
+
 
         vm.isRemind.set(toDo.isRemind == 1  ? true : false);
         vm.isUnRemind.set(toDo.isRemind == 2  ? true : false);
@@ -420,7 +423,9 @@ public class RemindSettingActivity extends BaseActivity {
         toDo = compass();
 
 
-        if (logId != null) { //通过日志获取
+        if (logId != null) {
+            //通过日志获取
+            LogUtil.d("test","日志");
             Intent intent = new Intent();
             intent.putExtra(KEY_LOG_ID,toDo);
             setResult(RESULT_OK,intent);
@@ -429,6 +434,7 @@ public class RemindSettingActivity extends BaseActivity {
         }
 
         if (id != null) { //如果ID 不为空 那么就是修改
+            LogUtil.d("test","修改");
             modifyOneTodo();
         } else {
             Intent intent = new Intent();
@@ -460,7 +466,7 @@ public class RemindSettingActivity extends BaseActivity {
 
 
 
-        if( req.content.length()>=255){
+        if(req.content.length()>=255){
 
 
             DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "内容字符长度不能超过255", new View.OnClickListener() {

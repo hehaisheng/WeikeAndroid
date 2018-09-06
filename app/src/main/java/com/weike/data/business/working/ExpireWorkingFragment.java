@@ -1,6 +1,7 @@
 package com.weike.data.business.working;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -127,6 +128,19 @@ public class ExpireWorkingFragment extends BaseFragment implements
         super.onResume();
 
     }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            LogUtil.d("test","可见");
+            loadDataOfList(3, 1, true);
+
+
+        } else {
+
+        }
+    }
 
     private void initRecycleView() {
 
@@ -145,60 +159,68 @@ public class ExpireWorkingFragment extends BaseFragment implements
         loadingView.setVisibility(View.VISIBLE);
         nothingView.setVisibility(View.GONE);
 
-        GetHandleWorkListReq req = new GetHandleWorkListReq();
-        req.page = page;
-        req.toDoType = type;
-        req.sign = SignUtil.signData(req);
 
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_TO_DO_LIST)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetHandleWorkListResp>>() {
-
-                })).subscribe(new BaseObserver<BaseResp<GetHandleWorkListResp>>() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
+            public void run() {
+                GetHandleWorkListReq req = new GetHandleWorkListReq();
+                req.page = page;
+                req.toDoType = type;
+                req.sign = SignUtil.signData(req);
+
+                RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_TO_DO_LIST)
+                        .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetHandleWorkListResp>>() {
+
+                        })).subscribe(new BaseObserver<BaseResp<GetHandleWorkListResp>>() {
+                    @Override
+                    protected void onSuccess(BaseResp<GetHandleWorkListResp> getHandleWorkListRespBaseResp) throws Exception {
 
 
-                LogUtil.d("test","过期事项"+ JsonUtil.GsonString(getHandleWorkListRespBaseResp));
-                loadingView.setVisibility(View.GONE);
-                if (getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
-                    nothingView.setVisibility(View.VISIBLE);
-                    return;
-                }
+                        LogUtil.d("test","过期事项"+ JsonUtil.GsonString(getHandleWorkListRespBaseResp));
+                        loadingView.setVisibility(View.GONE);
+                        if (getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
+                            nothingView.setVisibility(View.VISIBLE);
+                            return;
+                        }
 
-                if (page > 1 && getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
-                    ExpireWorkingFragment.this.page = ExpireWorkingFragment.this.page - 1;//恢复页码
-                    ToastUtil.showToast("暂无更多");
-                    smartRefreshLayout.finishLoadmore();
-                    return;
-                }
+                        if (page > 1 && getHandleWorkListRespBaseResp.getDatas().toDoList.size() == 0) {
+                            ExpireWorkingFragment.this.page = ExpireWorkingFragment.this.page - 1;//恢复页码
+                            ToastUtil.showToast("暂无更多");
+                            smartRefreshLayout.finishLoadmore();
+                            return;
+                        }
 
-                if(page == 1) { //如果是第一页
-                    vms.clear();
-                }
+                        if(page == 1) { //如果是第一页
+                            vms.clear();
+                        }
 
 
-                for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
-                    HandleWorkItemVM vm = new HandleWorkItemVM();
-                    vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
-                    vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
-                    vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
-                    vm.readVisibility.set(true);
-                    vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
-                    vm.setListener(ExpireWorkingFragment.this);
-                    vm.setChangeContentListener(ExpireWorkingFragment.this);
-                    vm.clientId.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientId);
+                        for (int i = 0; i < getHandleWorkListRespBaseResp.getDatas().toDoList.size(); i++) {
+                            HandleWorkItemVM vm = new HandleWorkItemVM();
+                            vm.userName.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientName);
+                            vm.time.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).toDoDate);
+                            vm.content.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).content);
+                            vm.readVisibility.set(true);
+                            vm.id.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).id);
+                            vm.setListener(ExpireWorkingFragment.this);
+                            vm.setChangeContentListener(ExpireWorkingFragment.this);
+                            vm.clientId.set(getHandleWorkListRespBaseResp.getDatas().toDoList.get(i).clientId);
 
-                    vms.add(vm);
-                }
-                recycleAdapter.notifyDataSetChanged();
+                            vms.add(vm);
+                        }
+                        recycleAdapter.notifyDataSetChanged();
 
+                    }
+
+                    @Override
+                    protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                        nothingView.setVisibility(View.VISIBLE);
+                    }
+                });
             }
+        },350);
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
 
-            }
-        });
     }
 
 

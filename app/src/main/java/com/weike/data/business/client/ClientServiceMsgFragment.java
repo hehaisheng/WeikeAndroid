@@ -216,6 +216,7 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
 
 
     private ToDo compass(ProductBean.RemindBean remindBean) {
+        LogUtil.d("test","产品的数据"+JsonUtil.GsonString(remindBean));
         ToDo toDo = new ToDo();
         toDo.isRemind = remindBean.isRemind;
         toDo.isRepeat = remindBean.isRepeat;

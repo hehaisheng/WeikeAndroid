@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
@@ -95,15 +96,18 @@ public class RelateClientActivity extends BaseActivity {
     public boolean isSignleCheck =false;
 
     public static void startActivity(boolean singleCheck , Activity activity,int requestCode) {
+        LogUtil.d("test","1");
         Intent intent = new Intent(activity,RelateClientActivity.class);
         intent.putExtra("signleCheck",singleCheck);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivityForResult(intent,requestCode);
     }
 
-    public static void startActivity(boolean singleCheck , BaseFragment fragment, int requestCode) {
+    public static void startActivity(boolean singleCheck , BaseFragment fragment, int requestCode,String id) {
+        LogUtil.d("test","2");
         Intent intent = new Intent(fragment.getContext(),RelateClientActivity.class);
         intent.putExtra("signleCheck",singleCheck);
+        intent.putExtra("id",id);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         fragment.startActivityForResult(intent,requestCode);
     }
@@ -115,7 +119,7 @@ public class RelateClientActivity extends BaseActivity {
         needFresh = true;
     }
 
-    @OnClick(R.id.tv_add_newClient)
+    @OnClick(R.id.tv_add_client)
     public void addNewClient(View view){
         ActivitySkipUtil.skipAnotherAct(this,AddClientActivity.class);
         needFresh = false;
@@ -132,6 +136,8 @@ public class RelateClientActivity extends BaseActivity {
 
     private boolean isMove = true;
 
+    public String id;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,6 +145,8 @@ public class RelateClientActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         isSignleCheck = getIntent().getBooleanExtra("signleCheck",false);
+        id=getIntent().getStringExtra("id");
+
         setCenterText("");
         if(isSignleCheck == false)
             setRightText("完成");
@@ -283,15 +291,34 @@ public class RelateClientActivity extends BaseActivity {
             @Override
             public void onItemClick(int position, View view) {
                 if (isSignleCheck == false) return;
-                ArrayList<ClientRelated> relateds = new ArrayList<>();
-                ClientRelated clientRelated = new ClientRelated();
-                clientRelated.name = contentVMS.get(position).title.get();
-                clientRelated.clientId =contentVMS.get(position).id.get();
-                relateds.add(clientRelated);
-                Intent intent = new Intent();
-                intent.putExtra("data",relateds);
-                setResult(RESULT_OK,intent);
-                finish();
+
+                if(id.equals(contentVMS.get(position).id.get())){
+                    DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "自己不能关联自己", new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+
+
+                        }
+                    });
+                }else{
+                    ArrayList<ClientRelated> relateds = new ArrayList<>();
+                    ClientRelated clientRelated = new ClientRelated();
+                    clientRelated.name = contentVMS.get(position).title.get();
+                    clientRelated.clientId =contentVMS.get(position).id.get();
+                    relateds.add(clientRelated);
+                    Intent intent = new Intent();
+                    intent.putExtra("data",relateds);
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }
+
 
             }
         });

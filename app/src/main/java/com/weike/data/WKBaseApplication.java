@@ -35,6 +35,7 @@ public class WKBaseApplication extends Application {
     public boolean  hasNewLabel=false;
     public boolean  hasNoClientId=false;
 
+    public String  id;
 
     @Override
     public void onCreate() {

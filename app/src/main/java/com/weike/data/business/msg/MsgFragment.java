@@ -1,11 +1,13 @@
 package com.weike.data.business.msg;
 
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.google.gson.reflect.TypeToken;
 import com.mylhyl.circledialog.CircleDialog;
@@ -67,18 +69,22 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
 
     View nothingView;
 
+    RelativeLayout relativeLayout;
+
+
     @Override
     protected int setUpLayoutId() {
         return R.layout.fragment_msg_notice;
     }
 
     private void initView(View view) {
+        relativeLayout=view.findViewById(R.id.relative_layout);
         msgList = view.findViewById(R.id.ry_msg_list);
         nothingView = view.findViewById(R.id.ll_nothing_view);
         smartRefreshLayout = view.findViewById(R.id.smartrefreshlayout);
         smartRefreshLayout.setOnRefreshLoadmoreListener(this);
-        msgList.setLayoutManager(new LinearLayoutManager(WKBaseApplication.getInstance().getApplicationContext()));
-        adapter = new BaseDataBindingAdapter(WKBaseApplication.getInstance().getApplicationContext(), R.layout.widget_message_item, vms, BR.messageItemVM);
+        msgList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_message_item, vms, BR.messageItemVM);
         adapter.setOnRecyclerViewItemClickListener(new BaseDataBindingAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(int position, View view) {
@@ -94,12 +100,20 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
 
     private boolean isSle = false;
 
+    public boolean isFirst=true;
+
     @Override
     public void onRightClick() {
         super.onRightClick();
 
-        isSle = isSle == true ? false : true;
+        isSle = !isSle;
+        //isSle = isSle == true ? false : true;
 
+        if(isSle){
+            LogUtil.d("test","编辑");
+        }else{
+            LogUtil.d("test","不是编辑");
+        }
         for (int i = 0; i < vms.size(); i++) {
             if(vms.get(i).clientId!=null){
                 if(vms.get(i).clientId.equals("0")){
@@ -113,74 +127,110 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
             vms.get(i).isCheck.set(false);
         }
         if(adapter!=null){
+            LogUtil.d("test","不为空");
+            adapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_message_item, vms, BR.messageItemVM);
+
+            adapter.notifyDataSetChanged();
+        }else{
+
+            LogUtil.d("test","为空");
+            adapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_message_item, vms, BR.messageItemVM);
+
             adapter.notifyDataSetChanged();
         }
+
 
     }
 
     private void initMsg(int page) {
-        LogUtil.d("MsgFragment",page +"");
-        GetMsgListReq req = new GetMsgListReq();
-        req.page = page;
-        req.token = SpUtil.getInstance().getCurrentToken();
-        req.sign = SignUtil.signData(req);
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_MSG_LIST)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetMsgListResp>>() {
 
-                })).subscribe(new BaseObserver<BaseResp<GetMsgListResp>>() {
+        relativeLayout.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
             @Override
-            protected void onSuccess(BaseResp<GetMsgListResp> getMsgListRespBaseResp) throws Exception {
+            public void run() {
+                GetMsgListReq req = new GetMsgListReq();
+                req.page = page;
+                req.token = SpUtil.getInstance().getCurrentToken();
+                req.sign = SignUtil.signData(req);
+                RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_MSG_LIST)
+                        .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetMsgListResp>>() {
 
+                        })).subscribe(new BaseObserver<BaseResp<GetMsgListResp>>() {
+                    @Override
+                    protected void onSuccess(BaseResp<GetMsgListResp> getMsgListRespBaseResp) throws Exception {
+                        relativeLayout.setVisibility(View.GONE);
 
-                if (page> 1 && getMsgListRespBaseResp.getDatas().messageGroupVmList.size() == 0) {
-                    ToastUtil.showToast("暂无更多");
-                    MsgFragment.this.page = MsgFragment.this.page - 1;//恢复页码
-                    smartRefreshLayout.finishLoadmore();
-                    return;
-                }
+                        LogUtil.d("test","消息"+JsonUtil.GsonString(getMsgListRespBaseResp));
 
-                if(page == 1) {//下拉
+                        if (page> 1 && getMsgListRespBaseResp.getDatas().messageGroupVmList.size() == 0) {
+                            ToastUtil.showToast("暂无更多");
+                            MsgFragment.this.page = MsgFragment.this.page - 1;//恢复页码
+                            smartRefreshLayout.finishLoadmore();
+                            return;
+                        }
 
-                    vms.clear();
-                    smartRefreshLayout.finishRefresh();
-                }
+                        if(page == 1) {//下拉
 
-                if (getMsgListRespBaseResp.getDatas().messageGroupVmList.size() == 0) {
-                    nothingView.setVisibility(View.VISIBLE);
-                } else {
-                    nothingView.setVisibility(View.GONE);
-                }
+                            vms.clear();
+                            smartRefreshLayout.finishRefresh();
+                        }
 
-                for (int i = 0; i < getMsgListRespBaseResp.getDatas().messageGroupVmList.size(); i++) {
-                    MessageItemVM vm = new MessageItemVM((FragmentActivity) context);
-                    vm.clientId = getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientId;
-                    vm.title.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientName);
+                        if (getMsgListRespBaseResp.getDatas().messageGroupVmList.size() == 0) {
+                            nothingView.setVisibility(View.VISIBLE);
+                        } else {
+                            nothingView.setVisibility(View.GONE);
+                        }
 
-                    vm.content.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).messageContent);
-                    vm.iconUrl.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).photoUrl);
-                    vm.msgId = getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).id;
-                    vms.add(vm);
-                }
-                adapter.notifyDataSetChanged();
-                smartRefreshLayout.finishRefresh();
-                smartRefreshLayout.finishLoadmore();
+                        for (int i = 0; i < getMsgListRespBaseResp.getDatas().messageGroupVmList.size(); i++) {
+                            MessageItemVM vm = new MessageItemVM((FragmentActivity) context);
+                            vm.clientId = getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientId;
+                            vm.title.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientName);
+
+                            vm.content.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).messageContent);
+                            vm.iconUrl.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).photoUrl);
+                            vm.msgId = getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).id;
+                            vms.add(vm);
+                        }
+                        adapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_message_item, vms, BR.messageItemVM);
+                        msgList.setAdapter(adapter);
+
+                       // adapter.notifyDataSetChanged();
+                        smartRefreshLayout.finishRefresh();
+                        smartRefreshLayout.finishLoadmore();
+                    }
+
+                    @Override
+                    protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                        relativeLayout.setVisibility(View.GONE);
+                    }
+                });
             }
+        },350);
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
 
-            }
-        });
+
 
     }
 
     @Override
     protected void loadFinish(View view) {
+        isFirst=true;
 
         initView(view);
         initMsg(page);
 
 
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            initMsg(page);
+        } else {
+
+        }
     }
 
     private void deleteMsg(int state) {

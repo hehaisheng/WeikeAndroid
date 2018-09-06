@@ -13,6 +13,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.weike.data.BR;
 import com.weike.data.R;
+import com.weike.data.WKBaseApplication;
 import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
@@ -142,62 +143,69 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
     }
 
     public void loadData(boolean isFist,final int page){
-        GetClientLogByIdReq req = new GetClientLogByIdReq();
-        req.id = clientId;
-        req.page = page;
-        req.sign = SignUtil.signData(req);
 
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_LOG_BY_ID)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetClientLogByIdResp>>(){
+        if(!WKBaseApplication.getInstance().hasNoClientId){
 
-                })).subscribe(new BaseObserver<BaseResp<GetClientLogByIdResp>>() {
-            @Override
-            protected void onSuccess(BaseResp<GetClientLogByIdResp> getClientLogByIdRespBaseResp) throws Exception {
+            GetClientLogByIdReq req = new GetClientLogByIdReq();
+            req.id = clientId;
+            req.page = page;
+            req.sign = SignUtil.signData(req);
 
-                smartRefreshLayout.finishLoadmore();
-                smartRefreshLayout.finishRefresh();
-                if (page == 1) {
-                    vms.clear();
-                } else if (page > 1 && getClientLogByIdRespBaseResp.getDatas().getLogList().size() > 0)  {
-                    vms.get(vms.size()-1).isShowLine.set(true);
-                } else if (page > 1 && getClientLogByIdRespBaseResp.getDatas().getLogList().size() == 0) {
-                    ToastUtil.showToast("暂无更多");
-                    ClientLogFragment.this.page = ClientLogFragment.this.page - 1;//恢复页码
-                    return;
-                }
+            RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_LOG_BY_ID)
+                    .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetClientLogByIdResp>>(){
 
+                    })).subscribe(new BaseObserver<BaseResp<GetClientLogByIdResp>>() {
+                @Override
+                protected void onSuccess(BaseResp<GetClientLogByIdResp> getClientLogByIdRespBaseResp) throws Exception {
 
-                for(int i = 0 ; i < getClientLogByIdRespBaseResp.getDatas().getLogList().size();i++){
-                    GetClientLogByIdResp.LogListBean bean = getClientLogByIdRespBaseResp.getDatas().getLogList().get(i);
-                    ClientLogItemVM vm = new ClientLogItemVM();
-                    if (bean.isRemind == 1) {
-                        vm.remindIcon.set(R.mipmap.ic_remind);
-                    } else {
-                        vm.remindIcon.set(R.mipmap.ic_remind_dis);
+                    smartRefreshLayout.finishLoadmore();
+                    smartRefreshLayout.finishRefresh();
+                    if (page == 1) {
+                        vms.clear();
+                    } else if (page > 1 && getClientLogByIdRespBaseResp.getDatas().getLogList().size() > 0)  {
+                        vms.get(vms.size()-1).isShowLine.set(true);
+                    } else if (page > 1 && getClientLogByIdRespBaseResp.getDatas().getLogList().size() == 0) {
+                        ToastUtil.showToast("暂无更多");
+                        ClientLogFragment.this.page = ClientLogFragment.this.page - 1;//恢复页码
+                        return;
                     }
 
-                    vm.id = bean.getId() + "";
-                    vm.content.set(bean.getContent());
-                    vm.time.set(bean.getLogDate());
-                    vm.isModify.set(isModify);
-                    vm.setListener(ClientLogFragment.this);
-                    if(i == getClientLogByIdRespBaseResp.getDatas().getLogList().size() - 1) {
-                        vm.isShowLine.set(false);
-                    } else {
-                        vm.isShowLine.set(true);
+
+                    for(int i = 0 ; i < getClientLogByIdRespBaseResp.getDatas().getLogList().size();i++){
+                        GetClientLogByIdResp.LogListBean bean = getClientLogByIdRespBaseResp.getDatas().getLogList().get(i);
+                        ClientLogItemVM vm = new ClientLogItemVM();
+                        if (bean.isRemind == 1) {
+                            vm.remindIcon.set(R.mipmap.ic_remind);
+                        } else {
+                            vm.remindIcon.set(R.mipmap.ic_remind_dis);
+                        }
+
+                        vm.id = bean.getId() + "";
+                        vm.content.set(bean.getContent());
+                        vm.time.set(bean.getLogDate());
+                        vm.isModify.set(isModify);
+                        vm.setListener(ClientLogFragment.this);
+                        if(i == getClientLogByIdRespBaseResp.getDatas().getLogList().size() - 1) {
+                            vm.isShowLine.set(false);
+                        } else {
+                            vm.isShowLine.set(true);
+                        }
+                        vms.add(vm);
+
                     }
-                    vms.add(vm);
+                    adapter.notifyDataSetChanged();
 
                 }
-                adapter.notifyDataSetChanged();
 
-            }
+                @Override
+                protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                }
+            });
+        }else{
 
-            }
-        });
+        }
+
     }
 
     @Override

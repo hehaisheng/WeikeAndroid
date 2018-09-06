@@ -503,7 +503,7 @@
                         android:layout_alignBottom="@+id/tv_birth"
                         android:singleLine="true"
                         android:layout_marginLeft="20dp"
-
+                        android:inputType="number|numberDecimal"
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@+id/tv_birth"
                         android:background="@color/color_touming"
@@ -535,7 +535,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:layout_alignBottom="@+id/tv_birth"
-
+                        android:inputType="number|numberDecimal"
 
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@+id/tv_son_title"
@@ -603,8 +603,8 @@
                         android:background="@color/color_touming"
                         android:hint="请输入"
                         android:visibility="@{clientBaseVM.heightDisplay ? View.VISIBLE:View.GONE}"
-                        android:maxLength="3"
-
+                        android:maxLength="6"
+                        android:inputType="number|numberDecimal"
                         android:text="@={clientBaseVM.clientHeight}"
                         android:textSize="14sp"/>
 
@@ -661,9 +661,9 @@
                         android:layout_toRightOf="@+id/tv_weight"
                         android:background="@color/color_touming"
                         android:hint="请输入"
-                        android:maxLength="3"
+                        android:maxLength="6"
                         android:visibility="@{clientBaseVM.widgetDispaly ? View.VISIBLE:View.GONE}"
-
+                        android:inputType="number|numberDecimal"
                         android:text="@={clientBaseVM.clientWidght}"
                         android:textSize="14sp"/>
 

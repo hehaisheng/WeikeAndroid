@@ -98,10 +98,12 @@
                     android:src="@mipmap/ic_redue"
                     android:layout_marginRight="20dp"
                     android:layout_alignParentRight="true"
-                    android:visibility="@{clientLogItemVM.isModify?View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
+
                     android:onClick="@{()->clientLogItemVM.delete()}"
                     android:background="@color/color_touming"
                     android:padding="5dp"
+
                     />
 
                 <ImageButton

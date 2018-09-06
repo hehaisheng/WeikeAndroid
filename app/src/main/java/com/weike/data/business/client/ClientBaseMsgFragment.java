@@ -117,6 +117,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
     public     ClipData     myClip;
 
 
+
     List<AnotherAttributes>  fromNetList=new ArrayList<>();
 
     public void showDisplayContent(GetClientDetailMsgResp data, boolean isMoidfy) {
@@ -203,7 +204,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         anotherAdapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_another_attr_list_litem, anotherAttrItemVMS, BR.anotherItemVM);
 
-        LogUtil.d("test","fragment进入");
+
 
         GetAttrListReq req = new GetAttrListReq();
         req.token = SpUtil.getInstance().getCurrentToken();
@@ -430,7 +431,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             list.add(atr);
         }
 
-        LogUtil.d("test","上传的属性"+JsonUtil.GsonString(list));
+
         if (list.size() == 0) {
             return "";
         } else {
@@ -502,7 +503,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
     public void updateAnotherAttr(boolean isModify) {
 
-        LogUtil.d("test","fragment更新状态");
+
         HashMap<String,AnotherAttributes> tmp= new HashMap<>();
         if (isModify) {
 
@@ -725,10 +726,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         if (status) {//编辑
             showDisplayContent(null, true);
 
-            LogUtil.d("test","编辑");
+
 
         } else { //完成
-            LogUtil.d("test","完成");
+
 
         }
     }
@@ -1091,7 +1092,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         } else if (type == AddClientRelateItemVM.AddClientRelateItemListener.ADD_RELATE) {
 
-            RelateClientActivity.startActivity(true, this, RelateClientActivity.REQUEST_CODE);
+            RelateClientActivity.startActivity(true, this, RelateClientActivity.REQUEST_CODE,WKBaseApplication.getInstance().id);
             lastRelateClientVM = vm;
 
         } else if (type == AddClientRelateItemVM.AddClientRelateItemListener.REDUCE) {

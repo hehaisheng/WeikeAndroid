@@ -30,7 +30,7 @@
 
 
             <CheckBox
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:button="@drawable/selector_checkbox_low"
@@ -39,7 +39,7 @@
                 android:padding="10dp"
                 android:onClick="@{()->remindSettingVM.unRemindCheckBoxClick()}"
                 android:checked="@={remindSettingVM.isUnRemind}"
-                android:minWidth="100dp"
+                android:minWidth="280dp"
                 android:paddingLeft="10dp"
 
                 android:textColor="@color/color_content"
@@ -53,7 +53,7 @@
 
 
                 <CheckBox
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="提醒"
                     android:button="@drawable/selector_checkbox_low"

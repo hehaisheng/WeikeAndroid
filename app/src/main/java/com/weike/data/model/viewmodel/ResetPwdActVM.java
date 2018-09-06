@@ -10,15 +10,19 @@ import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseReq;
 import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
+import com.weike.data.business.home.HomeActivity;
 import com.weike.data.config.Config;
+import com.weike.data.model.business.User;
 import com.weike.data.model.req.GetVCodeAfterLoginReq;
 import com.weike.data.model.req.GetVerificationCodeReq;
 import com.weike.data.model.req.ResetPwdReq;
 import com.weike.data.model.resp.GetVCodeAfterLoginResp;
 import com.weike.data.model.resp.GetVerificationCodeResp;
+import com.weike.data.model.resp.LoginByPwdResp;
 import com.weike.data.model.resp.ResetPwdResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.AccountValidatorUtil;
+import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.CountDownUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -54,7 +58,7 @@ public class ResetPwdActVM extends BaseVM {
     }
 
     public void getVerificationCode() {
-        //TODO  get 验证码 叼你老母
+        //TODO  get 验证码
 
 
 
@@ -108,6 +112,10 @@ public class ResetPwdActVM extends BaseVM {
     }
 
     public void submit(){
+
+
+
+
         if (TextUtils.isEmpty(vCode.get()) || TextUtils.isEmpty(pwd.get())
                 ||TextUtils.isEmpty(pwd2.get())){
             ToastUtil.showToast("重要参数不能为空");
@@ -118,32 +126,54 @@ public class ResetPwdActVM extends BaseVM {
             return;
         }
 
-        ResetPwdReq req = new ResetPwdReq();
-        req.token = SpUtil.getInstance().getCurrentToken();
-        req.code = vCode.get();
-        req.password = pwd.get();
-        req.sign = SignUtil.signData(req);
+
+        String passwordString=pwd.get();
+        String passwordString2=pwd2.get();
+
+            if(pwd.get().length()<6||pwd2.get().length()<6){
+                ToastUtil.showToast("密码最短长度需为6");
+            }else{
+
+                String regex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+                boolean result=passwordString.matches(regex);
+                boolean result2=passwordString2.matches(regex);
+//                result=true;
+//                result2=true;
+                if(result&&result2){
+                    ResetPwdReq req = new ResetPwdReq();
+                    req.token = SpUtil.getInstance().getCurrentToken();
+                    req.code = vCode.get();
+                    req.password = pwd.get();
+                    req.sign = SignUtil.signData(req);
 
 
-        RetrofitFactory.getInstance().getService().postAnything(req, Config.RESET_PWD)
-                .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<ResetPwdResp>>(){
+                    RetrofitFactory.getInstance().getService().postAnything(req, Config.RESET_PWD)
+                            .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<ResetPwdResp>>(){
 
-                })).subscribe(new BaseObserver<BaseResp<ResetPwdResp>>() {
-            @Override
-            protected void onSuccess(BaseResp<ResetPwdResp> resetPwdRespBaseResp) throws Exception {
-                if (Integer.parseInt(resetPwdRespBaseResp.getResult()) == 1){
-                    ToastUtil.showToast("修改成功");
-                    activity.finish();
-                } else {
-                    ToastUtil.showToast("修改失败:" + resetPwdRespBaseResp.getMessage());
+                            })).subscribe(new BaseObserver<BaseResp<ResetPwdResp>>() {
+                        @Override
+                        protected void onSuccess(BaseResp<ResetPwdResp> resetPwdRespBaseResp) throws Exception {
+                            if (Integer.parseInt(resetPwdRespBaseResp.getResult()) == 1){
+                                ToastUtil.showToast("修改成功");
+                                activity.finish();
+                            } else {
+                                ToastUtil.showToast("修改失败:" + resetPwdRespBaseResp.getMessage());
+                            }
+                        }
+
+                        @Override
+                        protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+                        }
+                    });
+
+                }else{
+                    ToastUtil.showToast("密码需由字母和数字组成");
                 }
             }
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
 
-            }
-        });
+
 
     }
 
