@@ -51,5 +51,23 @@ public class ClientLogItemVM extends BaseVM {
     }
 
 
+    public void change(){
+        onChangeListener.change(this);
+    }
+
+
+    public interface  OnChangeListener{
+        void change(ClientLogItemVM clientLogItemVM);
+    }
+
+    public OnChangeListener onChangeListener;
+    public void setOnChangeListener(OnChangeListener onChangeListener){
+        this.onChangeListener=onChangeListener;
+
+    }
+
+
+
+
 
 }

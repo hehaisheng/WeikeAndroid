@@ -81,6 +81,20 @@ public class MySelfFragment extends BaseFragment {
         }
     }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+           if(WKBaseApplication.getInstance().isPaySuccess){
+               init();
+           }
+        } else {
+
+        }
+    }
+
+
     private void init(){
         GetUserInfoReq req = new GetUserInfoReq();
         req.token = SpUtil.getInstance().getCurrentToken();
@@ -92,6 +106,9 @@ public class MySelfFragment extends BaseFragment {
                 })).subscribe(new BaseObserver<BaseResp<GetUserInfoResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
+                if(WKBaseApplication.getInstance().isPaySuccess){
+                    WKBaseApplication.getInstance().isPaySuccess=false;
+                }
                 binding.swipeRefreshLayout.setRefreshing(false);
                 if (Integer.parseInt(getUserInfoRespBaseResp.getResult()) == 0) {
 

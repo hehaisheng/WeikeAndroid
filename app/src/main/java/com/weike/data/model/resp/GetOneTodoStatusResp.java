@@ -16,9 +16,9 @@ public class GetOneTodoStatusResp extends BaseResp {
      */
     public int isAdvance;  // 1是 2 否
 
-    public int advanceDateType; //提前提醒时间类型
+    public String advanceDateType; //提前提醒时间类型
 
-    public int advanceInterval; // 提醒时间间隔
+    public String advanceInterval; // 提醒时间间隔
 
 
     /**
@@ -41,9 +41,9 @@ public class GetOneTodoStatusResp extends BaseResp {
      */
     public int isRepeat = 1; // 是 2 否
 
-    public int repeatInterval;//重复提醒时间间隔
+    public String  repeatInterval;//重复提醒时间间隔
 
-    public int repeatDateType; //重复提醒时间类型
+    public String repeatDateType; //重复提醒时间类型
 
 
     public String remindId;

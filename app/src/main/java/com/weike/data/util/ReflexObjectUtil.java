@@ -34,7 +34,7 @@ public class ReflexObjectUtil {
                 val = f.get(obj);
                 // 得到此属性的值
                 map.put(f.getName(), val);// 设置键值
-                LogUtil.d("acthome",f.getName() + "," + val);
+                LogUtil.d("test",f.getName() + "," + val);
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

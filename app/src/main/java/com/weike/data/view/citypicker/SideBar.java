@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 
 import com.weike.data.R;
+import com.weike.data.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,21 +87,28 @@ public class SideBar extends View {
                 setBackgroundColor(Color.parseColor("#00000000"));
                 choose = -1;
                 invalidate();
-                if (mTextDialog != null) {
-                    mTextDialog.setVisibility(View.GONE);
+                if (listener != null) {
+                    listener.onTouchingLetterChanged(letterList.get(c),false);
                 }
+//                if (mTextDialog != null) {
+//                    mTextDialog.setVisibility(View.GONE);
+//                }
                 break;
             default:
+
                 setBackgroundResource(R.drawable.sidebar_background);
                 if (oldChoose != c) {
+
                     if (c >= 0 && c < letterList.size()) {
+
                         if (listener != null) {
-                            listener.onTouchingLetterChanged(letterList.get(c));
+                            listener.onTouchingLetterChanged(letterList.get(c),true);
                         }
-                        if (mTextDialog != null) {
-                            mTextDialog.setText(letterList.get(c));
-                            mTextDialog.setVisibility(View.VISIBLE);
-                        }
+//                        if (mTextDialog != null) {
+//                            LogUtil.d("test","默认4");
+//                            mTextDialog.setText(letterList.get(c));
+//                            mTextDialog.setVisibility(View.VISIBLE);
+//                        }
                         choose = c;
                         invalidate();
                     }
@@ -138,7 +146,7 @@ public class SideBar extends View {
      * 接口
      */
     public interface OnTouchingLetterChangedListener {
-        void onTouchingLetterChanged(String s);
+        void onTouchingLetterChanged(String s,boolean  toShow);
     }
 
 }

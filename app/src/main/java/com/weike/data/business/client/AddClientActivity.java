@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
@@ -39,21 +40,32 @@ import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.CompressBitmapManager;
+import com.weike.data.util.Constants;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LQRPhotoSelectUtils;
+import com.weike.data.util.LogSortManager;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.ReflexObjectUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import kr.co.namee.permissiongen.PermissionSuccess;
 import okhttp3.MediaType;
@@ -314,14 +326,13 @@ public class AddClientActivity extends BaseActivity {
             protected void onSuccess(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp) throws Exception {
 
 
-
-                LogUtil.d("test","返回的数据"+JsonUtil.GsonString(getClientDetailMsgRespBaseResp));
-
-                   GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
-
-                    List<GetClientDetailMsgResp.AnotherAttrBean> anotherAttrBeans=data.getUserAttributesList();
+                String jsonString=JsonUtil.GsonString(getClientDetailMsgRespBaseResp);
+                String sortString=LogSortManager.newInstance().toSort(jsonString);
+                LogUtil.d(Constants.LOG_DATA,"\n"+"返回的排序数据"+"\n"+sortString);
 
 
+                GetClientDetailMsgResp data = getClientDetailMsgRespBaseResp.getDatas();
+                List<GetClientDetailMsgResp.AnotherAttrBean> anotherAttrBeans=data.getUserAttributesList();
 
 
                 vm.photoUrl.set(data.getPhotoUrl());
@@ -354,6 +365,70 @@ public class AddClientActivity extends BaseActivity {
         });
     }
 
+
+
+
+    public int beanCount=0;
+    public String returnString="";
+
+    public int toChangeCount=0;
+    public String newValue="";
+    Map<String, Object> valueMap = new HashMap<String, Object>();
+    public String toMake(String jsonString){
+
+
+
+        JSONObject jsonObject;
+        try
+        {
+            jsonObject = new JSONObject(jsonString);
+            Iterator<String> keyIter = jsonObject.keys();
+            String key;
+            Object value;
+
+            while (keyIter.hasNext())
+            {
+                key =  keyIter.next();
+                value = jsonObject.get(key);
+                String valueString=key+"@#@"+value;
+                valueMap.put(key,value);
+                if(valueString.contains(":{")&&beanCount==0){
+                    returnString=key+":"+"\n";
+                    beanCount=beanCount+1;
+                    returnString=toMake(valueString.split("@#@")[1]);
+
+
+                }else{
+                    toChangeCount=toChangeCount+1;
+
+                    newValue=newValue+key+":"+value;
+                    if(newValue.length()>=50){
+                        returnString=returnString+"    "+key+":"+value+"\n";
+                        newValue="";
+                    }else{
+
+                        returnString=returnString+"    "+key+":"+value;
+                    }
+//                    if(toChangeCount%2==0){
+//                        returnString=returnString+"    "+key+":"+value+"\n";
+//                    }else{
+//                        returnString=returnString+"    "+key+":"+value;
+//                    }
+
+                }
+            }
+            return  returnString;
+
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+        return returnString;
+
+
+    }
 
 
 //    @Override
@@ -524,6 +599,7 @@ public class AddClientActivity extends BaseActivity {
 
         count=count+1;
 
+        LogUtil.d("androidTest","上传的数据"+JsonUtil.GsonString(req));
 
 
 

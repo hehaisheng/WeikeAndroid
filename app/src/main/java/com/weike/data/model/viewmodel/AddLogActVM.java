@@ -28,6 +28,10 @@ public class AddLogActVM extends BaseVM {
 
 
 
+    public ObservableField<Boolean> toChange = new ObservableField<>(false);
+
+
+
     public ToDo toDo = null;
 
     public AddLogActVM(Activity activity){

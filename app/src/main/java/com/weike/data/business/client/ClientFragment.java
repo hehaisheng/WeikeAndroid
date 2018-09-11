@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -62,6 +63,7 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
     private SmartRefreshLayout smartRefreshLayout;
     private SortAdapter adapter;
     private List<ClientSortModel> datas = new ArrayList<>();
+    public TextView  dialogText;
 
     public static final String ACTION_UPDATE_CLIENT = "com.weike.data.ACTION_UPDATE_CLIENT";
 
@@ -86,6 +88,7 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
         smartRefreshLayout.setOnRefreshListener(this);
         sideBar = view.findViewById(R.id.sidrbar);
         clientList.addHeaderView(initHeadView());
+        dialogText=view.findViewById(R.id.dialog);
 
 
         getActivity().registerReceiver(clientUpdateBr,new IntentFilter(ACTION_UPDATE_CLIENT));
@@ -121,11 +124,21 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
 
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
-            public void onTouchingLetterChanged(String s) {
-                int position = adapter.getPositionForSection(s.charAt(0));
-                if (position != -1) {
-                    clientList.setSelection(position + 1);
+            public void onTouchingLetterChanged(String s,boolean toShow) {
+                if(toShow){
+                    int position = adapter.getPositionForSection(s.charAt(0));
+                    if (dialogText != null) {
+
+                        dialogText.setText(s);
+                        dialogText.setVisibility(View.VISIBLE);
+                    }
+                    if (position != -1) {
+                        clientList.setSelection(position + 1);
+                    }
+                }else{
+                    dialogText.setVisibility(View.GONE);
                 }
+
             }
         });
 

@@ -1,13 +1,20 @@
 package com.weike.data.business.client;
 
 import android.annotation.SuppressLint;
+
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
+import com.mylhyl.circledialog.CircleDialog;
+import com.mylhyl.circledialog.callback.ConfigInput;
+import com.mylhyl.circledialog.params.InputParams;
+import com.mylhyl.circledialog.view.listener.OnInputClickListener;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
@@ -31,6 +38,7 @@ import com.weike.data.model.resp.GetClientLogByIdResp;
 import com.weike.data.model.resp.ModifyLogTodoResp;
 import com.weike.data.model.viewmodel.ClientLogItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.Constants;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
@@ -48,7 +56,7 @@ import static android.app.Activity.RESULT_OK;
  */
 
 @SuppressLint("ValidFragment")
-public class ClientLogFragment extends BaseFragment implements View.OnClickListener ,OnReduceListener<ClientLogItemVM>,OnRefreshLoadmoreListener {
+public class ClientLogFragment extends BaseFragment implements View.OnClickListener ,OnReduceListener<ClientLogItemVM>,OnRefreshLoadmoreListener,ClientLogItemVM.OnChangeListener{
 
     private RecyclerView recyclerView;
 
@@ -63,6 +71,8 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
     private String clientId;
 
     private ClientLogItemVM lastLogVM;
+
+    public android.support.v4.app.DialogFragment dialogFragment;
 
 
     @SuppressLint("ValidFragment")
@@ -106,6 +116,8 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
                 lastLogVM.remindIcon.set(R.mipmap.ic_remind_dis);
             }
             modify(lastLogVM, "" +JsonUtil.GsonString(toDo) + "");
+        }else if(requestCode == 600 && resultCode == RESULT_OK){
+            loadData(true,1);
         }
     }
 
@@ -138,9 +150,24 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
         recyclerView.setAdapter(adapter);
 
 
+
         loadData(true,1);
 
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            LogUtil.d(Constants.LOG_DATA,"修改");
+            loadData(true,1);
+
+        } else {
+
+        }
+    }
+
 
     public void loadData(boolean isFist,final int page){
 
@@ -158,6 +185,8 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
                 @Override
                 protected void onSuccess(BaseResp<GetClientLogByIdResp> getClientLogByIdRespBaseResp) throws Exception {
 
+
+                    LogUtil.d(Constants.LOG_DATA,"log的数据"+JsonUtil.GsonString(getClientLogByIdRespBaseResp));
                     smartRefreshLayout.finishLoadmore();
                     smartRefreshLayout.finishRefresh();
                     if (page == 1) {
@@ -185,6 +214,7 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
                         vm.time.set(bean.getLogDate());
                         vm.isModify.set(isModify);
                         vm.setListener(ClientLogFragment.this);
+                        vm.setOnChangeListener(ClientLogFragment.this);
                         if(i == getClientLogByIdRespBaseResp.getDatas().getLogList().size() - 1) {
                             vm.isShowLine.set(false);
                         } else {
@@ -305,5 +335,13 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         loadData(true,page);
+    }
+
+    @Override
+    public void change(ClientLogItemVM clientLogItemVM) {
+
+        String[] logContent={clientLogItemVM.id+"",clientLogItemVM.content.get()};
+        AddLogActivity.startActivity(logContent,ClientLogFragment.this);
+
     }
 }

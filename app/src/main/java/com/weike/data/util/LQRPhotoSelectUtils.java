@@ -57,7 +57,7 @@ public class LQRPhotoSelectUtils {
         mShouldCrop = shouldCrop;
         AUTHORITIES = activity.getPackageName() + ".fileprovider";
         imgPath = generateImgePath();
-        LogUtil.d("test","LQR图片"+imgPath);
+
     }
 
     /**

@@ -289,7 +289,7 @@ public class HomeActivity extends BaseActivity {
         //currentFragment.onRightClick();
 
         if (currentPosition == 2) { //如果是消息页面
-            isSle = isSle == true ? false:true;
+            isSle = !isSle;
             setRightText(isSle ? "保存":"编辑");
             if (isSle) {
                 btn_deleteMsg.setVisibility(View.VISIBLE);

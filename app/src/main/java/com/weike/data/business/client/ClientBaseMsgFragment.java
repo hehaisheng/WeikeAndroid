@@ -136,6 +136,8 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             clientBaseMsgVM.marryDisplay.set(true);
             clientBaseMsgVM.heightDisplay.set(true);
             clientBaseMsgVM.widgetDispaly.set(true);
+            clientBaseMsgVM.sonDisplay.set(true);
+            clientBaseMsgVM.girlDisplay.set(true);
             clientBaseMsgVM.anniDisplay.set(true);
             clientBaseMsgVM.bearDisplay.set(true);
             clientBaseMsgVM.clientRelateDisplay.set(true);
@@ -166,11 +168,28 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
             }
 
 
-            if (TextUtils.isEmpty(data.getSonNum()) == false || TextUtils.isEmpty(data.getDaughterNum()) == false) {
-                clientBaseMsgVM.bearDisplay.set(true);
-            } else {
+            if(TextUtils.isEmpty(data.getSonNum())  && TextUtils.isEmpty(data.getDaughterNum()) ){
                 clientBaseMsgVM.bearDisplay.set(false);
+            }else{
+                clientBaseMsgVM.bearDisplay.set(true);
+                if(TextUtils.isEmpty(data.getSonNum())){
+                    clientBaseMsgVM.sonDisplay.set(false);
+                }else{
+                    clientBaseMsgVM.sonDisplay.set(true);
+                }
+
+                if(TextUtils.isEmpty(data.getDaughterNum())){
+                    clientBaseMsgVM.girlDisplay.set(false);
+                }else{
+                    clientBaseMsgVM.girlDisplay.set(true);
+                }
             }
+//
+//            if (TextUtils.isEmpty(data.getSonNum()) == false || TextUtils.isEmpty(data.getDaughterNum()) == false) {
+//                clientBaseMsgVM.bearDisplay.set(true);
+//            } else {
+//                clientBaseMsgVM.bearDisplay.set(false);
+//            }
 
 
             if (TextUtils.isEmpty(data.getMarriage()) || Integer.parseInt(data.getMarriage()) == -1) {
@@ -369,10 +388,10 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         }
 
         clientBaseMsgVM.idCard.set(data.getIdCard());
-        clientBaseMsgVM.son.set(data.getSonNum()==""?"0":data.getSonNum());
+        clientBaseMsgVM.son.set(data.getSonNum());
         clientBaseMsgVM.job.set(data.getOffice());
         clientBaseMsgVM.houseLocation.set(data.getHomeDetailAddress());
-        clientBaseMsgVM.gril.set(data.getDaughterNum()==""?"0":data.getDaughterNum());
+        clientBaseMsgVM.gril.set(data.getDaughterNum());
         clientBaseMsgVM.clientHeight.set(data.getHeight());
         clientBaseMsgVM.clientWidght.set(data.getWeight());
 
@@ -448,7 +467,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
         anniDayVMS.clear();
         for (int i = 0; i < list.size(); i++) {
             AnniversariesItemVM vm = new AnniversariesItemVM(getActivity());
-            LogUtil.d("test", "aniId:" + list.get(i).getId());
+
             vm.id.set(list.get(i).getId() + "");
 
             if (list.get(i).getRemind() != null && TextUtils.isEmpty(list.get(i).getRemind().content) == false) {
@@ -457,11 +476,13 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 toDo.content = list.get(i).getRemind().content;
                 toDo.id = list.get(i).getRemind().id;
                 toDo.isAdvance = Integer.parseInt(list.get(i).getRemind().isAdvance);
-                toDo.advanceInterval = Integer.parseInt(list.get(i).getRemind().advanceInterval);
-                toDo.advanceDateType = Integer.parseInt(list.get(i).getRemind().advanceDateType);
-                toDo.repeatInterval = Integer.parseInt(list.get(i).getRemind().repeatInterval);
-                toDo.repeatDateType = Integer.parseInt(list.get(i).getRemind().repeatDateType);
-                toDo.isRepeat = Integer.parseInt(list.get(i).getRemind().isRepeat);
+
+                toDo.advanceInterval = Integer.parseInt(list.get(i).getRemind().advanceInterval==null?"0":list.get(i).getRemind().advanceInterval);
+
+                toDo.advanceDateType = Integer.parseInt(list.get(i).getRemind().advanceDateType==null?"0":list.get(i).getRemind().advanceDateType);
+                toDo.repeatInterval = Integer.parseInt(list.get(i).getRemind().repeatInterval==null?"0":list.get(i).getRemind().repeatInterval);
+                toDo.repeatDateType = Integer.parseInt(list.get(i).getRemind().repeatDateType==null?"0":list.get(i).getRemind().repeatDateType);
+                toDo.isRepeat = Integer.parseInt(list.get(i).getRemind().isRepeat==null?"0":list.get(i).getRemind().isRepeat);
                 toDo.birthdaydate = list.get(i).getRemind().remindDate;
                 if (toDo.isRemind == 1) {
                     vm.remindIcon.set(R.mipmap.ic_remind);
@@ -1139,10 +1160,6 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                             }
                         });
                     }
-
-
-
-
 
 
                 }

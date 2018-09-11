@@ -223,10 +223,10 @@ public class ClientServiceMsgFragment extends BaseFragment implements ProductIte
         toDo.isAdvance = remindBean.isAdvance;
         toDo.birthdaydate = remindBean.remindDate;
         toDo.content = remindBean.content;
-        toDo.advanceDateType = remindBean.advanceDateType;
-        toDo.advanceInterval = remindBean.advanceInterval;
-        toDo.repeatDateType = remindBean.repeatDateType;
-        toDo.repeatInterval = remindBean.repeatInterval;
+        toDo.advanceDateType = Integer.parseInt(remindBean.advanceDateType==null?"0":remindBean.advanceDateType);
+        toDo.advanceInterval = Integer.parseInt(remindBean.advanceInterval==null?"0":remindBean.advanceInterval);
+        toDo.repeatDateType = Integer.parseInt(remindBean.repeatDateType==null?"0":remindBean.repeatDateType);
+        toDo.repeatInterval = Integer.parseInt(remindBean.repeatInterval==null?"0":remindBean.repeatInterval);
 
 
 

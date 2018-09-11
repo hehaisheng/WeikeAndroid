@@ -23,6 +23,18 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             />
+        <TextView
+            android:id="@+id/dialog"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="#606060"
+            android:gravity="center"
+            android:text="A"
+            android:textColor="@android:color/white"
+            android:textSize="36sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <com.weike.data.view.citypicker.SideBar
             android:id="@+id/sidrbar"

@@ -16,6 +16,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.reflect.TypeToken;
@@ -62,6 +63,7 @@ public class ContactActivity extends BaseActivity {
 
     private DialogFragment dialog;
     private SideBar sideBar;
+    public TextView dialogText;
 
     private static List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> sort(List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> list) {
         Collections.sort(list, new Comparator<  contactspicker.util.ContactsPickerHelper.ContactsInfo>() {
@@ -78,9 +80,22 @@ public class ContactActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_data);
         sideBar = findViewById(R.id.sidrbar);
+        dialogText=findViewById(R.id.dialog);
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
-            public void onTouchingLetterChanged(String s) {
+            public void onTouchingLetterChanged(String s,boolean toShow) {
+
+                if(toShow){
+
+                    if (dialogText != null) {
+
+                        dialogText.setText(s);
+                        dialogText.setVisibility(View.VISIBLE);
+                    }
+
+                }else{
+                    dialogText.setVisibility(View.GONE);
+                }
                 scrollToLetter(s);
             }
         });

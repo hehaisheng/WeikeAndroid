@@ -5,9 +5,7 @@ import android.databinding.ObservableField;
 
 import com.weike.data.base.BaseVM;
 import com.weike.data.business.client.AddClientActivity;
-import com.weike.data.databinding.ActivityAddLogBinding;
 
-import io.reactivex.internal.operators.observable.ObservableError;
 
 public class SearchItemVM extends BaseVM {
 

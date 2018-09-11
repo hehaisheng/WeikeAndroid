@@ -478,100 +478,111 @@
                         android:layout_below="@+id/tv_marry"
                         android:background="@color/color_line" />
 
-
-                    <TextView
-                        android:id="@+id/tv_birth"
-                        android:layout_width="wrap_content"
+                    <com.zhy.android.percent.support.PercentLinearLayout
+                        android:id="@+id/son_girl_linear"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/view_br2_line_4"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="15dp"
-                        android:minWidth="70dp"
+                        android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:text="生育"
-                        android:textSize="14sp"
-                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
-                        android:textColor="@color/color_content" />
+                        android:layout_below="@+id/view_br2_line_4"
+                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}">
+                        <TextView
+                            android:id="@+id/tv_birth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
 
-                    <EditText
-                        android:id="@+id/ed_birth_son"
-                        updateEditInput="@{clientBaseVM.isModify}"
-                        android:layout_width="0dp"
-                        app:layout_widthPercent="24%"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/tv_birth"
-                        android:singleLine="true"
-                        android:layout_marginLeft="20dp"
-                        android:inputType="number|numberDecimal"
-                        android:layout_marginTop="15dp"
-                        android:layout_toRightOf="@+id/tv_birth"
-                        android:background="@color/color_touming"
-                        android:hint="请输入"
-                        android:maxLength="3"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:minWidth="70dp"
+                            android:gravity="center_vertical"
+                            android:text="生育"
+                            android:textSize="14sp"
+                            android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
+                            android:textColor="@color/color_content" />
 
-                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
-                        android:text="@={clientBaseVM.son}"
-                        android:textSize="14sp" />
+                        <EditText
+                            android:id="@+id/ed_birth_son"
+                            updateEditInput="@{clientBaseVM.isModify}"
+                            android:layout_width="0dp"
+                            app:layout_widthPercent="24%"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
 
-                    <TextView
-                        android:id="@+id/tv_son_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/tv_birth"
-                        android:layout_toRightOf="@+id/ed_birth_son"
-                        android:text="子"
+                            android:singleLine="true"
+                            android:layout_marginLeft="20dp"
+                            android:inputType="number|numberDecimal"
+                            android:layout_marginTop="15dp"
 
-                        android:textSize="14sp"
-                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
-                        android:textColor="@color/color_content" />
+                            android:background="@color/color_touming"
+                            android:hint="请输入"
+                            android:maxLength="3"
 
+                            android:visibility="@{clientBaseVM.sonDisplay ? View.VISIBLE:View.GONE}"
+                            android:text="@={clientBaseVM.son}"
+                            android:textSize="14sp" />
 
-                    <EditText
-                        android:id="@+id/ed_birth_girl"
-                        updateEditInput="@{clientBaseVM.isModify}"
-                        android:layout_width="0dp"
-                        app:layout_widthPercent="25%"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:layout_alignBottom="@+id/tv_birth"
-                        android:inputType="number|numberDecimal"
+                        <TextView
+                            android:id="@+id/tv_son_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="25dp"
 
-                        android:layout_marginTop="15dp"
-                        android:layout_toRightOf="@+id/tv_son_title"
-                        android:background="@color/color_touming"
-                        android:hint="请输入"
-                        android:maxLength="3"
-                        android:gravity="center"
+                            android:text="子"
+
+                            android:textSize="14sp"
+                            android:visibility="@{clientBaseVM.sonDisplay ? View.VISIBLE:View.GONE}"
+                            android:textColor="@color/color_content" />
 
 
-                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
-                        android:text="@={clientBaseVM.gril}"
-                        android:textSize="14sp" />
+                        <EditText
+                            android:id="@+id/ed_birth_girl"
+                            updateEditInput="@{clientBaseVM.isModify}"
+                            android:layout_width="0dp"
+                            app:layout_widthPercent="25%"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/ed_birth_girl"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignTop="@+id/ed_birth_girl"
-                        android:gravity="center"
+                            android:inputType="number|numberDecimal"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginTop="15dp"
 
-                        android:text="女"
-
-                        android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
-                        android:textSize="14sp"
-                        android:minWidth="50dp"
-                        android:textColor="@color/color_content" />
+                            android:background="@color/color_touming"
+                            android:hint="请输入"
+                            android:maxLength="3"
+                            android:gravity="center"
 
 
+                            android:visibility="@{clientBaseVM.girlDisplay ? View.VISIBLE:View.GONE}"
+                            android:text="@={clientBaseVM.gril}"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_alignParentRight="true"
+
+                            android:gravity="center"
+
+                            android:text="女"
+
+                            android:visibility="@{clientBaseVM.girlDisplay ? View.VISIBLE:View.GONE}"
+                            android:textSize="14sp"
+                            android:minWidth="50dp"
+                            android:textColor="@color/color_content" />
+
+
+
+                    </com.zhy.android.percent.support.PercentLinearLayout>
                     <View
                         android:id="@+id/view_br2_line_5"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:visibility="@{clientBaseVM.bearDisplay ? View.VISIBLE:View.GONE}"
-                        android:layout_below="@+id/tv_birth"
+                        android:layout_below="@+id/son_girl_linear"
                         android:background="@color/color_line" />
+
 
 
                     <TextView

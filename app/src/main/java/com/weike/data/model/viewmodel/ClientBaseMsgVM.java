@@ -127,6 +127,8 @@ public class ClientBaseMsgVM extends BaseVM {
     public ObservableField<Boolean> widgetDispaly = new ObservableField<>(false);
     public ObservableField<Boolean> anniDisplay = new ObservableField<>(false);
     public ObservableField<Boolean> bearDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> sonDisplay = new ObservableField<>(false);
+    public ObservableField<Boolean> girlDisplay = new ObservableField<>(false);
     public ObservableField<Boolean> clientRelateDisplay = new ObservableField<>(false);
     public ObservableField<Boolean> anotherAttrDisplay = new ObservableField<>();
 

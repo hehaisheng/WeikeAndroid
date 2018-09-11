@@ -265,7 +265,7 @@
                         android:layout_width="wrap_content"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
-                        android:text="提醒周期"
+                        android:text="周期提醒"
                         android:minWidth="70dp"
 
                         android:layout_marginLeft="15dp"

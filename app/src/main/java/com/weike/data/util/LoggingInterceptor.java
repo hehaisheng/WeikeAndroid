@@ -32,7 +32,7 @@ public class LoggingInterceptor implements Interceptor {
 
         Request request = chain.request();
         RequestBody requestBody = request.body();
-        LogUtil.d("test","链接"+request.url()+"\n");
+        LogUtil.d("androidTest","链接"+request.url()+"\n");
         String body = null;
 
         if(requestBody != null) {
@@ -74,6 +74,7 @@ public class LoggingInterceptor implements Interceptor {
 
         }
 
+        LogUtil.d(Constants.LOG_DATA,"返回体"+rBody);
 
 
 
@@ -82,7 +83,7 @@ public class LoggingInterceptor implements Interceptor {
                 request.method(), request.url(), request.headers(), body);*/
 
 
-      //  LogUtil.d("test","返回体"+rBody);
+
 
 
 

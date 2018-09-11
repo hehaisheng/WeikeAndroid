@@ -34,6 +34,7 @@ public class WKBaseApplication extends Application {
 
     public boolean  hasNewLabel=false;
     public boolean  hasNoClientId=false;
+    public boolean  isPaySuccess=false;
 
     public String  id;
 

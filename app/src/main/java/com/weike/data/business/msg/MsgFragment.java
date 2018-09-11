@@ -100,7 +100,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
 
     private boolean isSle = false;
 
-    public boolean isFirst=true;
+    //public boolean isFirst=true;
 
     @Override
     public void onRightClick() {
@@ -115,6 +115,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
             LogUtil.d("test","不是编辑");
         }
         for (int i = 0; i < vms.size(); i++) {
+            LogUtil.d("test","vms有数值");
             if(vms.get(i).clientId!=null){
                 if(vms.get(i).clientId.equals("0")){
                     vms.get(i).isSel.set(false);
@@ -126,18 +127,10 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
 
             vms.get(i).isCheck.set(false);
         }
-        if(adapter!=null){
-            LogUtil.d("test","不为空");
-            adapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_message_item, vms, BR.messageItemVM);
 
-            adapter.notifyDataSetChanged();
-        }else{
+        adapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_message_item, vms, BR.messageItemVM);
+        adapter.notifyDataSetChanged();
 
-            LogUtil.d("test","为空");
-            adapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_message_item, vms, BR.messageItemVM);
-
-            adapter.notifyDataSetChanged();
-        }
 
 
     }
@@ -152,6 +145,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
                 req.page = page;
                 req.token = SpUtil.getInstance().getCurrentToken();
                 req.sign = SignUtil.signData(req);
+                LogUtil.d("test","消息"+JsonUtil.GsonString(req));
                 RetrofitFactory.getInstance().getService().postAnything(req, Config.GET_MSG_LIST)
                         .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<GetMsgListResp>>() {
 
@@ -214,7 +208,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
 
     @Override
     protected void loadFinish(View view) {
-        isFirst=true;
+        //isFirst=true;
 
         initView(view);
         initMsg(page);
@@ -227,6 +221,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            page=1;
             initMsg(page);
         } else {
 
@@ -276,14 +271,16 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
 
                 @Override
                 protected void onSuccess(BaseResp baseResp) throws Exception {
-                    for (Iterator<MessageItemVM> it = vms.iterator(); it.hasNext(); ) {
-                        MessageItemVM vm = it.next();
-                        if (vm.isCheck.get()) {
-                            it.remove();
-                        }
-                    }
 
-                    adapter.notifyDataSetChanged(); //刷新
+                    initMsg(1);
+//                    for (Iterator<MessageItemVM> it = vms.iterator(); it.hasNext(); ) {
+//                        MessageItemVM vm = it.next();
+//                        if (vm.isCheck.get()) {
+//                            it.remove();
+//                        }
+//                    }
+
+                    //adapter.notifyDataSetChanged(); //刷新
 
 
                 }
@@ -358,6 +355,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
+        page=1;
         initMsg(page);
     }
 }

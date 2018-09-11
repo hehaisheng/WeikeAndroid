@@ -42,6 +42,8 @@ import com.weike.data.model.resp.GetLabelNumResp;
 import com.weike.data.model.viewmodel.TagSettingVM;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ClientTagComparator;
+import com.weike.data.util.DialogUtil;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -82,6 +84,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
     @OnClick(R.id.btn_add_client_tag)
     public void addLabel(View view){
 
+        //sort
         dialogFragment = new CircleDialog.Builder()
                 .setCanceledOnTouchOutside(false)
                 .setCancelable(true)
@@ -100,6 +103,8 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 .setPositiveInput("确定", new OnInputClickListener() {
                     @Override
                     public void onClick(String text, View v) {
+
+
                         if (TextUtils.isEmpty(text)) {
                             ToastUtil.showToast("信息不能为空");
                             return;
@@ -109,9 +114,32 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                             text = text.substring(0,6);
                         }
 
-                        addLabel(text,null,null);
 
-                        dialogFragment.dismiss();
+                        LogUtil.d("test","长度"+vms.size());
+                        if(vms.size()>=27){
+                            DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "最多能添加26个标签", new View.OnClickListener() {
+
+                                @Override
+                                public void onClick(View view) {
+
+                                }
+                            }, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+
+                                }
+                            });
+
+                        }else{
+                            addLabel(text,null,null);
+
+                            dialogFragment.dismiss();
+                        }
+
+
+
+
                     }
                 })
                 .show(getSupportFragmentManager());
@@ -130,6 +158,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 })).subscribe(new BaseObserver<BaseResp<GetLabelNumResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetLabelNumResp> getLabelNumRespBaseResp) throws Exception {
+                LogUtil.d("test","checkLabelNum"+JsonUtil.GsonString(getLabelNumRespBaseResp));
                     currentLabelTagArray = getLabelNumRespBaseResp.getDatas().labelSort;
                     initLabel();
             }
@@ -156,6 +185,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
         req.sort = TextUtils.isEmpty(id) ?  currentLabelTagArray[0] : vm.sort;
         req.labelId = id;
         req.sign = SignUtil.signData(req);
+        LogUtil.d("test","客户标签"+ JsonUtil.GsonString(req));
 
         RetrofitFactory.getInstance().getService().postAnything(req, Config.ADD_LABEL)
                 .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp<AddLabelResp>>(){
@@ -192,7 +222,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 user.labelList.add(tagSub);
 
                 SpUtil.getInstance().saveNewsUser(user); //保存本地*/
-
+                LogUtil.d("test","客户返回的标签"+ JsonUtil.GsonString(getClientTagListRespBaseResp));
 
                 User user = SpUtil.getInstance().getUser();
                 GetClientTagListResp.TagSub tagSub = new GetClientTagListResp.TagSub();
@@ -259,7 +289,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
         adapter.setOnRecyclerViewItemClickListener(new BaseDataBindingAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(int position, View view) {
-                if(position > 0 && position <= 4) {
+                if(position > 0 ) {
                     dialogFragment = new CircleDialog.Builder()
                             .setCanceledOnTouchOutside(false)
                             .setCancelable(true)
@@ -359,6 +389,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                 })).subscribe(new BaseObserver<BaseResp<GetClientTagListResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetClientTagListResp> getClientTagListRespBaseResp) throws Exception {
+                LogUtil.d("test","initLabel"+JsonUtil.GsonString(getClientTagListRespBaseResp));
                 List<GetClientTagListResp.TagSub> list = getClientTagListRespBaseResp.getDatas().clientLabelList;
                 Collections.sort(list,new ClientTagComparator());
                 for(int i = 0 ; i < list.size() ; i++) {
@@ -371,6 +402,7 @@ public class ClientTagSettingActivity extends BaseActivity implements TagSetting
                         vm.isModify.set(false);
                     }
                     vm.setListener(ClientTagSettingActivity.this);
+                    vm.sort=list.get(i).sort;
                     vm.name.set(list.get(i).sort);
                     vm.isShow.set(true);
                     vms.add(vm);
