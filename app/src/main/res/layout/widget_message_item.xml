@@ -65,10 +65,30 @@
             android:layout_width="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_alignTop="@+id/cardview_message_icon"
-            android:textSize="9sp"
-            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:paddingBottom="4dp"
+            android:layout_height="20dp"
+            android:gravity="center_vertical"
             android:text="@{messageItemVM.title}"
+
             />
+
+
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="16dp"
+
+        android:layout_toRightOf="@+id/tv_title"
+        android:layout_marginTop="7dp"
+        android:text="@{messageItemVM.unReadCount}"
+        android:layout_height="16dp"
+        android:visibility="@{messageItemVM.toShow?View.VISIBLE:View.GONE}"
+
+        android:background="@drawable/circle_point"
+        android:textSize="7sp"
+        android:gravity="center"
+        android:textColor="#FFFFFF"/>
+
 
         <TextView
             android:layout_toRightOf="@+id/cardview_message_icon"
@@ -79,6 +99,7 @@
             android:textSize="12sp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
+
             android:maxLines="2"
             android:text="@{messageItemVM.content}"
             />

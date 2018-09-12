@@ -35,6 +35,7 @@ import com.weike.data.model.req.GetMsgListReq;
 import com.weike.data.model.resp.GetMsgListResp;
 import com.weike.data.model.viewmodel.MessageItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.Constants;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
@@ -179,7 +180,8 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
                             MessageItemVM vm = new MessageItemVM((FragmentActivity) context);
                             vm.clientId = getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientId;
                             vm.title.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).clientName);
-
+                            vm.toShow= getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).unreadNum > 0;
+                            vm.unReadCount=getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).unreadNum+"";
                             vm.content.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).messageContent);
                             vm.iconUrl.set(getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).photoUrl);
                             vm.msgId = getMsgListRespBaseResp.getDatas().messageGroupVmList.get(i).id;
@@ -217,6 +219,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
     }
 
 
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -226,6 +229,24 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
         } else {
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!WKBaseApplication.getInstance().clientId.equals("none")){
+            for (int i = 0; i < vms.size(); i++) {
+                if(vms.get(i).clientId.equals(WKBaseApplication.getInstance().clientId)){
+                    vms.get(i).toShow=false;
+                }
+
+            }
+            adapter.notifyDataSetChanged();
+
+            WKBaseApplication.getInstance().clientId="none";
+        }
+
+
     }
 
     private void deleteMsg(int state) {

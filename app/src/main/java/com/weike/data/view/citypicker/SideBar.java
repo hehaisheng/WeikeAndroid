@@ -6,12 +6,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 
 import com.weike.data.R;
+import com.weike.data.util.Constants;
 import com.weike.data.util.LogUtil;
 
 import java.util.ArrayList;
@@ -82,39 +84,47 @@ public class SideBar extends View {
         final OnTouchingLetterChangedListener listener = onTouchingLetterChangedListener;
         final int c = (int) (y / getHeight() * letterList.size());// 点击y坐标所占总高度的比例*b数组的长度就等于点击b中的个数.
 
-        switch (action) {
-            case MotionEvent.ACTION_UP:
-                setBackgroundColor(Color.parseColor("#00000000"));
-                choose = -1;
-                invalidate();
-                if (listener != null) {
-                    listener.onTouchingLetterChanged(letterList.get(c),false);
-                }
+        if(c<0||c>=27){
+            LogUtil.d(Constants.LOG_DATA,"下标出错");
+            if (listener != null) {
+                listener.onTouchingLetterChanged(letterList.get(1),false);
+            }
+        }else{
+            switch (action) {
+                case MotionEvent.ACTION_UP:
+                    setBackgroundColor(Color.parseColor("#00000000"));
+                    choose = -1;
+                    invalidate();
+                    if (listener != null) {
+                        listener.onTouchingLetterChanged(letterList.get(c),false);
+                    }
 //                if (mTextDialog != null) {
 //                    mTextDialog.setVisibility(View.GONE);
 //                }
-                break;
-            default:
+                    break;
+                default:
 
-                setBackgroundResource(R.drawable.sidebar_background);
-                if (oldChoose != c) {
+                    setBackgroundResource(R.drawable.sidebar_background);
+                    if (oldChoose != c) {
 
-                    if (c >= 0 && c < letterList.size()) {
+                        if (c >= 0 && c < letterList.size()) {
 
-                        if (listener != null) {
-                            listener.onTouchingLetterChanged(letterList.get(c),true);
-                        }
+                            if (listener != null) {
+                                listener.onTouchingLetterChanged(letterList.get(c),true);
+                            }
 //                        if (mTextDialog != null) {
 //                            LogUtil.d("test","默认4");
 //                            mTextDialog.setText(letterList.get(c));
 //                            mTextDialog.setVisibility(View.VISIBLE);
 //                        }
-                        choose = c;
-                        invalidate();
+                            choose = c;
+                            invalidate();
+                        }
                     }
-                }
-                break;
+                    break;
+            }
         }
+
         return true;
     }
 

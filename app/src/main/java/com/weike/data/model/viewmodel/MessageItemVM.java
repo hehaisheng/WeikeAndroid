@@ -3,6 +3,7 @@ package com.weike.data.model.viewmodel;
 import android.app.Activity;
 import android.databinding.ObservableField;
 
+import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseVM;
 import com.weike.data.business.msg.MsgDetailActivity;
 
@@ -41,6 +42,10 @@ public class MessageItemVM extends BaseVM
      */
     public String msgId;
 
+    public boolean toShow=false;
+
+    public String  unReadCount="0";
+
     /**
      * 是否显示编辑
      */
@@ -63,6 +68,7 @@ public class MessageItemVM extends BaseVM
         if (isSel.get()) {
             isCheck.set(isCheck.get() == true ? false : true);
         } else {
+            WKBaseApplication.getInstance().clientId=clientId;
             MsgDetailActivity.startActivity(activity,title.get(),clientId);
         }
 
