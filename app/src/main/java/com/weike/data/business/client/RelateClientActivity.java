@@ -292,22 +292,7 @@ public class RelateClientActivity extends BaseActivity {
             public void onItemClick(int position, View view) {
                 if (isSignleCheck == false) return;
 
-                if(id.equals(contentVMS.get(position).id.get())){
-                    DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "自己不能关联自己", new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View view) {
-
-                        }
-                    }, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-
-
-                        }
-                    });
-                }else{
+                if(id==null){
                     ArrayList<ClientRelated> relateds = new ArrayList<>();
                     ClientRelated clientRelated = new ClientRelated();
                     clientRelated.name = contentVMS.get(position).title.get();
@@ -317,6 +302,34 @@ public class RelateClientActivity extends BaseActivity {
                     intent.putExtra("data",relateds);
                     setResult(RESULT_OK,intent);
                     finish();
+                }else{
+                    if(id.equals(contentVMS.get(position).id.get())){
+                        DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "自己不能关联自己", new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+
+
+                            }
+                        });
+                    }else{
+                        ArrayList<ClientRelated> relateds = new ArrayList<>();
+                        ClientRelated clientRelated = new ClientRelated();
+                        clientRelated.name = contentVMS.get(position).title.get();
+                        clientRelated.clientId =contentVMS.get(position).id.get();
+                        relateds.add(clientRelated);
+                        Intent intent = new Intent();
+                        intent.putExtra("data",relateds);
+                        setResult(RESULT_OK,intent);
+                        finish();
+                    }
+
                 }
 
 

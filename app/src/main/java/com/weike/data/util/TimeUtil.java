@@ -11,7 +11,7 @@ public class TimeUtil {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         String time = format.format(new Date());
-        LogUtil.d("TimeUtil","format:" + time);
+        LogUtil.d(Constants.LOG_DATA,"format:" + time);
 
         return time;
     };
@@ -31,7 +31,7 @@ public class TimeUtil {
             long oldTime = format.parse(old).getTime();
 
 
-            LogUtil.d("acthome","--->" + curTime + ","+ oldTime);
+            LogUtil.d(Constants.LOG_DATA ,"timeCoperay"+curTime + ","+ oldTime);
             if (curTime >= oldTime ){
                 return true;
             } else {

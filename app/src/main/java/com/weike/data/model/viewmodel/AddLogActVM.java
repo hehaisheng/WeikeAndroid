@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import com.weike.data.base.BaseVM;
 import com.weike.data.business.log.RemindSettingActivity;
 import com.weike.data.model.business.ToDo;
+import com.weike.data.util.Constants;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.PickerUtil;
 import com.weike.data.util.TimeUtil;
 import com.weike.data.util.ToastUtil;
@@ -45,6 +47,8 @@ public class AddLogActVM extends BaseVM {
 
 
     public void timeClick(){
+
+
         if(TextUtils.isEmpty(time.get())) {
 
             ArrayList<Integer> tmp = TimeUtil.formatTimeClick(TimeUtil.getTimeFormat());
@@ -54,6 +58,7 @@ public class AddLogActVM extends BaseVM {
                 public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
 
                     String pickTime = s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4 ;
+                    LogUtil.d(Constants.LOG_DATA,"timeClick"+pickTime);
                     boolean result = TimeUtil.timeCoperay(TimeUtil.getTimeFormat(),pickTime);
                     if(result == false) { //选择时间 大于当前时间 要处理提醒
                         ToastUtil.showToast("日志时间不能晚于当前时间");
@@ -75,6 +80,7 @@ public class AddLogActVM extends BaseVM {
 
 
                     String pickTime = s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4 ;
+                    LogUtil.d(Constants.LOG_DATA,"timeClick1"+pickTime);
                     boolean result = TimeUtil.timeCoperay(TimeUtil.getTimeFormat(),pickTime);
                     if(result == false) { //选择时间 大于当前时间 要处理提醒
                         ToastUtil.showToast("日志时间不能晚于当前时间");

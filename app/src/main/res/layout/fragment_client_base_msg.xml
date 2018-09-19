@@ -220,12 +220,12 @@
                         android:id="@+id/ed_company_location"
                         updateEditInput="@{clientBaseVM.isModify}"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_alignBottom="@+id/view_line_4"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/tv_company_location"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
+
                         android:visibility="@{clientBaseVM.companyLocDisplay ? View.VISIBLE : View.GONE}"
                         android:layout_toRightOf="@+id/tv_company_location"
                         android:singleLine="true"
@@ -265,9 +265,9 @@
                         android:id="@+id/ed_home_location"
                         updateEditInput="@{clientBaseVM.isModify}"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="wrap_content"
                         android:maxLines="2"
-                        android:layout_alignTop="@+id/view_line_4"
+                        android:layout_alignBottom="@+id/tv_home_location"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_toRightOf="@+id/tv_home_location"
@@ -276,9 +276,9 @@
 
                         android:visibility="@{clientBaseVM.houseLocDisplay ? View.VISIBLE : View.GONE}"
                         android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
+
                         android:singleLine="true"
-                        android:gravity="left|center"
+                        android:gravity="left"
                         android:text="@={clientBaseVM.houseLocation}"
                         android:textSize="14sp"/>
 

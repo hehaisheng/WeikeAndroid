@@ -90,6 +90,8 @@ public class AddClientActivity extends BaseActivity {
 
     private AddClientReq addClientReq = new AddClientReq();
 
+    public BaseResp<GetClientDetailMsgResp> getClientDetailMsgResp;
+
 
 
     @PermissionSuccess(requestCode = LQRPhotoSelectUtils.REQ_TAKE_PHOTO)
@@ -326,7 +328,9 @@ public class AddClientActivity extends BaseActivity {
             protected void onSuccess(BaseResp<GetClientDetailMsgResp> getClientDetailMsgRespBaseResp) throws Exception {
 
 
+                getClientDetailMsgResp=getClientDetailMsgRespBaseResp;
                 String jsonString=JsonUtil.GsonString(getClientDetailMsgRespBaseResp);
+
                 String sortString=LogSortManager.newInstance().toSort(jsonString);
                 LogUtil.d(Constants.LOG_DATA,"\n"+"返回的排序数据"+"\n"+sortString);
 
@@ -367,104 +371,30 @@ public class AddClientActivity extends BaseActivity {
 
 
 
-
-    public int beanCount=0;
-    public String returnString="";
-
-    public int toChangeCount=0;
-    public String newValue="";
-    Map<String, Object> valueMap = new HashMap<String, Object>();
-    public String toMake(String jsonString){
-
-
-
-        JSONObject jsonObject;
-        try
-        {
-            jsonObject = new JSONObject(jsonString);
-            Iterator<String> keyIter = jsonObject.keys();
-            String key;
-            Object value;
-
-            while (keyIter.hasNext())
-            {
-                key =  keyIter.next();
-                value = jsonObject.get(key);
-                String valueString=key+"@#@"+value;
-                valueMap.put(key,value);
-                if(valueString.contains(":{")&&beanCount==0){
-                    returnString=key+":"+"\n";
-                    beanCount=beanCount+1;
-                    returnString=toMake(valueString.split("@#@")[1]);
-
-
-                }else{
-                    toChangeCount=toChangeCount+1;
-
-                    newValue=newValue+key+":"+value;
-                    if(newValue.length()>=50){
-                        returnString=returnString+"    "+key+":"+value+"\n";
-                        newValue="";
-                    }else{
-
-                        returnString=returnString+"    "+key+":"+value;
-                    }
-//                    if(toChangeCount%2==0){
-//                        returnString=returnString+"    "+key+":"+value+"\n";
-//                    }else{
-//                        returnString=returnString+"    "+key+":"+value;
-//                    }
-
-                }
-            }
-            return  returnString;
-
-        }
-        catch (JSONException e)
-        {
-            e.printStackTrace();
-        }
-
-        return returnString;
-
-
-    }
-
-
-//    @Override
-//    public void onBackPressed() {
-//
-//        super.onBackPressed();
-//        //DialogUtil.showButtonDialog(getSupportFragmentManager(),"提示","是否保存信息")
-//
-//    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+
+
         WKBaseApplication.getInstance().hasNoClientId=false;
         if(keyCode == KeyEvent.KEYCODE_BACK){
 
             if(!TextUtils.isEmpty(vm.userName.get())&&clientId==null){
-                DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "是否保存数据", new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                }, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        submitClient();
-
-
-                    }
-                });
-
-
+                showDialog("是否保存数据");
 
             }else{
-                finish();
+
+                if(vm.isModify!=null){
+                    if(vm.isModify.get()){
+
+                        showDialog("是否有修改客户信息");
+
+                    }else{
+                        finish();
+                    }
+                }
+
             }
 
 
@@ -473,6 +403,24 @@ public class AddClientActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+
+    public void showDialog(String content){
+        DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", content, new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                submitClient();
+
+
+            }
+        });
+    }
 
 
     @Override
@@ -512,27 +460,23 @@ public class AddClientActivity extends BaseActivity {
     @Override
     public void onLeftClick() {
 
+
+
         if(!TextUtils.isEmpty(vm.userName.get())&&clientId==null){
-            DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", "是否保存数据", new View.OnClickListener() {
 
-                @Override
-                public void onClick(View view) {
-
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    submitClient();
-
-
-                }
-            });
-
-
+            showDialog("是否保存数据");
 
         }else{
-            finish();
+
+            if(vm.isModify!=null){
+                if(vm.isModify.get()){
+                    showDialog("是否有修改客户信息");
+
+                }else{
+                    finish();
+                }
+            }
+
         }
 
 
@@ -685,11 +629,14 @@ public class AddClientActivity extends BaseActivity {
 
 
 
+
         if(TextUtils.isEmpty(vm.userName.get())){
 
             ToastUtil.showToast("名字不能为空");
             return false;
         }
+
+
 
         AddClientReq req = new AddClientReq();
         req.remark = vm.remarks.get(); //备注
@@ -839,6 +786,11 @@ public class AddClientActivity extends BaseActivity {
         if (TextUtils.isEmpty(clientId)) {
             addClient(req);
         } else {
+
+            if(!getClientDetailMsgResp.getDatas().getUserName().equals(vm.userName.get())){
+                ToastUtil.showToast("名字不一样");
+
+            }
             modifyClient(req);
         }
 

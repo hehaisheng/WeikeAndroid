@@ -45,6 +45,8 @@ public class PickerUtil {
     }
 
     public static void  onYearMonthDayTimePicker(int year,int month , int day ,int hour , int min,DateTimePicker.OnYearMonthDayTimePickListener listener, Activity activity) {
+
+        LogUtil.d(Constants.LOG_DATA,"onYearMonthDayTimePicker"+year+month+day+hour);
         if (hour == 0) {
             hour =10;
         }
@@ -57,8 +59,8 @@ public class PickerUtil {
         picker.setDateRangeStart(1900, 1, 1);
         picker.setDateRangeEnd(2100, 12, 12);
         picker.setSelectedItem(year,month,day,hour,min);
-        picker.setTimeRangeStart(9, 0);
-        picker.setTimeRangeEnd(20, 30);
+        picker.setTimeRangeStart(0, 0);
+        picker.setTimeRangeEnd(23, 30);
         picker.setCanLinkage(false);
         picker.setLabel("年","月","日","时","分");
 

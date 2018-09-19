@@ -46,6 +46,7 @@ import com.weike.data.model.viewmodel.AnotherAttrItemVM;
 import com.weike.data.model.viewmodel.AttrItemVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.Constants;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
@@ -184,12 +185,6 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                     clientBaseMsgVM.girlDisplay.set(true);
                 }
             }
-//
-//            if (TextUtils.isEmpty(data.getSonNum()) == false || TextUtils.isEmpty(data.getDaughterNum()) == false) {
-//                clientBaseMsgVM.bearDisplay.set(true);
-//            } else {
-//                clientBaseMsgVM.bearDisplay.set(false);
-//            }
 
 
             if (TextUtils.isEmpty(data.getMarriage()) || Integer.parseInt(data.getMarriage()) == -1) {
@@ -198,11 +193,7 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
                 clientBaseMsgVM.marryDisplay.set(true);
             }
 
-          /*  if (data.getAnniversaryList().size() == 0) {
-                clientBaseMsgVM.anniDisplay.set(false);
-            } else {
-                clientBaseMsgVM.anniDisplay.set(true);
-            }*/
+
 
 
             if (TextUtils.isEmpty(data.getSex()) || Integer.parseInt(data.getSex()) == -1) {
@@ -1113,8 +1104,17 @@ public class ClientBaseMsgFragment extends BaseFragment implements View.OnClickL
 
         } else if (type == AddClientRelateItemVM.AddClientRelateItemListener.ADD_RELATE) {
 
-            RelateClientActivity.startActivity(true, this, RelateClientActivity.REQUEST_CODE,WKBaseApplication.getInstance().id);
-            lastRelateClientVM = vm;
+            if(clientBaseMsgVM.isModify.get()!=null){
+                if(clientBaseMsgVM.isModify.get()){
+                    RelateClientActivity.startActivity(true, this, RelateClientActivity.REQUEST_CODE,WKBaseApplication.getInstance().id);
+                    lastRelateClientVM = vm;
+                }else{
+                    AddClientActivity.startActivity(getActivity(),vm.clientId);
+
+                }
+            }
+
+
 
         } else if (type == AddClientRelateItemVM.AddClientRelateItemListener.REDUCE) {
 

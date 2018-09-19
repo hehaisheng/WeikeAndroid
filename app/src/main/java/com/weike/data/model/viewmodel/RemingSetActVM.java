@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.weike.data.base.BaseVM;
 import com.weike.data.config.DataConfig;
+import com.weike.data.util.Constants;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.PickerUtil;
 import com.weike.data.util.TimeUtil;
@@ -145,6 +146,7 @@ public class RemingSetActVM extends BaseVM {
                 @Override
                 public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
                     String pickTime = s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4 ;
+                    LogUtil.d(Constants.LOG_DATA,"RemingSetActVMtimeClick"+pickTime);
                     boolean result = TimeUtil.timeCoperay(TimeUtil.getTimeFormat(),pickTime);
                     if(result == true) { //选择时间 大于当前时间 要处理提醒
                         ToastUtil.showToast("提醒时间不能早于当前时间");
@@ -157,13 +159,14 @@ public class RemingSetActVM extends BaseVM {
             }, activity);
         } else {
 
-            LogUtil.d("acthome","fucking time:" + time.get());
+
             ArrayList<Integer> tmp = TimeUtil.formatTimeClick(time.get());
 
             PickerUtil.onYearMonthDayTimePicker(tmp.get(0),tmp.get(1),tmp.get(2),tmp.get(3),tmp.get(4), new DateTimePicker.OnYearMonthDayTimePickListener() {
                 @Override
                 public void onDateTimePicked(String s, String s1, String s2, String s3, String s4) {
                     String pickTime = s + "-" + s1 + "-" + s2 + " " + s3 + ":" + s4 ;
+                    LogUtil.d(Constants.LOG_DATA,"RemingSetActVMtimeClick1"+pickTime);
                     boolean result = TimeUtil.timeCoperay(TimeUtil.getTimeFormat(),pickTime);
                     if(result == true) { //选择时间 大于当前时间 要处理提醒
                         ToastUtil.showToast("提醒时间不能早于当前时间");

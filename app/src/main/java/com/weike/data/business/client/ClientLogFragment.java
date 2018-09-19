@@ -186,7 +186,7 @@ public class ClientLogFragment extends BaseFragment implements View.OnClickListe
                 protected void onSuccess(BaseResp<GetClientLogByIdResp> getClientLogByIdRespBaseResp) throws Exception {
 
 
-                    LogUtil.d(Constants.LOG_DATA,"log的数据"+JsonUtil.GsonString(getClientLogByIdRespBaseResp));
+
                     smartRefreshLayout.finishLoadmore();
                     smartRefreshLayout.finishRefresh();
                     if (page == 1) {
