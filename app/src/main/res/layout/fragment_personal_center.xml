@@ -31,6 +31,7 @@
                 android:background="@mipmap/bg_personal_img">
 
                 <TextView
+                    android:id="@+id/modify_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -351,6 +352,54 @@
                         />
 
                 </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="50dp"
+                    android:background="@color/color_line" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:onClick="@{()->personalVM.jumpToLocal()}"
+                   >
+
+
+                    <ImageView
+                        android:id="@+id/local_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/ic_app_setting" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/local_image"
+                        android:layout_centerVertical="true"
+                        android:text="缓存设置" />
+
+                    <ImageView
+                        android:id="@+id/change_local_image"
+                       android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="fitEnd"
+
+
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_switch_nor"
+
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout

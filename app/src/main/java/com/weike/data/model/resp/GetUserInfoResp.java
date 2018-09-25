@@ -42,4 +42,8 @@ public class GetUserInfoResp extends BaseResp {
      * 地址
      */
     public String detailAddress;
+
+    //开关协议
+
+    public int isOpen;
 }

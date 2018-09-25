@@ -15,6 +15,7 @@ import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
 import com.weike.data.business.home.HomeActivity;
+import com.weike.data.business.login.LoginActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.User;
 import com.weike.data.model.req.GetVerificationCodeReq;
@@ -28,6 +29,7 @@ import com.weike.data.util.AccountValidatorUtil;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.CountDownUtil;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.NetManager;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
@@ -182,14 +184,20 @@ public class LoginActVM extends BaseVM {
     }
 
     public void login() {
-        // TODO  登录
-        if (isPwdLogin.get()) {
-            loginForPwd();
-            LogUtil.d("acthome","pwd login");
-        } else {
-            LogUtil.d("acthome","code login");
-            loginForCode();
+
+        if(NetManager.newInstance().isNetworkConnected(WKBaseApplication.getInstance())){
+            // TODO  登录
+            if (isPwdLogin.get()) {
+                loginForPwd();
+
+            } else {
+
+                loginForCode();
+            }
+        }else{
+            ((LoginActivity) activity).show();
         }
+
     }
 
 
@@ -245,7 +253,7 @@ public class LoginActVM extends BaseVM {
     private void loginForPwd() {
         LoginByPwdReq req = new LoginByPwdReq();
         req.phoneNumber = phoneNum.get();
-        LogUtil.d("LoginActVm","" +JPushInterface.getRegistrationID(WKBaseApplication.getInstance()));
+
         req.igNo = JPushInterface.getRegistrationID(WKBaseApplication.getInstance());
         req.sign = SignUtil.signData(req);
         req.password = pwd.get();

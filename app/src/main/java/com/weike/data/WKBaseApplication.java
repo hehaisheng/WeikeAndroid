@@ -1,5 +1,6 @@
 package com.weike.data;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -36,7 +37,12 @@ public class WKBaseApplication extends Application {
     public boolean  hasNoClientId=false;
     public boolean  isPaySuccess=false;
     public boolean  needToSave=false;
+
+    public boolean  hasSelectLocal=false;
     public String clientId="none";
+
+    public Activity activity;
+
 
     public String  id;
 

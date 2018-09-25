@@ -26,6 +26,7 @@ import com.weike.data.adapter.SortAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.login.LoginActivity;
 import com.weike.data.business.search.SearchActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.ClientSortModel;
@@ -38,9 +39,11 @@ import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.NetManager;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
+import com.weike.data.view.DialogCommonLayout;
 import com.weike.data.view.citypicker.PinyinComparator;
 import com.weike.data.view.citypicker.PinyinUtils;
 import com.weike.data.view.citypicker.SideBar;
@@ -64,7 +67,7 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
     private SortAdapter adapter;
     private List<ClientSortModel> datas = new ArrayList<>();
     public TextView  dialogText;
-
+    public DialogCommonLayout dialogCommonLayout;
     public static final String ACTION_UPDATE_CLIENT = "com.weike.data.ACTION_UPDATE_CLIENT";
 
     @Override
@@ -84,6 +87,7 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
     protected void loadFinish(View view) {
         clientList = view.findViewById(R.id.lv_client_list);
         smartRefreshLayout = view.findViewById(R.id.smartrefreshlayout);
+        dialogCommonLayout=view.findViewById(R.id.common_layout);
         smartRefreshLayout.setEnableLoadmore(false);
         smartRefreshLayout.setOnRefreshListener(this);
         sideBar = view.findViewById(R.id.sidrbar);
@@ -310,6 +314,42 @@ public class ClientFragment extends BaseFragment implements OnRefreshListener {
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         fresh(true);
+    }
+
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        netShow();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        netShow();
+    }
+
+    public void netShow(){
+
+        if(NetManager.newInstance().isNetworkConnected(getActivity())){
+
+        }else{
+
+            if(dialogCommonLayout!=null){
+                dialogCommonLayout.setContentAndListener("登陆过期,请重新登陆", new DialogCommonLayout.DialogListener() {
+                    @Override
+                    public void handle(String model) {
+
+                        ActivitySkipUtil.skipAnotherAct(getActivity(), LoginActivity.class,true);
+
+
+                    }
+                });
+            }
+
+        }
     }
 }
 

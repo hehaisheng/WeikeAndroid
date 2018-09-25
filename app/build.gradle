@@ -23,7 +23,7 @@ android {
         versionCode 4
         versionName "2.0.4"
 
-        buildConfigField "String", "APP_SERVER", '"http://app.duoqiandan.com:8007/"'
+        buildConfigField "String", "APP_SERVER", '"http://192.168.1.7:8007/"'
         buildConfigField "String", "APP_SECRET", '"62e1f24949dfad11db7d22fa59887c72"'
         buildConfigField "String", "ALI_PAY_APP_ID", '"2018062060403663"'
         multiDexEnabled true

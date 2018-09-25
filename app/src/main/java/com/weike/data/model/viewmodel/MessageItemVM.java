@@ -56,6 +56,7 @@ public class MessageItemVM extends BaseVM
      */
     public ObservableField<Boolean> isCheck = new ObservableField<>(false);
 
+
     public MessageItemVM(Activity activity) {
         super(activity);
     }

@@ -29,20 +29,24 @@ import com.weike.data.adapter.BaseDataBindingAdapter;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.login.LoginActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.req.DeleteHomeMsgReq;
 import com.weike.data.model.req.GetMsgListReq;
 import com.weike.data.model.resp.GetMsgListResp;
 import com.weike.data.model.viewmodel.MessageItemVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.Constants;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.NetManager;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
+import com.weike.data.view.DialogCommonLayout;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -84,6 +88,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
         nothingView = view.findViewById(R.id.ll_nothing_view);
         smartRefreshLayout = view.findViewById(R.id.smartrefreshlayout);
         smartRefreshLayout.setOnRefreshLoadmoreListener(this);
+
         msgList.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new BaseDataBindingAdapter(getActivity(), R.layout.widget_message_item, vms, BR.messageItemVM);
         adapter.setOnRecyclerViewItemClickListener(new BaseDataBindingAdapter.OnRecyclerViewItemClickListener() {
@@ -155,7 +160,7 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
                     protected void onSuccess(BaseResp<GetMsgListResp> getMsgListRespBaseResp) throws Exception {
                         relativeLayout.setVisibility(View.GONE);
 
-                        LogUtil.d("test","消息"+JsonUtil.GsonString(getMsgListRespBaseResp));
+
 
                         if (page> 1 && getMsgListRespBaseResp.getDatas().messageGroupVmList.size() == 0) {
                             ToastUtil.showToast("暂无更多");
@@ -223,28 +228,39 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            page=1;
-            initMsg(page);
-        } else {
+
+        if(NetManager.newInstance().isNetworkConnected(getActivity())){
+            if (isVisibleToUser) {
+                page=1;
+                initMsg(page);
+            } else {
+
+            }
+        }else{
+
 
         }
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(!WKBaseApplication.getInstance().clientId.equals("none")){
-            for (int i = 0; i < vms.size(); i++) {
-                if(vms.get(i).clientId.equals(WKBaseApplication.getInstance().clientId)){
-                    vms.get(i).toShow=false;
+
+        if(NetManager.newInstance().isNetworkConnected(getActivity())){
+            if(!WKBaseApplication.getInstance().clientId.equals("none")){
+                for (int i = 0; i < vms.size(); i++) {
+                    if(vms.get(i).clientId.equals(WKBaseApplication.getInstance().clientId)){
+                        vms.get(i).toShow=false;
+                    }
+
                 }
+                adapter.notifyDataSetChanged();
 
+                WKBaseApplication.getInstance().clientId="none";
             }
-            adapter.notifyDataSetChanged();
-
-            WKBaseApplication.getInstance().clientId="none";
         }
+
 
 
     }
@@ -294,15 +310,6 @@ public class MsgFragment extends BaseFragment implements OnRefreshLoadmoreListen
                 protected void onSuccess(BaseResp baseResp) throws Exception {
 
                     initMsg(1);
-//                    for (Iterator<MessageItemVM> it = vms.iterator(); it.hasNext(); ) {
-//                        MessageItemVM vm = it.next();
-//                        if (vm.isCheck.get()) {
-//                            it.remove();
-//                        }
-//                    }
-
-                    //adapter.notifyDataSetChanged(); //刷新
-
 
                 }
 

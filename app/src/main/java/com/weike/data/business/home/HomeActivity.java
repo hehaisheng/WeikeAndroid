@@ -44,8 +44,10 @@ import com.weike.data.model.resp.MainPageDataResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.ClientTagComparator;
+import com.weike.data.util.Constants;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.NetManager;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
@@ -282,6 +284,7 @@ public class HomeActivity extends BaseActivity {
     }
 
 
+
     @Override
     public void onRightClick() {
         super.onRightClick();
@@ -317,6 +320,9 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+
+
+
 
         setCenterText("维客助手");
         initBottomLayout();

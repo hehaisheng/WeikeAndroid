@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
@@ -22,8 +23,12 @@ import com.weike.data.databinding.FragmentPersonalCenterBinding;
 import com.weike.data.model.business.User;
 import com.weike.data.model.req.GetUserInfoReq;
 import com.weike.data.model.resp.GetUserInfoResp;
+import com.weike.data.model.viewmodel.HandleWorkItemVM;
 import com.weike.data.model.viewmodel.PersonalFragmentVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.Constants;
+import com.weike.data.util.JsonUtil;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.TransformerUtils;
@@ -39,6 +44,8 @@ public class MySelfFragment extends BaseFragment {
     private FragmentPersonalCenterBinding binding;
 
     private PersonalFragmentVM vm;
+
+    public ImageView changeLocalImage;
 
     @Override
     protected int setUpLayoutId() {
@@ -68,6 +75,9 @@ public class MySelfFragment extends BaseFragment {
         vm = new PersonalFragmentVM(this,getActivity());
 
         binding.setPersonalVM(vm);
+        View view=binding.getRoot();
+        changeLocalImage=view.findViewById(R.id.change_local_image);
+
         init();
 
         return binding.getRoot();
@@ -86,16 +96,22 @@ public class MySelfFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-           if(WKBaseApplication.getInstance().isPaySuccess){
-               init();
-           }
+
+
+            init();
+
         } else {
 
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+    }
 
-    private void init(){
+    public  void init(){
         GetUserInfoReq req = new GetUserInfoReq();
         req.token = SpUtil.getInstance().getCurrentToken();
         req.sign = SignUtil.signData(req);
@@ -106,6 +122,7 @@ public class MySelfFragment extends BaseFragment {
                 })).subscribe(new BaseObserver<BaseResp<GetUserInfoResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetUserInfoResp> getUserInfoRespBaseResp) throws Exception {
+
                 if(WKBaseApplication.getInstance().isPaySuccess){
                     WKBaseApplication.getInstance().isPaySuccess=false;
                 }
@@ -135,8 +152,20 @@ public class MySelfFragment extends BaseFragment {
                     user.email = getUserInfoRespBaseResp.getDatas().email;
                     user.job = getUserInfoRespBaseResp.getDatas().occupation;
                     user.address  = getUserInfoRespBaseResp.getDatas().detailAddress;
+                    if(getUserInfoRespBaseResp.getDatas().isOpen==1){
+                        changeLocalImage.setImageResource(R.drawable.ic_switch_sel);
+                        vm.isSelected=true;
+                        WKBaseApplication.getInstance().hasSelectLocal=true;
+
+                    }else{
+                        changeLocalImage.setImageResource(R.drawable.ic_switch_nor);
+                        vm.isSelected=false;
+                        WKBaseApplication.getInstance().hasSelectLocal=false;
+                    }
+
 
                     SpUtil.getInstance().saveNewsUser(user);
+                    //5259f9798d43b42fdc9c7a89631b3f34
 
                 }
             }

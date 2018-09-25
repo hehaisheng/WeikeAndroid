@@ -302,6 +302,8 @@ public final class Config {
  public static final String  CHANGE_LOG= "log/editLogContent";
 
 
+ //修改协议
+ public static final String  CHANGE_AGREE= "userLocal/updateIsOpen.do";
 
 
 

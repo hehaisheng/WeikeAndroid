@@ -186,7 +186,11 @@ public class OpenUpVipActVM extends BaseVM {
                         payReq.timeStamp		= orderInfo.timestamp;
                         payReq.sign			= orderInfo.sign;
                         payReq.extData			= "app data"; // optional
-                        WXRegister.getApi().sendReq(payReq);
+                        boolean success=WXRegister.getApi().sendReq(payReq);
+                        Message message = Message.obtain();
+                        message.obj = success;
+                        wechatHandler.sendMessage(message);
+
                     }
                 }.start();
             }
@@ -280,10 +284,30 @@ public class OpenUpVipActVM extends BaseVM {
             } else {
                 // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                 ToastUtil.showToast("支付失败");
+                WKBaseApplication.getInstance().isPaySuccess=false;
             }
         }
     };
 
+
+    @SuppressLint("HandlerLeak")
+    Handler wechatHandler = new Handler(){
+        public void handleMessage(Message msg){
+
+            boolean isSuccess=(boolean)msg.obj;
+
+
+            if (isSuccess){
+                // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                WKBaseApplication.getInstance().isPaySuccess=true;
+                ToastUtil.showToast("支付成功");
+            } else {
+                // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                ToastUtil.showToast("支付失败");
+                WKBaseApplication.getInstance().isPaySuccess=false;
+            }
+        }
+    };
     public void reduce(){
         updateData(false);
     }

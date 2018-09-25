@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/itemBackground1"
+    android:visibility="gone"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+
+
+    >
+
+    <TextView
+        android:id="@+id/dialog_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/relative_middle"
+        />
+    <TextView
+        android:id="@+id/dialog_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relative_middle"
+        />
+    <RelativeLayout
+        android:id="@+id/relative_middle"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+
+        android:background="@drawable/dialog_shape">
+
+        <TextView
+            android:id="@+id/title_content"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="提示"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black_de"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/dialog_content"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@+id/title_content"
+            android:text="是否有修改客户信息"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/cut"
+            android:layout_width="300dp"
+            android:layout_height="0.1dp"
+            android:layout_below="@+id/dialog_content"
+            android:background="@color/itemBackground1"
+            android:layout_marginTop="20dp"
+            />
+        <TextView
+            android:id="@+id/dialog_cancel"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="取消"
+            android:textSize="16sp"
+            android:layout_below="@+id/cut"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/middle"
+            android:layout_height="50dp"
+            android:layout_width="0.1dp"
+
+            android:background="@color/itemBackground1"
+            android:layout_below="@+id/cut"
+            android:layout_toRightOf="@+id/dialog_cancel"/>
+
+        <TextView
+            android:id="@+id/dialog_sure"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="确定"
+            android:textSize="16sp"
+            android:layout_below="@+id/cut"
+            android:layout_toRightOf="@+id/middle"
+            android:gravity="center"
+            />
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

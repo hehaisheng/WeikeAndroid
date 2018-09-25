@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.gson.JsonObject;
@@ -23,6 +24,7 @@ import com.weike.data.base.BaseActivity;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
+import com.weike.data.business.login.LoginActivity;
 import com.weike.data.config.Config;
 import com.weike.data.databinding.ActivityClientAddBinding;
 import com.weike.data.model.business.AnniversaryDay;
@@ -39,6 +41,7 @@ import com.weike.data.model.viewmodel.AnniversariesItemVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.model.viewmodel.ClientServiceMsgVM;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.ActivitySkipUtil;
 import com.weike.data.util.CompressBitmapManager;
 import com.weike.data.util.Constants;
 import com.weike.data.util.DialogUtil;
@@ -46,11 +49,13 @@ import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LQRPhotoSelectUtils;
 import com.weike.data.util.LogSortManager;
 import com.weike.data.util.LogUtil;
+import com.weike.data.util.NetManager;
 import com.weike.data.util.ReflexObjectUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
+import com.weike.data.view.DialogCommonLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -160,10 +165,8 @@ public class AddClientActivity extends BaseActivity {
 
 
     public int count=0;
+    public DialogCommonLayout dialogCommonLayout;
 
-
-
-    public RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -174,12 +177,6 @@ public class AddClientActivity extends BaseActivity {
         binding.setAddClientVM(vm);
         setCenterText("");
 
-        relativeLayout=findViewById(R.id.relative_layout);
-
-
-
-
-
 
       initPhotoSel();
       addFragment();
@@ -188,6 +185,7 @@ public class AddClientActivity extends BaseActivity {
 
 
     }
+
 
 
 
@@ -405,21 +403,18 @@ public class AddClientActivity extends BaseActivity {
 
 
     public void showDialog(String content){
-        DialogUtil.showButtonDialog(getSupportFragmentManager(), "提示", content, new View.OnClickListener() {
+        dialogCommonLayout=findViewById(R.id.common_layout);
+        dialogCommonLayout.setContentAndListener(content, new DialogCommonLayout.DialogListener() {
+             @Override
+             public void handle(String model) {
+                 if(model.equals("handle")){
+                     submitClient();
+                 }else if(model.equals("finish")){
+                     finish();
+                 }
+             }
+         });
 
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                submitClient();
-
-
-            }
-        });
     }
 
 
@@ -553,6 +548,7 @@ public class AddClientActivity extends BaseActivity {
                 })).subscribe(new BaseObserver<BaseResp<AddClientResp>>() {
             @Override
             protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
+
                ToastUtil.showToast("修改成功");
                 setLeftText("客户信息");
                 WKBaseApplication.getInstance().hasNoClientId=false;
@@ -593,6 +589,7 @@ public class AddClientActivity extends BaseActivity {
                 })).subscribe(new BaseObserver<BaseResp<AddClientResp>>() {
             @Override
             protected void onSuccess(BaseResp<AddClientResp> addClientRespBaseResp) throws Exception {
+
                 clientId = addClientRespBaseResp.getDatas().clientId;
                 ToastUtil.showToast("添加成功");
                 isUpdatePic = false;
@@ -622,178 +619,192 @@ public class AddClientActivity extends BaseActivity {
      * 服务信息 和 客户信息
      */
     private boolean submitClient(){
-        ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
-        ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
-        ClientBaseMsgVM clientBaseMsgVM = clientBaseMsgFragment.clientBaseMsgVM;
-        ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.serviceMsgVM;
+
+        if(NetManager.newInstance().isNetworkConnected(this)){
+            ClientBaseMsgFragment clientBaseMsgFragment = (ClientBaseMsgFragment) fragments.get(0);
+            ClientServiceMsgFragment serviceMsgFragment = (ClientServiceMsgFragment) fragments.get(1);
+            ClientBaseMsgVM clientBaseMsgVM = clientBaseMsgFragment.clientBaseMsgVM;
+            ClientServiceMsgVM clientServiceMsgVM = serviceMsgFragment.serviceMsgVM;
 
 
 
 
-        if(TextUtils.isEmpty(vm.userName.get())){
+            if(TextUtils.isEmpty(vm.userName.get())){
 
-            ToastUtil.showToast("名字不能为空");
-            return false;
-        }
-
-
-
-        AddClientReq req = new AddClientReq();
-        req.remark = vm.remarks.get(); //备注
-        req.userName = vm.userName.get();
-        req.clientLabelId = vm.labelId;//标签ID
-        req.photoUrl = vm.photoUrl.get();
+                ToastUtil.showToast("名字不能为空");
+                return false;
+            }
 
 
 
-        /**
-         * 电话号码
-         */
-       String[] phoneNum  = {"","","","",""};
-        ArrayList<String> p = new ArrayList<>();
-
-
-        for(int i = 0 ; i < clientBaseMsgFragment.addPhoneVMS.size();i++){
-
-            String phone = clientBaseMsgFragment.addPhoneVMS.get(i).phoneNumber.get();//电话号码
-            if (TextUtils.isEmpty(phone))continue;
-            p.add(phone);
-        }
-
-        for(int i = 0 ; i < p.size() ;i++){
-            phoneNum[i] = p.get(i);
-        }
-
-
-        //电话号码
-        req.OnePhoneNumber = phoneNum[0];
-        req.TwoPhoneNumber = phoneNum[1];
-        req.ThreePhoneNumber = phoneNum[2];
-        req.FourPhoneNumber = phoneNum[3];
-        req.FivePhoneNumber = phoneNum[4]; //1 2 3 4 5个电话号码
+            AddClientReq req = new AddClientReq();
+            req.remark = vm.remarks.get(); //备注
+            req.userName = vm.userName.get();
+            req.clientLabelId = vm.labelId;//标签ID
+            req.photoUrl = vm.photoUrl.get();
 
 
 
-        req.idCard = clientBaseMsgVM.idCard.get();//身份证
-        req.email = clientBaseMsgVM.email.get();
-        req.company = clientBaseMsgVM.companyName.get();
-        req.office = clientBaseMsgVM.job.get();
-        req.companyDetailAddress = clientBaseMsgVM.companyLocation.get();//公司地址
-        req.homeDetailAddress = clientBaseMsgVM.houseLocation.get();
+            /**
+             * 电话号码
+             */
+            String[] phoneNum  = {"","","","",""};
+            ArrayList<String> p = new ArrayList<>();
+
+
+            for(int i = 0 ; i < clientBaseMsgFragment.addPhoneVMS.size();i++){
+
+                String phone = clientBaseMsgFragment.addPhoneVMS.get(i).phoneNumber.get();//电话号码
+                if (TextUtils.isEmpty(phone))continue;
+                p.add(phone);
+            }
+
+            for(int i = 0 ; i < p.size() ;i++){
+                phoneNum[i] = p.get(i);
+            }
+
+
+            //电话号码
+            req.OnePhoneNumber = phoneNum[0];
+            req.TwoPhoneNumber = phoneNum[1];
+            req.ThreePhoneNumber = phoneNum[2];
+            req.FourPhoneNumber = phoneNum[3];
+            req.FivePhoneNumber = phoneNum[4]; //1 2 3 4 5个电话号码
 
 
 
-        if (TextUtils.isEmpty(clientBaseMsgVM.sex.get())) {
-            req.sex = -1;
-        } else {
-            req.sex = clientBaseMsgVM.sex.get().contains("男") ? 1 : 2; //
-        }
+            req.idCard = clientBaseMsgVM.idCard.get();//身份证
+            req.email = clientBaseMsgVM.email.get();
+            req.company = clientBaseMsgVM.companyName.get();
+            req.office = clientBaseMsgVM.job.get();
+            req.companyDetailAddress = clientBaseMsgVM.companyLocation.get();//公司地址
+            req.homeDetailAddress = clientBaseMsgVM.houseLocation.get();
 
 
 
-
-        if (clientBaseMsgVM.marry.get().contains("未婚")){
-            req.marriage = 2;
-        } else if (clientBaseMsgVM.marry.get().contains("已婚")){
-            req.marriage = 1;
-        } else if (clientBaseMsgVM.marry.get().contains("离异")){
-            req.marriage = 3;
-        } else if (TextUtils.isEmpty(clientBaseMsgVM.marry.get())){
-            req.marriage = -1;
-        }
-
-
-
-
-
-        req.sonNum = clientBaseMsgVM.son.get(); //儿子
-        req.daughterNum = clientBaseMsgVM.gril.get();//女儿
-        req.birthday = clientBaseMsgVM.birthday.get();
-        req.birthdayJson = clientBaseMsgVM.birthDayTodo == null ? "" : JsonUtil.GsonString(clientBaseMsgVM.birthDayTodo); //生日的东西
-        req.height = clientBaseMsgVM.clientHeight.get();
-        req.weight = clientBaseMsgVM.clientWidght.get();
-        req.clientId = clientId;
-
-
-
-        //关联客户
-        ArrayList<ClientRelateForNet> clientRelateds = new ArrayList<>();
-        for(int i = 0 ; i < clientBaseMsgFragment.clientRelateItemVMS.size();i++){
-            String name = clientBaseMsgFragment.clientRelateItemVMS.get(i).clientName.get();
-            String id = clientBaseMsgFragment.clientRelateItemVMS.get(i).clientId;
-            String relateId=clientBaseMsgFragment.clientRelateItemVMS.get(i).id;
-
-            if (TextUtils.isEmpty(name)) {
-                continue;
+            if (TextUtils.isEmpty(clientBaseMsgVM.sex.get())) {
+                req.sex = -1;
             } else {
-                ClientRelateForNet c = new ClientRelateForNet();
-                c.relatedClientId = id;
-                c.id=relateId;
-                clientRelateds.add(c);
+                req.sex = clientBaseMsgVM.sex.get().contains("男") ? 1 : 2; //
             }
-        }
-        req.clientRelated = "" + JsonUtil.GsonString(clientRelateds) + ""; //TODO
-
-
-        //纪念日
-
-
-        ArrayList<AnniversaryDay> anniversaryDays = new ArrayList<>();
 
 
 
-        for(int i = 0 ; i < clientBaseMsgFragment.anniDayVMS.size();i++) {
-            AnniversariesItemVM vm = clientBaseMsgFragment.anniDayVMS.get(i);
+
+            if (clientBaseMsgVM.marry.get().contains("未婚")){
+                req.marriage = 2;
+            } else if (clientBaseMsgVM.marry.get().contains("已婚")){
+                req.marriage = 1;
+            } else if (clientBaseMsgVM.marry.get().contains("离异")){
+                req.marriage = 3;
+            } else if (TextUtils.isEmpty(clientBaseMsgVM.marry.get())){
+                req.marriage = -1;
+            }
 
 
-            if (TextUtils.isEmpty(vm.name.get()) || TextUtils.isEmpty(vm.time.get())){
 
-                continue;
+
+
+            req.sonNum = clientBaseMsgVM.son.get(); //儿子
+            req.daughterNum = clientBaseMsgVM.gril.get();//女儿
+            req.birthday = clientBaseMsgVM.birthday.get();
+            req.birthdayJson = clientBaseMsgVM.birthDayTodo == null ? "" : JsonUtil.GsonString(clientBaseMsgVM.birthDayTodo); //生日的东西
+            req.height = clientBaseMsgVM.clientHeight.get();
+            req.weight = clientBaseMsgVM.clientWidght.get();
+            req.clientId = clientId;
+
+
+
+            //关联客户
+            ArrayList<ClientRelateForNet> clientRelateds = new ArrayList<>();
+            for(int i = 0 ; i < clientBaseMsgFragment.clientRelateItemVMS.size();i++){
+                String name = clientBaseMsgFragment.clientRelateItemVMS.get(i).clientName.get();
+                String id = clientBaseMsgFragment.clientRelateItemVMS.get(i).clientId;
+                String relateId=clientBaseMsgFragment.clientRelateItemVMS.get(i).id;
+
+                if (TextUtils.isEmpty(name)) {
+                    continue;
+                } else {
+                    ClientRelateForNet c = new ClientRelateForNet();
+                    c.relatedClientId = id;
+                    c.id=relateId;
+                    clientRelateds.add(c);
+                }
+            }
+            req.clientRelated = "" + JsonUtil.GsonString(clientRelateds) + ""; //TODO
+
+
+            //纪念日
+
+
+            ArrayList<AnniversaryDay> anniversaryDays = new ArrayList<>();
+
+
+
+            for(int i = 0 ; i < clientBaseMsgFragment.anniDayVMS.size();i++) {
+                AnniversariesItemVM vm = clientBaseMsgFragment.anniDayVMS.get(i);
+
+
+                if (TextUtils.isEmpty(vm.name.get()) || TextUtils.isEmpty(vm.time.get())){
+
+                    continue;
+                } else {
+
+                    AnniversaryDay day = new AnniversaryDay();
+                    day.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
+                    day.anniversaryDate = vm.time.get();
+                    day.anniversaryName = vm.name.get();
+                    day.id = vm.id.get();
+                    anniversaryDays.add(day);
+                }
+            }
+
+            if (anniversaryDays.size() > 0)
+                req.anniversary = "" + JsonUtil.GsonString(anniversaryDays) + "";
+
+
+            //服务信息
+            req.income = clientServiceMsgVM.moneyIn.get();
+            req.expenditure = clientServiceMsgVM.moneyOut.get();
+            req.monetaryAssets = clientServiceMsgVM.financialAssets.get();
+            req.fixedAssets = clientServiceMsgVM.fixedAssets.get();
+            req.car = clientServiceMsgVM.carType.get();
+            req.liabilities = clientServiceMsgVM.liabilities.get();
+            req.attributesValue = clientBaseMsgFragment.getAnotherAttr();
+
+
+
+            req.product = TextUtils.isEmpty(serviceMsgFragment.getAllProduct()) ? "" : "" + serviceMsgFragment.getAllProduct() + "";
+
+
+            req.sign = SignUtil.signData(req);
+            LogUtil.d("test","上传的数据"+JsonUtil.GsonString(req));
+
+
+
+            if (TextUtils.isEmpty(clientId)) {
+                addClient(req);
             } else {
 
-                AnniversaryDay day = new AnniversaryDay();
-                day.remind = vm.toDo == null ? "" : JsonUtil.GsonString(vm.toDo);
-                day.anniversaryDate = vm.time.get();
-                day.anniversaryName = vm.name.get();
-                day.id = vm.id.get();
-                anniversaryDays.add(day);
+                modifyClient(req);
             }
+
+
+        }else{
+            dialogCommonLayout=findViewById(R.id.common_layout);
+            dialogCommonLayout.setContentAndListener("登陆已过期,请重新登陆", new DialogCommonLayout.DialogListener() {
+                @Override
+                public void handle(String model) {
+                    ActivitySkipUtil.skipAnotherAct(AddClientActivity.this, LoginActivity.class,true);
+//                    if(model.equals("handle")){
+//                        submitClient();
+//                    }else if(model.equals("finish")){
+//                        finish();
+//                    }
+                }
+            });
+
         }
-
-        if (anniversaryDays.size() > 0)
-            req.anniversary = "" + JsonUtil.GsonString(anniversaryDays) + "";
-
-
-        //服务信息
-        req.income = clientServiceMsgVM.moneyIn.get();
-        req.expenditure = clientServiceMsgVM.moneyOut.get();
-        req.monetaryAssets = clientServiceMsgVM.financialAssets.get();
-        req.fixedAssets = clientServiceMsgVM.fixedAssets.get();
-        req.car = clientServiceMsgVM.carType.get();
-        req.liabilities = clientServiceMsgVM.liabilities.get();
-        req.attributesValue = clientBaseMsgFragment.getAnotherAttr();
-
-
-
-        req.product = TextUtils.isEmpty(serviceMsgFragment.getAllProduct()) ? "" : "" + serviceMsgFragment.getAllProduct() + "";
-
-
-        req.sign = SignUtil.signData(req);
-        LogUtil.d("test","上传的数据"+JsonUtil.GsonString(req));
-
-
-
-        if (TextUtils.isEmpty(clientId)) {
-            addClient(req);
-        } else {
-
-            if(!getClientDetailMsgResp.getDatas().getUserName().equals(vm.userName.get())){
-                ToastUtil.showToast("名字不一样");
-
-            }
-            modifyClient(req);
-        }
-
         return true;
 
     }

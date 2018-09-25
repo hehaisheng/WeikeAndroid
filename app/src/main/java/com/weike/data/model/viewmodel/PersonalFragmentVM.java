@@ -6,6 +6,7 @@ import android.databinding.ObservableField;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.gson.reflect.TypeToken;
+import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
@@ -14,15 +15,20 @@ import com.weike.data.business.myself.CustomerCenterActivity;
 import com.weike.data.business.myself.DataModifyActivity;
 import com.weike.data.business.myself.MyIntegralActivity;
 import com.weike.data.business.myself.MyQRCodeActivity;
+import com.weike.data.business.myself.MySelfFragment;
 import com.weike.data.business.myself.VipOpenUpActivity;
 import com.weike.data.business.setting.AppSettingActivity;
 import com.weike.data.business.setting.ServiceSettingActivity;
+import com.weike.data.business.web.WebActivity;
 import com.weike.data.config.Config;
 import com.weike.data.model.business.User;
+import com.weike.data.model.req.AgreeRequest;
 import com.weike.data.model.req.GetUserInfoReq;
 import com.weike.data.model.resp.GetUserInfoResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
+import com.weike.data.util.Constants;
+import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -54,6 +60,10 @@ public class PersonalFragmentVM extends BaseVM {
     public void openUpVip(){
         ActivitySkipUtil.skipAnotherAct(activity, VipOpenUpActivity.class);
     }
+
+
+    public boolean   isSelected=false;
+
 
     private BaseFragment fragment;
 
@@ -160,4 +170,42 @@ public class PersonalFragmentVM extends BaseVM {
     public void jumpAppSetting(){
         ActivitySkipUtil.skipAnotherAct(activity, AppSettingActivity.class);
     }
+
+    /**
+     * 跳转到协议
+     */
+    public void jumpToLocal(){
+        if(isSelected){
+            //调用取消的链接
+            AgreeRequest req = new AgreeRequest();
+            req.token = SpUtil.getInstance().getCurrentToken();
+            req.sign = SignUtil.signData(req);
+            req.isOpen=0;
+
+            RetrofitFactory.getInstance().getService().postAnything(req, Config.CHANGE_AGREE)
+                    .compose(TransformerUtils.jsonCompass(new TypeToken<BaseResp>(){
+
+                    })).subscribe(new BaseObserver<BaseResp>() {
+                @Override
+                protected void onSuccess(BaseResp getUserInfoRespBaseResp) throws Exception {
+
+                    if(getUserInfoRespBaseResp.getResult().equals("1")){
+                        MySelfFragment mySelfFragment=(MySelfFragment) fragment;
+                        mySelfFragment.init();
+//                        isSelected=false;
+//                        WKBaseApplication.getInstance().hasSelectLocal=false;
+                    }
+                }
+
+                @Override
+                protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+
+                }
+            });
+        }else{
+            WebActivity.startActivity( activity,"app.duoqiandan.com/local/localStorgeArguments.html","local");
+        }
+
+    }
+
 }

@@ -183,38 +183,12 @@
 
         </LinearLayout>
 
-
-        <RelativeLayout
-            android:id="@+id/relative_layout"
+        <com.weike.data.view.DialogCommonLayout
+            android:id="@+id/common_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/itemBackground"
-            android:visibility="gone"
-            >
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_centerInParent="true"
-                android:indeterminateDuration="1000"
-                android:indeterminateDrawable="@anim/large_progressbar_animator"/>
-            <TextView
-                android:id="@+id/content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_common"
-                android:layout_below="@+id/progress"
-                android:text="保存中..."
-                android:layout_marginTop="10dp"
-                android:textSize="14sp"
-                android:gravity="center"
+            android:layout_height="match_parent">
 
-                />
-
-
-        </RelativeLayout>
-
-
+        </com.weike.data.view.DialogCommonLayout>
 
 
     </RelativeLayout>
