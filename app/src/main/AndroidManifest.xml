@@ -68,24 +68,24 @@
         <meta-data android:name="JPUSH_APPKEY" android:value="8a3e25987e0188910c1d350e" />
 
 
-        <meta-data
-            android:name="BaiduMobAd_STAT_ID"
-            android:value="b30a5c6a26" />
+        <!--<meta-data-->
+            <!--android:name="BaiduMobAd_STAT_ID"-->
+            <!--android:value="b30a5c6a26" />-->
 
 
-        <meta-data
-            android:name="BaiduMobAd_CHANNEL"
-            android:value="Baidu Market" />
+        <!--<meta-data-->
+            <!--android:name="BaiduMobAd_CHANNEL"-->
+            <!--android:value="Baidu Market" />-->
 
 
-        <meta-data
-            android:name="BaiduMobAd_EXCEPTION_LOG"
-            android:value="true" />
+        <!--<meta-data-->
+            <!--android:name="BaiduMobAd_EXCEPTION_LOG"-->
+            <!--android:value="true" />-->
 
 
-        <meta-data
-            android:name="BaiduMobAd_ONLY_WIFI"
-            android:value="false" />
+        <!--<meta-data-->
+            <!--android:name="BaiduMobAd_ONLY_WIFI"-->
+            <!--android:value="false" />-->
 
 
         <activity android:name=".MainActivity">
@@ -185,6 +185,12 @@
 
         </activity>
 
+        <activity android:name=".business.client.SmsClientActivity"/>
+        <activity android:name=".business.client.SendSmsActivity"
+            android:windowSoftInputMode="adjustPan"
+            >
+
+        </activity>
         <activity android:name=".business.search.SearchActivity"></activity>
         <activity android:name=".business.client.ClientTagActivity"></activity>
         <activity android:name=".business.setting.AppSettingActivity"></activity>

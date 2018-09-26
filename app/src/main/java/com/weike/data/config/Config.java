@@ -305,6 +305,9 @@ public final class Config {
  //修改协议
  public static final String  CHANGE_AGREE= "userLocal/updateIsOpen.do";
 
+ //获取图片链接
+
+ public static final String  FETCH_IMAGE= " userOss/findFile.do";
 
 
 

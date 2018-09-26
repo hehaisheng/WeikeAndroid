@@ -9,7 +9,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextPaint;
@@ -47,7 +46,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import contactspicker.util.L;
 import contactspicker.widget.RBaseViewHolder;
 import contactspicker.widget.RGroupItemDecoration;
 import contactspicker.widget.RModelAdapter;
@@ -100,31 +98,9 @@ public class ContactActivity extends BaseActivity {
             }
         });
 
-
         setCenterText("");
         setLeftText("联系人");
         setRightText("完成");
-
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_PICK,
-//                        ContactsContract.Contacts.CONTENT_URI);
-//                ContactActivity.this.startActivityForResult(intent, 1);
-
-//                startLoading();
-
-                final List<  contactspicker.util.ContactsPickerHelper.ContactsInfo> selectorData = mModelAdapter.getSelectorData();
-                L.w("共选中:" + selectorData.size());
-                for (int i = 0; i < selectorData.size(); i++) {
-                    L.w(i + "-->" + selectorData.get(i).toString());
-                }
-            }
-        });
-
         initView();
     }
 

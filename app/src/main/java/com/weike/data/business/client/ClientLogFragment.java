@@ -1,20 +1,13 @@
 package com.weike.data.business.client;
 
 import android.annotation.SuppressLint;
-
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
-import com.mylhyl.circledialog.CircleDialog;
-import com.mylhyl.circledialog.callback.ConfigInput;
-import com.mylhyl.circledialog.params.InputParams;
-import com.mylhyl.circledialog.view.listener.OnInputClickListener;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;

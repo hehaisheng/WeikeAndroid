@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,10 +42,8 @@ import com.weike.data.model.viewmodel.AddClientRelateItemVM;
 import com.weike.data.model.viewmodel.AddPhoneVM;
 import com.weike.data.model.viewmodel.AnniversariesItemVM;
 import com.weike.data.model.viewmodel.AnotherAttrItemVM;
-import com.weike.data.model.viewmodel.AttrItemVM;
 import com.weike.data.model.viewmodel.ClientBaseMsgVM;
 import com.weike.data.network.RetrofitFactory;
-import com.weike.data.util.Constants;
 import com.weike.data.util.DialogUtil;
 import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
@@ -63,7 +60,6 @@ import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.CLIPBOARD_SERVICE;
-import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * Created by LeoLu on 2018/6/4.

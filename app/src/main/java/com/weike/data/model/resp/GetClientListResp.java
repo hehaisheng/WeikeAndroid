@@ -45,6 +45,16 @@ public class GetClientListResp extends BaseResp{
          */
         public String[] phoneNumber;
 
+        //备注
+        public String remark;
+
+
+
+
+
+
+
+
 
     }
 

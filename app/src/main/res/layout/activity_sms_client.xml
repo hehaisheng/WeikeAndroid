@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+
+    <include
+        layout="@layout/widget_action_bar"
+        />
+
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include layout="@layout/content_main"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                />
+            <TextView
+                android:id="@+id/dialog"
+                android:layout_width="60dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:background="#606060"
+                android:gravity="center"
+                android:text="A"
+                android:textColor="@android:color/white"
+                android:textSize="36sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.weike.data.view.citypicker.SideBar
+                android:id="@+id/sidrbar"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center"
+                android:layout_marginBottom="60dp"
+                android:layout_marginTop="60dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" />
+
+        </FrameLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>

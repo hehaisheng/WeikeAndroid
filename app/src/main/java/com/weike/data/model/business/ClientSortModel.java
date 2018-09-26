@@ -8,6 +8,51 @@ public class ClientSortModel {
     private String clientId; //客户ID
     private String photoUrl ; //用户头像
 
+    public String[] getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String[] phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * 手机号码
+     */
+    public String[] phoneNumber;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    //备注
+    public String remark;
+
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String phone;
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String company;
+
     public String getRemind() {
         return remind;
     }
@@ -49,5 +94,25 @@ public class ClientSortModel {
 
     public void setSortLetters(String sortLetters) {
         this.sortLetters = sortLetters;
+    }
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
+
+    public boolean isSelect=false;
+
+
+
+
+
+
+    @Override
+    public String toString() {
+        return " [" +remark + "]" + " [" + sortLetters + "]" + " [" + name + "]" + " [" + phone + "]";
     }
 }

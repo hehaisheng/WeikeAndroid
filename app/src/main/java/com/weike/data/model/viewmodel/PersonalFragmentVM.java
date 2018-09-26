@@ -1,18 +1,16 @@
 package com.weike.data.model.viewmodel;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.databinding.ObservableField;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.gson.reflect.TypeToken;
-import com.weike.data.WKBaseApplication;
 import com.weike.data.base.BaseFragment;
 import com.weike.data.base.BaseObserver;
 import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
+import com.weike.data.business.client.SendSmsActivity;
 import com.weike.data.business.myself.CustomerCenterActivity;
-import com.weike.data.business.myself.DataModifyActivity;
 import com.weike.data.business.myself.MyIntegralActivity;
 import com.weike.data.business.myself.MyQRCodeActivity;
 import com.weike.data.business.myself.MySelfFragment;
@@ -27,8 +25,6 @@ import com.weike.data.model.req.GetUserInfoReq;
 import com.weike.data.model.resp.GetUserInfoResp;
 import com.weike.data.network.RetrofitFactory;
 import com.weike.data.util.ActivitySkipUtil;
-import com.weike.data.util.Constants;
-import com.weike.data.util.JsonUtil;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
@@ -128,10 +124,10 @@ public class PersonalFragmentVM extends BaseVM {
      * 修改个人资料
      */
     public void modifyPersonalData(){
-       // ActivitySkipUtil.skipAnotherAct(activity, DataModifyActivity.class);
-        Intent intent = new Intent(fragment.getContext(), DataModifyActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        fragment.startActivityForResult(intent,200);
+        ActivitySkipUtil.skipAnotherAct(activity, SendSmsActivity.class);
+//        Intent intent = new Intent(fragment.getContext(), DataModifyActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        fragment.startActivityForResult(intent,200);
 
 
     }
