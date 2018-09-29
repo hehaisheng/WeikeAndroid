@@ -15,6 +15,26 @@
         layout="@layout/widget_action_bar"
         />
 
+    <EditText
+        android:id="@+id/ed_input_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/shape_main_page_search"
+        android:drawableLeft="@mipmap/ic_main_search"
+        android:drawablePadding="10dp"
+        android:hint="关键字搜索"
+        android:maxLength="10"
+        android:imeOptions="actionSearch"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:singleLine="true"
+        android:textColor="@color/color_content"
+        android:visibility="gone"
+        android:textSize="11sp" />
 
     <FrameLayout
 
@@ -47,6 +67,20 @@
             android:layout_marginTop="60dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/select_model"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="全选"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textColor="@color/color_white"
+            android:layout_gravity="right|bottom"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/blue_circle"/>
 
     </FrameLayout>
 

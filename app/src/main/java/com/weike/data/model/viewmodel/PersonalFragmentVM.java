@@ -11,6 +11,7 @@ import com.weike.data.base.BaseResp;
 import com.weike.data.base.BaseVM;
 import com.weike.data.business.client.SendSmsActivity;
 import com.weike.data.business.myself.CustomerCenterActivity;
+import com.weike.data.business.myself.DataModifyActivity;
 import com.weike.data.business.myself.MyIntegralActivity;
 import com.weike.data.business.myself.MyQRCodeActivity;
 import com.weike.data.business.myself.MySelfFragment;
@@ -124,7 +125,7 @@ public class PersonalFragmentVM extends BaseVM {
      * 修改个人资料
      */
     public void modifyPersonalData(){
-        ActivitySkipUtil.skipAnotherAct(activity, SendSmsActivity.class);
+        ActivitySkipUtil.skipAnotherAct(activity, DataModifyActivity.class);
 //        Intent intent = new Intent(fragment.getContext(), DataModifyActivity.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        fragment.startActivityForResult(intent,200);
@@ -144,6 +145,14 @@ public class PersonalFragmentVM extends BaseVM {
      */
     public void jumpToMyIntegral(){
         ActivitySkipUtil.skipAnotherAct(activity, MyIntegralActivity.class);
+    }
+
+
+    /**
+     * 短信群发
+     */
+    public void jumpToSms(){
+        ActivitySkipUtil.skipAnotherAct(activity, SendSmsActivity.class);
     }
 
     /**

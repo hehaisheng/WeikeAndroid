@@ -354,13 +354,57 @@
                 </LinearLayout>
 
 
+
+                kk
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="50dp"
                     android:background="@color/color_line" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:onClick="@{()->personalVM.jumpToSms()}">
+
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/sms_image" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="群发短信" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:layout_gravity="right|center"
+                        android:layout_marginRight="10dp"
+                        android:scaleType="fitEnd"
+                        android:src="@mipmap/icon_arrow_2"
+
+                        />
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="50dp"
+                    android:visibility="gone"
+                    android:background="@color/color_line" />
+
                 <RelativeLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/color_white"

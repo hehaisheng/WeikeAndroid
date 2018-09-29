@@ -107,6 +107,18 @@ public class ClientSortModel {
     public boolean isSelect=false;
 
 
+    public String getFirstSpelling() {
+        return firstSpelling;
+    }
+
+    public void setFirstSpelling(String firstSpelling) {
+        this.firstSpelling = firstSpelling;
+    }
+
+    public String firstSpelling;
+
+
+
 
 
 

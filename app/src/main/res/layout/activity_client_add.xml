@@ -130,7 +130,7 @@
                         android:paddingLeft="10dp"
                         android:background="@color/color_touming"
                         android:minHeight="40dp"
-                        android:hint="添加备注"
+                        android:hint="尊称"
                         android:singleLine="true"
                         updateEditInput="@{addClientVM.isModify}"
                         android:textSize="12sp"

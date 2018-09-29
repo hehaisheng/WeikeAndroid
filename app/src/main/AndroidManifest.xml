@@ -31,7 +31,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission>
 
-
+    <uses-permission android:name="android.permission.SEND_SMS"/>
 
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
@@ -185,7 +185,10 @@
 
         </activity>
 
-        <activity android:name=".business.client.SmsClientActivity"/>
+        <activity android:name=".business.client.SmsClientActivity"
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
         <activity android:name=".business.client.SendSmsActivity"
             android:windowSoftInputMode="adjustPan"
             >

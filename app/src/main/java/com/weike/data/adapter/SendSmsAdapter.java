@@ -16,7 +16,7 @@ public class SendSmsAdapter extends BaseQuickAdapter<ClientSortModel> {
 
     @Override
     protected void convert(BaseViewHolder baseViewHolder, ClientSortModel clientSortModel) {
-        String noneString="            ";
-        baseViewHolder.setText(R.id.send_client_name,clientSortModel.getName()).setText(R.id.send_client_remark,noneString+"称呼:"+clientSortModel.getRemark()).setText(R.id.send_client_phone,"号码"+clientSortModel.getPhone());
+
+        baseViewHolder.setText(R.id.send_client_name,clientSortModel.getName()).setText(R.id.send_client_remark,"尊称:"+clientSortModel.getRemark()).setText(R.id.send_client_phone,"号码:"+clientSortModel.getPhone());
     }
 }

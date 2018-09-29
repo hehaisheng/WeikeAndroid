@@ -13,8 +13,9 @@
     <ImageView
         android:layout_marginLeft="10dp"
         android:id="@+id/send_check_image"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="5dp"
         android:src="@drawable/ic_launcher"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
@@ -39,6 +40,7 @@
                 android:textColor="@color/itemBackground"
                 android:textSize="13sp"
                 android:layout_marginTop="10dp"
+                android:minWidth="80dp"
 
                 />
 
@@ -50,6 +52,7 @@
                 android:textColor="@color/itemBackground"
                 android:textSize="13sp"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
 
                 />
 

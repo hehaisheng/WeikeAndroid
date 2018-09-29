@@ -9,13 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.weike.data.R;
 import com.weike.data.WKBaseApplication;
@@ -50,27 +46,18 @@ import com.weike.data.util.LQRPhotoSelectUtils;
 import com.weike.data.util.LogSortManager;
 import com.weike.data.util.LogUtil;
 import com.weike.data.util.NetManager;
-import com.weike.data.util.ReflexObjectUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
 import com.weike.data.util.TransformerUtils;
 import com.weike.data.view.DialogCommonLayout;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import kr.co.namee.permissiongen.PermissionSuccess;
 import okhttp3.MediaType;
@@ -635,6 +622,11 @@ public class AddClientActivity extends BaseActivity {
                 return false;
             }
 
+            if(TextUtils.isEmpty(vm.remarks.get())){
+
+                ToastUtil.showToast("尊称不能为空");
+                return false;
+            }
 
 
             AddClientReq req = new AddClientReq();

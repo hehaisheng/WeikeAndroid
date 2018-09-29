@@ -64,6 +64,7 @@ public class PinyinUtils {
                         String[] temp = PinyinHelper.toHanyuPinyinStringArray(
                                 input[i], format);
                         output += temp[0];
+
                     } else
                         output += java.lang.Character.toString(input[i]);
                 }

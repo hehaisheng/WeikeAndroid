@@ -13,11 +13,12 @@
     <ImageView
         android:layout_marginLeft="10dp"
         android:id="@+id/check_image"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/icon_low_box_nor"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
+        android:padding="5dp"
         />
 
 
@@ -39,6 +40,7 @@
                 android:textColor="@color/itemBackground"
                 android:textSize="13sp"
                 android:layout_marginTop="10dp"
+                android:minWidth="70dp"
 
                 />
 
@@ -50,7 +52,7 @@
                 android:textColor="@color/itemBackground"
                 android:textSize="13sp"
                 android:layout_marginTop="10dp"
-
+                android:layout_marginLeft="10dp"
                 />
 
         </LinearLayout>
