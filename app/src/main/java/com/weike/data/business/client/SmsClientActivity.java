@@ -14,6 +14,7 @@ import android.text.InputType;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,7 +34,10 @@ import com.weike.data.model.business.ClientSortModel;
 import com.weike.data.model.req.GetClientListReq;
 import com.weike.data.model.resp.GetClientListResp;
 import com.weike.data.network.RetrofitFactory;
+import com.weike.data.util.Constants;
 import com.weike.data.util.DialogUtil;
+import com.weike.data.util.JsonUtil;
+import com.weike.data.util.LogUtil;
 import com.weike.data.util.SignUtil;
 import com.weike.data.util.SpUtil;
 import com.weike.data.util.ToastUtil;
@@ -110,13 +114,13 @@ public class SmsClientActivity extends BaseActivity {
                 if(s.toString().length() > 0){
                     isSearchModel=true;
                     searchData(s.toString());
-                    mModelAdapter.resetData(sort(searchData));
+
                 }else{
                     isSearchModel=false;
+
                     mModelAdapter.resetData(sort(datas));
 
                 }
-
 
             }
 
@@ -130,11 +134,17 @@ public class SmsClientActivity extends BaseActivity {
         selectText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 isAllSelect= !isAllSelect;
                 if(isAllSelect){
                     selectText.setText("取消");
                 }else{
                     selectText.setText("全选");
+                }
+                if(isAllSelect){
+
+                    LogUtil.d(Constants.LOG_DATA,"是否是全选"+isAllSelect);
                 }
                 changeAllSelectModel(isAllSelect);
 
@@ -233,9 +243,9 @@ public class SmsClientActivity extends BaseActivity {
     }
 
 
-    private void initView() {
-        dialog = DialogUtil.showLoadingDialog(getSupportFragmentManager(), "正在加载..");
-        mRecyclerView = (RRecyclerView) findViewById(R.id.recycler_view);
+    public void  reCreateAdapter(){
+
+
         mModelAdapter = new RModelAdapter<ClientSortModel>(this) {
 
             @Override
@@ -247,11 +257,22 @@ public class SmsClientActivity extends BaseActivity {
             protected void onBindCommonView(final RBaseViewHolder holder, final int position, final ClientSortModel bean) {
                 //holder.fillView(bean);
 
-                if (datas.get(position).isSelect()) {
-                    holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
-                } else {
-                    holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_nor);
+                if(isSearchModel){
+                    LogUtil.d(Constants.LOG_DATA,"长度搜索"+position);
+                    if (searchData.get(position).isSelect()) {
+                        holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
+                    } else {
+                        holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_nor);
+                    }
+                }else{
+
+                    if (datas.get(position).isSelect()) {
+                        holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
+                    } else {
+                        holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_nor);
+                    }
                 }
+
                 holder.textView(R.id.client_name).setText(bean.getName());
 
                 holder.textView(R.id.client_phone).setText(String.format("号码:%s", bean.getPhone()));
@@ -268,6 +289,7 @@ public class SmsClientActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         if (remark.equals("")) {
+
                             dialogFragment = new CircleDialog.Builder()
                                     .setCanceledOnTouchOutside(false)
                                     .setCancelable(true)
@@ -291,27 +313,10 @@ public class SmsClientActivity extends BaseActivity {
                                                 return;
                                             }
 
-                                            if(isSearchModel){
-                                                //在这里也需要改变全部数据的类型
-                                                ClientSortModel clientSortModel = searchData.get(position);
-                                                clientSortModel.remark = text;
-                                                clientSortModel.isSelect = true;
-                                                holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
-                                                searchData.set(position, clientSortModel);
-                                               // mModelAdapter.resetData(sort(searchData));
-                                                changeWhole(clientSortModel);
-                                                dialogFragment.dismiss();
-                                            }else{
-                                                ClientSortModel clientSortModel = datas.get(position);
-                                                clientSortModel.remark = text;
-                                                clientSortModel.isSelect = true;
-                                                datas.set(position, clientSortModel);
-                                                holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
+                                            changeWholeContent(position,text,true);
+                                            holder.textView(R.id.client_remark).setText(text);
+                                            holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
 
-                                              //  mModelAdapter.resetData(sort(datas));
-
-                                                dialogFragment.dismiss();
-                                            }
 
                                         }
                                     })
@@ -339,29 +344,13 @@ public class SmsClientActivity extends BaseActivity {
                                                 ToastUtil.showToast("尊称不能为空");
                                                 return;
                                             }
-                                            if(isSearchModel){
-                                                //在这里也需要改变全部数据的类型
-                                                ClientSortModel clientSortModel = searchData.get(position);
-                                                clientSortModel.remark = text;
-                                                clientSortModel.isSelect = true;
-                                                holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
-                                                searchData.set(position, clientSortModel);
-                                               // mModelAdapter.resetData(sort(searchData));
-                                                changeWhole(clientSortModel);
-                                                dialogFragment.dismiss();
-                                            }else{
-                                                ClientSortModel clientSortModel = datas.get(position);
-                                                clientSortModel.remark = text;
-                                                clientSortModel.isSelect = true;
-                                                holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
-                                                datas.set(position, clientSortModel);
-                                                //mModelAdapter.resetData(sort(datas));
-                                                dialogFragment.dismiss();
-                                            }
+                                            changeWholeContent(position,text,true);
+                                            holder.textView(R.id.client_remark).setText(text);
+                                            holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
 
                                         }
                                     }).show(getSupportFragmentManager());
-                            //  setSelectorPosition(position);
+
                         }
 
                     }
@@ -392,80 +381,25 @@ public class SmsClientActivity extends BaseActivity {
                                                 ToastUtil.showToast("尊称不能为空");
                                                 return;
                                             }
+                                            changeWholeContent(position,text,true);
+                                            holder.textView(R.id.client_remark).setText(text);
+                                            holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
 
-                                            if(isSearchModel){
-                                                //在这里也需要改变全部数据的类型
-                                                ClientSortModel clientSortModel = searchData.get(position);
-                                                clientSortModel.remark = text;
-                                                clientSortModel.isSelect = true;
-                                                holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
-                                                searchData.set(position, clientSortModel);
-                                                //mModelAdapter.resetData(sort(searchData));
-                                                changeWhole(clientSortModel);
-                                                dialogFragment.dismiss();
-                                            }else{
-                                                ClientSortModel clientSortModel = datas.get(position);
-                                                clientSortModel.remark = text;
-                                                clientSortModel.isSelect = true;
-                                                holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
-                                                datas.set(position, clientSortModel);
-                                               // mModelAdapter.resetData(sort(datas));
-
-                                                dialogFragment.dismiss();
-                                            }
 
                                         }
                                     })
                                     .show(getSupportFragmentManager());
                         } else {
 
-
                             if (bean.isSelect) {
-                                if(isSearchModel){
-                                    //在这里也需要改变全部数据的类型
-                                    ClientSortModel clientSortModel = searchData.get(position);
+                                changeWholeContent(position,"",false);
+                                holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_nor);
 
-                                    clientSortModel.isSelect = false;
-                                    holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_nor);
-                                    searchData.set(position, clientSortModel);
-                                   // mModelAdapter.resetData(sort(searchData));
-                                    changeWhole(clientSortModel);
-                                    dialogFragment.dismiss();
-                                }else{
-                                    ClientSortModel clientSortModel = datas.get(position);
-
-                                    clientSortModel.isSelect = false;
-                                    holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_nor);
-                                    datas.set(position, clientSortModel);
-                                   // mModelAdapter.resetData(sort(datas));
-                                    dialogFragment.dismiss();
-                                }
                             } else {
-
-                                if(isSearchModel){
-                                    //在这里也需要改变全部数据的类型
-                                    ClientSortModel clientSortModel = searchData.get(position);
-
-                                    clientSortModel.isSelect = true;
-                                    holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
-                                    searchData.set(position, clientSortModel);
-                                    mModelAdapter.resetData(sort(searchData));
-                                    changeWhole(clientSortModel);
-                                    dialogFragment.dismiss();
-                                }else{
-                                    ClientSortModel clientSortModel = datas.get(position);
-
-                                    clientSortModel.isSelect = true;
-                                    holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
-                                    datas.set(position, clientSortModel);
-                                    mModelAdapter.resetData(sort(datas));
-
-                                    dialogFragment.dismiss();
-                                }
-
+                                changeWholeContent(position,"",true);
+                                holder.imgV(R.id.check_image).setImageResource(R.drawable.icon_low_box_sel);
 
                             }
-
 
                         }
 
@@ -554,6 +488,12 @@ public class SmsClientActivity extends BaseActivity {
             }
         }));
     }
+    private void initView() {
+        dialog = DialogUtil.showLoadingDialog(getSupportFragmentManager(), "正在加载..");
+        mRecyclerView = (RRecyclerView) findViewById(R.id.recycler_view);
+        reCreateAdapter();
+
+    }
 
     private boolean isHorizontal() {
         return ((LinearLayoutManager) mRecyclerView.getLayoutManager()).getOrientation() == LinearLayoutManager.HORIZONTAL;
@@ -567,6 +507,7 @@ public class SmsClientActivity extends BaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        Log.d("test","获取数据");
         startLoading();
     }
 
@@ -581,15 +522,22 @@ public class SmsClientActivity extends BaseActivity {
                 })).subscribe(new BaseObserver<BaseResp<GetClientListResp>>() {
             @Override
             protected void onSuccess(BaseResp<GetClientListResp> getClientListRespBaseResp) throws Exception {
-
                 dialog.dismiss();
+                LogUtil.d(Constants.LOG_DATA,"获取的数据"+ JsonUtil.GsonString(getClientListRespBaseResp));
+
+
                 datas = filledData(getClientListRespBaseResp.getDatas().allClientList);
-                if (WKBaseApplication.getInstance().clientSortModelList != null) {
+
+                if (WKBaseApplication.getInstance().clientSortModelList != null&&WKBaseApplication.getInstance().clientSortModelList.size()>0) {
+
                     selectLength = WKBaseApplication.getInstance().clientSortModelList.size();
                     compareData();
                 } else {
+
                     selectLength = 0;
                 }
+
+
                 mModelAdapter.resetData(sort(datas));
 
 
@@ -627,79 +575,48 @@ public class SmsClientActivity extends BaseActivity {
 
     private List<ClientSortModel> filledData(List<GetClientListResp.ClientListSub> date) {
         List<ClientSortModel> mSortList = new ArrayList<>();
-        ArrayList<String> indexString = new ArrayList<>();
-
-
         for (int i = 0; i < date.size(); i++) {
-
             if (date.get(i).phoneNumber.length > 1) {
-
 
                 for (int j = 0; j < date.get(i).phoneNumber.length; j++) {
 
                     if (date.get(i).phoneNumber[j].equals("")) {
 
                     } else {
-                        ClientSortModel sortModel = new ClientSortModel();
-                        sortModel.setName(date.get(i).userName);
-                        sortModel.setClientId(date.get(i).id);
-                        sortModel.setPhotoUrl(date.get(i).photoUrl);
-                        sortModel.setRemark(date.get(i).remark);
-                        sortModel.setPhoneNumber(date.get(i).phoneNumber);
-                        sortModel.setPhone(date.get(i).phoneNumber[j]);
-                        sortModel.setSelect(false);
-
-                        String pinyin = PinyinUtils.getPingYin(date.get(i).userName);
-
-                        String alpha=PinyinUtils.getAlpha(date.get(i).userName);
-                        sortModel.setFirstSpelling(alpha);
-
-
-                        String sortString = pinyin.substring(0, 1).toUpperCase();
-                        if (sortString.matches("[A-Z]")) {
-                            sortModel.setSortLetters(sortString.toUpperCase());
-                            if (!indexString.contains(sortString)) {
-                                indexString.add(sortString);
-                            }
-                        } else {
-                            sortModel.setSortLetters("#");
-                        }
-                        mSortList.add(sortModel);
+                        mSortList.add(setClientSortData(date.get(i),date.get(i).phoneNumber[j]));
                     }
-
                 }
 
             } else {
-                ClientSortModel sortModel = new ClientSortModel();
-                sortModel.setName(date.get(i).userName);
-                sortModel.setClientId(date.get(i).id);
-                sortModel.setPhotoUrl(date.get(i).photoUrl);
-                sortModel.setRemark(date.get(i).remark);
-                sortModel.setPhoneNumber(date.get(i).phoneNumber);
-                sortModel.setPhone(date.get(i).phoneNumber[0]);
+                mSortList.add(setClientSortData(date.get(i),date.get(i).phoneNumber[0]));
 
-                String pinyin = PinyinUtils.getPingYin(date.get(i).userName);
-
-                String alpha=PinyinUtils.getAlpha(date.get(i).userName);
-                sortModel.setFirstSpelling(alpha);
-                String sortString = pinyin.substring(0, 1).toUpperCase();
-                if (sortString.matches("[A-Z]")) {
-                    sortModel.setSortLetters(sortString.toUpperCase());
-                    if (!indexString.contains(sortString)) {
-                        indexString.add(sortString);
-                    }
-                } else {
-                    sortModel.setSortLetters("#");
-                }
-                mSortList.add(sortModel);
             }
-
-
         }
-
 
         return mSortList;
     }
+
+    public  ClientSortModel setClientSortData(GetClientListResp.ClientListSub  clientListSub,String phone){
+        ClientSortModel sortModel = new ClientSortModel();
+        sortModel.setName(clientListSub.userName);
+        sortModel.setClientId(clientListSub.id);
+        sortModel.setPhotoUrl(clientListSub.photoUrl);
+        sortModel.setRemark(clientListSub.remark);
+        sortModel.setPhoneNumber(clientListSub.phoneNumber);
+        sortModel.setPhone(phone);
+        String pinyin = PinyinUtils.getPingYin(clientListSub.userName);
+        String alpha=PinyinUtils.getAlpha(clientListSub.userName);
+        sortModel.setFirstSpelling(alpha.toLowerCase());
+        String sortString = pinyin.substring(0, 1).toUpperCase();
+        if (sortString.matches("[A-Z]")) {
+            sortModel.setSortLetters(sortString.toUpperCase());
+        } else {
+            sortModel.setSortLetters("#");
+        }
+        return  sortModel;
+    }
+
+
 
     //全选或取消
     public void changeAllSelectModel(boolean isAllSelect1) {
@@ -707,7 +624,7 @@ public class SmsClientActivity extends BaseActivity {
         if(isSearchModel){
             if (searchData != null && searchData.size() > 0) {
 
-                for(int i=0;i<datas.size();i++){
+                for(int i=0;i<searchData .size();i++){
                     ClientSortModel clientSortModel=searchData.get(i);
                     if(clientSortModel.getRemark()==null||clientSortModel.getRemark().equals("")){
 
@@ -718,6 +635,7 @@ public class SmsClientActivity extends BaseActivity {
                     }
 
                 }
+
                 mModelAdapter.resetData(sort(searchData));
             } else {
 
@@ -741,6 +659,7 @@ public class SmsClientActivity extends BaseActivity {
                 }else{
                     WKBaseApplication.getInstance().clientSortModelList=null;
                 }
+
                 mModelAdapter.resetData(sort(datas));
             } else {
 
@@ -758,17 +677,51 @@ public class SmsClientActivity extends BaseActivity {
         if(datas!=null){
             for(int i=0;i<datas.size();i++){
                 if(datas.get(i).getName().contains(inputString)||datas.get(i).getFirstSpelling().contains(inputString)){
+
                     searchData.add(datas.get(i));
                 }
             }
+
+            mModelAdapter.resetData(sort(searchData));
         }
 
     }
 
 
     //改变内容和选择
-    public void changeWholeContent(){
+    public void changeWholeContent(int position,String content,boolean isSelect){
 
+
+        LogUtil.d(Constants.LOG_DATA,"点击的下"+position);
+
+        if(isSearchModel){
+            //在这里也需要改变全部数据的类型
+            ClientSortModel clientSortModel = searchData.get(position);
+            if(!content.equals("")){
+                clientSortModel.remark = content;
+            }
+            clientSortModel.isSelect = isSelect;
+            searchData.set(position, clientSortModel);
+            changeWhole(clientSortModel);
+
+            mModelAdapter.resetData(sort(searchData));
+            if(dialogFragment!=null){
+                dialogFragment.dismiss();
+            }
+
+        }else{
+            ClientSortModel clientSortModel = datas.get(position);
+            if(!content.equals("")){
+                clientSortModel.remark = content;
+            }
+            clientSortModel.isSelect = isSelect;
+            datas.set(position, clientSortModel);
+
+            mModelAdapter.resetData(sort(datas));
+            if(dialogFragment!=null){
+                dialogFragment.dismiss();
+            }
+        }
     }
     //更改从网络获取的数据
     public void changeWhole(ClientSortModel clientSortModel){
@@ -785,5 +738,7 @@ public class SmsClientActivity extends BaseActivity {
             }
         }
     }
+
+
 
 }

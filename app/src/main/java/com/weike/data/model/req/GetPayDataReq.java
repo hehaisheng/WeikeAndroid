@@ -14,4 +14,7 @@ public class GetPayDataReq extends BaseReq {
     public String money;
 
     public int buyNum;
+
+  //  public int rank;
+
 }

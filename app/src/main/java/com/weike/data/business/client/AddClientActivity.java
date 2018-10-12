@@ -134,7 +134,7 @@ public class AddClientActivity extends BaseActivity {
     /**
      * tabLayout标题
      */
-    public String[] titles = {"基本信息","服务信息","跟踪日志"};
+    public String[] titles = {"基本信息","服务信息","跟踪日志","资料库"};
 
     private ArrayList<BaseFragment> fragments = new ArrayList<>();
 
@@ -164,7 +164,7 @@ public class AddClientActivity extends BaseActivity {
         binding.setAddClientVM(vm);
         setCenterText("");
 
-
+        dialogCommonLayout=findViewById(R.id.common_layout);
       initPhotoSel();
       addFragment();
       initMsg();
@@ -249,14 +249,16 @@ public class AddClientActivity extends BaseActivity {
 
         ClientBaseMsgFragment clientBaseMsgFragment = new ClientBaseMsgFragment();
         ClientServiceMsgFragment serviceMsgFragment = new ClientServiceMsgFragment();
+        CloudDataFragment  cloudDataFragment=new CloudDataFragment();
 
         ClientLogFragment clientLogFragment = new ClientLogFragment(clientId);
 
         fragments.add(clientBaseMsgFragment);
         fragments.add(serviceMsgFragment);
         fragments.add(clientLogFragment);
+        fragments.add(cloudDataFragment);
 
-        binding.viewpagerActivityClientAdd.setOffscreenPageLimit(3);
+        binding.viewpagerActivityClientAdd.setOffscreenPageLimit(4);
         FragmentBaseAdapter adapter = new FragmentBaseAdapter(getSupportFragmentManager(),fragments,titles);
         binding.viewpagerActivityClientAdd.setAdapter(adapter);
         binding.slidingTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
@@ -364,20 +366,24 @@ public class AddClientActivity extends BaseActivity {
         WKBaseApplication.getInstance().hasNoClientId=false;
         if(keyCode == KeyEvent.KEYCODE_BACK){
 
-            if(!TextUtils.isEmpty(vm.userName.get())&&clientId==null){
 
+            if(!TextUtils.isEmpty(vm.userName.get())&&clientId==null){
+                LogUtil.d(Constants.LOG_DATA,"保存");
                 showDialog("是否保存数据");
 
             }else{
 
                 if(vm.isModify!=null){
                     if(vm.isModify.get()){
-
-                        showDialog("是否有修改客户信息");
+                        LogUtil.d(Constants.LOG_DATA,"编辑");
+                        showDialog("是否有更改客户信息");
 
                     }else{
+                        LogUtil.d(Constants.LOG_DATA,"结束");
                         finish();
                     }
+                }else{
+                    LogUtil.d(Constants.LOG_DATA,"不是编辑");
                 }
 
             }
@@ -390,7 +396,8 @@ public class AddClientActivity extends BaseActivity {
 
 
     public void showDialog(String content){
-        dialogCommonLayout=findViewById(R.id.common_layout);
+
+
         dialogCommonLayout.setContentAndListener(content, new DialogCommonLayout.DialogListener() {
              @Override
              public void handle(String model) {

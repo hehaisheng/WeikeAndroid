@@ -37,6 +37,6 @@ public class BigPicActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         String data = getIntent().getStringExtra("data");
-        Glide.with(this).load(data).error(R.mipmap.icon_normal_3).placeholder(R.mipmap.icon_normal_3).into(bigPic);
+        Glide.with(this).load(data).into(bigPic);
     }
 }

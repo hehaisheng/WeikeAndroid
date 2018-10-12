@@ -120,6 +120,20 @@ public class CloudDataResp extends BaseReq {
             this.createDate = createDate;
         }
 
+
+        public boolean isSelect() {
+            return isSelect;
+        }
+
+        public void setSelect(boolean select) {
+            isSelect = select;
+        }
+
+        //是否被选择
+        public boolean isSelect;
+
+
+
     }
 
 

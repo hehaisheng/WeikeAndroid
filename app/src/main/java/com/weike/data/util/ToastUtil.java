@@ -1,6 +1,5 @@
 package com.weike.data.util;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -21,7 +20,7 @@ public class ToastUtil {
 
     public static Toast showToast(String text){
         if (mToast == null) {
-            mToast = Toast.makeText(WKBaseApplication.getInstance(), text, Toast.LENGTH_LONG);
+            mToast = Toast.makeText(WKBaseApplication.getInstance(), text, Toast.LENGTH_SHORT);
 
         }
         mToast.setText(text);

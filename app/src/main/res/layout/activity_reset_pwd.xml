@@ -89,7 +89,7 @@
 
             android:background="@color/color_touming"
             android:layout_width="wrap_content"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM"
             android:hint="请输入密码"
             android:textSize="15sp"
             android:ellipsize="end"
@@ -135,7 +135,7 @@
             android:layout_weight="1"
             android:background="@color/color_touming"
             android:textSize="15sp"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM"
             android:maxLines="1"
             android:ellipsize="end"
             android:layout_gravity="center"
@@ -171,6 +171,16 @@
         android:onClick="@{()->resetPwdVM.submit()}"
         android:layout_marginRight="30dp"
         android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_marginLeft="35dp"
+
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="提示:密码只能输入英文字母和数字"
+        android:textColor="@color/itemBackground"/>
 
 </LinearLayout>
 </layout>

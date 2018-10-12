@@ -307,9 +307,18 @@ public final class Config {
 
  //获取图片链接
 
- public static final String  FETCH_IMAGE= " userOss/findFile.do";
+ public static final String  FETCH_IMAGE= "userOss/findFile.do";
 
+ //重命名
 
+ public static final String  RENAME_FILE= "userOss/renameFile.do";
 
+//删除文件
+
+ public static final String  DELETE_FILE= "userOss/delete.do";
+
+ //上传文档
+
+ public static final String UPLOAD_FILE_OSS= "userOss/upload.do";
 
 }

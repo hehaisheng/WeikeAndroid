@@ -47,9 +47,10 @@
 
     <ImageView
         android:id="@+id/item_circle"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/cloud_circle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/icon_low_box_nor"
+        android:padding="5dp"
 
         android:layout_alignParentRight="true"
         android:text="好好猪肉店"

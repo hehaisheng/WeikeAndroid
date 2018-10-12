@@ -306,7 +306,6 @@ public class ContactActivity extends BaseActivity {
                 Glide.with(ContactActivity.this)
                         .load(  contactspicker.util.ContactsPickerHelper.getPhotoByte(ContactActivity.this, bean.contactId))
 //                        .load(ContactsPickerHelper.getPhoto(getContentResolver(), bean.contactId))
-                        .placeholder(R.mipmap.icon_normal_3)
                         .into(holder.imgV(R.id.image_view));
 
 //                Observable.just("")
